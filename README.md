@@ -173,33 +173,25 @@ form according to the current step.
 		$flow = $this->get('myCompany.form.flow.registerUser'); // must match the flow's service id
 		$flow->bind($user);
 
-		$requestedTransition = $flow->getRequestedTransition();
-
 		$form = $flow->createForm($user);
-		if ($this->get('request')->getMethod() === 'POST'
-				&& $requestedTransition !== FormFlow::TRANSITION_BACK
-				&& $requestedTransition !== FormFlow::TRANSITION_RESET) {
-			$form->bindRequest($this->get('request'));
+		if ($flow->isValid($form)) {
+			$flow->saveCurrentStepData();
+			$flow->nextStep();
 
-			if ($form->isValid()) {
-				$flow->saveCurrentStepData();
-				$flow->nextStep();
-
-				if ($flow->getCurrentStep() < $flow->getMaxSteps()) {
-					// render form for next step
-					return array(
-						'form' => $flow->createForm($user)->createView(),
-						'flow' => $flow,
-					);
-				}
-
-				// flow finished
-				$em = $this->getDoctrine()->getEntityManager();
-				$em->persist($user);
-				$em->flush();
-
-				return $this->redirect($this->generateUrl('home'));
+			if ($flow->getCurrentStep() < $flow->getMaxSteps()) {
+				// render form for next step
+				return array(
+					'form' => $flow->createForm($user)->createView(),
+					'flow' => $flow,
+				);
 			}
+
+			// flow finished
+			$em = $this->getDoctrine()->getEntityManager();
+			$em->persist($user);
+			$em->flush();
+
+			return $this->redirect($this->generateUrl('home'));
 		}
 
 		return array(
@@ -210,10 +202,10 @@ form according to the current step.
 
 # Advanced stuff
 
-## Validation
+## Validation groups
 
 To validate the form data class a step-based validation group is passed to the form type.
-By default, if `getName()` of the form type returns `registerUser` then such a group is named `flow_registerUser_step1`
+By default, if `getName()` of the form type returns `registerUser`, such a group is named `flow_registerUser_step1`
 for the first step.
 
 ## Passing step-based options to the form type

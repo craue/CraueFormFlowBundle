@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Form;
 
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session;
@@ -138,7 +139,7 @@ class FormFlow {
 
 	public function getRequestedTransition() {
 		if (empty($this->transition)) {
-			$this->transition = $this->request->request->get($this->formTransitionKey);
+			$this->transition = strtolower($this->request->request->get($this->formTransitionKey));
 		}
 
 		return $this->transition;
@@ -231,6 +232,18 @@ class FormFlow {
 		$options['validation_groups'] = $this->validationGroupPrefix . $step;
 
 		return $options;
+	}
+
+	public function isValid(FormInterface $form) {
+		if ($this->request->getMethod() === 'POST' && !in_array($this->getRequestedTransition(), array(
+			self::TRANSITION_BACK,
+			self::TRANSITION_RESET,
+		))) {
+			$form->bindRequest($this->request);
+			return $form->isValid();
+		}
+
+		return false;
 	}
 
 }
