@@ -103,7 +103,7 @@ An option called `flowStep` is passed to the form type so it can build the form 
 
 	<services>
 		<service id="myCompany.form.registerUser"
-				class="MyCompany\MyBundle\Form\RegisterUserForm">
+				class="MyCompany\MyBundle\Form\RegisterUserFormType">
 			<tag name="form.type" alias="registerUser" />
 		</service>
 
@@ -213,7 +213,7 @@ form according to the current step.
 ## Validation
 
 To validate the form data class a step-based validation group is passed to the form type.
-By default, if `getName()` of the form type return `registerUser` then such a group is named `flow_registerUser_step1`
+By default, if `getName()` of the form type returns `registerUser` then such a group is named `flow_registerUser_step1`
 for the first step.
 
 ## Passing step-based options to the form type
