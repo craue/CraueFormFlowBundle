@@ -133,7 +133,7 @@ form according to the current step.
 
 	// in src/MyCompany/MyBundle/Resources/views/User/registerUser.html.twig
 	<form method="post" {{ form_enctype(form) }}>
-		<input type="hidden" name="{{ flow.getFormStepKey() }}" value="{{ flow.getCurrentStep() }}" />
+		{% include 'CraueFormFlowBundle:FormFlow:stepField.html.twig' %}
 
 		{{ form_errors(form) }}
 
@@ -146,19 +146,7 @@ form according to the current step.
 
 		{{ form_rest(form) }}
 
-		<button type="submit" name="{{ flow.getFormTransitionKey() }}" value="reset" formnovalidate="formnovalidate">start over</button>
-
-		{% if flow.getCurrentStep() in 2..flow.getMaxSteps() %}
-			<button type="submit" name="{{ flow.getFormTransitionKey() }}" value="back" formnovalidate="formnovalidate">back</button>
-		{% endif %}
-
-		<button type="submit">
-			{% if flow.getCurrentStep() < flow.getMaxSteps() %}
-				next
-			{% else %}
-				finish
-			{% endif %}
-		</button>
+		{% include 'CraueFormFlowBundle:FormFlow:buttons.html.twig' %}
 	</form>
 
 ## Create an action
