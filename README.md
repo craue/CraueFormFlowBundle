@@ -176,9 +176,9 @@ form according to the current step.
 		$form = $flow->createForm($user);
 		if ($flow->isValid($form)) {
 			$flow->saveCurrentStepData();
-			$flow->nextStep();
 
 			if ($flow->getCurrentStep() < $flow->getMaxSteps()) {
+				$flow->nextStep();
 				// render form for next step
 				return array(
 					'form' => $flow->createForm($user)->createView(),
