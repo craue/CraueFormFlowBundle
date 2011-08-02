@@ -13,21 +13,21 @@
 		Thus, all buttons are defined in reverse order and will be reversed again via CSS.
 	#}
 	<button type="submit">
-		{% if flow.getCurrentStep() < flow.getMaxSteps() %}
-			{{ 'button.next' | trans({}, 'CraueFormFlowBundle') }}
-		{% else %}
-			{{ 'button.finish' | trans({}, 'CraueFormFlowBundle') }}
-		{% endif %}
+		{%- if flow.getCurrentStep() < flow.getMaxSteps() -%}
+			{{- 'button.next' | trans({}, 'CraueFormFlowBundle') -}}
+		{%- else -%}
+			{{- 'button.finish' | trans({}, 'CraueFormFlowBundle') -}}
+		{%- endif -%}
 	</button>
 
 	{% if flow.getCurrentStep() in 2..flow.getMaxSteps() %}
 		{# see http://www.html5rocks.com/en/tutorials/forms/html5forms/ #}
 		<button type="submit" name="{{ flow.getFormTransitionKey() }}" value="back" formnovalidate="formnovalidate">
-			{{ 'button.back' | trans({}, 'CraueFormFlowBundle') }}
+			{{- 'button.back' | trans({}, 'CraueFormFlowBundle') -}}
 		</button>
 	{% endif %}
 
 	<button type="submit" name="{{ flow.getFormTransitionKey() }}" value="reset" formnovalidate="formnovalidate">
-		{{ 'button.reset' | trans({}, 'CraueFormFlowBundle') }}
+		{{- 'button.reset' | trans({}, 'CraueFormFlowBundle') -}}
 	</button>
 </p>
