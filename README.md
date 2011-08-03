@@ -77,9 +77,7 @@ An option called `flowStep` is passed to the form type so it can build the form 
 					));
 					break;
 				case 3:
-					$builder->add('termsOfService', 'checkbox', array(
-						'required' => false,
-					));
+					$builder->add('termsOfService', 'checkbox');
 					break;
 			}
 		}
