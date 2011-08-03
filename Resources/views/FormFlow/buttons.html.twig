@@ -1,16 +1,8 @@
-<style type="text/css">
-	{# see http://stackoverflow.com/questions/1963245/multiple-submit-buttons-specifying-default-button #}
-	#buttons {
-		overflow: hidden;
-	}
-	#buttons button {
-		float: right;
-	}
-</style>
 <p id="buttons">
 	{#
 		Default button (the one trigged by pressing the enter/return key) must be defined first.
 		Thus, all buttons are defined in reverse order and will be reversed again via CSS.
+		See http://stackoverflow.com/questions/1963245/multiple-submit-buttons-specifying-default-button
 	#}
 	<button type="submit">
 		{%- if flow.getCurrentStep() < flow.getMaxSteps() -%}
@@ -20,7 +12,7 @@
 		{%- endif -%}
 	</button>
 
-	{% if flow.getCurrentStep() in 2..flow.getMaxSteps() %}
+	{% if flow.getCurrentStep() in 2 .. flow.getMaxSteps() %}
 		{# see http://www.html5rocks.com/en/tutorials/forms/html5forms/ #}
 		<button type="submit" name="{{ flow.getFormTransitionKey() }}" value="back" formnovalidate="formnovalidate">
 			{{- 'button.back' | trans({}, 'CraueFormFlowBundle') -}}

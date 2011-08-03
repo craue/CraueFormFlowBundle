@@ -1,0 +1,6 @@
+#buttons {
+	overflow: hidden;
+}
+#buttons button {
+	float: right;
+}

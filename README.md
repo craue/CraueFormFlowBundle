@@ -149,6 +149,13 @@ form according to the current step.
 		{% include 'CraueFormFlowBundle:FormFlow:buttons.html.twig' %}
 	</form>
 
+For the buttons to render correctly you need to tell Assetic to include a CSS file.
+So place this in your base template:
+
+	{% stylesheets '@CraueFormFlowBundle/Resources/assets/css/buttons.css' %}
+		<link type="text/css" rel="stylesheet" href="{{ asset_url }}" />
+	{% endstylesheets %}
+
 ## Create an action
 
 	// in src/MyCompany/MyBundle/Controller/UserController.php
