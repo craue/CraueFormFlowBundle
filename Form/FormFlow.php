@@ -22,6 +22,7 @@ class FormFlow {
 	protected $formFactory;
 	protected $request;
 	protected $session;
+	protected $resetOnGetRequest = true;
 
 	protected $id;
 	protected $formStepKey;
@@ -42,6 +43,10 @@ class FormFlow {
 
 	public function setSession(Session $session) {
 		$this->session = $session;
+	}
+
+	public function setResetOnGetRequest($resetOnGetRequest) {
+		$this->resetOnGetRequest = $resetOnGetRequest;
 	}
 
 	public function setFormType(FormTypeInterface $formType) {
@@ -150,33 +155,36 @@ class FormFlow {
 	}
 
 	public function bind($formData) {
-		if ($this->request->getMethod() === 'POST') {
-			$requestedTransition = $this->getRequestedTransition();
-			if ($requestedTransition === self::TRANSITION_RESET) {
-				$this->reset();
-			} else {
-				$requestedStep = $this->getRequestedStep();
-				if ($requestedTransition === self::TRANSITION_BACK) {
-					--$requestedStep;
-				}
-
-				// ensure that 1 <= $requestedStep <= $this->maxSteps
-				$requestedStep = min(max(1, $requestedStep), $this->maxSteps);
-
-				// ensure that requested step fits the current progress
-				if ($requestedStep > 1 && !$this->isStepDone($requestedStep - 1)) {
-					$this->reset();
-					$this->transition = self::TRANSITION_RESET;
-				} else {
-					$this->currentStep = $requestedStep;
-					$this->applyDataFromPreviousSteps($formData);
-					if ($requestedTransition === self::TRANSITION_BACK) {
-						$this->invalidateStepData($this->currentStep);
-					}
-				}
-			}
-		} else {
+		if ($this->resetOnGetRequest && $this->request->getMethod() === 'GET') {
 			$this->reset();
+			return;
+		}
+
+		$requestedTransition = $this->getRequestedTransition();
+		if ($requestedTransition === self::TRANSITION_RESET) {
+			$this->reset();
+			return;
+		}
+
+		$requestedStep = $this->getRequestedStep();
+
+		if ($requestedTransition === self::TRANSITION_BACK) {
+			--$requestedStep;
+		}
+
+		// ensure that 1 <= $requestedStep <= $this->maxSteps
+		$requestedStep = min(max(1, $requestedStep), $this->maxSteps);
+
+		// ensure that requested step fits the current progress
+		if ($requestedStep > 1 && !$this->isStepDone($requestedStep - 1)) {
+			$this->reset();
+			$this->transition = self::TRANSITION_RESET;
+		} else {
+			$this->currentStep = $requestedStep;
+			$this->applyDataFromPreviousSteps($formData);
+			if ($requestedTransition === self::TRANSITION_BACK) {
+				$this->invalidateStepData($this->currentStep);
+			}
 		}
 	}
 
