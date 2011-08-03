@@ -145,13 +145,17 @@ class FormFlow {
 		return $this->transition;
 	}
 
+	public function getRequestedStep() {
+		return $this->request->request->get($this->formStepKey, 1);
+	}
+
 	public function bind($formData) {
 		if ($this->request->getMethod() === 'POST') {
 			$requestedTransition = $this->getRequestedTransition();
 			if ($requestedTransition === self::TRANSITION_RESET) {
 				$this->reset();
 			} else {
-				$requestedStep = $this->request->request->get($this->formStepKey, 1);
+				$requestedStep = $this->getRequestedStep();
 				if ($requestedTransition === self::TRANSITION_BACK) {
 					--$requestedStep;
 				}
