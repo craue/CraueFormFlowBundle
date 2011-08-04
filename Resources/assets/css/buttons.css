@@ -1,6 +1,7 @@
-#craue_formflow_buttons {
+.craue_formflow_buttons {
 	overflow: hidden;
 }
-#craue_formflow_buttons button {
+
+.craue_formflow_buttons button {
 	float: right;
 }
