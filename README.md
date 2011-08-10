@@ -107,18 +107,10 @@ An option called `flowStep` is passed to the form type so it can build the form 
 
 		<service id="myCompany.form.flow.registerUser"
 				class="MyCompany\MyBundle\Form\RegisterUserFlow"
+				parent="craue.form.flow"
 				scope="request">
 			<call method="setFormType">
 				<argument type="service" id="myCompany.form.registerUser" />
-			</call>
-			<call method="setFormFactory">
-				<argument type="service" id="form.factory" />
-			</call>
-			<call method="setRequest">
-				<argument type="service" id="request" />
-			</call>
-			<call method="setSession">
-				<argument type="service" id="session" />
 			</call>
 		</service>
 	</services>
