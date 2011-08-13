@@ -4,7 +4,7 @@
 		Thus, all buttons are defined in reverse order and will be reversed again via CSS.
 		See http://stackoverflow.com/questions/1963245/multiple-submit-buttons-specifying-default-button
 	#}
-	<button type="submit">
+	<button type="submit" class="craue_formflow_button_last">
 		{%- if flow.getCurrentStep() < flow.getMaxSteps() -%}
 			{{- 'button.next' | trans({}, 'CraueFormFlowBundle') -}}
 		{%- else -%}
@@ -19,7 +19,7 @@
 		</button>
 	{% endif %}
 
-	<button type="submit" name="{{ flow.getFormTransitionKey() }}" value="reset" formnovalidate="formnovalidate">
+	<button type="submit" class="craue_formflow_button_first" name="{{ flow.getFormTransitionKey() }}" value="reset" formnovalidate="formnovalidate">
 		{{- 'button.reset' | trans({}, 'CraueFormFlowBundle') -}}
 	</button>
 </p>
