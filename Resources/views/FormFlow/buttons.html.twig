@@ -1,4 +1,5 @@
-<p class="craue_formflow_buttons">
+{% set renderBackButton = flow.getCurrentStep() in 2 .. flow.getMaxSteps() %}
+<p class="craue_formflow_buttons craue_formflow_button_count_{% if renderBackButton %}3{% else %}2{% endif %}">
 	{#
 		Default button (the one trigged by pressing the enter/return key) must be defined first.
 		Thus, all buttons are defined in reverse order and will be reversed again via CSS.
@@ -12,7 +13,7 @@
 		{%- endif -%}
 	</button>
 
-	{% if flow.getCurrentStep() in 2 .. flow.getMaxSteps() %}
+	{% if renderBackButton %}
 		{# see http://www.html5rocks.com/en/tutorials/forms/html5forms/ #}
 		<button type="submit" name="{{ flow.getFormTransitionKey() }}" value="back" formnovalidate="formnovalidate">
 			{{- 'button.back' | trans({}, 'CraueFormFlowBundle') -}}
