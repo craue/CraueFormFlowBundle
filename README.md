@@ -54,6 +54,17 @@ This sections shows how to create a 3-step form flow for user registration.
 
 	}
 
+If you'd like to render an overview of all steps you have to implement a `loadStepDescriptions` method returning an
+array of descriptions where the value with index 0 will be the description for step 1:
+
+	protected function loadStepDescriptions() {
+		return array(
+			'Account',
+			'Password',
+			'Terms of service',
+		);
+	}
+
 ## Create a form type class
 
 You only have to create one form type class for a flow.
@@ -122,6 +133,10 @@ The instance of your flow class is passed to the template in a variable called `
 form according to the current step.
 
 	// in src/MyCompany/MyBundle/Resources/views/User/registerUser.html.twig
+	<div>
+		Steps:
+		{% include 'CraueFormFlowBundle:FormFlow:stepList.html.twig' %}
+	</div>
 	<form method="post" {{ form_enctype(form) }}>
 		{% include 'CraueFormFlowBundle:FormFlow:stepField.html.twig' %}
 

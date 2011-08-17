@@ -32,6 +32,7 @@ class FormFlow {
 	protected $maxSteps;
 	protected $currentStep;
 	protected $transition;
+	protected $stepDescriptions = null;
 
 	public function setFormFactory(FormFactoryInterface $formFactory) {
 		$this->formFactory = $formFactory;
@@ -246,6 +247,24 @@ class FormFlow {
 		return $options;
 	}
 
+	public function getStepDescriptions() {
+		if ($this->stepDescriptions === null) {
+			$this->stepDescriptions = $this->loadStepDescriptions();
+		}
+		return $this->stepDescriptions;
+	}
+
+	public function getCurrentStepDescription() {
+		$stepDescriptions = $this->getStepDescriptions();
+		$index = $this->currentStep - 1;
+
+		if (array_key_exists($index, $stepDescriptions)) {
+			return $stepDescriptions[$index];
+		}
+
+		return null;
+	}
+
 	public function isValid(FormInterface $form) {
 		if ($this->request->getMethod() === 'POST' && !in_array($this->getRequestedTransition(), array(
 			self::TRANSITION_BACK,
@@ -256,6 +275,14 @@ class FormFlow {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Defines a description for each step used to render the step list.
+	 * @return array Value with index 0 is description for step 1.
+	 */
+	protected function loadStepDescriptions() {
+		return array();
 	}
 
 }

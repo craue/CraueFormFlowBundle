@@ -1,0 +1,9 @@
+{% if flow.getStepDescriptions() | length == flow.getMaxSteps() %}
+	<ol class="craue_formflow_steplist">
+		{% for stepDescription in flow.getStepDescriptions() %}
+			<li{% if loop.index == flow.getCurrentStep() %} class="craue_formflow_current_step"{% endif %}>
+				{{- stepDescription -}}
+			</li>
+		{% endfor %}
+	</ol>
+{% endif %}
