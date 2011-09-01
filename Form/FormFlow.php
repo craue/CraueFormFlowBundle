@@ -22,7 +22,8 @@ class FormFlow {
 	protected $formFactory;
 	protected $request;
 	protected $session;
-	protected $resetOnGetRequest = true;
+	protected $allowDynamicStepNavigation = false;
+	protected $dynamicStepNavigationParameter = 'step';
 
 	protected $id;
 	protected $formStepKey;
@@ -46,8 +47,16 @@ class FormFlow {
 		$this->session = $session;
 	}
 
-	public function setResetOnGetRequest($resetOnGetRequest) {
-		$this->resetOnGetRequest = $resetOnGetRequest;
+	public function setAllowDynamicStepNavigation($allowDynamicStepNavigation) {
+		$this->allowDynamicStepNavigation = $allowDynamicStepNavigation;
+	}
+
+	public function isAllowDynamicStepNavigation() {
+		return $this->allowDynamicStepNavigation;
+	}
+
+	public function setDynamicStepNavigationParameter($dynamicStepNavigationParameter) {
+		$this->dynamicStepNavigationParameter = $dynamicStepNavigationParameter;
 	}
 
 	public function setFormType(FormTypeInterface $formType) {
@@ -152,11 +161,21 @@ class FormFlow {
 	}
 
 	public function getRequestedStep() {
-		return $this->request->request->get($this->formStepKey, 1);
+		$defaultStep = 1;
+
+		switch ($this->request->getMethod()) {
+			case 'POST':
+				return $this->request->request->get($this->formStepKey, $defaultStep);
+			case 'GET':
+				return $this->allowDynamicStepNavigation ?
+						$this->request->query->get($this->dynamicStepNavigationParameter, $defaultStep) : $defaultStep;
+		}
+
+		return $defaultStep;
 	}
 
 	public function bind($formData) {
-		if ($this->resetOnGetRequest && $this->request->getMethod() === 'GET') {
+		if (!$this->allowDynamicStepNavigation && $this->request->getMethod() === 'GET') {
 			$this->reset();
 			return;
 		}
@@ -182,8 +201,8 @@ class FormFlow {
 			$this->transition = self::TRANSITION_RESET;
 		} else {
 			$this->currentStep = $requestedStep;
-			$this->applyDataFromPreviousSteps($formData);
-			if ($requestedTransition === self::TRANSITION_BACK) {
+			$this->applyDataFromSavedSteps($formData);
+			if (!$this->allowDynamicStepNavigation && $requestedTransition === self::TRANSITION_BACK) {
 				$this->invalidateStepData($this->currentStep);
 			}
 		}
@@ -215,19 +234,18 @@ class FormFlow {
 	}
 
 	/**
-	 * Updates form data class with form data from previous steps.
+	 * Updates form data class with form data from previously saved steps.
 	 * @param mixed $formData
 	 * @param array $formOptions
 	 */
-	public function applyDataFromPreviousSteps($formData, array $formOptions = array()) {
+	public function applyDataFromSavedSteps($formData, array $formOptions = array()) {
 		$sessionData = $this->session->get($this->sessionDataKey);
 
 		/*
-		 * Last iteration ($step === $this->currentStep) is only needed to fill out the form when using the "back"
-		 * button.
+		 * Iteration $step === $this->currentStep is only needed to fill out the form when using the "back" button.
 		 */
-		for ($step = 1; $step <= $this->currentStep; ++$step) {
-			if (array_key_exists($step, $sessionData)) {
+		for ($step = 1; $step <= $this->maxSteps; ++$step) {
+			if ($this->isStepDone($step)) {
 				$options = $this->getFormOptions($formData, $step, $formOptions);
 				$stepForm = $this->formFactory->create($this->formType, $formData, $options);
 				$stepForm->bind($sessionData[$step]);
