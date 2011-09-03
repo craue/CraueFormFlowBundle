@@ -22,6 +22,7 @@ class CraueFormFlowExtension extends Extension {
 	public function load(array $config, ContainerBuilder $container) {
 		$loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 		$loader->load('form_flow.xml');
+		$loader->load('twig.xml');
 	}
 
 }

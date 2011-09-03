@@ -2,11 +2,14 @@
 	<ol class="craue_formflow_steplist">
 		{% for stepDescription in flow.getStepDescriptions() %}
 			<li{% if loop.index == flow.getCurrentStep() %} class="craue_formflow_current_step"{% endif %}>
-				{% if flow.isAllowDynamicStepNavigation() and (loop.index == 1 or flow.isStepDone(loop.index - 1)) %}
-					<a href="?step={{ loop.index }}">{{ stepDescription }}</a>
-				{% else %}
+				{%- if flow.isAllowDynamicStepNavigation() and (loop.index == 1 or flow.isStepDone(loop.index - 1)) -%}
+					<a href="{{ path(app.request.attributes.get('_route'),
+							app.request.query.all | craue_addDynamicStepNavigationParameter(flow, loop.index)) }}">
+						{{- stepDescription -}}
+					</a>
+				{%- else -%}
 					{{- stepDescription -}}
-				{% endif %}
+				{%- endif -%}
 			</li>
 		{% endfor %}
 	</ol>

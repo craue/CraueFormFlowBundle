@@ -22,8 +22,6 @@ class FormFlow {
 	protected $formFactory;
 	protected $request;
 	protected $session;
-	protected $allowDynamicStepNavigation = false;
-	protected $dynamicStepNavigationParameter = 'step';
 
 	protected $id;
 	protected $formStepKey;
@@ -35,6 +33,9 @@ class FormFlow {
 	protected $transition;
 	protected $stepDescriptions = null;
 
+	protected $allowDynamicStepNavigation = false;
+	protected $dynamicStepNavigationParameter = 'step';
+
 	public function setFormFactory(FormFactoryInterface $formFactory) {
 		$this->formFactory = $formFactory;
 	}
@@ -45,18 +46,6 @@ class FormFlow {
 
 	public function setSession(Session $session) {
 		$this->session = $session;
-	}
-
-	public function setAllowDynamicStepNavigation($allowDynamicStepNavigation) {
-		$this->allowDynamicStepNavigation = $allowDynamicStepNavigation;
-	}
-
-	public function isAllowDynamicStepNavigation() {
-		return $this->allowDynamicStepNavigation;
-	}
-
-	public function setDynamicStepNavigationParameter($dynamicStepNavigationParameter) {
-		$this->dynamicStepNavigationParameter = $dynamicStepNavigationParameter;
 	}
 
 	public function setFormType(FormTypeInterface $formType) {
@@ -136,6 +125,22 @@ class FormFlow {
 
 	public function getCurrentStep() {
 		return $this->currentStep;
+	}
+
+	public function setAllowDynamicStepNavigation($allowDynamicStepNavigation) {
+		$this->allowDynamicStepNavigation = $allowDynamicStepNavigation;
+	}
+
+	public function isAllowDynamicStepNavigation() {
+		return $this->allowDynamicStepNavigation;
+	}
+
+	public function setDynamicStepNavigationParameter($dynamicStepNavigationParameter) {
+		$this->dynamicStepNavigationParameter = $dynamicStepNavigationParameter;
+	}
+
+	public function getDynamicStepNavigationParameter() {
+		return $this->dynamicStepNavigationParameter;
 	}
 
 	public function reset() {
