@@ -238,6 +238,18 @@ directly. To enable it you could extend the flow class mentioned in the example 
 
 	}
 
+To force clearing of saved step data when finishing the flow you should call `$flow->reset()` in the action:
+
+	public function registerUserAction() {
+		// ...
+
+		// flow finished
+		// ...
+		$flow->reset();
+
+		// ...
+	}
+
 Furthermore, if you'd like to remove the step parameter (added by using such a direct link) when submitting the form
 you should modify the opening form tag in the form template like this:
 
