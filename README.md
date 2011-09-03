@@ -238,8 +238,8 @@ directly. To enable it you could extend the flow class mentioned in the example 
 
 	}
 
-Furthermore, if you'd like to remove the step parameter added by using such a direct link you should modify the opening
-form tag in the form template like this:
+Furthermore, if you'd like to remove the step parameter (added by using such a direct link) when submitting the form
+you should modify the opening form tag in the form template like this:
 
 	<form method="post" action="{{ path(app.request.attributes.get('_route'),
 			app.request.query.all | craue_removeDynamicStepNavigationParameter(flow)) }}" {{ form_enctype(form) }}>
