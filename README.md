@@ -224,3 +224,22 @@ here.
 
 		return $options;
 	}
+
+## Enabling dynamic step navigation
+
+Dynamic step navigation means that the step list rendered will contain links to go back/forth to a specific step
+directly. To enable it you could extend the flow class mentioned in the example above as follows:
+
+	class RegisterUserFlow extends FormFlow {
+
+		// ...
+
+		protected $allowDynamicStepNavigation = true;
+
+	}
+
+Furthermore, if you'd like to remove the step parameter added by using such a direct link you should modify the opening
+form tag in the form template like this:
+
+	<form method="post" action="{{ path(app.request.attributes.get('_route'),
+			app.request.query.all | craue_removeDynamicStepNavigationParameter(flow)) }}" {{ form_enctype(form) }}>
