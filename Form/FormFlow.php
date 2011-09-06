@@ -144,7 +144,7 @@ class FormFlow {
 	}
 
 	public function reset() {
-		$this->session->set($this->sessionDataKey, array());
+		$this->session->remove($this->sessionDataKey);
 		$this->currentStep = 1;
 	}
 
@@ -153,8 +153,7 @@ class FormFlow {
 	}
 
 	public function isStepDone($step) {
-		$sessionData = $this->session->get($this->sessionDataKey);
-		return array_key_exists($step, $sessionData);
+		return array_key_exists($step, $this->getSessionData());
 	}
 
 	public function getRequestedTransition() {
@@ -214,14 +213,14 @@ class FormFlow {
 	}
 
 	public function saveCurrentStepData() {
-		$sessionData = $this->session->get($this->sessionDataKey);
+		$sessionData = $this->getSessionData();
 
 		$sessionData[$this->currentStep] = array_replace_recursive(
 			$this->request->request->get($this->formType->getName(), array()),
 			$this->request->files->get($this->formType->getName(), array())
 		);
 
-		$this->session->set($this->sessionDataKey, $sessionData);
+		$this->setSessionData($sessionData);
 	}
 
 	/**
@@ -229,13 +228,13 @@ class FormFlow {
 	 * @param int $fromStep
 	 */
 	public function invalidateStepData($fromStep) {
-		$sessionData = $this->session->get($this->sessionDataKey);
+		$sessionData = $this->getSessionData();
 
 		for ($step = $fromStep; $step < $this->maxSteps; ++$step) {
 			unset($sessionData[$step]);
 		}
 
-		$this->session->set($this->sessionDataKey, $sessionData);
+		$this->setSessionData($sessionData);
 	}
 
 	/**
@@ -244,7 +243,7 @@ class FormFlow {
 	 * @param array $formOptions
 	 */
 	public function applyDataFromSavedSteps($formData, array $formOptions = array()) {
-		$sessionData = $this->session->get($this->sessionDataKey);
+		$sessionData = $this->getSessionData();
 
 		/*
 		 * Iteration $step === $this->currentStep is only needed to fill out the form when using the "back" button.
@@ -306,6 +305,14 @@ class FormFlow {
 	 */
 	protected function loadStepDescriptions() {
 		return array();
+	}
+
+	protected function getSessionData() {
+		return $this->session->get($this->sessionDataKey, array());
+	}
+
+	protected function setSessionData(array $sessionData) {
+		$this->session->set($this->sessionDataKey, $sessionData);
 	}
 
 }
