@@ -177,8 +177,7 @@ So place this in your base template:
 		if ($flow->isValid($form)) {
 			$flow->saveCurrentStepData();
 
-			if ($flow->getCurrentStep() < $flow->getMaxSteps()) {
-				$flow->nextStep();
+			if ($flow->nextStep()) {
 				// render form for next step
 				return array(
 					'form' => $flow->createForm($user)->createView(),
