@@ -149,7 +149,12 @@ class FormFlow {
 	}
 
 	public function nextStep() {
+		if ($this->currentStep >= $this->maxSteps) {
+			return false;
+		}
+
 		++$this->currentStep;
+		return true;
 	}
 
 	public function isStepDone($step) {
