@@ -174,10 +174,11 @@ class FormFlow {
 
 		switch ($this->request->getMethod()) {
 			case 'POST':
-				return $this->request->request->get($this->formStepKey, $defaultStep);
+				return intval($this->request->request->get($this->formStepKey, $defaultStep));
 			case 'GET':
 				return $this->allowDynamicStepNavigation ?
-						$this->request->query->get($this->dynamicStepNavigationParameter, $defaultStep) : $defaultStep;
+						intval($this->request->query->get($this->dynamicStepNavigationParameter, $defaultStep)) :
+						$defaultStep;
 		}
 
 		return $defaultStep;
