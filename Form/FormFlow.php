@@ -258,7 +258,9 @@ class FormFlow {
 			if ($this->isStepDone($step)) {
 				$options = $this->getFormOptions($formData, $step, $formOptions);
 				$stepForm = $this->formFactory->create($this->formType, $formData, $options);
-				$stepForm->bind($sessionData[$step]);
+				if (array_key_exists($step, $sessionData)) {
+					$stepForm->bind($sessionData[$step]);
+				}
 			}
 		}
 	}
