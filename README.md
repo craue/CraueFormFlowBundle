@@ -17,8 +17,8 @@ Either by using a Git submodule:
 Or by using the `deps` file:
 
 	[CraueFormFlowBundle]
-	    git=https://github.com/craue/CraueFormFlowBundle.git
-	    target=bundles/Craue/FormFlowBundle
+	git=https://github.com/craue/CraueFormFlowBundle.git
+	target=bundles/Craue/FormFlowBundle
 
 ## Add CraueFormFlowBundle to your application kernel
 
