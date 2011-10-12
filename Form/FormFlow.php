@@ -23,6 +23,7 @@ class FormFlow {
 	protected $request;
 	protected $session;
 
+	protected $editMode = false;
 	protected $id;
 	protected $formStepKey;
 	protected $formTransitionKey;
@@ -54,7 +55,7 @@ class FormFlow {
 			$this->id = 'flow_' . $this->formType->getName();
 		}
 		if (empty($this->validationGroupPrefix)) {
-			$this->validationGroupPrefix = $this->id. '_step';
+			$this->validationGroupPrefix = $this->id . '_step';
 		}
 		if (empty($this->formStepKey)) {
 			$this->formStepKey = $this->id. '_step';
@@ -75,6 +76,50 @@ class FormFlow {
 		return $this->id;
 	}
 
+	public function setEditmode($bool = true){
+	    $this->editMode = $bool;
+	}
+	
+	public function isEditmode(){
+	    return $this->editMode;
+	}
+	
+	/**
+	 * Determines which stepts need a other validationgroup if in editmode
+	 *
+	 *
+	 * returns true, false or array
+	 *     true: all steps
+	 *     false: no steps (default)
+	 *     array: check array keys for true false | defaults to false
+	 *     e.g.:
+	 *     array(
+	 *         1=>true,
+	 *         2=>false,
+	 *         4=>true
+	 *     )
+	 *     if `getName()` of the form type returns `user_form`,
+	 *     this would lead to 
+	 *     step 1 validated by a group is named `flow_user_form_step_edit1`
+	 *     step 2 validated by a group is named `flow_user_form_step2`
+	 *     step 3 validated by a group is named `flow_user_form_step3`
+	 *     step 4 validated by a group is named `flow_user_form_step_edit4`
+	 */
+	protected function loadEditmodeValidationGroup(){
+	    return false;
+	}
+	
+	protected function getEditmodeValidationGroup($step){
+	    $editModeGroup = $this->loadEditmodeValidationGroup();
+	    if (is_array($editModeGroup)){
+	        if(array_key_exists($step, $editModeGroup)){
+	            return $editModeGroup[$step] ? '_edit' : '';
+	        }
+	        return false;
+	    }
+	    return $editModeGroup ? '_edit': '';
+	}
+	
 	public function setFormStepKey($formStepKey) {
 		$this->formStepKey = $formStepKey;
 	}
@@ -158,6 +203,9 @@ class FormFlow {
 	}
 
 	public function isStepDone($step) {
+		if ($this->editMode){
+			return true;
+		}
 		return array_key_exists($step, $this->getSessionData());
 	}
 
@@ -225,7 +273,6 @@ class FormFlow {
 			$this->request->request->get($this->formType->getName(), array()),
 			$this->request->files->get($this->formType->getName(), array())
 		);
-
 		$this->setSessionData($sessionData);
 	}
 
@@ -272,8 +319,8 @@ class FormFlow {
 
 	public function getFormOptions($formData, $step, array $options = array()) {
 		$options['flowStep'] = $step;
-		$options['validation_groups'] = $this->validationGroupPrefix . $step;
 
+		$options['validation_groups'] = $this->validationGroupPrefix . $this->getEditmodeValidationGroup($step) . $step;
 		return $options;
 	}
 
