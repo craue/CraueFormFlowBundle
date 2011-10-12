@@ -55,7 +55,7 @@ class FormFlow {
 			$this->id = 'flow_' . $this->formType->getName();
 		}
 		if (empty($this->validationGroupPrefix)) {
-			$this->validationGroupPrefix = $this->id. $this->getEditmodeValidationGroup() .'_step';
+			$this->validationGroupPrefix = $this->id . '_step';
 		}
 		if (empty($this->formStepKey)) {
 			$this->formStepKey = $this->id. '_step';
@@ -100,19 +100,22 @@ class FormFlow {
 	 *     )
 	 *     if `getName()` of the form type returns `user_form`,
 	 *     this would lead to 
-	 *     step 1 validated by a group is named `flow_user_form_edit_step1`
+	 *     step 1 validated by a group is named `flow_user_form_step_edit1`
 	 *     step 2 validated by a group is named `flow_user_form_step2`
 	 *     step 3 validated by a group is named `flow_user_form_step3`
-	 *     step 4 validated by a group is named `flow_user_form_edit_step4`
+	 *     step 4 validated by a group is named `flow_user_form_step_edit4`
 	 */
 	protected function loadEditmodeValidationGroup(){
 	    return false;
 	}
 	
-	protected function getEditmodeValidationGroup(){
+	protected function getEditmodeValidationGroup($step){
 	    $editModeGroup = $this->loadEditmodeValidationGroup();
-	    if (is_array($editModeGroup) and array_key_exists($this->getCurrentStep(), $editModeGroup)){
-	        return '_edit';
+	    if (is_array($editModeGroup)){
+	        if(array_key_exists($step, $editModeGroup)){
+	            return $editModeGroup[$step] ? '_edit' : '';
+	        }
+	        return false;
 	    }
 	    return $editModeGroup ? '_edit': '';
 	}
@@ -270,7 +273,6 @@ class FormFlow {
 			$this->request->request->get($this->formType->getName(), array()),
 			$this->request->files->get($this->formType->getName(), array())
 		);
-
 		$this->setSessionData($sessionData);
 	}
 
@@ -317,8 +319,8 @@ class FormFlow {
 
 	public function getFormOptions($formData, $step, array $options = array()) {
 		$options['flowStep'] = $step;
-		$options['validation_groups'] = $this->validationGroupPrefix . $step;
 
+		$options['validation_groups'] = $this->validationGroupPrefix . $this->getEditmodeValidationGroup($step) . $step;
 		return $options;
 	}
 
