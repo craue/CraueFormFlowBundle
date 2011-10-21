@@ -261,6 +261,8 @@ class FormFlow {
 			return;
 		}
 
+		$this->preBind();
+
 		$requestedStep = $this->determineCurrentStep();
 
 		// ensure that requested step fits the current progress
@@ -318,6 +320,7 @@ class FormFlow {
 				$stepForm = $this->formFactory->create($this->formType, $formData, $options);
 				if (array_key_exists($step, $sessionData)) {
 					$stepForm->bind($sessionData[$step]);
+					$this->postBindSavedData($formData, $step);
 				}
 			}
 		}
@@ -359,7 +362,11 @@ class FormFlow {
 			self::TRANSITION_RESET,
 		))) {
 			$form->bindRequest($this->request);
-			return $form->isValid();
+			$this->postBindRequest($form->getData());
+			if ($form->isValid()) {
+				$this->postValidate($form->getData());
+				return true;
+			}
 		}
 
 		return false;
@@ -371,6 +378,36 @@ class FormFlow {
 	 */
 	protected function loadStepDescriptions() {
 		return array();
+	}
+
+	/**
+	 * Is called once prior to binding any (neither saved nor request) data.
+	 * You can use this method to define steps to skip prior to determinating the current step, e.g. based on custom
+	 * session data.
+	 */
+	protected function preBind() {
+	}
+
+	/**
+	 * Is called for each step after binding its saved form data.
+	 * @param mixed $formData
+	 * @param int $step Step for which data has been bound.
+	 */
+	protected function postBindSavedData($formData, $step) {
+	}
+
+	/**
+	 * Is called once for the current step after binding the request.
+	 * @param mixed $formData
+	 */
+	protected function postBindRequest($formData) {
+	}
+
+	/**
+	 * Is called once for the current step after validating the form data.
+	 * @param mixed $formData
+	 */
+	protected function postValidate($formData) {
 	}
 
 	protected function getSessionData() {
