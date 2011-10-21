@@ -33,6 +33,8 @@ class FormFlow {
 	protected $transition;
 	protected $stepDescriptions = null;
 
+	protected $skipSteps = array();
+
 	protected $allowDynamicStepNavigation = false;
 	protected $dynamicStepNavigationParameter = 'step';
 
@@ -143,9 +145,52 @@ class FormFlow {
 		return $this->dynamicStepNavigationParameter;
 	}
 
+	public function addSkipStep($step) {
+		if (!in_array($step, $this->skipSteps)) {
+			$this->skipSteps[] = $step;
+		}
+	}
+
+	public function removeSkipStep($step) {
+		$key = array_search($step, $this->skipSteps, true);
+		if ($key !== false) {
+			unset($this->skipSteps[$key]);
+			$this->skipSteps = array_values($this->skipSteps);
+		}
+	}
+
+	public function hasSkipStep($step) {
+		return in_array($step, $this->skipSteps);
+	}
+
+	/**
+	 * @param int $step Assumed step to which skipped steps shall be applied to.
+	 * @param int $direction Either 1 (to skip forwards) or -1 (to skip backwards).
+	 * @return int Target step with skipping applied.
+	 */
+	public function applySkipping($step, $direction = 1) {
+		if ($direction !== 1 && $direction !== -1) {
+			throw new \InvalidArgumentException(sprintf('Argument of either -1 or 1 expected, "%s" given.',
+					$direction));
+		}
+
+		while ($this->hasSkipStep($step)) {
+			$step += $direction;
+		}
+
+		return $step;
+	}
+
 	public function reset() {
 		$this->session->remove($this->sessionDataKey);
-		$this->currentStep = 1;
+		$this->currentStep = $this->getFirstStep();
+	}
+
+	/**
+	 * @return int First visible step, which may be greater than 1 if steps are skipped.
+	 */
+	public function getFirstStep() {
+		return $this->applySkipping(1);
 	}
 
 	public function nextStep() {
@@ -153,11 +198,16 @@ class FormFlow {
 			return false;
 		}
 
-		++$this->currentStep;
+		$this->currentStep = $this->applySkipping(++$this->currentStep);
+
 		return true;
 	}
 
 	public function isStepDone($step) {
+		if ($this->hasSkipStep($step)) {
+			return true;
+		}
+
 		return array_key_exists($step, $this->getSessionData());
 	}
 
@@ -184,37 +234,45 @@ class FormFlow {
 		return $defaultStep;
 	}
 
+	public function determineCurrentStep() {
+		$requestedStep = $this->getRequestedStep();
+
+		if ($this->getRequestedTransition() === self::TRANSITION_BACK) {
+			$requestedStep = $this->applySkipping(--$requestedStep, -1);
+		}
+
+		// skip steps
+		$requestedStep = $this->applySkipping($requestedStep);
+
+		// ensure: first step <= $requestedStep <= $this->maxSteps
+		$requestedStep = min(max($this->getFirstStep(), $requestedStep), $this->maxSteps);
+
+		return $requestedStep;
+	}
+
 	public function bind($formData) {
 		if (!$this->allowDynamicStepNavigation && $this->request->getMethod() === 'GET') {
 			$this->reset();
 			return;
 		}
 
-		$requestedTransition = $this->getRequestedTransition();
-		if ($requestedTransition === self::TRANSITION_RESET) {
+		if ($this->getRequestedTransition() === self::TRANSITION_RESET) {
 			$this->reset();
 			return;
 		}
 
-		$requestedStep = $this->getRequestedStep();
-
-		if ($requestedTransition === self::TRANSITION_BACK) {
-			--$requestedStep;
-		}
-
-		// ensure that 1 <= $requestedStep <= $this->maxSteps
-		$requestedStep = min(max(1, $requestedStep), $this->maxSteps);
+		$requestedStep = $this->determineCurrentStep();
 
 		// ensure that requested step fits the current progress
 		if ($requestedStep > 1 && !$this->isStepDone($requestedStep - 1)) {
 			$this->reset();
-			$this->transition = self::TRANSITION_RESET;
-		} else {
-			$this->currentStep = $requestedStep;
-			$this->applyDataFromSavedSteps($formData);
-			if (!$this->allowDynamicStepNavigation && $requestedTransition === self::TRANSITION_BACK) {
-				$this->invalidateStepData($this->currentStep);
-			}
+			return;
+		}
+
+		$this->currentStep = $requestedStep;
+		$this->applyDataFromSavedSteps($formData);
+		if (!$this->allowDynamicStepNavigation && $this->getRequestedTransition() === self::TRANSITION_BACK) {
+			$this->invalidateStepData($this->currentStep);
 		}
 	}
 
