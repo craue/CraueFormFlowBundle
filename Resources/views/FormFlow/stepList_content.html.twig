@@ -1,0 +1,18 @@
+{% use 'CraueFormFlowBundle:FormFlow:stepList_blocks.html.twig' %}
+
+{% if flow.getStepDescriptions() | length == flow.getMaxSteps() %}
+	<ol class="craue_formflow_steplist">
+		{% for stepDescription in flow.getStepDescriptions() %}
+			<li{{ block('craue_flow_stepList_class') }}>
+				{%- if flow.isAllowDynamicStepNavigation() and (loop.index != flow.getCurrentStep()) and flow.isStepDone(loop.index) and (not flow.hasSkipStep(loop.index)) -%}
+					<a href="{{ path(app.request.attributes.get('_route'),
+							app.request.query.all | craue_addDynamicStepNavigationParameter(flow, loop.index)) }}">
+						{{- block('craue_flow_stepDescription') -}}
+					</a>
+				{%- else -%}
+					{{- block('craue_flow_stepDescription') -}}
+				{%- endif -%}
+			</li>
+		{% endfor %}
+	</ol>
+{% endif %}
