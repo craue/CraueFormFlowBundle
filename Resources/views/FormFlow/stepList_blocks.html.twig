@@ -3,6 +3,8 @@
 		{{- ' class="craue_formflow_current_step"' -}}
 	{%- elseif flow.hasSkipStep(loop.index) -%}
 		{{- ' class="craue_formflow_skipped_step"' -}}
+	{%- elseif flow.isStepDone(loop.index) -%}
+		{{- ' class="craue_formflow_done_step"' -}}
 	{%- endif -%}
 {% endblock %}
 
