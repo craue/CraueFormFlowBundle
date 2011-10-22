@@ -193,14 +193,17 @@ class FormFlow {
 		return $this->applySkipping(1);
 	}
 
-	public function nextStep() {
-		if ($this->currentStep >= $this->maxSteps) {
-			return false;
-		}
+	/**
+	 * @return int Last visible step, which may be less than $this->maxSteps if steps are skipped.
+	 */
+	public function getLastStep() {
+		return $this->applySkipping($this->maxSteps, -1);
+	}
 
+	public function nextStep() {
 		$this->currentStep = $this->applySkipping(++$this->currentStep);
 
-		return true;
+		return $this->currentStep <= $this->maxSteps;
 	}
 
 	public function isStepDone($step) {
