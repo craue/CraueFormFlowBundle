@@ -5,10 +5,10 @@
 				{%- if flow.isAllowDynamicStepNavigation() and (loop.index != flow.getCurrentStep()) and flow.isStepDone(loop.index) and (not flow.hasSkipStep(loop.index)) -%}
 					<a href="{{ path(app.request.attributes.get('_route'),
 							app.request.query.all | craue_addDynamicStepNavigationParameter(flow, loop.index)) }}">
-						{{- stepDescription -}}
+						{{- stepDescription | trans -}}
 					</a>
 				{%- else -%}
-					{{- stepDescription -}}
+					{{- stepDescription | trans -}}
 				{%- endif -%}
 			</li>
 		{% endfor %}
