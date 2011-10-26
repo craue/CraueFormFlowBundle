@@ -145,17 +145,35 @@ class FormFlow {
 		return $this->dynamicStepNavigationParameter;
 	}
 
-	public function addSkipStep($step) {
-		if (!in_array($step, $this->skipSteps)) {
-			$this->skipSteps[] = $step;
+	/**
+	 * @param int|array[int] $steps
+	 */
+	public function addSkipStep($steps) {
+		if (is_scalar($steps)) {
+			$steps = array($steps);
+		}
+
+		foreach ($steps as $step) {
+			if (!in_array($step, $this->skipSteps)) {
+				$this->skipSteps[] = $step;
+			}
 		}
 	}
 
-	public function removeSkipStep($step) {
-		$key = array_search($step, $this->skipSteps, true);
-		if ($key !== false) {
-			unset($this->skipSteps[$key]);
-			$this->skipSteps = array_values($this->skipSteps);
+	/**
+	 * @param int|array[int] $steps
+	 */
+	public function removeSkipStep($steps) {
+		if (is_scalar($steps)) {
+			$steps = array($steps);
+		}
+
+		foreach ($steps as $step) {
+			$key = array_search($step, $this->skipSteps, true);
+			if ($key !== false) {
+				unset($this->skipSteps[$key]);
+				$this->skipSteps = array_values($this->skipSteps);
+			}
 		}
 	}
 
