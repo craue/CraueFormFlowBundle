@@ -1,14 +1,21 @@
 # Information
 
 CraueFormFlowBundle provides a facility for building and handling multi-step forms.
-It supports navigation (next, back, start over) within the single steps and makes it easy to turn an existing form into
-a multi-step form flow.
+It makes it easy to turn an existing form into a multi-step form flow.
+
+Features:
+
+- navigation (next, back, start over)
+- step descriptions
+- skipping of specified steps
+- different validation group for each step
+- dynamic step navigation
 
 This bundle should be used in conjunction with Symfony2.
 
 # Installation
 
-## Add CraueFormFlowBundle to your vendor directory
+## Add the bundle to your vendor directory
 
 Either by using a Git submodule:
 
@@ -20,7 +27,7 @@ Or by using the `deps` file:
 	git=https://github.com/craue/CraueFormFlowBundle.git
 	target=bundles/Craue/FormFlowBundle
 
-## Add CraueFormFlowBundle to your application kernel
+## Add the bundle to your application kernel
 
 	// app/AppKernel.php
 	public function registerBundles() {
@@ -64,6 +71,8 @@ array of descriptions where the value with index 0 will be the description for s
 			'Terms of service',
 		);
 	}
+
+By default, these descriptions will be translated using the `messages` domain when rendered in Twig.
 
 ## Create a form type class
 
@@ -144,7 +153,7 @@ form according to the current step.
 
 		{% if flow.getCurrentStep() == 3 %}
 			<div>
-				You have to agree to the terms of service to register.<br/>
+				You have to agree to the terms of service to register.<br />
 				{{ form_row(form.termsOfService) }}
 			</div>
 		{% endif %}
@@ -190,7 +199,7 @@ So place this in your base template:
 			$em->persist($user);
 			$em->flush();
 
-			return $this->redirect($this->generateUrl('home'));
+			return $this->redirect($this->generateUrl('home')); // redirect when done
 		}
 
 		return array(
