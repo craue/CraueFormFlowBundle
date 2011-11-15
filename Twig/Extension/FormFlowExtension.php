@@ -40,9 +40,8 @@ class FormFlowExtension extends \Twig_Extension {
 	 * @return array Route parameters plus the step parameter.
 	 */
 	public function addDynamicStepNavigationParameter(array $parameters, FormFlow $flow, $step) {
-		return array_merge($parameters, array(
-			$flow->getDynamicStepNavigationParameter() => $step,
-		));
+		$parameters[$flow->getDynamicStepNavigationParameter()] = $step;
+		return $parameters;
 	}
 
 	/**
