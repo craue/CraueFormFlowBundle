@@ -225,13 +225,13 @@ Before you can use the options you must register them in your form type class:
 ```php
 // in src/MyCompany/MyBundle/Form/RegisterUserFormType.php
 public function getDefaultOptions(array $options) {
-			$options = parent::getDefaultOptions($options);
+    $options = parent::getDefaultOptions($options);
 
-			$options['flowStep']      = 1;
-			$options['data_class']    = 'MyCompany\MyBundle\Entity\MyUser'; // should point to your user entity
-			$options['givenUsername'] = '';
+	$options['flowStep']      = 1;
+	$options['data_class']    = 'MyCompany\MyBundle\Entity\MyUser'; // should point to your user entity
+	$options['givenUsername'] = '';
 
-			return $options;
+	return $options;
 }
 ```
 
