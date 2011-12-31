@@ -218,7 +218,24 @@ for the first step.
 
 ## Passing step-based options to the form type
 
-If your form type needs options to build the form you can override the `getFormOptions` method of the flow class.
+If your form type needs options to build the form (e.g. conditional fields) you can override the `getFormOptions` method
+of your flow class.
+Before you can use the options you must register them in your form type class:
+
+```php
+// in src/MyCompany/MyBundle/Form/RegisterUserFormType.php
+public function getDefaultOptions(array $options) {
+			$options = parent::getDefaultOptions($options);
+
+			$options['flowStep']      = 1;
+			$options['data_class']    = 'MyCompany\MyBundle\Entity\MyUser'; // should point to your user entity
+			$options['givenUsername'] = '';
+
+			return $options;
+}
+```
+
+After registration you can set them in your flow class.
 It's important that an option needed for one step is also available for all subsequent ones, so don't use `switch`
 here.
 
