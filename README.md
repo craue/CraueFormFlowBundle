@@ -137,7 +137,7 @@ An option called `flowStep` is passed to the form type so it can build the form 
 
 ## Create a form template
 
-You also only need one template for a flow. 
+You also only need one template for a flow.
 The instance of your flow class is passed to the template in a variable called `flow` so you can use it to render the
 form according to the current step.
 
@@ -227,29 +227,28 @@ Before you can use the options you must register them in your form type class:
 public function getDefaultOptions(array $options) {
     $options = parent::getDefaultOptions($options);
 
-	$options['flowStep']      = 1;
-	$options['data_class']    = 'MyCompany\MyBundle\Entity\MyUser'; // should point to your user entity
-	$options['givenUsername'] = '';
+    // ...
+    $options['givenUsername'] = null;
 
-	return $options;
+    return $options;
 }
 ```
 
 After registration you can set them in your flow class.
 It's important that an option needed for one step is also available for all subsequent ones, so don't use `switch`
 here.
+```php
+// in src/MyCompany/MyBundle/Form/RegisterUserFlow.php
+public function getFormOptions($formData, $step, array $options = array()) {
+    $options = parent::getFormOptions($formData, $step, $options);
 
-	// in src/MyCompany/MyBundle/Form/RegisterUserFlow.php
-	public function getFormOptions($formData, $step, array $options = array()) {
-		$options = parent::getFormOptions($formData, $step, $options);
+    if ($step > 1) {
+        $options['givenUsername'] = $formData->getUsername();
+    }
 
-		if ($step > 1) {
-			$options['givenUsername'] = $formData->getUsername();
-		}
-
-		return $options;
-	}
-
+    return $options;
+}
+```
 ## Enabling dynamic step navigation
 
 Dynamic step navigation means that the step list rendered will contain links to go back/forth to a specific step
