@@ -237,6 +237,7 @@ public function getDefaultOptions(array $options) {
 After registration you can set them in your flow class.
 It's important that an option needed for one step is also available for all subsequent ones, so don't use `switch`
 here.
+
 ```php
 // in src/MyCompany/MyBundle/Form/RegisterUserFlow.php
 public function getFormOptions($formData, $step, array $options = array()) {
@@ -249,6 +250,7 @@ public function getFormOptions($formData, $step, array $options = array()) {
     return $options;
 }
 ```
+
 ## Enabling dynamic step navigation
 
 Dynamic step navigation means that the step list rendered will contain links to go back/forth to a specific step
