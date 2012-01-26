@@ -348,6 +348,13 @@ class FormFlow {
 	}
 
 	public function createForm($formData, array $options = array()) {
+		if (!$this->formType instanceof FormTypeInterface) {
+			throw new \RuntimeException(sprintf('The form type has to be an instance of type "%s", but "%s" given.',
+					'Symfony\Component\Form\FormTypeInterface',
+					is_object($this->formType) ? get_class($this->formType) : gettype($this->formType)
+			));
+		}
+
 		return $this->formFactory->create($this->formType, $formData,
 				$this->getFormOptions($formData, $this->currentStep, $options));
 	}
