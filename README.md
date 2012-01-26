@@ -54,11 +54,16 @@ This sections shows how to create a 3-step form flow for user registration.
 
 	// src/MyCompany/MyBundle/Form/RegisterUserFlow.php
 	use Craue\FormFlowBundle\Form\FormFlow;
-
+	use Symfony\Component\Form\FormTypeInterface;
+	
 	class RegisterUserFlow extends FormFlow {
 
 		protected $maxSteps = 3;
 
+		public function __construct(FormTypeInterface $formType)
+		{
+			$this->setFormType($formType);
+		}
 	}
 
 If you'd like to render an overview of all steps you have to implement a `loadStepDescriptions` method returning an
