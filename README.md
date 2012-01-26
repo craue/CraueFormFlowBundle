@@ -164,7 +164,7 @@ The instance of your flow class is passed to the template in a variable called `
 form according to the current step.
 
 ```jinja
-<!-- in src/MyCompany/MyBundle/Resources/views/User/registerUser.html.twig -->
+{# in src/MyCompany/MyBundle/Resources/views/User/registerUser.html.twig #}
 <div>
 	Steps:
 	{% include 'CraueFormFlowBundle:FormFlow:stepList.html.twig' %}
