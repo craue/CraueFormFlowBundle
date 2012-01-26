@@ -29,7 +29,7 @@ Or by using the `deps` file:
 
 ## Add the bundle to your application kernel
 
-	// app/AppKernel.php
+	// in app/AppKernel.php
 	public function registerBundles() {
 		$bundles = array(
 			// ...
@@ -40,7 +40,7 @@ Or by using the `deps` file:
 
 ## Register the Craue namespace
 
-	// app/autoload.php
+	// in app/autoload.php
 	$loader->registerNamespaces(array(
 		// ...
 		'Craue' => __DIR__.'/../vendor/bundles',
@@ -48,7 +48,7 @@ Or by using the `deps` file:
 
 # Usage
 
-This sections shows how to create a 3-step form flow for user registration.
+This section shows how to create a 3-step form flow for user registration.
 
 ## Create a flow class
 
@@ -256,6 +256,7 @@ public function getFormOptions($formData, $step, array $options = array()) {
 Dynamic step navigation means that the step list rendered will contain links to go back/forth to a specific step
 directly. To enable it you could extend the flow class mentioned in the example above as follows:
 
+	// in src/MyCompany/MyBundle/Form/RegisterUserFlow.php
 	class RegisterUserFlow extends FormFlow {
 
 		// ...
@@ -266,6 +267,7 @@ directly. To enable it you could extend the flow class mentioned in the example 
 
 To force clearing of saved step data when finishing the flow you should call `$flow->reset()` in the action:
 
+	// in src/MyCompany/MyBundle/Controller/UserController.php
 	public function registerUserAction() {
 		// ...
 
