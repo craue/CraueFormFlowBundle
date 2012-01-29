@@ -11,6 +11,8 @@ Features:
 - different validation group for each step
 - dynamic step navigation
 
+A live demo can be found at http://craue.de/sf2playground/en/CraueFormFlow/.
+
 This bundle should be used in conjunction with Symfony2.
 
 # Installation
