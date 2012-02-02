@@ -11,18 +11,19 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  * Registration of the extension via DI.
  *
  * @author Christian Raue <christian.raue@gmail.com>
- * @copyright 2011-2012 Christian Raue
+ * @copyright 2011 Christian Raue
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class CraueFormFlowExtension extends Extension {
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function load(array $config, ContainerBuilder $container) {
-		$loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-		$loader->load('form_flow.xml');
-		$loader->load('twig.xml');
-	}
+class CraueFormFlowExtension extends Extension
+{
+    /**
+     * {@inheritDoc}
+     */
+    public function load(array $config, ContainerBuilder $container)
+    {
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('form_flow.xml');
+        $loader->load('twig.xml');
+    }
 
 }
