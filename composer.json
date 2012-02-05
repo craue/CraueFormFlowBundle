@@ -1,0 +1,23 @@
+{
+    "name": "craue/formflow-bundle",
+    "type": "symfony-bundle",
+    "description": "CraueFormFlowBundle provides a facility for building and handling multi-step forms.",
+    "keywords": ["Forms"],
+    "homepage": "http://github.com/craue/CraueFormFlowBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christian Raue",
+            "email": "christian.raue@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/framework-bundle": "2.*",
+        "symfony/form": "2.*"
+    },
+    "autoload": {
+        "psr-0": { "Craue\\FormFlowBundle": "" }
+    },
+    "target-dir": "Craue/FormFlowBundle"
+}
