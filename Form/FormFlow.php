@@ -27,6 +27,10 @@ class FormFlow {
 	protected $formFactory;
 	protected $request;
 	protected $session;
+
+    /**
+     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     */
     protected $dispatcher;
 
 	protected $id;
