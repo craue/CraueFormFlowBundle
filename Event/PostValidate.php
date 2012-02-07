@@ -8,7 +8,7 @@ namespace Craue\FormFlowBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
-class PreBind extends Event
+class PostValidate extends Event
 {
     /**
      * @var array

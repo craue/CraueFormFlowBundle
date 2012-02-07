@@ -360,7 +360,9 @@ class FormFlow {
 				$stepForm = $this->formFactory->create($this->formType, $formData, $options);
 				if (array_key_exists($step, $sessionData)) {
 					$stepForm->bind($sessionData[$step]);
-					$this->postBindSavedData($formData, $step); //flow.post_bind_saved_data
+
+                    $event = new PostBindSavedData($formData, $step);
+                    $this->dispatcher->dispatch(FormFlowEvents::POST_BIND_SAVED_DATA, $event);
 				}
 			}
 		}
@@ -402,13 +404,14 @@ class FormFlow {
 			self::TRANSITION_RESET,
 		))) {
 			$form->bindRequest($this->request);
-			$this->postBindRequest($form->getData()); //flow.post_bind_request
 
             $event = new PostBindRequest($form->getData(), $this->getCurrentStep());
             $this->dispatcher->dispatch(FormFlowEvents::POST_BIND_REQUEST, $event);
 
 			if ($form->isValid()) {
-				$this->postValidate($form->getData()); //flow.post_validate
+                $event = new PostValidate($form->getData());
+                $this->dispatcher->dispatch(FormFlowEvents::POST_VALIDATE, $event);
+
 				return true;
 			}
 		}
@@ -425,33 +428,11 @@ class FormFlow {
 	}
 
 	/**
-	 * Is called once prior to binding any (neither saved nor request) data.
-	 * You can use this method to define steps to skip prior to determinating the current step, e.g. based on custom
-	 * session data.
-	 */
-	protected function preBind() {
-	}
-
-	/**
 	 * Is called for each step after binding its saved form data.
 	 * @param mixed $formData
 	 * @param int $step Step for which data has been bound.
 	 */
 	protected function postBindSavedData($formData, $step) {
-	}
-
-	/**
-	 * Is called once for the current step after binding the request.
-	 * @param mixed $formData
-	 */
-	protected function postBindRequest($formData) {
-	}
-
-	/**
-	 * Is called once for the current step after validating the form data.
-	 * @param mixed $formData
-	 */
-	protected function postValidate($formData) {
 	}
 
 	protected function getSessionData() {
