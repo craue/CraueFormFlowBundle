@@ -21,7 +21,7 @@ This bundle should be used in conjunction with Symfony2.
 
 Either by using a Git submodule:
 
-```
+```sh
 # in a shell
 git submodule add https://github.com/craue/CraueFormFlowBundle.git vendor/bundles/Craue/FormFlowBundle
 ```
