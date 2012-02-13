@@ -302,10 +302,7 @@ class FormFlow {
 	public function saveCurrentStepData() {
 		$sessionData = $this->getSessionData();
 
-		$sessionData[$this->currentStep] = array_replace_recursive(
-			$this->request->request->get($this->formType->getName(), array()),
-			$this->request->files->get($this->formType->getName(), array())
-		);
+		$sessionData[$this->currentStep] = $this->request->request->get($this->formType->getName(), array());
 
 		$this->setSessionData($sessionData);
 	}
