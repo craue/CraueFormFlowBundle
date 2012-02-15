@@ -2,10 +2,10 @@
 
 namespace Craue\FormFlowBundle\Form;
 
-use Craue\FormFlowBundle\Event\PostBindRequest;
-use Craue\FormFlowBundle\Event\PreBind;
-use Craue\FormFlowBundle\Event\PostBindSavedData;
-use Craue\FormFlowBundle\Event\PostValidate;
+use Craue\FormFlowBundle\Event\PostBindRequestEvent;
+use Craue\FormFlowBundle\Event\PreBindEvent;
+use Craue\FormFlowBundle\Event\PostBindSavedDataEvent;
+use Craue\FormFlowBundle\Event\PostValidateEvent;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -302,7 +302,7 @@ class FormFlow {
 			return;
 		}
 
-        $event = new PreBind($formData);
+        $event = new PreBindEvent($formData);
         $this->dispatcher->dispatch(FormFlowEvents::PRE_BIND, $event);
 
 		$requestedStep = $this->determineCurrentStep();
@@ -363,7 +363,7 @@ class FormFlow {
 				if (array_key_exists($step, $sessionData)) {
 					$stepForm->bind($sessionData[$step]);
 
-                    $event = new PostBindSavedData($formData, $step);
+                    $event = new PostBindSavedDataEvent($formData, $step);
                     $this->dispatcher->dispatch(FormFlowEvents::POST_BIND_SAVED_DATA, $event);
 				}
 			}
@@ -407,11 +407,11 @@ class FormFlow {
 		))) {
 			$form->bindRequest($this->request);
 
-            $event = new PostBindRequest($form->getData(), $this->getCurrentStep());
+            $event = new PostBindRequestEvent($form->getData(), $this->getCurrentStep());
             $this->dispatcher->dispatch(FormFlowEvents::POST_BIND_REQUEST, $event);
 
 			if ($form->isValid()) {
-                $event = new PostValidate($form->getData());
+                $event = new PostValidateEvent($form->getData());
                 $this->dispatcher->dispatch(FormFlowEvents::POST_VALIDATE, $event);
 
 				return true;
@@ -427,14 +427,6 @@ class FormFlow {
 	 */
 	protected function loadStepDescriptions() {
 		return array();
-	}
-
-	/**
-	 * Is called for each step after binding its saved form data.
-	 * @param mixed $formData
-	 * @param int $step Step for which data has been bound.
-	 */
-	protected function postBindSavedData($formData, $step) {
 	}
 
 	protected function getSessionData() {

@@ -8,7 +8,10 @@ namespace Craue\FormFlowBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
-class PostValidate extends Event
+/**
+ * Is called once for the current step after validating the form data.
+ */
+class PostValidateEvent extends Event
 {
     /**
      * @var array

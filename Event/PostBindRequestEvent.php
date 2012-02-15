@@ -8,12 +8,15 @@ namespace Craue\FormFlowBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
-class PostBindSavedData extends Event
+/**
+ * Is called once for the current step after binding the request.
+ */
+class PostBindRequestEvent extends Event
 {
     /**
      * @var array
      */
-    private $formData;
+    private $data;
 
     /**
      * @var integer
@@ -21,21 +24,23 @@ class PostBindSavedData extends Event
     private $step;
 
     /**
-     * @param array   $formData
+     * @param array $data
      * @param integer $step
      */
-    public function __construct($formData, $step)
+    public function __construct($data, $step)
     {
-        $this->formData = $formData;
-        $this->step     = $step;
+        $this->data = $data;
+        $this->step = $step;
     }
 
     /**
+     * Return form data
+     *
      * @return array
      */
-    public function getFormData()
+    public function getData()
     {
-        return $this->formData;
+        return $this->data;
     }
 
     /**
