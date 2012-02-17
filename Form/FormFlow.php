@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @author Christian Raue <christian.raue@gmail.com>
  * @author Marcus Stöhr <dafish@soundtrack-board.de>
- * @copyright 2011 Christian Raue
+ * @copyright 2011-2012 Christian Raue
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class FormFlow {
@@ -302,8 +302,7 @@ class FormFlow {
 			return;
 		}
 
-        $event = new PreBindEvent($formData);
-        $this->dispatcher->dispatch(FormFlowEvents::PRE_BIND, $event);
+		$this->preBind();
 
 		$requestedStep = $this->determineCurrentStep();
 
@@ -371,6 +370,13 @@ class FormFlow {
 	}
 
 	public function createForm($formData, array $options = array()) {
+		if (!$this->formType instanceof FormTypeInterface) {
+			throw new \RuntimeException(sprintf('The form type has to be an instance of type "%s", but "%s" given.',
+					'Symfony\Component\Form\FormTypeInterface',
+					is_object($this->formType) ? get_class($this->formType) : gettype($this->formType)
+			));
+		}
+
 		return $this->formFactory->create($this->formType, $formData,
 				$this->getFormOptions($formData, $this->currentStep, $options));
 	}
