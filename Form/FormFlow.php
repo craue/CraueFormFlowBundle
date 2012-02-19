@@ -295,7 +295,12 @@ class FormFlow {
 		$this->currentStep = $requestedStep;
 		$this->applyDataFromSavedSteps($formData);
 		if (!$this->allowDynamicStepNavigation && $this->getRequestedTransition() === self::TRANSITION_BACK) {
-			$this->invalidateStepData($this->currentStep);
+			/*
+			 * Don't invalidate data for the current step to properly show the filled out form for that step after
+			 * pressing "back" and refreshing the page. Otherwise, the form would be blank since the data has already
+			 * been invalidated previously.
+			 */
+			$this->invalidateStepData($this->currentStep + 1);
 		}
 	}
 
