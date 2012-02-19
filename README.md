@@ -289,7 +289,8 @@ public function getFormOptions($formData, $step, array $options = array()) {
 ## Enabling dynamic step navigation
 
 Dynamic step navigation means that the step list rendered will contain links to go back/forth to a specific step
-directly. To enable it you could extend the flow class mentioned in the example above as follows:
+(which has been done already) directly.
+To enable it you could extend the flow class mentioned in the example above as follows:
 
 ```php
 <?php
