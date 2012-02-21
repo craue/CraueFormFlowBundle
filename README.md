@@ -327,3 +327,54 @@ you should modify the opening form tag in the form template like this:
 <form method="post" action="{{ path(app.request.attributes.get('_route'),
 		app.request.query.all | craue_removeDynamicStepNavigationParameter(flow)) }}" {{ form_enctype(form) }}>
 ```
+
+## Using events
+
+There are some events which you can subscribe to. Using all of them right inside your flow class could look like this:
+
+```php
+<?php
+// in src/MyCompany/MyBundle/Form/RegisterUserFlow.php
+use Craue\FormFlowBundle\Event\PostBindRequestEvent;
+use Craue\FormFlowBundle\Event\PostBindSavedDataEvent;
+use Craue\FormFlowBundle\Event\PostValidateEvent;
+use Craue\FormFlowBundle\Event\PreBindEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+class RegisterUserFlow extends FormFlow implements EventSubscriberInterface {
+
+	public function setEventDispatcher(EventDispatcherInterface $dispatcher) {
+		parent::setEventDispatcher($dispatcher);
+		$dispatcher->addSubscriber($this);
+	}
+
+	public static function getSubscribedEvents() {
+		return array(
+			FormFlowEvents::PRE_BIND => 'onPreBind',
+			FormFlowEvents::POST_BIND_REQUEST => 'onPostBindRequest',
+			FormFlowEvents::POST_BIND_SAVED_DATA => 'onPostBindSavedData',
+			FormFlowEvents::POST_VALIDATE => 'onPostValidate',
+		);
+	}
+
+	public function onPreBind(PreBindEvent $event) {
+		// ...
+	}
+
+	public function onPostBindRequest(PostBindRequestEvent $event) {
+		// ...
+	}
+
+	public function onPostBindSavedData(PostBindSavedDataEvent $event) {
+		// ...
+	}
+
+	public function onPostValidate(PostValidateEvent $event) {
+		// ...
+	}
+
+	// ...
+
+}
+```
