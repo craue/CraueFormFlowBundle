@@ -9,6 +9,10 @@
 		{
 			"name": "Christian Raue",
 			"email": "christian.raue@gmail.com"
+		},
+		{
+			"name": "Symfony Community",
+			"homepage": "https://github.com/craue/CraueFormFlowBundle/contributors"
 		}
 	],
 	"require": {
