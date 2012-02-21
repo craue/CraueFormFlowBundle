@@ -14,24 +14,4 @@ use Symfony\Component\EventDispatcher\Event;
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class PreBindEvent extends Event {
-
-	/**
-	 * @var array
-	 */
-	private $formData;
-
-	/**
-	 * @param array $formData
-	 */
-	public function __construct($formData) {
-		$this->formData = $formData;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getFormData() {
-		return $this->formData;
-	}
-
 }

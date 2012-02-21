@@ -300,7 +300,7 @@ class FormFlow {
 			return;
 		}
 
-		$event = new PreBindEvent($formData);
+		$event = new PreBindEvent();
 		$this->dispatcher->dispatch(FormFlowEvents::PRE_BIND, $event);
 
 		$requestedStep = $this->determineCurrentStep();
