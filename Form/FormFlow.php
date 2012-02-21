@@ -3,16 +3,15 @@
 namespace Craue\FormFlowBundle\Form;
 
 use Craue\FormFlowBundle\Event\PostBindRequestEvent;
-use Craue\FormFlowBundle\Event\PreBindEvent;
 use Craue\FormFlowBundle\Event\PostBindSavedDataEvent;
 use Craue\FormFlowBundle\Event\PostValidateEvent;
-
+use Craue\FormFlowBundle\Event\PreBindEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -30,10 +29,10 @@ class FormFlow {
 	protected $request;
 	protected $session;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $dispatcher;
+	/**
+	 * @var EventDispatcherInterface
+	 */
+	protected $dispatcher;
 
 	protected $id;
 	protected $formStepKey;
@@ -62,12 +61,12 @@ class FormFlow {
 		$this->session = $session;
 	}
 
-    /**
-     * @param EventDispatcherInterface $dispatcher
-     */
-    public function setEventDispatcher(EventDispatcherInterface $dispatcher) {
-        $this->dispatcher = $dispatcher;
-    }
+	/**
+	 * @param EventDispatcherInterface $dispatcher
+	 */
+	public function setEventDispatcher(EventDispatcherInterface $dispatcher) {
+		$this->dispatcher = $dispatcher;
+	}
 
 	public function setFormType(FormTypeInterface $formType) {
 		$this->formType = $formType;
@@ -301,8 +300,8 @@ class FormFlow {
 			return;
 		}
 
-        $event = new PreBindEvent($formData);
-        $this->dispatcher->dispatch(FormFlowEvents::PRE_BIND, $event);
+		$event = new PreBindEvent($formData);
+		$this->dispatcher->dispatch(FormFlowEvents::PRE_BIND, $event);
 
 		$requestedStep = $this->determineCurrentStep();
 
@@ -364,8 +363,8 @@ class FormFlow {
 				if (array_key_exists($step, $sessionData)) {
 					$stepForm->bind($sessionData[$step]);
 
-                    $event = new PostBindSavedDataEvent($formData, $step);
-                    $this->dispatcher->dispatch(FormFlowEvents::POST_BIND_SAVED_DATA, $event);
+					$event = new PostBindSavedDataEvent($formData, $step);
+					$this->dispatcher->dispatch(FormFlowEvents::POST_BIND_SAVED_DATA, $event);
 				}
 			}
 		}
@@ -415,14 +414,14 @@ class FormFlow {
 		))) {
 			$form->bindRequest($this->request);
 
-            $event = new PostBindRequestEvent($form->getData(), $this->getCurrentStep());
-            $this->dispatcher->dispatch(FormFlowEvents::POST_BIND_REQUEST, $event);
+			$event = new PostBindRequestEvent($form->getData(), $this->currentStep);
+			$this->dispatcher->dispatch(FormFlowEvents::POST_BIND_REQUEST, $event);
 
 			if ($form->isValid()) {
-                $event = new PostValidateEvent($form->getData());
-                $this->dispatcher->dispatch(FormFlowEvents::POST_VALIDATE, $event);
+				$event = new PostValidateEvent($form->getData());
+				$this->dispatcher->dispatch(FormFlowEvents::POST_VALIDATE, $event);
 
-                return true;
+				return true;
 			}
 		}
 

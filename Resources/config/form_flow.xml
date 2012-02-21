@@ -24,9 +24,9 @@
 			<call method="setSession">
 				<argument type="service" id="session" />
 			</call>
-            <call method="setEventDispatcher">
-                <argument type="service" id="event_dispatcher" />
-            </call>
+			<call method="setEventDispatcher">
+				<argument type="service" id="event_dispatcher" />
+			</call>
 		</service>
 	</services>
 

@@ -1,52 +1,49 @@
 <?php
+
 namespace Craue\FormFlowBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
 /**
+ * Is called once for the current step after binding the request.
+ *
  * @author Marcus Stöhr <dafish@soundtrack-board.de>
  * @copyright 2011-2012 Christian Raue
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
- *
- * Is called once for the current step after binding the request.
  */
-class PostBindRequestEvent extends Event
-{
-    /**
-     * @var array
-     */
-    private $data;
+class PostBindRequestEvent extends Event {
 
-    /**
-     * @var integer
-     */
-    private $step;
+	/**
+	 * @var array
+	 */
+	private $formData;
 
-    /**
-     * @param array $data
-     * @param integer $step
-     */
-    public function __construct($data, $step)
-    {
-        $this->data = $data;
-        $this->step = $step;
-    }
+	/**
+	 * @var integer
+	 */
+	private $step;
 
-    /**
-     * Return form data
-     *
-     * @return array
-     */
-    public function getData()
-    {
-        return $this->data;
-    }
+	/**
+	 * @param array $formData
+	 * @param integer $step
+	 */
+	public function __construct($formData, $step) {
+		$this->formData = $formData;
+		$this->step = $step;
+	}
 
-    /**
-     * @return integer
-     */
-    public function getStep()
-    {
-        return $this->step;
-    }
+	/**
+	 * @return array
+	 */
+	public function getFormData() {
+		return $this->formData;
+	}
+
+	/**
+	 * @return integer
+	 */
+	public function getStep() {
+		return $this->step;
+	}
+
 }
