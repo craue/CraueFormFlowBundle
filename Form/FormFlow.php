@@ -2,14 +2,21 @@
 
 namespace Craue\FormFlowBundle\Form;
 
+use Craue\FormFlowBundle\Event\PostBindRequestEvent;
+use Craue\FormFlowBundle\Event\PreBindEvent;
+use Craue\FormFlowBundle\Event\PostBindSavedDataEvent;
+use Craue\FormFlowBundle\Event\PostValidateEvent;
+
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
+ * @author Marcus Stöhr <dafish@soundtrack-board.de>
  * @copyright 2011-2012 Christian Raue
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
@@ -22,6 +29,11 @@ class FormFlow {
 	protected $formFactory;
 	protected $request;
 	protected $session;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $dispatcher;
 
 	protected $id;
 	protected $formStepKey;
@@ -49,6 +61,13 @@ class FormFlow {
 	public function setSession(Session $session) {
 		$this->session = $session;
 	}
+
+    /**
+     * @param EventDispatcherInterface $dispatcher
+     */
+    public function setEventDispatcher(EventDispatcherInterface $dispatcher) {
+        $this->dispatcher = $dispatcher;
+    }
 
 	public function setFormType(FormTypeInterface $formType) {
 		$this->formType = $formType;
@@ -282,7 +301,8 @@ class FormFlow {
 			return;
 		}
 
-		$this->preBind();
+        $event = new PreBindEvent($formData);
+        $this->dispatcher->dispatch(FormFlowEvents::PRE_BIND, $event);
 
 		$requestedStep = $this->determineCurrentStep();
 
@@ -343,7 +363,9 @@ class FormFlow {
 				$stepForm = $this->formFactory->create($this->formType, $formData, $options);
 				if (array_key_exists($step, $sessionData)) {
 					$stepForm->bind($sessionData[$step]);
-					$this->postBindSavedData($formData, $step);
+
+                    $event = new PostBindSavedDataEvent($formData, $step);
+                    $this->dispatcher->dispatch(FormFlowEvents::POST_BIND_SAVED_DATA, $event);
 				}
 			}
 		}
@@ -392,10 +414,15 @@ class FormFlow {
 			self::TRANSITION_RESET,
 		))) {
 			$form->bindRequest($this->request);
-			$this->postBindRequest($form->getData());
+
+            $event = new PostBindRequestEvent($form->getData(), $this->getCurrentStep());
+            $this->dispatcher->dispatch(FormFlowEvents::POST_BIND_REQUEST, $event);
+
 			if ($form->isValid()) {
-				$this->postValidate($form->getData());
-				return true;
+                $event = new PostValidateEvent($form->getData());
+                $this->dispatcher->dispatch(FormFlowEvents::POST_VALIDATE, $event);
+
+                return true;
 			}
 		}
 
@@ -408,36 +435,6 @@ class FormFlow {
 	 */
 	protected function loadStepDescriptions() {
 		return array();
-	}
-
-	/**
-	 * Is called once prior to binding any (neither saved nor request) data.
-	 * You can use this method to define steps to skip prior to determinating the current step, e.g. based on custom
-	 * session data.
-	 */
-	protected function preBind() {
-	}
-
-	/**
-	 * Is called for each step after binding its saved form data.
-	 * @param mixed $formData
-	 * @param int $step Step for which data has been bound.
-	 */
-	protected function postBindSavedData($formData, $step) {
-	}
-
-	/**
-	 * Is called once for the current step after binding the request.
-	 * @param mixed $formData
-	 */
-	protected function postBindRequest($formData) {
-	}
-
-	/**
-	 * Is called once for the current step after validating the form data.
-	 * @param mixed $formData
-	 */
-	protected function postValidate($formData) {
 	}
 
 	protected function getSessionData() {
