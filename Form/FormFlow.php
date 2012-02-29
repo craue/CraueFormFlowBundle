@@ -24,50 +24,122 @@ class FormFlow {
 	const TRANSITION_BACK = 'back';
 	const TRANSITION_RESET = 'reset';
 
+	/**
+	 * @var FormTypeInterface
+	 */
 	protected $formType;
+
+	/**
+	 * @var FormFactoryInterface
+	 */
 	protected $formFactory;
+
+	/**
+	 * @var Request
+	 */
 	protected $request;
+
+	/**
+	 * @var Session
+	 */
 	protected $session;
 
 	/**
 	 * @var EventDispatcherInterface
 	 */
-	protected $dispatcher;
+	protected $eventDispatcher;
 
+	/**
+	 * @var string
+	 */
 	protected $id;
+
+	/**
+	 * @var string
+	 */
 	protected $formStepKey;
+
+	/**
+	 * @var string
+	 */
 	protected $formTransitionKey;
+
+	/**
+	 * @var string
+	 */
 	protected $sessionDataKey;
+
+	/**
+	 * @var string
+	 */
 	protected $validationGroupPrefix;
+
+	/**
+	 * @var int
+	 */
 	protected $maxSteps;
+
+	/**
+	 * @var int
+	 */
 	protected $currentStep;
+
+	/**
+	 * @var string
+	 */
 	protected $transition;
+
+	/**
+	 * @var null|string[] Is only null if not initialized.
+	 */
 	protected $stepDescriptions = null;
 
+	/**
+	 * @var int[]
+	 */
 	protected $skipSteps = array();
 
+	/**
+	 * @var boolean
+	 */
 	protected $allowDynamicStepNavigation = false;
+
+	/**
+	 * @var string
+	 */
 	protected $dynamicStepNavigationParameter = 'step';
 
+	/**
+	 * @param FormFactoryInterface $formFactory
+	 */
 	public function setFormFactory(FormFactoryInterface $formFactory) {
 		$this->formFactory = $formFactory;
 	}
 
+	/**
+	 * @param Request $request
+	 */
 	public function setRequest(Request $request) {
 		$this->request = $request;
 	}
 
+	/**
+	 * @param Session $session
+	 */
 	public function setSession(Session $session) {
 		$this->session = $session;
 	}
 
 	/**
-	 * @param EventDispatcherInterface $dispatcher
+	 * @param EventDispatcherInterface $eventDispatcher
 	 */
-	public function setEventDispatcher(EventDispatcherInterface $dispatcher) {
-		$this->dispatcher = $dispatcher;
+	public function setEventDispatcher(EventDispatcherInterface $eventDispatcher) {
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
+	/**
+	 * @param FormTypeInterface $formType
+	 */
 	public function setFormType(FormTypeInterface $formType) {
 		$this->formType = $formType;
 		if (empty($this->id)) {
@@ -164,7 +236,7 @@ class FormFlow {
 	}
 
 	/**
-	 * @param int|array[int] $steps
+	 * @param int|int[] $steps
 	 */
 	public function addSkipStep($steps) {
 		if (is_scalar($steps)) {
@@ -179,7 +251,7 @@ class FormFlow {
 	}
 
 	/**
-	 * @param int|array[int] $steps
+	 * @param int|int[] $steps
 	 */
 	public function removeSkipStep($steps) {
 		if (is_scalar($steps)) {
@@ -301,7 +373,7 @@ class FormFlow {
 		}
 
 		$event = new PreBindEvent();
-		$this->dispatcher->dispatch(FormFlowEvents::PRE_BIND, $event);
+		$this->eventDispatcher->dispatch(FormFlowEvents::PRE_BIND, $event);
 
 		$requestedStep = $this->determineCurrentStep();
 
@@ -364,7 +436,7 @@ class FormFlow {
 					$stepForm->bind($sessionData[$step]);
 
 					$event = new PostBindSavedDataEvent($formData, $step);
-					$this->dispatcher->dispatch(FormFlowEvents::POST_BIND_SAVED_DATA, $event);
+					$this->eventDispatcher->dispatch(FormFlowEvents::POST_BIND_SAVED_DATA, $event);
 				}
 			}
 		}
@@ -393,6 +465,7 @@ class FormFlow {
 		if ($this->stepDescriptions === null) {
 			$this->stepDescriptions = $this->loadStepDescriptions();
 		}
+
 		return $this->stepDescriptions;
 	}
 
@@ -415,11 +488,11 @@ class FormFlow {
 			$form->bindRequest($this->request);
 
 			$event = new PostBindRequestEvent($form->getData(), $this->currentStep);
-			$this->dispatcher->dispatch(FormFlowEvents::POST_BIND_REQUEST, $event);
+			$this->eventDispatcher->dispatch(FormFlowEvents::POST_BIND_REQUEST, $event);
 
 			if ($form->isValid()) {
 				$event = new PostValidateEvent($form->getData());
-				$this->dispatcher->dispatch(FormFlowEvents::POST_VALIDATE, $event);
+				$this->eventDispatcher->dispatch(FormFlowEvents::POST_VALIDATE, $event);
 
 				return true;
 			}
@@ -430,7 +503,7 @@ class FormFlow {
 
 	/**
 	 * Defines a description for each step used to render the step list.
-	 * @return array Value with index 0 is description for step 1.
+	 * @return string[] Value with index 0 is description for step 1.
 	 */
 	protected function loadStepDescriptions() {
 		return array();
