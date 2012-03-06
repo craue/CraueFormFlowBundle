@@ -124,7 +124,7 @@ class FormFlow {
 	}
 
 	/**
-	 * @param Session $session
+	 * @param SessionInterface $session
 	 */
 	public function setSession(SessionInterface $session) {
 		$this->session = $session;
