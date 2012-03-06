@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -126,7 +126,7 @@ class FormFlow {
 	/**
 	 * @param Session $session
 	 */
-	public function setSession(Session $session) {
+	public function setSession(SessionInterface $session) {
 		$this->session = $session;
 	}
 
