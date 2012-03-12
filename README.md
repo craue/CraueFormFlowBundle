@@ -209,7 +209,7 @@ So place this in your base template:
  * @Template
  */
 public function registerUserAction() {
-	$user = new MyUser(); // should be your user entity
+	$user = new MyUser(); // Should be your user entity. Has to be an object, won't work properly with an array.
 
 	$flow = $this->get('myCompany.form.flow.registerUser'); // must match the flow's service id
 	$flow->bind($user);
