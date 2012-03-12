@@ -494,6 +494,32 @@ class FormFlow {
 		return false;
 	}
 
+	public function setStepDataKey($stepDataKey) {
+		$this->stepDataKey = $stepDataKey;
+	}
+
+	public function getStepDataKey() {
+		return $this->stepDataKey;
+	}
+
+	/**
+	 * @deprecated In favor of setStepDataKey.
+	 *
+	 * @param $sessionDataKey $string
+	 */
+	public function setSessionDataKey($sessionDataKey) {
+		$this->setStepDataKey($sessionDataKey);
+	}
+
+	/**
+	 * @deprecated In favor of getStepDataKey.
+	 *
+	 * @return string
+	 */
+	public function getSessionDataKey() {
+		return $this->getStepDataKey();
+	}
+
 	public function retrieveStepData()
 	{
 		return $this->storage->get($this->stepDataKey, array());
