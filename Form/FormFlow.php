@@ -514,7 +514,7 @@ class FormFlow {
 		return $this->storage->get($this->stepDataKey, array());
 	}
 
-	protected function saveStepData($data) {
+	protected function saveStepData(array $data) {
 		$this->storage->set($this->stepDataKey, $data);
 	}
 
