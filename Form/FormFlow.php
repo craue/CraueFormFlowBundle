@@ -6,16 +6,17 @@ use Craue\FormFlowBundle\Event\PostBindRequestEvent;
 use Craue\FormFlowBundle\Event\PostBindSavedDataEvent;
 use Craue\FormFlowBundle\Event\PostValidateEvent;
 use Craue\FormFlowBundle\Event\PreBindEvent;
+use Craue\FormFlowBundle\Storage\StorageInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
  * @author Marcus Stöhr <dafish@soundtrack-board.de>
+ * @author Toni Uebernickel <tuebernickel@gmail.com>
  * @copyright 2011-2012 Christian Raue
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
@@ -40,9 +41,9 @@ class FormFlow {
 	protected $request;
 
 	/**
-	 * @var Session
+	 * @var StorageInterface
 	 */
-	protected $session;
+	protected $storage;
 
 	/**
 	 * @var EventDispatcherInterface
@@ -67,7 +68,7 @@ class FormFlow {
 	/**
 	 * @var string
 	 */
-	protected $sessionDataKey;
+	protected $stepDataKey;
 
 	/**
 	 * @var string
@@ -124,10 +125,10 @@ class FormFlow {
 	}
 
 	/**
-	 * @param SessionInterface $session
+	 * @param StorageInterface $storage
 	 */
-	public function setSession(SessionInterface $session) {
-		$this->session = $session;
+	public function setStorage(StorageInterface $storage) {
+		$this->storage = $storage;
 	}
 
 	/**
@@ -154,8 +155,8 @@ class FormFlow {
 		if (empty($this->formTransitionKey)) {
 			$this->formTransitionKey = $this->id. '_transition';
 		}
-		if (empty($this->sessionDataKey)) {
-			$this->sessionDataKey = $this->id. '_data';
+		if (empty($this->stepDataKey)) {
+			$this->stepDataKey = $this->id. '_data';
 		}
 	}
 
@@ -183,12 +184,12 @@ class FormFlow {
 		return $this->formTransitionKey;
 	}
 
-	public function setSessionDataKey($sessionDataKey) {
-		$this->sessionDataKey = $sessionDataKey;
+	public function setStepDataKey($stepDataKey) {
+		$this->stepDataKey = $stepDataKey;
 	}
 
-	public function getSessionDataKey() {
-		return $this->sessionDataKey;
+	public function getStepDataKey() {
+		return $this->stepDataKey;
 	}
 
 	public function setValidationGroupPrefix($validationGroupPrefix) {
@@ -290,7 +291,7 @@ class FormFlow {
 	}
 
 	public function reset() {
-		$this->session->remove($this->sessionDataKey);
+		$this->storage->remove($this->stepDataKey);
 		$this->currentStep = $this->getFirstStep();
 	}
 
@@ -319,7 +320,7 @@ class FormFlow {
 			return true;
 		}
 
-		return array_key_exists($step, $this->getSessionData());
+		return array_key_exists($step, $this->retrieveStepData());
 	}
 
 	public function getRequestedTransition() {
@@ -396,11 +397,11 @@ class FormFlow {
 	}
 
 	public function saveCurrentStepData() {
-		$sessionData = $this->getSessionData();
+		$stepData = $this->retrieveStepData();
 
-		$sessionData[$this->currentStep] = $this->request->request->get($this->formType->getName(), array());
+		$stepData[$this->currentStep] = $this->request->request->get($this->formType->getName(), array());
 
-		$this->setSessionData($sessionData);
+		$this->saveStepData($stepData);
 	}
 
 	/**
@@ -408,13 +409,13 @@ class FormFlow {
 	 * @param int $fromStep
 	 */
 	public function invalidateStepData($fromStep) {
-		$sessionData = $this->getSessionData();
+		$stepData = $this->retrieveStepData();
 
 		for ($step = $fromStep; $step < $this->maxSteps; ++$step) {
-			unset($sessionData[$step]);
+			unset($stepData[$step]);
 		}
 
-		$this->setSessionData($sessionData);
+		$this->saveStepData($stepData);
 	}
 
 	/**
@@ -423,7 +424,7 @@ class FormFlow {
 	 * @param array $formOptions
 	 */
 	public function applyDataFromSavedSteps($formData, array $formOptions = array()) {
-		$sessionData = $this->getSessionData();
+		$stepData = $this->retrieveStepData();
 
 		/*
 		 * Iteration $step === $this->currentStep is only needed to fill out the form when using the "back" button.
@@ -432,8 +433,8 @@ class FormFlow {
 			if ($this->isStepDone($step)) {
 				$options = $this->getFormOptions($formData, $step, $formOptions);
 				$stepForm = $this->formFactory->create($this->formType, $formData, $options);
-				if (array_key_exists($step, $sessionData)) {
-					$stepForm->bind($sessionData[$step]);
+				if (array_key_exists($step, $stepData)) {
+					$stepForm->bind($stepData[$step]);
 
 					$event = new PostBindSavedDataEvent($formData, $step);
 					$this->eventDispatcher->dispatch(FormFlowEvents::POST_BIND_SAVED_DATA, $event);
@@ -509,12 +510,13 @@ class FormFlow {
 		return array();
 	}
 
-	protected function getSessionData() {
-		return $this->session->get($this->sessionDataKey, array());
+	protected function retrieveStepData()
+	{
+		return $this->storage->get($this->stepDataKey, array());
 	}
 
-	protected function setSessionData(array $sessionData) {
-		$this->session->set($this->sessionDataKey, $sessionData);
+	protected function saveStepData($data)
+	{
+		$this->storage->set($this->stepDataKey, $data);
 	}
-
 }
