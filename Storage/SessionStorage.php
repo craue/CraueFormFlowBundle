@@ -23,9 +23,9 @@ class SessionStorage implements StorageInterface
 		$this->session->set($key, $value);
 	}
 
-	public function get($key)
+	public function get($key, $default)
 	{
-		return $this->session->get($key);
+		return $this->session->get($key, $default);
 	}
 
 	public function remove($key)

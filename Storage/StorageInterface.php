@@ -21,10 +21,11 @@ interface StorageInterface
 	 * Retrieve the data stored under the given key.
 	 *
 	 * @param string $key
+     * @param mixed $default
 	 *
 	 * @return mixed
 	 */
-	function get($key);
+	function get($key, $default = null);
 
 	/**
 	 * Delete the stored data of the given key.
