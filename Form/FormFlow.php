@@ -184,6 +184,14 @@ class FormFlow {
 		return $this->formTransitionKey;
 	}
 
+	public function setStepDataKey($stepDataKey) {
+		$this->stepDataKey = $stepDataKey;
+	}
+
+	public function getStepDataKey() {
+		return $this->stepDataKey;
+	}
+
 	public function setValidationGroupPrefix($validationGroupPrefix) {
 		$this->validationGroupPrefix = $validationGroupPrefix;
 	}
@@ -494,33 +502,15 @@ class FormFlow {
 		return false;
 	}
 
-	public function setStepDataKey($stepDataKey) {
-		$this->stepDataKey = $stepDataKey;
-	}
-
-	public function getStepDataKey() {
-		return $this->stepDataKey;
-	}
-
 	/**
-	 * @deprecated In favor of setStepDataKey.
-	 *
-	 * @param $sessionDataKey $string
+	 * Defines a description for each step used to render the step list.
+	 * @return string[] Value with index 0 is description for step 1.
 	 */
-	public function setSessionDataKey($sessionDataKey) {
-		$this->setStepDataKey($sessionDataKey);
+	protected function loadStepDescriptions() {
+		return array();
 	}
 
-	/**
-	 * @deprecated In favor of getStepDataKey.
-	 *
-	 * @return string
-	 */
-	public function getSessionDataKey() {
-		return $this->getStepDataKey();
-	}
-
-	public function retrieveStepData()
+	protected function retrieveStepData()
 	{
 		return $this->storage->get($this->stepDataKey, array());
 	}
@@ -528,13 +518,5 @@ class FormFlow {
 	protected function saveStepData($data)
 	{
 		$this->storage->set($this->stepDataKey, $data);
-	}
-
-	/**
-	 * Defines a description for each step used to render the step list.
-	 * @return string[] Value with index 0 is description for step 1.
-	 */
-	protected function loadStepDescriptions() {
-		return array();
 	}
 }
