@@ -421,9 +421,9 @@ class FormFlow {
 	/**
 	 * Updates form data class with form data from previously saved steps.
 	 * @param mixed $formData
-	 * @param array $formOptions
+	 * @param array $options
 	 */
-	public function applyDataFromSavedSteps($formData, array $formOptions = array()) {
+	public function applyDataFromSavedSteps($formData, array $options = array()) {
 		$stepData = $this->retrieveStepData();
 
 		/*
@@ -431,9 +431,8 @@ class FormFlow {
 		 */
 		for ($step = 1; $step <= $this->maxSteps; ++$step) {
 			if ($this->isStepDone($step)) {
-				$options = $this->getFormOptions($formData, $step, $formOptions);
-				$stepForm = $this->formFactory->create($this->formType, $formData, $options);
 				if (array_key_exists($step, $stepData)) {
+					$stepForm = $this->createFormForStep($formData, $step, $options);
 					$stepForm->bind($stepData[$step]);
 
 					$event = new PostBindSavedDataEvent($formData, $step);
@@ -443,16 +442,14 @@ class FormFlow {
 		}
 	}
 
+	/**
+	 * Creates the form for the current step.
+	 * @param mixed $formData
+	 * @param array $options
+	 * @return FormInterface
+	 */
 	public function createForm($formData, array $options = array()) {
-		if (!$this->formType instanceof FormTypeInterface) {
-			throw new \RuntimeException(sprintf('The form type has to be an instance of type "%s", but "%s" given.',
-					'Symfony\Component\Form\FormTypeInterface',
-					is_object($this->formType) ? get_class($this->formType) : gettype($this->formType)
-			));
-		}
-
-		return $this->formFactory->create($this->formType, $formData,
-				$this->getFormOptions($formData, $this->currentStep, $options));
+		return $this->createFormForStep($formData, $this->currentStep, $options);
 	}
 
 	public function getFormOptions($formData, $step, array $options = array()) {
@@ -500,6 +497,26 @@ class FormFlow {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Creates the form for the given step.
+	 * @param mixed $formData
+	 * @param int $step
+	 * @param array $options
+	 * @return FormInterface
+	 */
+	protected function createFormForStep($formData, $step, array $options = array()) {
+		if (!$this->formType instanceof FormTypeInterface) {
+			throw new \RuntimeException(sprintf('The form type has to be an instance of type "%s", but "%s" given.',
+					'Symfony\Component\Form\FormTypeInterface',
+					is_object($this->formType) ? get_class($this->formType) : gettype($this->formType)
+			));
+		}
+
+		$options = $this->getFormOptions($formData, $step, $options);
+
+		return $this->formFactory->create($this->formType, $formData, $options);
 	}
 
 	/**
