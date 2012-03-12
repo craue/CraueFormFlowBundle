@@ -23,7 +23,7 @@ class SessionStorage implements StorageInterface
 		$this->session->set($key, $value);
 	}
 
-	public function get($key, $default)
+	public function get($key, $default = null)
 	{
 		return $this->session->get($key, $default);
 	}

@@ -21,7 +21,7 @@ interface StorageInterface
 	 * Retrieve the data stored under the given key.
 	 *
 	 * @param string $key
-     * @param mixed $default
+	 * @param mixed $default
 	 *
 	 * @return mixed
 	 */
