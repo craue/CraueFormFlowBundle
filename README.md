@@ -214,24 +214,22 @@ public function registerUserAction() {
 	$flow = $this->get('myCompany.form.flow.registerUser'); // must match the flow's service id
 	$flow->bind($user);
 
+	// form of the current step
 	$form = $flow->createForm($user);
 	if ($flow->isValid($form)) {
 		$flow->saveCurrentStepData();
 
 		if ($flow->nextStep()) {
-			// render form for next step
-			return array(
-				'form' => $flow->createForm($user)->createView(),
-				'flow' => $flow,
-			);
+			// form for the next step
+			$form = $flow->createForm($user);
+		} else {
+			// flow finished
+			$em = $this->getDoctrine()->getEntityManager();
+			$em->persist($user);
+			$em->flush();
+
+			return $this->redirect($this->generateUrl('home')); // redirect when done
 		}
-
-		// flow finished
-		$em = $this->getDoctrine()->getEntityManager();
-		$em->persist($user);
-		$em->flush();
-
-		return $this->redirect($this->generateUrl('home')); // redirect when done
 	}
 
 	return array(
