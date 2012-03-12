@@ -510,13 +510,12 @@ class FormFlow {
 		return array();
 	}
 
-	protected function retrieveStepData()
-	{
+	protected function retrieveStepData() {
 		return $this->storage->get($this->stepDataKey, array());
 	}
 
-	protected function saveStepData($data)
-	{
+	protected function saveStepData($data) {
 		$this->storage->set($this->stepDataKey, $data);
 	}
+
 }

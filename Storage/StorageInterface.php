@@ -7,11 +7,10 @@ namespace Craue\FormFlowBundle\Storage;
  * @copyright 2011-2012 Christian Raue
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
-interface StorageInterface
-{
+interface StorageInterface {
+
 	/**
-	 * Store the given value under the provided key.
-	 *
+	 * Store the given value under the given key.
 	 * @param string $key
 	 * @param mixed $value
 	 */
@@ -19,18 +18,16 @@ interface StorageInterface
 
 	/**
 	 * Retrieve the data stored under the given key.
-	 *
 	 * @param string $key
 	 * @param mixed $default
-	 *
 	 * @return mixed
 	 */
 	function get($key, $default = null);
 
 	/**
 	 * Delete the stored data of the given key.
-	 *
 	 * @param string $key
 	 */
 	function remove($key);
+
 }
