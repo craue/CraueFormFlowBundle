@@ -199,7 +199,6 @@ So place this in your base template:
 {% endstylesheets %}
 ```
 
-
 ## Create an action
 
 ```php
