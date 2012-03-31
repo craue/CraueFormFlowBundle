@@ -76,12 +76,12 @@ class FormFlow {
 	protected $validationGroupPrefix;
 
 	/**
-	 * @var int
+	 * @var integer
 	 */
 	protected $maxSteps;
 
 	/**
-	 * @var int
+	 * @var integer
 	 */
 	protected $currentStep;
 
@@ -96,7 +96,7 @@ class FormFlow {
 	protected $stepDescriptions = null;
 
 	/**
-	 * @var int[]
+	 * @var integer[]
 	 */
 	protected $skipSteps = array();
 
@@ -237,7 +237,7 @@ class FormFlow {
 	}
 
 	/**
-	 * @param int|int[] $steps
+	 * @param integer|integer[] $steps
 	 */
 	public function addSkipStep($steps) {
 		if (is_scalar($steps)) {
@@ -252,7 +252,7 @@ class FormFlow {
 	}
 
 	/**
-	 * @param int|int[] $steps
+	 * @param integer|integer[] $steps
 	 */
 	public function removeSkipStep($steps) {
 		if (is_scalar($steps)) {
@@ -273,9 +273,9 @@ class FormFlow {
 	}
 
 	/**
-	 * @param int $step Assumed step to which skipped steps shall be applied to.
-	 * @param int $direction Either 1 (to skip forwards) or -1 (to skip backwards).
-	 * @return int Target step with skipping applied.
+	 * @param integer $step Assumed step to which skipped steps shall be applied to.
+	 * @param integer $direction Either 1 (to skip forwards) or -1 (to skip backwards).
+	 * @return integer Target step with skipping applied.
 	 */
 	public function applySkipping($step, $direction = 1) {
 		if ($direction !== 1 && $direction !== -1) {
@@ -296,14 +296,14 @@ class FormFlow {
 	}
 
 	/**
-	 * @return int First visible step, which may be greater than 1 if steps are skipped.
+	 * @return integer First visible step, which may be greater than 1 if steps are skipped.
 	 */
 	public function getFirstStep() {
 		return $this->applySkipping(1);
 	}
 
 	/**
-	 * @return int Last visible step, which may be less than $this->maxSteps if steps are skipped.
+	 * @return integer Last visible step, which may be less than $this->maxSteps if steps are skipped.
 	 */
 	public function getLastStep() {
 		return $this->applySkipping($this->maxSteps, -1);
@@ -406,7 +406,7 @@ class FormFlow {
 
 	/**
 	 * Invalidates data for steps >= $fromStep.
-	 * @param int $fromStep
+	 * @param integer $fromStep
 	 */
 	public function invalidateStepData($fromStep) {
 		$stepData = $this->retrieveStepData();
@@ -505,7 +505,7 @@ class FormFlow {
 	/**
 	 * Creates the form for the given step.
 	 * @param mixed $formData
-	 * @param int $step
+	 * @param integer $step
 	 * @param array $options
 	 * @return FormInterface
 	 */

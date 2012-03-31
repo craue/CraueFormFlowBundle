@@ -36,7 +36,7 @@ class FormFlowExtension extends \Twig_Extension {
 	 * Adds the parameter for dynamic step navigation.
 	 * @param array $parameters Current route parameters.
 	 * @param FormFlow $flow The flow involved.
-	 * @param int $step The step the navigation link will be generated for.
+	 * @param integer $step The step the navigation link will be generated for.
 	 * @return array Route parameters plus the step parameter.
 	 */
 	public function addDynamicStepNavigationParameter(array $parameters, FormFlow $flow, $step) {
