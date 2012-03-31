@@ -454,7 +454,10 @@ class FormFlow {
 
 	public function getFormOptions($formData, $step, array $options = array()) {
 		$options['flowStep'] = $step;
-		$options['validation_groups'] = $this->validationGroupPrefix . $step;
+
+		if (!array_key_exists('validation_groups', $options)) {
+			$options['validation_groups'] = $this->validationGroupPrefix . $step;
+		}
 
 		return $options;
 	}
