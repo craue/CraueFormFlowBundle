@@ -25,6 +25,13 @@ interface StorageInterface {
 	function get($key, $default = null);
 
 	/**
+	 * Checks if data is stored for the given key.
+	 * @param string $key
+	 * @return boolean
+	 */
+	function has($key);
+
+	/**
 	 * Delete the stored data of the given key.
 	 * @param string $key
 	 */

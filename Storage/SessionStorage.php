@@ -25,6 +25,10 @@ class SessionStorage implements StorageInterface {
 		return $this->session->get($key, $default);
 	}
 
+	public function has($key) {
+		return $this->session->has($key);
+	}
+
 	public function remove($key) {
 		return $this->session->remove($key);
 	}
