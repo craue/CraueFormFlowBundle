@@ -126,13 +126,11 @@ class RegisterUserFormType extends AbstractType {
 		}
 	}
 
-	public function getDefaultOptions(array $options) {
-		$options = parent::getDefaultOptions($options);
-
-		$options['flowStep'] = 1;
-		$options['data_class'] = 'MyCompany\MyBundle\Entity\MyUser'; // should point to your user entity
-
-		return $options;
+	public function getDefaultOptions() {
+		return array(
+			'flowStep' => 1,
+			'data_class' => 'MyCompany\MyBundle\Entity\MyUser', // should point to your user entity
+		);
 	}
 
 	public function getName() {
@@ -257,13 +255,11 @@ Before you can use the options you have to define them in your form type class:
 ```php
 <?php
 // in src/MyCompany/MyBundle/Form/RegisterUserFormType.php
-public function getDefaultOptions(array $options) {
-	$options = parent::getDefaultOptions($options);
-
-	// ...
-	$options['givenUsername'] = null;
-
-	return $options;
+public function getDefaultOptions() {
+	return array(
+		// ...
+		'givenUsername' => null,
+	);
 }
 ```
 
