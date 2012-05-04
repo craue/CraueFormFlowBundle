@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\Event;
 class PostBindSavedDataEvent extends Event {
 
 	/**
-	 * @var array
+	 * @var mixed
 	 */
 	private $formData;
 
@@ -24,7 +24,7 @@ class PostBindSavedDataEvent extends Event {
 	private $step;
 
 	/**
-	 * @param array $formData
+	 * @param mixed $formData
 	 * @param integer $step
 	 */
 	public function __construct($formData, $step) {
@@ -33,7 +33,7 @@ class PostBindSavedDataEvent extends Event {
 	}
 
 	/**
-	 * @return array
+	 * @return mixed
 	 */
 	public function getFormData() {
 		return $this->formData;

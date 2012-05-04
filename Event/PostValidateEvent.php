@@ -14,19 +14,19 @@ use Symfony\Component\EventDispatcher\Event;
 class PostValidateEvent extends Event {
 
 	/**
-	 * @var array
+	 * @var mixed
 	 */
 	private $formData;
 
 	/**
-	 * @param array $formData
+	 * @param mixed $formData
 	 */
 	public function __construct($formData) {
 		$this->formData = $formData;
 	}
 
 	/**
-	 * @return array
+	 * @return mixed
 	 */
 	public function getFormData() {
 		return $this->formData;
