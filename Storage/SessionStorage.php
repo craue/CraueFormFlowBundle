@@ -2,7 +2,7 @@
 
 namespace Craue\FormFlowBundle\Storage;
 
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Session;
 
 /**
  * @author Toni Uebernickel <tuebernickel@gmail.com>
@@ -13,7 +13,7 @@ class SessionStorage implements StorageInterface {
 
 	protected $session;
 
-	public function __construct(SessionInterface $session) {
+	public function __construct(Session $session) {
 		$this->session = $session;
 	}
 
