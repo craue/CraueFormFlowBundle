@@ -482,7 +482,7 @@ class FormFlow {
 	}
 
 	public function isValid(FormInterface $form) {
-		if ($this->request->isMethod('POST') && !in_array($this->getRequestedTransition(), array(
+		if ('POST' == $this->request->getMethod() && !in_array($this->getRequestedTransition(), array(
 			self::TRANSITION_BACK,
 			self::TRANSITION_RESET,
 		))) {
