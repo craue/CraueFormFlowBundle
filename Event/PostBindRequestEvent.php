@@ -2,32 +2,35 @@
 
 namespace Craue\FormFlowBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Craue\FormFlowBundle\Form\FormFlow;
 
 /**
  * Is called once for the current step after binding the request.
  *
  * @author Marcus Stöhr <dafish@soundtrack-board.de>
+ * @author Christian Raue <christian.raue@gmail.com>
  * @copyright 2011-2012 Christian Raue
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class PostBindRequestEvent extends Event {
+class PostBindRequestEvent extends FormFlowEvent {
 
 	/**
 	 * @var mixed
 	 */
-	private $formData;
+	protected $formData;
 
 	/**
 	 * @var integer
 	 */
-	private $step;
+	protected $step;
 
 	/**
+	 * @param FormFlow $flow
 	 * @param mixed $formData
 	 * @param integer $step
 	 */
-	public function __construct($formData, $step) {
+	public function __construct(FormFlow $flow, $formData, $step) {
+		$this->flow = $flow;
 		$this->formData = $formData;
 		$this->step = $step;
 	}
