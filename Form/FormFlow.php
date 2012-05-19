@@ -467,6 +467,13 @@ class FormFlow {
 			$this->stepDescriptions = $this->loadStepDescriptions();
 		}
 
+		$stepDescriptionsCount = count($this->stepDescriptions);
+		if ($stepDescriptionsCount > 0 && $stepDescriptionsCount !== $this->maxSteps) {
+			throw new \RuntimeException(sprintf('The number of steps (%u) doesn\'t match the number of step descriptions (%u). Either update the descriptions or remove them.',
+					$this->maxSteps, $stepDescriptionsCount
+			));
+		}
+
 		return $this->stepDescriptions;
 	}
 

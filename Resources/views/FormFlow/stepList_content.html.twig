@@ -1,6 +1,6 @@
 {% use 'CraueFormFlowBundle:FormFlow:stepList_blocks.html.twig' %}
 
-{%- if flow.getStepDescriptions() | length == flow.getMaxSteps() -%}
+{%- if flow.getStepDescriptions() is not empty -%}
 	<ol class="craue_formflow_steplist">
 		{% for stepDescription in flow.getStepDescriptions() %}
 			<li{{ block('craue_flow_stepList_class') }}>
