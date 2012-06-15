@@ -105,11 +105,12 @@ An option called `flowStep` is passed to the form type so it can build the form 
 <?php
 // src/MyCompany/MyBundle/Form/RegisterUserFormType.php
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class RegisterUserFormType extends AbstractType {
 
-	public function buildForm(FormBuilder $builder, array $options) {
+	public function buildForm(FormBuilderInterface $builder, array $options) {
 		switch ($options['flowStep']) {
 			case 1:
 				$builder->add('username');
@@ -126,11 +127,11 @@ class RegisterUserFormType extends AbstractType {
 		}
 	}
 
-	public function getDefaultOptions() {
-		return array(
+	public function setDefaultOptions(OptionsResolverInterface $resolver) {
+		$resolver->setDefaults(array(
 			'flowStep' => 1,
 			'data_class' => 'MyCompany\MyBundle\Entity\MyUser', // should point to your user entity
-		);
+		));
 	}
 
 	public function getName() {
@@ -255,11 +256,11 @@ Before you can use the options you have to define them in your form type class:
 ```php
 <?php
 // in src/MyCompany/MyBundle/Form/RegisterUserFormType.php
-public function getDefaultOptions() {
-	return array(
+public function setDefaultOptions(OptionsResolverInterface $resolver) {
+	$resolver->setDefaults(array(
 		// ...
 		'givenUsername' => null,
-	);
+	));
 }
 ```
 
