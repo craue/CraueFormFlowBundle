@@ -493,7 +493,7 @@ class FormFlow {
 			self::TRANSITION_BACK,
 			self::TRANSITION_RESET,
 		))) {
-			$form->bindRequest($this->request);
+			$form->bind($this->request);
 
 			$event = new PostBindRequestEvent($this, $form->getData(), $this->currentStep);
 			$this->eventDispatcher->dispatch(FormFlowEvents::POST_BIND_REQUEST, $event);
