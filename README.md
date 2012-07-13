@@ -19,24 +19,27 @@ This bundle should be used in conjunction with Symfony2.
 
 Please use tag 1.0.0 of this bundle if you need Symfony 2.0.x compatibility.
 
-## Add the bundle to your vendor directory
+## Get the bundle
 
-Either by using a Git submodule:
+Let Composer download and install the bundle by first adding it to your composer.json
+
+```json
+{
+	"require": {
+		"craue/formflow-bundle": "dev-master"
+	}
+}
+```
+
+and then running
 
 ```sh
-# in a shell
-git submodule add https://github.com/craue/CraueFormFlowBundle.git vendor/bundles/Craue/FormFlowBundle
+php composer.phar update craue/formflow-bundle
 ```
 
-Or by using the `deps` file:
+in a shell.
 
-```ini
-[CraueFormFlowBundle]
-git=https://github.com/craue/CraueFormFlowBundle.git
-target=bundles/Craue/FormFlowBundle
-```
-
-## Add the bundle to your application kernel
+## Enable the bundle
 
 ```php
 <?php
@@ -48,17 +51,6 @@ public function registerBundles() {
 	);
 	// ...
 }
-```
-
-## Register the Craue namespace
-
-```php
-<?php
-// in app/autoload.php
-$loader->registerNamespaces(array(
-	// ...
-	'Craue' => __DIR__.'/../vendor/bundles',
-));
 ```
 
 # Usage
