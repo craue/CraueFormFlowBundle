@@ -373,8 +373,10 @@ class FormFlow {
 			return;
 		}
 
-		$event = new PreBindEvent($this);
-		$this->eventDispatcher->dispatch(FormFlowEvents::PRE_BIND, $event);
+		if ($this->eventDispatcher->hasListeners(FormFlowEvents::PRE_BIND)) {
+			$event = new PreBindEvent($this);
+			$this->eventDispatcher->dispatch(FormFlowEvents::PRE_BIND, $event);
+		}
 
 		$requestedStep = $this->determineCurrentStep();
 
@@ -435,8 +437,10 @@ class FormFlow {
 					$stepForm = $this->createFormForStep($formData, $step, $options);
 					$stepForm->bind($stepData[$step]);
 
-					$event = new PostBindSavedDataEvent($this, $formData, $step);
-					$this->eventDispatcher->dispatch(FormFlowEvents::POST_BIND_SAVED_DATA, $event);
+					if ($this->eventDispatcher->hasListeners(FormFlowEvents::POST_BIND_SAVED_DATA)) {
+						$event = new PostBindSavedDataEvent($this, $formData, $step);
+						$this->eventDispatcher->dispatch(FormFlowEvents::POST_BIND_SAVED_DATA, $event);
+					}
 				}
 			}
 		}
@@ -495,12 +499,16 @@ class FormFlow {
 		))) {
 			$form->bind($this->request);
 
-			$event = new PostBindRequestEvent($this, $form->getData(), $this->currentStep);
-			$this->eventDispatcher->dispatch(FormFlowEvents::POST_BIND_REQUEST, $event);
+			if ($this->eventDispatcher->hasListeners(FormFlowEvents::POST_BIND_REQUEST)) {
+				$event = new PostBindRequestEvent($this, $form->getData(), $this->currentStep);
+				$this->eventDispatcher->dispatch(FormFlowEvents::POST_BIND_REQUEST, $event);
+			}
 
 			if ($form->isValid()) {
-				$event = new PostValidateEvent($this, $form->getData());
-				$this->eventDispatcher->dispatch(FormFlowEvents::POST_VALIDATE, $event);
+				if ($this->eventDispatcher->hasListeners(FormFlowEvents::POST_VALIDATE)) {
+					$event = new PostValidateEvent($this, $form->getData());
+					$this->eventDispatcher->dispatch(FormFlowEvents::POST_VALIDATE, $event);
+				}
 
 				return true;
 			}
