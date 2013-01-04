@@ -42,7 +42,6 @@ in a shell.
 ## Enable the bundle
 
 ```php
-<?php
 // in app/AppKernel.php
 public function registerBundles() {
 	$bundles = array(
@@ -60,7 +59,6 @@ This section shows how to create a 3-step form flow for user registration.
 ## Create a flow class
 
 ```php
-<?php
 // src/MyCompany/MyBundle/Form/RegisterUserFlow.php
 use Craue\FormFlowBundle\Form\FormFlow;
 
@@ -75,7 +73,6 @@ If you'd like to render an overview of all steps you have to implement a `loadSt
 array of descriptions where the value with index 0 will be the description for step 1:
 
 ```php
-<?php
 // in src/MyCompany/MyBundle/Form/RegisterUserFlow.php
 protected function loadStepDescriptions() {
 	return array(
@@ -94,7 +91,6 @@ You only have to create one form type class for a flow.
 An option called `flowStep` is passed to the form type so it can build the form according to the step to render.
 
 ```php
-<?php
 // src/MyCompany/MyBundle/Form/RegisterUserFormType.php
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -195,7 +191,6 @@ So place this in your base template:
 ## Create an action
 
 ```php
-<?php
 // in src/MyCompany/MyBundle/Controller/UserController.php
 /**
  * @Template
@@ -246,7 +241,6 @@ method of your flow class.
 Before you can use the options you have to define them in your form type class:
 
 ```php
-<?php
 // in src/MyCompany/MyBundle/Form/RegisterUserFormType.php
 public function setDefaultOptions(OptionsResolverInterface $resolver) {
 	$resolver->setDefaults(array(
@@ -261,7 +255,6 @@ It's important that an option needed for one step is also available for all subs
 here.
 
 ```php
-<?php
 // in src/MyCompany/MyBundle/Form/RegisterUserFlow.php
 public function getFormOptions($formData, $step, array $options = array()) {
 	$options = parent::getFormOptions($formData, $step, $options);
@@ -281,7 +274,6 @@ Dynamic step navigation means that the step list rendered will contain links to 
 To enable it you could extend the flow class mentioned in the example above as follows:
 
 ```php
-<?php
 // in src/MyCompany/MyBundle/Form/RegisterUserFlow.php
 class RegisterUserFlow extends FormFlow {
 
@@ -295,7 +287,6 @@ class RegisterUserFlow extends FormFlow {
 To force clearing of saved step data when finishing the flow you should call `$flow->reset()` in the action:
 
 ```php
-<?php
 // in src/MyCompany/MyBundle/Controller/UserController.php
 public function registerUserAction() {
 	// ...
@@ -321,7 +312,6 @@ you should modify the opening form tag in the form template like this:
 There are some events which you can subscribe to. Using all of them right inside your flow class could look like this:
 
 ```php
-<?php
 // in src/MyCompany/MyBundle/Form/RegisterUserFlow.php
 use Craue\FormFlowBundle\Event\PostBindRequestEvent;
 use Craue\FormFlowBundle\Event\PostBindSavedDataEvent;
