@@ -313,6 +313,7 @@ There are some events which you can subscribe to. Using all of them right inside
 
 ```php
 // in src/MyCompany/MyBundle/Form/RegisterUserFlow.php
+use Craue\FormFlowBundle\Form\FormFlowEvents;
 use Craue\FormFlowBundle\Event\PostBindRequestEvent;
 use Craue\FormFlowBundle\Event\PostBindSavedDataEvent;
 use Craue\FormFlowBundle\Event\PostValidateEvent;
