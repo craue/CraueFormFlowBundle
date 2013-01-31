@@ -299,6 +299,21 @@ public function registerUserAction() {
 }
 ```
 
+To ensure starting a flow with clean data, it would be a good idea to add a separate action as an entry point which
+just resets the flow and redirects to the usual action:
+
+```php
+// in src/MyCompany/MyBundle/Controller/UserController.php
+public function registerUserStartAction() {
+	// ...
+
+	$flow = $this->get('myCompany.form.flow.registerUser');
+	$flow->reset();
+
+	return $this->redirect($this->generateUrl('...')); // route name for registerUserAction
+}
+```
+
 Furthermore, if you'd like to remove the step parameter (added by using such a direct link) when submitting the form
 you should modify the opening form tag in the form template like this:
 
