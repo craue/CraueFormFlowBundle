@@ -140,6 +140,36 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 		$this->assertJsonResponse('{"numberOfWheels":2,"engine":null}');
 	}
 
+	public function testCreateVehicle_reload() {
+		$crawler = $this->client->request('GET', $this->url('_FormFlow_createVehicle'));
+
+		// 2 wheels -> step 3
+		$form = $crawler->selectButton('next')->form();
+		$crawler = $this->client->submit($form, array(
+			'createVehicle[numberOfWheels]' => 2,
+		));
+		$this->assertCurrentStepNumber(3, $crawler);
+
+		// reload -> step 3 again
+		$this->client->reload();
+		$this->assertCurrentStepNumber(3, $crawler);
+	}
+
+	public function testCreateVehicle_resetFlowOnGetRequest() {
+		$crawler = $this->client->request('GET', $this->url('_FormFlow_createVehicle'));
+
+		// 2 wheels -> step 3
+		$form = $crawler->selectButton('next')->form();
+		$crawler = $this->client->submit($form, array(
+			'createVehicle[numberOfWheels]' => 2,
+		));
+
+		// GET request -> step 1 with clean data
+		$crawler = $this->client->request('GET', $this->url('_FormFlow_createVehicle'));
+		$this->assertCurrentStepNumber(1, $crawler);
+		$this->assertCurrentFormData('{"numberOfWheels":null,"engine":null}', $crawler);
+	}
+
 	public function testCreateVehicle_tamperWithHiddenField() {
 		$crawler = $this->client->request('GET', $this->url('_FormFlow_createVehicle'));
 

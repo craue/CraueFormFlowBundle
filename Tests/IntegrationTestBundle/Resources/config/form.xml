@@ -9,14 +9,14 @@
 	xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
 	<services>
+		<service id="integrationTestBundle.form.createTopic"
+				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\CreateTopicForm">
+			<tag name="form.type" alias="createTopic" />
+		</service>
+
 		<service id="integrationTestBundle.form.createVehicle"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\CreateVehicleForm">
 			<tag name="form.type" alias="createVehicle" />
-		</service>
-
-		<service id="integrationTestBundle.form.type.vehicleEngine"
-				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\Type\VehicleEngineType">
-			<tag name="form.type" alias="form_type_vehicleEngine" />
 		</service>
 	</services>
 

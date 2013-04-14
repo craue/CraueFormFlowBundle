@@ -2,6 +2,7 @@
 
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form;
 
+use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Topic;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -11,30 +12,35 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * @copyright 2011-2013 Christian Raue
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class CreateVehicleForm extends AbstractType {
+class CreateTopicForm extends AbstractType {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options) {
+		$isBugReport = $options['isBugReport'];
+
 		switch ($options['flowStep']) {
 			case 1:
-				$choices = array(2, 4);
-				$builder->add('numberOfWheels', 'choice', array(
+				$builder->add('title');
+				$builder->add('description', null, array(
+					'required' => false,
+				));
+				$choices = Topic::getValidCategories();
+				$builder->add('category', 'choice', array(
 					'choices' => array_combine($choices, $choices),
 					'empty_value' => '',
 				));
 				break;
 			case 2:
-				$choices = array(
-					'electric',
-					'gas',
-					'naturalGas',
-				);
-				$builder->add('engine', 'choice', array(
-					'choices' => array_combine($choices, $choices),
-					'empty_value' => '',
+				$builder->add('comment', 'textarea', array(
+					'required' => false,
 				));
+				break;
+			case 3:
+				if ($isBugReport) {
+					$builder->add('details', 'textarea');
+				}
 				break;
 		}
 	}
@@ -44,7 +50,9 @@ class CreateVehicleForm extends AbstractType {
 	 */
 	public function setDefaultOptions(OptionsResolverInterface $resolver) {
 		$resolver->setDefaults(array(
-			'flowStep' => null,
+			'flowStep' => 1,
+			'data' => new Topic(),
+			'isBugReport' => false,
 		));
 	}
 
@@ -52,7 +60,7 @@ class CreateVehicleForm extends AbstractType {
 	 * {@inheritDoc}
 	 */
 	public function getName() {
-		return 'createVehicle';
+		return 'createTopic';
 	}
 
 }
