@@ -20,6 +20,13 @@
 		"symfony/framework-bundle": ">=2.1-dev,<2.3-dev",
 		"symfony/form": ">=2.1-dev,<2.3-dev"
 	},
+	"require-dev": {
+		"doctrine/common": "~2.3@stable",
+		"phpunit/phpunit": "~3.7.10@stable",
+		"sensio/framework-extra-bundle": ">=2.1-dev,<2.3-dev",
+		"symfony/symfony": ">=2.1-dev,<2.3-dev"
+	},
+	"minimum-stability": "stable",
 	"autoload": {
 		"psr-0": {
 			"Craue\\FormFlowBundle": ""
