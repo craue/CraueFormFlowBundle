@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1 (2013-04-14)
+
+* avoid skipping all steps by tampering with the hidden step field
+* added some basic tests
+
 ## 1.1.0 (2013-02-28)
 
 * adjustments to changes in the Form component for Symfony 2.1.*
