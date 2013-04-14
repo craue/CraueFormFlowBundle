@@ -380,10 +380,14 @@ class FormFlow {
 
 		$requestedStep = $this->determineCurrentStep();
 
-		// ensure that requested step fits the current progress
-		if ($requestedStep > 1 && !$this->isStepDone($requestedStep - 1)) {
-			$this->reset();
-			return;
+		// ensure that the requested step fits the current progress
+		if ($requestedStep > $this->getFirstStep()) {
+			for ($step = $this->getFirstStep(); $step < $requestedStep; ++$step) {
+				if (!$this->isStepDone($step)) {
+					$this->reset();
+					return;
+				}
+			}
 		}
 
 		$this->currentStep = $requestedStep;
