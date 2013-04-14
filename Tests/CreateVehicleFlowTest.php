@@ -140,4 +140,26 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 		$this->assertJsonResponse('{"numberOfWheels":2,"engine":null}');
 	}
 
+	public function testCreateVehicle_tamperWithHiddenField() {
+		$crawler = $this->client->request('GET', $this->url('_FormFlow_createVehicle'));
+
+		// no number of wheels -> step 1 again
+		$form = $crawler->selectButton('next')->form();
+		$crawler = $this->client->submit($form, array(
+			'flow_createVehicle_step' => '3',
+		));
+		$this->assertCurrentStepNumber(1, $crawler);
+		$this->assertContainsFormError('This value should not be blank.', $crawler);
+		$this->assertCurrentFormData('{"numberOfWheels":null,"engine":null}', $crawler);
+
+		// 4 wheels -> step 2
+		$form = $crawler->selectButton('next')->form();
+		$crawler = $this->client->submit($form, array(
+			'flow_createVehicle_step' => '3',
+			'createVehicle[numberOfWheels]' => 4,
+		));
+		$this->assertCurrentStepNumber(2, $crawler);
+		$this->assertCurrentFormData('{"numberOfWheels":4,"engine":null}', $crawler);
+	}
+
 }
