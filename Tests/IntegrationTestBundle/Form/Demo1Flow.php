@@ -36,8 +36,8 @@ class Demo1Flow extends FormFlow implements EventSubscriberInterface {
 	public static function getSubscribedEvents() {
 		return array(
 			FormFlowEvents::PRE_BIND => 'onPreBind',
-			FormFlowEvents::POST_BIND_REQUEST => 'onPostBindRequest',
 			FormFlowEvents::POST_BIND_SAVED_DATA => 'onPostBindSavedData',
+			FormFlowEvents::POST_BIND_REQUEST => 'onPostBindRequest',
 			FormFlowEvents::POST_VALIDATE => 'onPostValidate',
 		);
 	}
@@ -88,12 +88,12 @@ class Demo1Flow extends FormFlow implements EventSubscriberInterface {
 		$this->logEventCall('onPreBind');
 	}
 
-	public function onPostBindRequest(PostBindRequestEvent $event) {
-		$this->logEventCall('onPostBindRequest');
-	}
-
 	public function onPostBindSavedData(PostBindSavedDataEvent $event) {
 		$this->logEventCall('onPostBindSavedData #' . $event->getStep());
+	}
+
+	public function onPostBindRequest(PostBindRequestEvent $event) {
+		$this->logEventCall('onPostBindRequest');
 	}
 
 	public function onPostValidate(PostValidateEvent $event) {

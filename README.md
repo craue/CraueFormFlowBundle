@@ -346,8 +346,8 @@ class RegisterUserFlow extends FormFlow implements EventSubscriberInterface {
 	public static function getSubscribedEvents() {
 		return array(
 			FormFlowEvents::PRE_BIND => 'onPreBind',
-			FormFlowEvents::POST_BIND_REQUEST => 'onPostBindRequest',
 			FormFlowEvents::POST_BIND_SAVED_DATA => 'onPostBindSavedData',
+			FormFlowEvents::POST_BIND_REQUEST => 'onPostBindRequest',
 			FormFlowEvents::POST_VALIDATE => 'onPostValidate',
 		);
 	}
@@ -356,11 +356,11 @@ class RegisterUserFlow extends FormFlow implements EventSubscriberInterface {
 		// ...
 	}
 
-	public function onPostBindRequest(PostBindRequestEvent $event) {
+	public function onPostBindSavedData(PostBindSavedDataEvent $event) {
 		// ...
 	}
 
-	public function onPostBindSavedData(PostBindSavedDataEvent $event) {
+	public function onPostBindRequest(PostBindRequestEvent $event) {
 		// ...
 	}
 
