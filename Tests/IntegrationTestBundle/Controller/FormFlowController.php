@@ -43,6 +43,14 @@ class FormFlowController extends Controller {
 		return $this->processFlow(new Vehicle(), $this->get('integrationTestBundle.form.flow.createVehicle'));
 	}
 
+	/**
+	 * @Route("/demo1/", name="_FormFlow_demo1")
+	 * @Template("IntegrationTestBundle:FormFlow:demo1.html.twig")
+	 */
+	public function demo1Action() {
+		return $this->processFlow((object) array(), $this->get('integrationTestBundle.form.flow.demo1'));
+	}
+
 	protected function processFlow($formData, FormFlow $flow) {
 		$flow->bind($formData);
 

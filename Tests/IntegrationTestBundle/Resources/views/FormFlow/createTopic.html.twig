@@ -1,13 +1,5 @@
-{% extends 'IntegrationTestBundle::layout.html.twig' %}
+{% extends 'IntegrationTestBundle::layout_flow.html.twig' %}
 
-{% block content %}
-<div id="step-number">{{ flow.getCurrentStep() }}</div>
-<div id="form-data">{{ formData | json_encode }}</div>
+{% block stepList %}
 <div id="step-list">{% include 'CraueFormFlowBundle:FormFlow:stepList.html.twig' %}</div>
-<form method="post" action="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" {{ form_enctype(form) }}>
-	{% include 'CraueFormFlowBundle:FormFlow:stepField.html.twig' %}
-	{{ form_errors(form) }}
-	{{ form_rest(form) }}
-	{% include 'CraueFormFlowBundle:FormFlow:buttons.html.twig' %}
-</form>
 {% endblock %}

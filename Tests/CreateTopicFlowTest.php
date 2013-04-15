@@ -3,7 +3,6 @@
 namespace Craue\FormFlowBundle\Tests\Flow;
 
 use Craue\FormFlowBundle\Tests\IntegrationTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
 
 /**
  * @group integration
