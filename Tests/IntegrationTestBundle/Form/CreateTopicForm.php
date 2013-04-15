@@ -50,8 +50,7 @@ class CreateTopicForm extends AbstractType {
 	 */
 	public function setDefaultOptions(OptionsResolverInterface $resolver) {
 		$resolver->setDefaults(array(
-			'flowStep' => 1,
-			'data' => new Topic(),
+			'flowStep' => null,
 			'isBugReport' => false,
 		));
 	}
