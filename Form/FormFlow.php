@@ -363,6 +363,11 @@ class FormFlow {
 	}
 
 	public function bind($formData) {
+		if ($this->eventDispatcher->hasListeners(FormFlowEvents::PRE_BIND)) {
+			$event = new PreBindEvent($this);
+			$this->eventDispatcher->dispatch(FormFlowEvents::PRE_BIND, $event);
+		}
+
 		if (!$this->allowDynamicStepNavigation && $this->request->isMethod('GET')) {
 			$this->reset();
 			return;
@@ -371,11 +376,6 @@ class FormFlow {
 		if ($this->getRequestedTransition() === self::TRANSITION_RESET) {
 			$this->reset();
 			return;
-		}
-
-		if ($this->eventDispatcher->hasListeners(FormFlowEvents::PRE_BIND)) {
-			$event = new PreBindEvent($this);
-			$this->eventDispatcher->dispatch(FormFlowEvents::PRE_BIND, $event);
 		}
 
 		$requestedStep = $this->determineCurrentStep();
