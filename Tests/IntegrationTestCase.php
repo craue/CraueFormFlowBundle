@@ -43,6 +43,20 @@ abstract class IntegrationTestCase extends WebTestCase {
 	}
 
 	/**
+	 * @param Crawler $crawler
+	 * @return string
+	 */
+	protected function getHtml(Crawler $crawler) {
+		$html = '';
+
+		foreach ($crawler as $domElement) {
+			$html .= $domElement->ownerDocument->saveHTML($domElement);
+		}
+
+		return $html;
+	}
+
+	/**
 	 * @param integer|string $expectedStepNumber
 	 * @param Crawler $crawler
 	 */

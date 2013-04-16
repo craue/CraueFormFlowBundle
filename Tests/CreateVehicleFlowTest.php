@@ -191,4 +191,24 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 		$this->assertCurrentFormData('{"numberOfWheels":4,"engine":null}', $crawler);
 	}
 
+	public function testCreateVehicle_unskipStepWhenGoingBack() {
+		$crawler = $this->client->request('GET', $this->url('_FormFlow_createVehicle'));
+
+		// 2 wheels -> step 3
+		$form = $crawler->selectButton('next')->form();
+		$crawler = $this->client->submit($form, array(
+			'createVehicle[numberOfWheels]' => 2,
+		));
+		$this->assertCurrentStepNumber(3, $crawler);
+		// step 2 must be marked as skipped
+		$this->assertContains('<li class="craue_formflow_skipped_step">engine</li>', $this->getHtml($crawler->filter('#step-list')));
+
+		// go back
+		$form = $crawler->selectButton('back')->form();
+		$crawler = $this->client->submit($form);
+		$this->assertCurrentStepNumber(1, $crawler);
+		// step 2 must not be marked as skipped
+		$this->assertContains('<li>engine</li>', $this->getHtml($crawler->filter('#step-list')));
+	}
+
 }
