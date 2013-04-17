@@ -211,4 +211,45 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 		$this->assertContains('<li>engine</li>', $this->getHtml($crawler->filter('#step-list')));
 	}
 
+	public function testCreateVehicle_submitInvalidValues() {
+		$crawler = $this->client->request('GET', $this->url('_FormFlow_createVehicle'));
+
+		// invalid number of wheels -> step 1 again
+		$form = $crawler->selectButton('next')->form();
+		// impossible to send invalid values with DomCrawler, see https://github.com/symfony/symfony/issues/7672
+// 		$crawler = $this->client->submit($form, array(
+// 			'createVehicle[numberOfWheels]' => 99,
+// 		));
+		$crawler = $this->client->request($form->getMethod(), $form->getUri(), array(
+			'flow_createVehicle_step' => 1,
+			'createVehicle' => array(
+				'numberOfWheels' => 99,
+			),
+		));
+		$this->assertCurrentStepNumber(1, $crawler);
+		$this->assertContainsFormError('This value is not valid.', $crawler);
+
+		// 4 wheels -> step 2
+		$form = $crawler->selectButton('next')->form();
+		$crawler = $this->client->submit($form, array(
+			'createVehicle[numberOfWheels]' => 4,
+		));
+		$this->assertCurrentStepNumber(2, $crawler);
+
+		// invalid engine -> step 2 again
+		$form = $crawler->selectButton('next')->form();
+		// impossible to send invalid values with DomCrawler, see https://github.com/symfony/symfony/issues/7672
+// 		$crawler = $this->client->submit($form, array(
+// 			'createVehicle[engine]' => 'magic',
+// 		));
+		$crawler = $this->client->request($form->getMethod(), $form->getUri(), array(
+			'flow_createVehicle_step' => 2,
+			'createVehicle' => array(
+				'engine' => 'magic',
+			),
+		));
+		$this->assertCurrentStepNumber(2, $crawler);
+		$this->assertContainsFormError('This value is not valid.', $crawler);
+	}
+
 }
