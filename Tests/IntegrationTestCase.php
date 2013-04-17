@@ -50,7 +50,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 		$html = '';
 
 		foreach ($crawler as $domElement) {
-			$html .= $domElement->ownerDocument->saveHTML($domElement);
+			$html .= $domElement->ownerDocument->saveHTML();
 		}
 
 		return $html;
