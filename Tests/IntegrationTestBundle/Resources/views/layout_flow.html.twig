@@ -1,7 +1,7 @@
 {% extends 'IntegrationTestBundle::layout.html.twig' %}
 
 {% block content %}
-<div id="step-number">{{ flow.getCurrentStep() }}</div>
+<div id="step-number">{{ flow.getCurrentStepNumber() }}</div>
 <div id="form-data">{{ formData | json_encode }}</div>
 {% block stepList %}{% endblock %}
 <form method="post" action="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" {{ form_enctype(form) }}>

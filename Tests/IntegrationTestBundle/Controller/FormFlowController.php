@@ -54,13 +54,13 @@ class FormFlowController extends Controller {
 	protected function processFlow($formData, FormFlow $flow) {
 		$flow->bind($formData);
 
-		$form = $flow->createForm($formData);
+		$form = $flow->createForm();
 		if ($flow->isValid($form)) {
-			$flow->saveCurrentStepData();
+			$flow->saveCurrentStepData($form);
 
 			if ($flow->nextStep()) {
 				// create form for next step
-				$form = $flow->createForm($formData);
+				$form = $flow->createForm();
 			} else {
 				// flow finished
 				$flow->reset();

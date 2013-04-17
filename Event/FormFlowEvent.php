@@ -2,7 +2,7 @@
 
 namespace Craue\FormFlowBundle\Event;
 
-use Craue\FormFlowBundle\Form\FormFlow;
+use Craue\FormFlowBundle\Form\FormFlowInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -13,12 +13,12 @@ use Symfony\Component\EventDispatcher\Event;
 abstract class FormFlowEvent extends Event {
 
 	/**
-	 * @var FormFlow
+	 * @var FormFlowInterface
 	 */
 	protected $flow;
 
 	/**
-	 * @return FormFlow
+	 * @return FormFlowInterface
 	 */
 	public function getFlow() {
 		return $this->flow;

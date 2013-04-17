@@ -1,0 +1,34 @@
+<?php
+
+namespace Craue\FormFlowBundle\Form;
+
+use Symfony\Component\Form\FormTypeInterface;
+
+/**
+ * @author Christian Raue <christian.raue@gmail.com>
+ * @copyright 2011-2013 Christian Raue
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ */
+interface StepInterface {
+
+	/**
+	 * @return integer
+	 */
+	function getNumber();
+
+	/**
+	 * @return string|null
+	 */
+	function getLabel();
+
+	/**
+	 * @return FormTypeInterface|string|null
+	 */
+	function getType();
+
+	/**
+	 * @return boolean
+	 */
+	function isSkipped();
+
+}

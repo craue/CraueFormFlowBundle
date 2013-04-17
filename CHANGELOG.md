@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.0 (not yet released)
+
+* BC break: reworked the way steps are defined (follow `UPGRADE-2.0.md` to upgrade)
+* added `PostBindFlowEvent`
+
 ## 1.1.2 (2013-04-17)
 
 * always dispatch `PreBindEvent` when `bind()` is called (to match expected behavior)

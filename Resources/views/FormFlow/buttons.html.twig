@@ -1,4 +1,4 @@
-{% set renderBackButton = flow.getCurrentStep() in (flow.getFirstStep() + 1) .. flow.getLastStep() %}
+{% set renderBackButton = flow.getCurrentStepNumber() in (flow.getFirstStepNumber() + 1) .. flow.getLastStepNumber() %}
 <div class="craue_formflow_buttons craue_formflow_button_count_{% if renderBackButton %}3{% else %}2{% endif %}">
 	{#
 		Default button (the one trigged by pressing the enter/return key) must be defined first.
@@ -6,7 +6,7 @@
 		See http://stackoverflow.com/questions/1963245/multiple-submit-buttons-specifying-default-button
 	#}
 	<button type="submit" class="craue_formflow_button_last">
-		{%- if flow.getCurrentStep() < flow.getLastStep() -%}
+		{%- if flow.getCurrentStepNumber() < flow.getLastStepNumber() -%}
 			{{- 'button.next' | trans({}, 'CraueFormFlowBundle') -}}
 		{%- else -%}
 			{{- 'button.finish' | trans({}, 'CraueFormFlowBundle') -}}

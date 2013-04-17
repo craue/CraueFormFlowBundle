@@ -22,18 +22,12 @@
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\CreateVehicleFlow"
 				parent="craue.form.flow"
 				scope="request">
-			<call method="setFormType">
-				<argument type="service" id="integrationTestBundle.form.createVehicle" />
-			</call>
 		</service>
 
 		<service id="integrationTestBundle.form.flow.demo1"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\Demo1Flow"
 				parent="craue.form.flow"
 				scope="request">
-			<call method="setFormType">
-				<argument type="service" id="integrationTestBundle.form.demo1" />
-			</call>
 		</service>
 	</services>
 
