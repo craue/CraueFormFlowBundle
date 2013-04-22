@@ -10,7 +10,7 @@ framework:
     resource: %kernel.root_dir%/config/routing.yml
   secret: whatever
   session:
-    storage_id: session.storage.filesystem
+    storage_id: session.storage.mock_file
   templating:
     engines:
       - twig
