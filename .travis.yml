@@ -12,4 +12,5 @@ before_script:
   - sh travis_before_build.sh
 notifications:
   email:
-    - christian.raue@gmail.com
+    on_success: always
+    on_failure: always
