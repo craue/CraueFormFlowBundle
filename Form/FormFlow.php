@@ -133,7 +133,7 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	/**
-	 * @return StorageInterface
+	 * {@inheritDoc}
 	 */
 	public function getStorage() {
 		return $this->storage;

@@ -37,6 +37,11 @@ interface FormFlowInterface {
 	function setStorage(StorageInterface $storage);
 
 	/**
+	 * @return StorageInterface
+	 */
+	function getStorage();
+
+	/**
 	 * @param EventDispatcherInterface $eventDispatcher
 	 */
 	function setEventDispatcher(EventDispatcherInterface $eventDispatcher);
