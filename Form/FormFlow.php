@@ -130,6 +130,10 @@ class FormFlow {
 	public function setStorage(StorageInterface $storage) {
 		$this->storage = $storage;
 	}
+	
+	public function getStorage() {
+		return $this->storage;
+	}
 
 	/**
 	 * @param EventDispatcherInterface $eventDispatcher
