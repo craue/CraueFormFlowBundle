@@ -423,7 +423,7 @@ protected function loadStepsConfig() {
 ## Validation groups
 
 To validate the form data class a step-based validation group is passed to the form type.
-By default, if `getName()` of the form type returns `createVehicle`, such a group is named `flow_createVehicle_step1`
+By default, if `getName()` of the flow returns `createVehicle`, such a group is named `flow_createVehicle_step1`
 for the first step.
 
 ## Passing step-based options to the form type
