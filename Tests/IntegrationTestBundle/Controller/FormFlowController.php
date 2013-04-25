@@ -51,6 +51,14 @@ class FormFlowController extends Controller {
 		return $this->processFlow((object) array(), $this->get('integrationTestBundle.form.flow.demo1'));
 	}
 
+	/**
+	 * @Route("/skipFirstStepUsingClosure/", name="_FormFlow_skipFirstStepUsingClosure")
+	 * @Template("IntegrationTestBundle:FormFlow:skipFirstStepUsingClosure.html.twig")
+	 */
+	public function skipFirstStepUsingClosureAction() {
+		return $this->processFlow((object) array(), $this->get('integrationTestBundle.form.flow.skipFirstStepUsingClosure'));
+	}
+
 	protected function processFlow($formData, FormFlow $flow) {
 		$flow->bind($formData);
 

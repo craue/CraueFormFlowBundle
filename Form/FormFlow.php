@@ -384,6 +384,8 @@ abstract class FormFlow implements FormFlowInterface {
 			foreach ($this->getSteps() as $step) {
 				$step->evaluateSkipping($requestedStepNumber, $this->formData);
 			}
+		} else {
+			$requestedStepNumber = $this->applySkipping($requestedStepNumber);
 		}
 
 		return $requestedStepNumber;
@@ -428,19 +430,26 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	protected function bindFlow() {
+		$reset = false;
+
 		if (!$this->allowDynamicStepNavigation && $this->request->isMethod('GET')) {
-			$this->reset();
-			return;
+			$reset = true;
 		}
 
 		if ($this->getRequestedTransition() === self::TRANSITION_RESET) {
+			$reset = true;
+		}
+
+		if (!$reset) {
+			$this->applyDataFromSavedSteps();
+		}
+
+		$requestedStepNumber = $this->determineCurrentStepNumber();
+
+		if ($reset) {
 			$this->reset();
 			return;
 		}
-
-		$this->applyDataFromSavedSteps();
-
-		$requestedStepNumber = $this->determineCurrentStepNumber();
 
 		// ensure that the requested step fits the current progress
 		if ($requestedStepNumber > $this->getFirstStepNumber()) {
