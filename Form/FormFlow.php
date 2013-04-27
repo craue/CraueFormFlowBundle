@@ -139,9 +139,9 @@ class FormFlow {
 	}
 
 	/**
-	 * @param EventDispatcherInterface|null $eventDispatcher
+	 * @param EventDispatcherInterface $eventDispatcher
 	 */
-	public function setEventDispatcher(EventDispatcherInterface $eventDispatcher = null) {
+	public function setEventDispatcher(EventDispatcherInterface $eventDispatcher) {
 		$this->eventDispatcher = $eventDispatcher;
 	}
 
