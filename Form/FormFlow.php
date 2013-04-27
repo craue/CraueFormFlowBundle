@@ -46,9 +46,9 @@ class FormFlow {
 	protected $storage;
 
 	/**
-	 * @var EventDispatcherInterface
+	 * @var EventDispatcherInterface|null
 	 */
-	protected $eventDispatcher;
+	protected $eventDispatcher = null;
 
 	/**
 	 * @var string
@@ -139,9 +139,9 @@ class FormFlow {
 	}
 
 	/**
-	 * @param EventDispatcherInterface $eventDispatcher
+	 * @param EventDispatcherInterface|null $eventDispatcher
 	 */
-	public function setEventDispatcher(EventDispatcherInterface $eventDispatcher) {
+	public function setEventDispatcher(EventDispatcherInterface $eventDispatcher = null) {
 		$this->eventDispatcher = $eventDispatcher;
 	}
 
@@ -370,7 +370,7 @@ class FormFlow {
 	}
 
 	public function bind($formData) {
-		if ($this->eventDispatcher->hasListeners(FormFlowEvents::PRE_BIND)) {
+		if ($this->hasListeners(FormFlowEvents::PRE_BIND)) {
 			$event = new PreBindEvent($this);
 			$this->eventDispatcher->dispatch(FormFlowEvents::PRE_BIND, $event);
 		}
@@ -448,7 +448,7 @@ class FormFlow {
 					$stepForm = $this->createFormForStep($formData, $step, $options);
 					$stepForm->bind($stepData[$step]);
 
-					if ($this->eventDispatcher->hasListeners(FormFlowEvents::POST_BIND_SAVED_DATA)) {
+					if ($this->hasListeners(FormFlowEvents::POST_BIND_SAVED_DATA)) {
 						$event = new PostBindSavedDataEvent($this, $formData, $step);
 						$this->eventDispatcher->dispatch(FormFlowEvents::POST_BIND_SAVED_DATA, $event);
 					}
@@ -510,13 +510,13 @@ class FormFlow {
 		))) {
 			$form->bind($this->request);
 
-			if ($this->eventDispatcher->hasListeners(FormFlowEvents::POST_BIND_REQUEST)) {
+			if ($this->hasListeners(FormFlowEvents::POST_BIND_REQUEST)) {
 				$event = new PostBindRequestEvent($this, $form->getData(), $this->currentStep);
 				$this->eventDispatcher->dispatch(FormFlowEvents::POST_BIND_REQUEST, $event);
 			}
 
 			if ($form->isValid()) {
-				if ($this->eventDispatcher->hasListeners(FormFlowEvents::POST_VALIDATE)) {
+				if ($this->hasListeners(FormFlowEvents::POST_VALIDATE)) {
 					$event = new PostValidateEvent($this, $form->getData());
 					$this->eventDispatcher->dispatch(FormFlowEvents::POST_VALIDATE, $event);
 				}
@@ -562,6 +562,14 @@ class FormFlow {
 
 	protected function saveStepData(array $data) {
 		$this->storage->set($this->stepDataKey, $data);
+	}
+
+	/**
+	 * @param string $eventName
+	 * @return boolean
+	 */
+	protected function hasListeners($eventName) {
+		return $this->eventDispatcher !== null && $this->eventDispatcher->hasListeners($eventName);
 	}
 
 }
