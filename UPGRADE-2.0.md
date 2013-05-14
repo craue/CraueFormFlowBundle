@@ -102,7 +102,7 @@
 		$options = parent::getFormOptions($formData, $step, $options);
 
 		if ($step > 1) {
-			$options['givenUsername'] = $formData->getUsername();
+			$options['numberOfWheels'] = $formData->getNumberOfWheels();
 		}
 
 		return $options;
@@ -117,7 +117,7 @@
 		$formData = $this->getFormData();
 
 		if ($step === 2) { // if you need this option only for step 2
-			$options['givenUsername'] = $formData->getUsername();
+			$options['numberOfWheels'] = $formData->getNumberOfWheels();
 		}
 
 		return $options;
@@ -126,6 +126,7 @@
 
 - Some methods have been renamed to make more clear what they do.
 
+	- `getMaxSteps` to `getStepCount`
 	- `getCurrentStep` to `getCurrentStepNumber`
 	- `getCurrentStepDescription` to `getCurrentStepLabel`
 	- `getStepDescriptions` to `getStepLabels`
@@ -135,17 +136,19 @@
 	- `getRequestedStep` to `getRequestedStepNumber`
 	- `determineCurrentStep` to `determineCurrentStepNumber`
 
-- Some methods' signatures have changed.
+- One method has been made protected.
+
+	- `applySkipping`
+
+- Some methods' signatures have changed in several ways.
 
 	- `public function createForm($formData, array $options = array())` to `public function createForm(array $options = array())`
-	- `public function determineCurrentStep()` to `protected function determineCurrentStepNumber($requestedStepNumber = null)`
+	- `public function getFormOptions($formData, $step, array $options = array())` to `public function getFormOptions($step, array $options = array())`
+	- `public function determineCurrentStep()` to `protected function determineCurrentStepNumber()`
 	- `public function getRequestedStep()` to `protected function getRequestedStepNumber()`
 	- `protected function createFormForStep($formData, $step, array $options = array())` to `protected function createFormForStep($stepNumber, array $options = array())`
 	- `public function saveCurrentStepData()` to `public function saveCurrentStepData(FormInterface $form)`
-
-- Some methods have been made protected.
-
-	- `applySkipping`
+	- `public function applyDataFromSavedSteps($formData, array $options = array())` to `protected function applyDataFromSavedSteps()`
 
 - Some methods have been removed.
 
@@ -155,7 +158,7 @@
 	- `addSkipStep`/`removeSkipStep`
 	- `loadStepDescriptions`
 
-- Some properties have been made private. Use their public accessors instead.
+- Some properties have been renamed and/or made private. Use their public accessors instead.
 
 	- `id`: `setId`/`getId`
 	- `formStepKey`: `setFormStepKey`/`getFormStepKey`
