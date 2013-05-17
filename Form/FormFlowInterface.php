@@ -140,6 +140,7 @@ interface FormFlowInterface {
 	 * @param integer $stepNumber
 	 * @return StepInterface
 	 * @throws InvalidTypeException If {@code $stepNumber} is not an integer.
+	 * @throws \OutOfBoundsException If step {@code $stepNumber} doesn't exist.
 	 */
 	function getStep($stepNumber);
 
