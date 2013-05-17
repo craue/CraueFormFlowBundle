@@ -375,9 +375,9 @@ Valid options per step are:
 - `type` (`FormTypeInterface`|`string`|`null`)
 	The form type used to build the form for that step.
 	If using a string, it has to be the registered alias of the form type.
-- `skip` (`Closure`|`boolean`)
+- `skip` (`callable`|`boolean`)
 	Decides whether the step will be skipped.
-	If using a Closure, it has to return a boolean value and will receive the current step number and the form data as arguments.
+	If using a callable, it has to return a boolean value and will receive the current step number and the form data as arguments.
 
 ### Examples
 
