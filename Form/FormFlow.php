@@ -2,6 +2,7 @@
 
 namespace Craue\FormFlowBundle\Form;
 
+use Craue\FormFlowBundle\Event\GetStepsEvent;
 use Craue\FormFlowBundle\Event\PostBindFlowEvent;
 use Craue\FormFlowBundle\Event\PostBindRequestEvent;
 use Craue\FormFlowBundle\Event\PostBindSavedDataEvent;
@@ -561,7 +562,26 @@ abstract class FormFlow implements FormFlowInterface {
 	 * {@inheritDoc}
 	 */
 	public function getSteps() {
-		if ($this->steps === null) {
+		// The steps have been loaded already.
+		if ($this->steps !== null) {
+			return $this->steps;
+		}
+
+		// There are no listeners on the event at all, load from configuration.
+		if (!$this->hasListeners(FormFlowEvents::GET_STEPS)) {
+			$this->steps = $this->createStepsFromConfig($this->loadStepsConfig());
+
+			return $this->steps;
+		}
+
+		$event = new GetStepsEvent($this);
+		$this->eventDispatcher->dispatch(FormFlowEvents::GET_STEPS, $event);
+
+		// A listener has provided the steps for this flow.
+		if ($event->isPropagationStopped()) {
+			$this->steps = $event->getSteps();
+		// There are listeners, but none created the steps for this flow, so fallback to config.
+		} else {
 			$this->steps = $this->createStepsFromConfig($this->loadStepsConfig());
 		}
 

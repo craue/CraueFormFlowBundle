@@ -16,11 +16,4 @@ use Craue\FormFlowBundle\Form\FormFlowInterface;
  */
 class PreBindEvent extends FormFlowEvent {
 
-	/**
-	 * @param FormFlowInterface $flow
-	 */
-	public function __construct(FormFlowInterface $flow) {
-		$this->flow = $flow;
-	}
-
 }
