@@ -28,7 +28,7 @@ class Step implements StepInterface {
 	protected $type;
 
 	/**
-	 * @var Closure
+	 * @var callable
 	 */
 	private $skipFunction;
 
@@ -110,7 +110,7 @@ class Step implements StepInterface {
 	}
 
 	/**
-	 * @param boolean|Closure $skip
+	 * @param boolean|callable $skip
 	 * @throws InvalidTypeException
 	 */
 	public function setSkip($skip) {
@@ -128,7 +128,7 @@ class Step implements StepInterface {
 			return;
 		}
 
-		throw new InvalidTypeException($skip, array('boolean', 'Closure'));
+		throw new InvalidTypeException($skip, array('boolean', 'callable'));
 	}
 
 	public function evaluateSkipping($currentStepNumber, $formData) {
