@@ -2,6 +2,7 @@
 
 namespace Craue\FormFlowBundle\Tests\Form;
 
+use Craue\FormFlowBundle\Form\FormFlowInterface;
 use Craue\FormFlowBundle\Form\Step;
 
 /**
@@ -14,12 +15,14 @@ use Craue\FormFlowBundle\Form\Step;
 class StepTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCreateFromConfig() {
+		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface');
+
 		$step = Step::createFromConfig(1, array());
 		$this->assertEquals(1, $step->getNumber());
 		$this->assertEquals(null, $step->getLabel());
 		$this->assertEquals(null, $step->getType());
 		$this->assertEquals(false, $step->isSkipped());
-		$step->evaluateSkipping(1, null);
+		$step->evaluateSkipping(1, $flowStub);
 		$this->assertEquals(false, $step->isSkipped());
 
 		$step = Step::createFromConfig(1, array(
@@ -31,24 +34,31 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 			'skip' => true,
 		));
 		$this->assertEquals(true, $step->isSkipped());
-		$step->evaluateSkipping(1, null);
+		$step->evaluateSkipping(1, $flowStub);
 		$this->assertEquals(true, $step->isSkipped());
 
 		$step = Step::createFromConfig(1, array(
-			'skip' => function($currentStepNumber, $formData) {
+			'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 				return true;
 			},
 		));
 		$this->assertEquals(null, $step->isSkipped());
-		$step->evaluateSkipping(1, null);
+		$step->evaluateSkipping(1, $flowStub);
 		$this->assertEquals(true, $step->isSkipped());
 
+		$flowStubWithData = $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface');
+		$flowStubWithData
+			->expects($this->once())
+			->method('getFormData')
+			->will($this->returnValue(array('blah' => true)))
+		;
 		$step = Step::createFromConfig(1, array(
-			'skip' => function($currentStepNumber, $formData) {
-				return $currentStepNumber > 1 && $formData['blah'] === true;
+			'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+				$formData = $flow->getFormData();
+				return $estimatedCurrentStepNumber > 1 && $formData['blah'] === true;
 			},
 		));
-		$step->evaluateSkipping(2, array('blah' => true));
+		$step->evaluateSkipping(2, $flowStubWithData);
 		$this->assertEquals(true, $step->isSkipped());
 	}
 

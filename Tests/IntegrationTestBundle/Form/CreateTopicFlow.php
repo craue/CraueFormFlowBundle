@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form;
 
 use Craue\FormFlowBundle\Form\FormFlow;
+use Craue\FormFlowBundle\Form\FormFlowInterface;
 use Symfony\Component\Form\FormTypeInterface;
 
 /**
@@ -49,8 +50,8 @@ class CreateTopicFlow extends FormFlow {
 			array(
 				'label' => 'bug_details',
 				'type' => $this->formType,
-				'skip' => function($currentStepNumber, $formData) {
-					return $currentStepNumber > 1 && !$formData->isBugReport();
+				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->isBugReport();
 				},
 			),
 			array(

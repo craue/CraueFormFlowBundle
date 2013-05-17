@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form;
 
 use Craue\FormFlowBundle\Form\FormFlow;
+use Craue\FormFlowBundle\Form\FormFlowInterface;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -27,7 +28,7 @@ class SkipFirstStepUsingClosureFlow extends FormFlow {
 		return array(
 			array(
 				'label' => 'step1',
-				'skip' => function($currentStepNumber, $formData) {
+				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 					return true;
 				},
 			),

@@ -131,9 +131,12 @@ class Step implements StepInterface {
 		throw new InvalidTypeException($skip, array('boolean', 'callable'));
 	}
 
-	public function evaluateSkipping($currentStepNumber, $formData) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public function evaluateSkipping($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 		if ($this->skipFunction !== null) {
-			$this->skipped = call_user_func_array($this->skipFunction, array($currentStepNumber, $formData));
+			$this->skipped = call_user_func_array($this->skipFunction, array($estimatedCurrentStepNumber, $flow));
 		}
 	}
 

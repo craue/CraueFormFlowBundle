@@ -65,6 +65,7 @@ This approach makes it easy to turn an existing (usual) form into a form flow.
 ```php
 // src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
 use Craue\FormFlowBundle\Form\FormFlow;
+use Craue\FormFlowBundle\Form\FormFlowInterface;
 
 class CreateVehicleFlow extends FormFlow {
 
@@ -90,8 +91,8 @@ class CreateVehicleFlow extends FormFlow {
 			array(
 				'label' => 'engine',
 				'type' => $this->formType,
-				'skip' => function($currentStepNumber, $formData) {
-					return $currentStepNumber > 1 && !$formData->canHaveEngine();
+				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
 				},
 			),
 			array(
@@ -185,6 +186,7 @@ This approach makes it easy to reuse the form types to compose other forms.
 ```php
 // src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
 use Craue\FormFlowBundle\Form\FormFlow;
+use Craue\FormFlowBundle\Form\FormFlowInterface;
 
 class CreateVehicleFlow extends FormFlow {
 
@@ -201,8 +203,8 @@ class CreateVehicleFlow extends FormFlow {
 			array(
 				'label' => 'engine',
 				'type' => new CreateVehicleStep2Form(),
-				'skip' => function($currentStepNumber, $formData) {
-					return $currentStepNumber > 1 && !$formData->canHaveEngine();
+				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
 				},
 			),
 			array(
@@ -377,7 +379,7 @@ Valid options per step are:
 	If using a string, it has to be the registered alias of the form type.
 - `skip` (`callable`|`boolean`)
 	Decides whether the step will be skipped.
-	If using a callable, it has to return a boolean value and will receive the current step number and the form data as arguments.
+	If using a callable, it has to return a boolean value and will receive the estimated current step number and the flow as arguments.
 
 ### Examples
 
@@ -407,8 +409,8 @@ protected function loadStepsConfig() {
 		2 => array(
 			'label' => 'engine',
 			'type' => 'createVehicleStep2',
-			'skip' => function($currentStepNumber, $formData) {
-				return $currentStepNumber > 1 && !$formData->canHaveEngine();
+			'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+				return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
 			},
 		),
 		3 => array(

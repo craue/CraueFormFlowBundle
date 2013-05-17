@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form;
 
 use Craue\FormFlowBundle\Form\FormFlow;
+use Craue\FormFlowBundle\Form\FormFlowInterface;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -30,8 +31,8 @@ class CreateVehicleFlow extends FormFlow {
 			array(
 				'label' => 'engine',
 				'type' => 'createVehicle',
-				'skip' => function($currentStepNumber, $formData) {
-					return $currentStepNumber > 1 && !$formData->canHaveEngine();
+				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
 				},
 			),
 			array(

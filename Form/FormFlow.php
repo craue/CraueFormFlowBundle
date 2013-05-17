@@ -316,7 +316,7 @@ abstract class FormFlow implements FormFlowInterface {
 		$currentStepNumber = $this->currentStepNumber + 1;
 
 		foreach ($this->getSteps() as $step) {
-			$step->evaluateSkipping($currentStepNumber, $this->formData);
+			$step->evaluateSkipping($currentStepNumber, $this);
 		}
 
 		// There is no "next" step as the target step exceeds the actual step count.
@@ -387,7 +387,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 			// re-evaluate to not keep following steps marked as skipped (after skipping them while going back)
 			foreach ($this->getSteps() as $step) {
-				$step->evaluateSkipping($requestedStepNumber, $this->formData);
+				$step->evaluateSkipping($requestedStepNumber, $this);
 			}
 		} else {
 			$requestedStepNumber = $this->applySkipping($requestedStepNumber);
@@ -405,7 +405,7 @@ abstract class FormFlow implements FormFlowInterface {
 		foreach ($this->getSteps() as $step) {
 			$stepSkippedOld = $step->isSkipped();
 
-			$step->evaluateSkipping($refinedStepNumber, $this->formData);
+			$step->evaluateSkipping($refinedStepNumber, $this);
 
 			if (!$stepSkippedOld && $step->isSkipped()) {
 				return $this->refineCurrentStepNumber($refinedStepNumber);
