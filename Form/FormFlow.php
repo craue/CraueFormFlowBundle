@@ -319,6 +319,11 @@ abstract class FormFlow implements FormFlowInterface {
 			$step->evaluateSkipping($currentStepNumber, $this->formData);
 		}
 
+		// There is no "next" step as the target step exceeds the actual step count.
+		if ($currentStepNumber > $this->getLastStepNumber()) {
+			return false;
+		}
+
 		$currentStepNumber = $this->applySkipping($currentStepNumber);
 
 		if ($currentStepNumber <= $this->getStepCount()) {
@@ -545,7 +550,11 @@ abstract class FormFlow implements FormFlowInterface {
 		$steps = $this->getSteps();
 		$index = $stepNumber - 1;
 
-		return array_key_exists($index, $steps) ? $steps[$index] : new EmptyStep($stepNumber);
+		if (array_key_exists($index, $steps)) {
+			return $steps[$index];
+		}
+
+		throw new \OutOfBoundsException(sprintf('The step "%d" does not exist.', $stepNumber));
 	}
 
 	/**
