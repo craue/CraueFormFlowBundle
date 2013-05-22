@@ -2,6 +2,7 @@
 
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form;
 
+use Craue\FormFlowBundle\Event\GetStepsEvent;
 use Craue\FormFlowBundle\Event\PostBindFlowEvent;
 use Craue\FormFlowBundle\Event\PostBindRequestEvent;
 use Craue\FormFlowBundle\Event\PostBindSavedDataEvent;
@@ -40,6 +41,7 @@ class Demo1Flow extends FormFlow implements EventSubscriberInterface {
 	public static function getSubscribedEvents() {
 		return array(
 			FormFlowEvents::PRE_BIND => 'onPreBind',
+			FormFlowEvents::GET_STEPS => 'onGetSteps',
 			FormFlowEvents::POST_BIND_SAVED_DATA => 'onPostBindSavedData',
 			FormFlowEvents::POST_BIND_FLOW => 'onPostBindFlow',
 			FormFlowEvents::POST_BIND_REQUEST => 'onPostBindRequest',
@@ -103,6 +105,10 @@ class Demo1Flow extends FormFlow implements EventSubscriberInterface {
 
 	public function onPreBind(PreBindEvent $event) {
 		$this->logEventCall('onPreBind');
+	}
+
+	public function onGetSteps(GetStepsEvent $event) {
+		$this->logEventCall('onGetSteps');
 	}
 
 	public function onPostBindSavedData(PostBindSavedDataEvent $event) {

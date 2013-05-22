@@ -15,8 +15,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  */
 class FormFlowTest extends \PHPUnit_Framework_TestCase {
 
-	public function testStepListener()
-	{
+	public function testStepListener() {
 		$steps = array(
 			$this->getMock('\Craue\FormFlowBundle\Form\StepInterface'),
 		);
@@ -34,4 +33,5 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($steps, $flow->getSteps());
 	}
+
 }

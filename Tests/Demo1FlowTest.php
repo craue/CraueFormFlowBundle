@@ -19,13 +19,13 @@ class Demo1FlowTest extends IntegrationTestCase {
 		$this->assertCurrentStepNumber(2, $crawler);
 		$this->assertCurrentFormData('{}', $crawler);
 		$this->assertCount(0, $crawler->selectButton('back')); // no back button
-		$this->assertEquals(array('onPreBind', 'onPostBindFlow #2'), $this->getCalledEvents());
+		$this->assertEquals(array('onPreBind', 'onGetSteps', 'onPostBindFlow #2'), $this->getCalledEvents());
 
 		// reset
 		$form = $crawler->selectButton('start over')->form();
 		$crawler = $this->client->submit($form);
 		$this->assertCurrentStepNumber(2, $crawler);
-		$this->assertEquals(array('onPreBind', 'onPostBindFlow #2'), $this->getCalledEvents());
+		$this->assertEquals(array('onPreBind', 'onGetSteps', 'onPostBindFlow #2'), $this->getCalledEvents());
 
 		// next
 		$form = $crawler->selectButton('next')->form();
@@ -33,26 +33,26 @@ class Demo1FlowTest extends IntegrationTestCase {
 		$this->assertCurrentStepNumber(3, $crawler);
 		$this->assertCount(1, $crawler->selectButton('back')); // back button
 		$this->assertCount(0, $crawler->selectButton('finish')); // no finish button
-		$this->assertEquals(array('onPreBind', 'onPostBindFlow #2', 'onPostBindRequest', 'onPostValidate'), $this->getCalledEvents());
+		$this->assertEquals(array('onPreBind', 'onGetSteps', 'onPostBindFlow #2', 'onPostBindRequest', 'onPostValidate'), $this->getCalledEvents());
 
 		// next
 		$form = $crawler->selectButton('next')->form();
 		$crawler = $this->client->submit($form);
 		$this->assertCurrentStepNumber(4, $crawler);
 		$this->assertCount(1, $crawler->selectButton('finish')); // finish button
-		$this->assertEquals(array('onPreBind', 'onPostBindSavedData #2', 'onPostBindFlow #3', 'onPostBindRequest', 'onPostValidate'), $this->getCalledEvents());
+		$this->assertEquals(array('onPreBind', 'onGetSteps', 'onPostBindSavedData #2', 'onPostBindFlow #3', 'onPostBindRequest', 'onPostValidate'), $this->getCalledEvents());
 
 		// go back
 		$form = $crawler->selectButton('back')->form();
 		$crawler = $this->client->submit($form);
 		$this->assertCurrentStepNumber(3, $crawler);
-		$this->assertEquals(array('onPreBind', 'onPostBindSavedData #2', 'onPostBindSavedData #3', 'onPostBindFlow #3'), $this->getCalledEvents());
+		$this->assertEquals(array('onPreBind', 'onGetSteps', 'onPostBindSavedData #2', 'onPostBindSavedData #3', 'onPostBindFlow #3'), $this->getCalledEvents());
 
 		// next
 		$form = $crawler->selectButton('next')->form();
 		$crawler = $this->client->submit($form);
 		$this->assertCurrentStepNumber(4, $crawler);
-		$this->assertEquals(array('onPreBind', 'onPostBindSavedData #2', 'onPostBindSavedData #3', 'onPostBindFlow #3', 'onPostBindRequest', 'onPostValidate'), $this->getCalledEvents());
+		$this->assertEquals(array('onPreBind', 'onGetSteps', 'onPostBindSavedData #2', 'onPostBindSavedData #3', 'onPostBindFlow #3', 'onPostBindRequest', 'onPostValidate'), $this->getCalledEvents());
 
 		// finish flow
 		$form = $crawler->selectButton('finish')->form();

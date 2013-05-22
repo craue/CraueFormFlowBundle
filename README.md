@@ -354,6 +354,7 @@ public function createVehicle() {
 ## How the flow works
 
 1. Dispatch `PreBindEvent`.
+1. Dispatch `GetStepsEvent`.
 1. Update the form data class with previously saved data of all steps. For each one, dispatch `PostBindSavedDataEvent`.
 1. Evaluate which steps are skipped. Determine the current step.
 1. Dispatch `PostBindFlowEvent`.
@@ -524,6 +525,7 @@ There are some events which you can subscribe to. Using all of them right inside
 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
+use Craue\FormFlowBundle\Event\GetStepsEvent;
 use Craue\FormFlowBundle\Event\PostBindFlowEvent;
 use Craue\FormFlowBundle\Event\PostBindRequestEvent;
 use Craue\FormFlowBundle\Event\PostBindSavedDataEvent;
@@ -543,6 +545,7 @@ class CreateVehicleFlow extends FormFlow implements EventSubscriberInterface {
 	public static function getSubscribedEvents() {
 		return array(
 			FormFlowEvents::PRE_BIND => 'onPreBind',
+			FormFlowEvents::GET_STEPS => 'onGetSteps',
 			FormFlowEvents::POST_BIND_SAVED_DATA => 'onPostBindSavedData',
 			FormFlowEvents::POST_BIND_FLOW => 'onPostBindFlow',
 			FormFlowEvents::POST_BIND_REQUEST => 'onPostBindRequest',
@@ -551,6 +554,10 @@ class CreateVehicleFlow extends FormFlow implements EventSubscriberInterface {
 	}
 
 	public function onPreBind(PreBindEvent $event) {
+		// ...
+	}
+
+	public function onGetSteps(GetStepsEvent $event) {
 		// ...
 	}
 
