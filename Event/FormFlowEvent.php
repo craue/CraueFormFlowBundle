@@ -18,6 +18,13 @@ abstract class FormFlowEvent extends Event {
 	protected $flow;
 
 	/**
+	 * @param FormFlowInterface $flow
+	 */
+	public function __construct(FormFlowInterface $flow) {
+		$this->flow = $flow;
+	}
+
+	/**
 	 * @return FormFlowInterface
 	 */
 	public function getFlow() {
