@@ -19,4 +19,5 @@ class FormFlowEvents {
 
 	const POST_VALIDATE = 'flow.post_validate';
 
+	const GET_STEPS = 'flow.get_steps';
 }
