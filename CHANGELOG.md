@@ -5,9 +5,14 @@
 * BC break: reworked the way steps are defined (follow `UPGRADE-2.0.md` to upgrade)
 * added `PostBindFlowEvent`
 
+## 1.1.3 (2013-05-23)
+
+* added method `getStorage`
+* made the dependency on an event dispatcher optional
+
 ## 1.1.2 (2013-04-17)
 
-* always dispatch `PreBindEvent` when `bind()` is called (to match expected behavior)
+* always dispatch `PreBindEvent` when `bind` is called (to match expected behavior)
 * added Brazilian Portuguese translation
 
 ## 1.1.1 (2013-04-14)
