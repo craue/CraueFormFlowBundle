@@ -11,8 +11,7 @@
 	<services>
 		<service id="integrationTestBundle.form.flow.createTopic"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\CreateTopicFlow"
-				parent="craue.form.flow"
-				scope="request">
+				parent="craue.form.flow">
 			<call method="setFormType">
 				<argument type="service" id="integrationTestBundle.form.createTopic" />
 			</call>
@@ -20,8 +19,7 @@
 
 		<service id="integrationTestBundle.form.flow.createVehicle"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\CreateVehicleFlow"
-				parent="craue.form.flow"
-				scope="request">
+				parent="craue.form.flow">
 			<call method="setFormType">
 				<argument type="service" id="integrationTestBundle.form.createVehicle" />
 			</call>
@@ -29,8 +27,7 @@
 
 		<service id="integrationTestBundle.form.flow.demo1"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\Demo1Flow"
-				parent="craue.form.flow"
-				scope="request">
+				parent="craue.form.flow">
 			<call method="setFormType">
 				<argument type="service" id="integrationTestBundle.form.demo1" />
 			</call>

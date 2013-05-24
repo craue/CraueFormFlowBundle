@@ -140,8 +140,7 @@ class RegisterUserFormType extends AbstractType {
 
 	<service id="myCompany.form.flow.registerUser"
 			class="MyCompany\MyBundle\Form\RegisterUserFlow"
-			parent="craue.form.flow"
-			scope="request">
+			parent="craue.form.flow">
 		<call method="setFormType">
 			<argument type="service" id="myCompany.form.registerUser" />
 		</call>
