@@ -3,7 +3,7 @@
 ## 2.0.0 (not yet released)
 
 * BC break: reworked the way steps are defined (follow `UPGRADE-2.0.md` to upgrade)
-* added `PostBindFlowEvent`
+* added `GetStepsEvent` and `PostBindFlowEvent`
 
 ## 1.1.3 (2013-05-23)
 
