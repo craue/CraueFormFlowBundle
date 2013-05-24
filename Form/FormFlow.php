@@ -694,4 +694,41 @@ abstract class FormFlow implements FormFlowInterface {
 		return $this->eventDispatcher !== null && $this->eventDispatcher->hasListeners($eventName);
 	}
 
+	// methods for BC with third-party templates (e.g. MopaBootstrapBundle)
+
+	public function getCurrentStep() {
+		trigger_error('getCurrentStep() is deprecated since version 2.0. Use getCurrentStepNumber() instead.', E_USER_DEPRECATED);
+		return $this->getCurrentStepNumber();
+	}
+
+	public function getCurrentStepDescription() {
+		trigger_error('getCurrentStepDescription() is deprecated since version 2.0. Use getCurrentStepLabel() instead.', E_USER_DEPRECATED);
+		return $this->getCurrentStepLabel();
+	}
+
+	public function getMaxSteps() {
+		trigger_error('getMaxSteps() is deprecated since version 2.0. Use getStepCount() instead.', E_USER_DEPRECATED);
+		return $this->getStepCount();
+	}
+
+	public function getStepDescriptions() {
+		trigger_error('getStepDescriptions() is deprecated since version 2.0. Use getStepLabels() instead.', E_USER_DEPRECATED);
+		return $this->getStepLabels();
+	}
+
+	public function getFirstStep() {
+		trigger_error('getFirstStep() is deprecated since version 2.0. Use getFirstStepNumber() instead.', E_USER_DEPRECATED);
+		return $this->getFirstStepNumber();
+	}
+
+	public function getLastStep() {
+		trigger_error('getLastStep() is deprecated since version 2.0. Use getLastStepNumber() instead.', E_USER_DEPRECATED);
+		return $this->getLastStepNumber();
+	}
+
+	public function hasSkipStep() {
+		trigger_error('hasSkipStep() is deprecated since version 2.0. Use isStepSkipped() instead.', E_USER_DEPRECATED);
+		return $this->isStepSkipped();
+	}
+
 }
