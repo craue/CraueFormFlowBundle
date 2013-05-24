@@ -6,7 +6,7 @@ Features:
 
 - navigation (next, back, start over)
 - step labels
-- skipping of specified steps
+- skipping of steps
 - different validation group for each step
 - dynamic step navigation
 
@@ -373,14 +373,16 @@ The first item will be the first step. You can, however, explicitly index the ar
 
 Valid options per step are:
 - `label` (`string`|`null`)
-	If you'd like to render an overview of all steps you have to set the `label` option for each step.
-	By default, the labels will be translated using the `messages` domain when rendered in Twig.
+	- If you'd like to render an overview of all steps you have to set the `label` option for each step.
+	- By default, the labels will be translated using the `messages` domain when rendered in Twig.
 - `type` (`FormTypeInterface`|`string`|`null`)
-	The form type used to build the form for that step.
-	If using a string, it has to be the registered alias of the form type.
+	- The form type used to build the form for that step.
+	- If using a string, it has to be the registered alias of the form type.
 - `skip` (`callable`|`boolean`)
-	Decides whether the step will be skipped.
-	If using a callable, it has to return a boolean value and will receive the estimated current step number and the flow as arguments.
+	- Decides whether the step will be skipped.
+	- If using a callable...
+		- it has to return a boolean value and will receive the estimated current step number and the flow as arguments;
+		- it might be called more than once until the actual current step number has been determined.
 
 ### Examples
 
