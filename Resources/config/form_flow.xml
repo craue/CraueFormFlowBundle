@@ -15,18 +15,18 @@
 	</parameters>
 
 	<services>
-		<service id="craue.form.flow.storage_default" class="%craue.form.flow.storage.class%" scope="request" public="false">
+		<service id="craue.form.flow.storage_default" class="%craue.form.flow.storage.class%" public="false">
 			<argument type="service" id="session" />
 		</service>
 
-		<service id="craue.form.flow.storage" alias="craue.form.flow.storage_default" scope="request" />
+		<service id="craue.form.flow.storage" alias="craue.form.flow.storage_default" />
 
-		<service id="craue.form.flow" class="%craue.form.flow.class%" scope="request">
+		<service id="craue.form.flow" class="%craue.form.flow.class%">
 			<call method="setFormFactory">
 				<argument type="service" id="form.factory" />
 			</call>
-			<call method="setRequest">
-				<argument type="service" id="request" />
+			<call method="setContainer">
+				<argument type="service" id="service_container" />
 			</call>
 			<call method="setStorage">
 				<argument type="service" id="craue.form.flow.storage" />
