@@ -5,14 +5,13 @@ namespace Craue\FormFlowBundle\Event;
 use Craue\FormFlowBundle\Form\FormFlowInterface;
 
 /**
- * Is called once for the current step after validating the form data.
+ * Is called once after binding all step's saved form data and determining the current step.
  *
- * @author Marcus Stöhr <dafish@soundtrack-board.de>
  * @author Christian Raue <christian.raue@gmail.com>
  * @copyright 2011-2013 Christian Raue
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class PostValidateEvent extends FormFlowEvent {
+class PostBindFlowEvent extends FormFlowEvent {
 
 	/**
 	 * @var mixed

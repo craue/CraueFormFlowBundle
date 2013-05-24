@@ -2,6 +2,8 @@
 
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form;
 
+use Craue\FormFlowBundle\Event\GetStepsEvent;
+use Craue\FormFlowBundle\Event\PostBindFlowEvent;
 use Craue\FormFlowBundle\Event\PostBindRequestEvent;
 use Craue\FormFlowBundle\Event\PostBindSavedDataEvent;
 use Craue\FormFlowBundle\Event\PostValidateEvent;
@@ -18,9 +20,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class Demo1Flow extends FormFlow implements EventSubscriberInterface {
 
-	protected $maxSteps = 5;
-
-	protected $skipSteps = array(1, 5);
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getName() {
+		return 'demo1';
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -36,7 +41,9 @@ class Demo1Flow extends FormFlow implements EventSubscriberInterface {
 	public static function getSubscribedEvents() {
 		return array(
 			FormFlowEvents::PRE_BIND => 'onPreBind',
+			FormFlowEvents::GET_STEPS => 'onGetSteps',
 			FormFlowEvents::POST_BIND_SAVED_DATA => 'onPostBindSavedData',
+			FormFlowEvents::POST_BIND_FLOW => 'onPostBindFlow',
 			FormFlowEvents::POST_BIND_REQUEST => 'onPostBindRequest',
 			FormFlowEvents::POST_VALIDATE => 'onPostValidate',
 		);
@@ -45,21 +52,33 @@ class Demo1Flow extends FormFlow implements EventSubscriberInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function loadStepDescriptions() {
+	protected function loadStepsConfig() {
 		return array(
-			'step1',
-			'step2',
-			'step3',
-			'step4',
-			'step5',
+			array(
+				'label' => 'step1',
+				'skip' => true,
+			),
+			array(
+				'label' => 'step2',
+			),
+			array(
+				'label' => 'step3',
+			),
+			array(
+				'label' => 'step4',
+			),
+			array(
+				'label' => 'step5',
+				'skip' => true,
+			),
 		);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getFormOptions($formData, $step, array $options = array()) {
-		$options = parent::getFormOptions($formData, $step, $options);
+	public function getFormOptions($step, array $options = array()) {
+		$options = parent::getFormOptions($step, $options);
 
 		$options['cascade_validation'] = true;
 
@@ -75,7 +94,7 @@ class Demo1Flow extends FormFlow implements EventSubscriberInterface {
 	}
 
 	public function getCalledEventsSessionKey() {
-		return $this->id . '_debug_events_called';
+		return $this->getId() . '_debug_events_called';
 	}
 
 	protected function logEventCall($name) {
@@ -88,8 +107,16 @@ class Demo1Flow extends FormFlow implements EventSubscriberInterface {
 		$this->logEventCall('onPreBind');
 	}
 
+	public function onGetSteps(GetStepsEvent $event) {
+		$this->logEventCall('onGetSteps');
+	}
+
 	public function onPostBindSavedData(PostBindSavedDataEvent $event) {
 		$this->logEventCall('onPostBindSavedData #' . $event->getStep());
+	}
+
+	public function onPostBindFlow(PostBindFlowEvent $event) {
+		$this->logEventCall('onPostBindFlow #' . $event->getFlow()->getCurrentStepNumber());
 	}
 
 	public function onPostBindRequest(PostBindRequestEvent $event) {

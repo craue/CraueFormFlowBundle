@@ -2,7 +2,7 @@
 
 namespace Craue\FormFlowBundle\Event;
 
-use Craue\FormFlowBundle\Form\FormFlow;
+use Craue\FormFlowBundle\Form\FormFlowInterface;
 
 /**
  * Is called once prior to binding any (neither saved nor request) data.
@@ -15,12 +15,5 @@ use Craue\FormFlowBundle\Form\FormFlow;
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class PreBindEvent extends FormFlowEvent {
-
-	/**
-	 * @param FormFlow $flow
-	 */
-	public function __construct(FormFlow $flow) {
-		$this->flow = $flow;
-	}
 
 }

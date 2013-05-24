@@ -1,13 +1,12 @@
 # Information
 
 CraueFormFlowBundle provides a facility for building and handling multi-step forms.
-It makes it easy to turn an existing form into a multi-step form flow.
 
 Features:
 
 - navigation (next, back, start over)
-- step descriptions
-- skipping of specified steps
+- step labels
+- skipping of steps
 - different validation group for each step
 - dynamic step navigation
 
@@ -54,109 +53,233 @@ public function registerBundles() {
 
 # Usage
 
-This section shows how to create a 3-step form flow for user registration.
+This section shows how to create a 3-step form flow for creating a vehicle.
+You have to choose between two approaches on how to setup your flow.
 
-## Create a flow class
+## Approach A: One form type for the entire flow
+
+This approach makes it easy to turn an existing (usual) form into a form flow.
+
+### Create a flow class
 
 ```php
-// src/MyCompany/MyBundle/Form/RegisterUserFlow.php
+// src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
 use Craue\FormFlowBundle\Form\FormFlow;
+use Craue\FormFlowBundle\Form\FormFlowInterface;
 
-class RegisterUserFlow extends FormFlow {
+class CreateVehicleFlow extends FormFlow {
 
-	protected $maxSteps = 3;
+	/**
+	 * @var FormTypeInterface
+	 */
+	protected $formType;
+
+	public function setFormType(FormTypeInterface $formType) {
+		$this->formType = $formType;
+	}
+
+	public function getName() {
+		return 'createVehicle';
+	}
+
+	protected function loadStepsConfig() {
+		return array(
+			array(
+				'label' => 'wheels',
+				'type' => $this->formType,
+			),
+			array(
+				'label' => 'engine',
+				'type' => $this->formType,
+				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
+				},
+			),
+			array(
+				'label' => 'confirmation',
+				'type' => $this->formType, // needed to avoid InvalidOptionsException regarding option 'flowStep'
+			),
+		);
+	}
+
+	public function getFormOptions($step, array $options = array()) {
+		$options = parent::getFormOptions($step, $options);
+
+		$options['flowStep'] = $step;
+
+		return $options;
+	}
 
 }
 ```
 
-If you'd like to render an overview of all steps you have to implement a `loadStepDescriptions` method returning an
-array of descriptions where the value with index 0 will be the description for step 1:
-
-```php
-// in src/MyCompany/MyBundle/Form/RegisterUserFlow.php
-protected function loadStepDescriptions() {
-	return array(
-		'Account',
-		'Password',
-		'Terms of service',
-	);
-}
-```
-
-By default, these descriptions will be translated using the `messages` domain when rendered in Twig.
-
-## Create a form type class
+### Create a form type class
 
 You only have to create one form type class for a flow.
-An option called `flowStep` is passed to the form type so it can build the form according to the step to render.
+Since you're passing an option called `flowStep` to the form type, it can decide which fields will be added to the form
+according to the step to render.
 
 ```php
-// src/MyCompany/MyBundle/Form/RegisterUserFormType.php
+// src/MyCompany/MyBundle/Form/CreateVehicleForm.php
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class RegisterUserFormType extends AbstractType {
+class CreateVehicleForm extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		switch ($options['flowStep']) {
 			case 1:
-				$builder->add('username');
-				$builder->add('email', 'email');
-				break;
-			case 2:
-				$builder->add('plainPassword', 'repeated', array(
-					'type' => 'password',
+				$validValues = array(2, 4);
+				$builder->add('numberOfWheels', 'choice', array(
+					'choices' => array_combine($validValues, $validValues),
+					'empty_value' => '',
 				));
 				break;
-			case 3:
-				$builder->add('termsOfService', 'checkbox');
+			case 2:
+				$builder->add('engine', 'form_type_vehicleEngine', array(
+					'empty_value' => '',
+				));
 				break;
 		}
 	}
 
 	public function setDefaultOptions(OptionsResolverInterface $resolver) {
 		$resolver->setDefaults(array(
-			'flowStep' => 1,
-			'data_class' => 'MyCompany\MyBundle\Entity\MyUser', // should point to your user entity
+			'flowStep' => null,
 		));
 	}
 
 	public function getName() {
-		return 'registerUser';
+		return 'createVehicle';
 	}
 
 }
 ```
 
-## Register your form type and flow as services
+### Register your form type and flow as services
 
 ```xml
 <services>
-	<service id="myCompany.form.registerUser"
-			class="MyCompany\MyBundle\Form\RegisterUserFormType">
-		<tag name="form.type" alias="registerUser" />
+	<service id="myCompany.form.createVehicle"
+			class="MyCompany\MyBundle\Form\CreateVehicleForm">
+		<tag name="form.type" alias="createVehicle" />
 	</service>
 
-	<service id="myCompany.form.flow.registerUser"
-			class="MyCompany\MyBundle\Form\RegisterUserFlow"
+	<service id="myCompany.form.flow.createVehicle"
+			class="MyCompany\MyBundle\Form\CreateVehicleFlow"
 			parent="craue.form.flow"
 			scope="request">
 		<call method="setFormType">
-			<argument type="service" id="myCompany.form.registerUser" />
+			<argument type="service" id="myCompany.form.createVehicle" />
 		</call>
+	</service>
+</services>
+```
+
+## Approach B: One form type per step
+
+This approach makes it easy to reuse the form types to compose other forms.
+
+### Create a flow class
+
+```php
+// src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
+use Craue\FormFlowBundle\Form\FormFlow;
+use Craue\FormFlowBundle\Form\FormFlowInterface;
+
+class CreateVehicleFlow extends FormFlow {
+
+	public function getName() {
+		return 'createVehicle';
+	}
+
+	protected function loadStepsConfig() {
+		return array(
+			array(
+				'label' => 'wheels',
+				'type' => new CreateVehicleStep1Form(),
+			),
+			array(
+				'label' => 'engine',
+				'type' => new CreateVehicleStep2Form(),
+				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
+				},
+			),
+			array(
+				'label' => 'confirmation',
+			),
+		);
+	}
+
+}
+```
+
+### Create form type classes
+
+```php
+// src/MyCompany/MyBundle/Form/CreateVehicleStep1Form.php
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+
+class CreateVehicleStep1Form extends AbstractType {
+
+	public function buildForm(FormBuilderInterface $builder, array $options) {
+		$validValues = array(2, 4);
+		$builder->add('numberOfWheels', 'choice', array(
+			'choices' => array_combine($validValues, $validValues),
+			'empty_value' => '',
+		));
+	}
+
+	public function getName() {
+		return 'createVehicleStep1';
+	}
+
+}
+```
+
+```php
+// src/MyCompany/MyBundle/Form/CreateVehicleStep2Form.php
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+
+class CreateVehicleStep2Form extends AbstractType {
+
+	public function buildForm(FormBuilderInterface $builder, array $options) {
+		$builder->add('engine', 'form_type_vehicleEngine', array(
+			'empty_value' => '',
+		));
+	}
+
+	public function getName() {
+		return 'createVehicleStep2';
+	}
+
+}
+```
+
+### Register your form type and flow as services
+
+```xml
+<services>
+	<service id="myCompany.form.flow.createVehicle"
+			class="MyCompany\MyBundle\Form\CreateVehicleFlow"
+			parent="craue.form.flow"
+			scope="request">
 	</service>
 </services>
 ```
 
 ## Create a form template
 
-You also only need one template for a flow.
+You only need one template for a flow.
 The instance of your flow class is passed to the template in a variable called `flow` so you can use it to render the
 form according to the current step.
 
 ```html+jinja
-{# in src/MyCompany/MyBundle/Resources/views/User/registerUser.html.twig #}
+{# in src/MyCompany/MyBundle/Resources/views/Vehicle/createVehicle.html.twig #}
 <div>
 	Steps:
 	{% include 'CraueFormFlowBundle:FormFlow:stepList.html.twig' %}
@@ -166,10 +289,10 @@ form according to the current step.
 
 	{{ form_errors(form) }}
 
-	{% if flow.getCurrentStep() == 3 %}
+	{% if flow.getCurrentStepNumber() == 1 %}
 		<div>
-			You have to agree to the terms of service to register.<br />
-			{{ form_row(form.termsOfService) }}
+			When selecting four wheels you have to choose the engine in the next step.<br />
+			{{ form_row(form.numberOfWheels) }}
 		</div>
 	{% endif %}
 
@@ -191,28 +314,28 @@ So place this in your base template:
 ## Create an action
 
 ```php
-// in src/MyCompany/MyBundle/Controller/UserController.php
+// in src/MyCompany/MyBundle/Controller/VehicleController.php
 /**
  * @Template
  */
-public function registerUserAction() {
-	$user = new MyUser(); // Should be your user entity. Has to be an object, won't work properly with an array.
+public function createVehicle() {
+	$formData = new Vehicle(); // Your form data class. Has to be an object, won't work properly with an array.
 
-	$flow = $this->get('myCompany.form.flow.registerUser'); // must match the flow's service id
-	$flow->bind($user);
+	$flow = $this->get('myCompany.form.flow.createVehicle'); // must match the flow's service id
+	$flow->bind($formData);
 
 	// form of the current step
-	$form = $flow->createForm($user);
+	$form = $flow->createForm();
 	if ($flow->isValid($form)) {
-		$flow->saveCurrentStepData();
+		$flow->saveCurrentStepData($form);
 
 		if ($flow->nextStep()) {
 			// form for the next step
-			$form = $flow->createForm($user);
+			$form = $flow->createForm();
 		} else {
 			// flow finished
 			$em = $this->getDoctrine()->getEntityManager();
-			$em->persist($user);
+			$em->persist($formData);
 			$em->flush();
 
 			return $this->redirect($this->generateUrl('home')); // redirect when done
@@ -226,41 +349,117 @@ public function registerUserAction() {
 }
 ```
 
+# Explanations
+
+## How the flow works
+
+1. Dispatch `PreBindEvent`.
+1. Dispatch `GetStepsEvent`.
+1. Update the form data class with previously saved data of all steps. For each one, dispatch `PostBindSavedDataEvent`.
+1. Evaluate which steps are skipped. Determine the current step.
+1. Dispatch `PostBindFlowEvent`.
+1. Create the form for the current step.
+1. Bind the request to that form.
+1. Dispatch `PostBindRequestEvent`.
+1. Validate the form data.
+1. Dispatch `PostValidateEvent`.
+1. Save the form data.
+1. Proceed to the next step.
+
+## Method `loadStepsConfig`
+
+The array returned by that method is used to create all steps of the flow.
+The first item will be the first step. You can, however, explicitly index the array for easier readability.
+
+Valid options per step are:
+- `label` (`string`|`null`)
+	- If you'd like to render an overview of all steps you have to set the `label` option for each step.
+	- By default, the labels will be translated using the `messages` domain when rendered in Twig.
+- `type` (`FormTypeInterface`|`string`|`null`)
+	- The form type used to build the form for that step.
+	- If using a string, it has to be the registered alias of the form type.
+- `skip` (`callable`|`boolean`)
+	- Decides whether the step will be skipped.
+	- If using a callable...
+		- it has to return a boolean value and will receive the estimated current step number and the flow as arguments;
+		- it might be called more than once until the actual current step number has been determined.
+
+### Examples
+
+```php
+protected function loadStepsConfig() {
+	return array(
+		array(
+			'type' => new CreateVehicleStep1Form(),
+		),
+		array(
+			'type' => new CreateVehicleStep2Form(),
+			'skip' => true,
+		),
+		array(
+		),
+	);
+}
+```
+
+```php
+protected function loadStepsConfig() {
+	return array(
+		1 => array(
+			'label' => 'wheels',
+			'type' => new CreateVehicleStep1Form(),
+		),
+		2 => array(
+			'label' => 'engine',
+			'type' => 'createVehicleStep2',
+			'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+				return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
+			},
+		),
+		3 => array(
+			'label' => 'confirmation',
+		),
+	);
+}
+```
+
 # Advanced stuff
 
 ## Validation groups
 
 To validate the form data class a step-based validation group is passed to the form type.
-By default, if `getName()` of the form type returns `registerUser`, such a group is named `flow_registerUser_step1`
+By default, if `getName()` of the flow returns `createVehicle`, such a group is named `flow_createVehicle_step1`
 for the first step.
 
 ## Passing step-based options to the form type
 
-If your form type needs options to build the form (e.g. conditional fields) you can override the `getFormOptions`
-method of your flow class.
+If your form type needs options to build the form (e.g. conditional fields) you can override method `getFormOptions`
+of your flow class.
 Before you can use the options you have to define them in your form type class:
 
 ```php
-// in src/MyCompany/MyBundle/Form/RegisterUserFormType.php
+// in src/MyCompany/MyBundle/Form/CreateVehicleStep2Form.php
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 public function setDefaultOptions(OptionsResolverInterface $resolver) {
 	$resolver->setDefaults(array(
 		// ...
-		'givenUsername' => null,
+		'numberOfWheels' => null,
 	));
 }
 ```
 
 Then you can set them in your flow class.
-It's important that an option needed for one step is also available for all subsequent ones, so don't use `switch`
-here.
 
 ```php
-// in src/MyCompany/MyBundle/Form/RegisterUserFlow.php
-public function getFormOptions($formData, $step, array $options = array()) {
-	$options = parent::getFormOptions($formData, $step, $options);
+// in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
+public function getFormOptions($step, array $options = array()) {
+	$options = parent::getFormOptions($step, $options);
 
-	if ($step > 1) {
-		$options['givenUsername'] = $formData->getUsername();
+	$formData = $this->getFormData();
+
+	if ($step === 2) {
+		$options['numberOfWheels'] = $formData->getNumberOfWheels();
 	}
 
 	return $options;
@@ -274,8 +473,8 @@ Dynamic step navigation means that the step list rendered will contain links to 
 To enable it you could extend the flow class mentioned in the example above as follows:
 
 ```php
-// in src/MyCompany/MyBundle/Form/RegisterUserFlow.php
-class RegisterUserFlow extends FormFlow {
+// in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
+class CreateVehicleFlow extends FormFlow {
 
 	protected $allowDynamicStepNavigation = true;
 
@@ -287,8 +486,8 @@ class RegisterUserFlow extends FormFlow {
 To force clearing of saved step data when finishing the flow you should call `$flow->reset()` in the action:
 
 ```php
-// in src/MyCompany/MyBundle/Controller/UserController.php
-public function registerUserAction() {
+// in src/MyCompany/MyBundle/Controller/VehicleController.php
+public function createVehicleAction() {
 	// ...
 
 	// flow finished
@@ -303,14 +502,14 @@ To ensure starting a flow with clean data, it would be a good idea to add a sepa
 just resets the flow and redirects to the usual action:
 
 ```php
-// in src/MyCompany/MyBundle/Controller/UserController.php
-public function registerUserStartAction() {
+// in src/MyCompany/MyBundle/Controller/VehicleController.php
+public function createVehicleStartAction() {
 	// ...
 
-	$flow = $this->get('myCompany.form.flow.registerUser');
+	$flow = $this->get('myCompany.form.flow.createVehicle');
 	$flow->reset();
 
-	return $this->redirect($this->generateUrl('...')); // route name for registerUserAction
+	return $this->redirect($this->generateUrl('...')); // route name for createVehicleAction
 }
 ```
 
@@ -327,7 +526,9 @@ you should modify the opening form tag in the form template like this:
 There are some events which you can subscribe to. Using all of them right inside your flow class could look like this:
 
 ```php
-// in src/MyCompany/MyBundle/Form/RegisterUserFlow.php
+// in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
+use Craue\FormFlowBundle\Event\GetStepsEvent;
+use Craue\FormFlowBundle\Event\PostBindFlowEvent;
 use Craue\FormFlowBundle\Event\PostBindRequestEvent;
 use Craue\FormFlowBundle\Event\PostBindSavedDataEvent;
 use Craue\FormFlowBundle\Event\PostValidateEvent;
@@ -336,7 +537,7 @@ use Craue\FormFlowBundle\Form\FormFlowEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class RegisterUserFlow extends FormFlow implements EventSubscriberInterface {
+class CreateVehicleFlow extends FormFlow implements EventSubscriberInterface {
 
 	public function setEventDispatcher(EventDispatcherInterface $dispatcher) {
 		parent::setEventDispatcher($dispatcher);
@@ -346,7 +547,9 @@ class RegisterUserFlow extends FormFlow implements EventSubscriberInterface {
 	public static function getSubscribedEvents() {
 		return array(
 			FormFlowEvents::PRE_BIND => 'onPreBind',
+			FormFlowEvents::GET_STEPS => 'onGetSteps',
 			FormFlowEvents::POST_BIND_SAVED_DATA => 'onPostBindSavedData',
+			FormFlowEvents::POST_BIND_FLOW => 'onPostBindFlow',
 			FormFlowEvents::POST_BIND_REQUEST => 'onPostBindRequest',
 			FormFlowEvents::POST_VALIDATE => 'onPostValidate',
 		);
@@ -356,7 +559,15 @@ class RegisterUserFlow extends FormFlow implements EventSubscriberInterface {
 		// ...
 	}
 
+	public function onGetSteps(GetStepsEvent $event) {
+		// ...
+	}
+
 	public function onPostBindSavedData(PostBindSavedDataEvent $event) {
+		// ...
+	}
+
+	public function onPostBindFlow(PostBindFlowEvent $event) {
 		// ...
 	}
 

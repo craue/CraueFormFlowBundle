@@ -2,15 +2,17 @@
 
 namespace Craue\FormFlowBundle\Form;
 
+use Craue\FormFlowBundle\Event\GetStepsEvent;
+use Craue\FormFlowBundle\Event\PostBindFlowEvent;
 use Craue\FormFlowBundle\Event\PostBindRequestEvent;
 use Craue\FormFlowBundle\Event\PostBindSavedDataEvent;
 use Craue\FormFlowBundle\Event\PostValidateEvent;
 use Craue\FormFlowBundle\Event\PreBindEvent;
+use Craue\FormFlowBundle\Exception\InvalidTypeException;
 use Craue\FormFlowBundle\Storage\StorageInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -20,15 +22,10 @@ use Symfony\Component\HttpFoundation\Request;
  * @copyright 2011-2013 Christian Raue
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class FormFlow {
+abstract class FormFlow implements FormFlowInterface {
 
 	const TRANSITION_BACK = 'back';
 	const TRANSITION_RESET = 'reset';
-
-	/**
-	 * @var FormTypeInterface
-	 */
-	protected $formType;
 
 	/**
 	 * @var FormFactoryInterface
@@ -53,52 +50,7 @@ class FormFlow {
 	/**
 	 * @var string
 	 */
-	protected $id;
-
-	/**
-	 * @var string
-	 */
-	protected $formStepKey;
-
-	/**
-	 * @var string
-	 */
-	protected $formTransitionKey;
-
-	/**
-	 * @var string
-	 */
-	protected $stepDataKey;
-
-	/**
-	 * @var string
-	 */
-	protected $validationGroupPrefix;
-
-	/**
-	 * @var integer
-	 */
-	protected $maxSteps;
-
-	/**
-	 * @var integer
-	 */
-	protected $currentStep;
-
-	/**
-	 * @var string
-	 */
 	protected $transition;
-
-	/**
-	 * @var null|string[] Is only null if not initialized.
-	 */
-	protected $stepDescriptions = null;
-
-	/**
-	 * @var integer[]
-	 */
-	protected $skipSteps = array();
 
 	/**
 	 * @var boolean
@@ -111,67 +63,102 @@ class FormFlow {
 	protected $dynamicStepNavigationParameter = 'step';
 
 	/**
-	 * @param FormFactoryInterface $formFactory
+	 * @var string|null Is only null if not yet initialized.
+	 */
+	private $id = null;
+
+	/**
+	 * @var string|null Is only null if not yet initialized.
+	 */
+	private $formStepKey = null;
+
+	/**
+	 * @var string|null Is only null if not yet initialized.
+	 */
+	private $formTransitionKey = null;
+
+	/**
+	 * @var string|null Is only null if not yet initialized.
+	 */
+	private $stepDataKey = null;
+
+	/**
+	 * @var string|null Is only null if not yet initialized.
+	 */
+	private $validationGroupPrefix = null;
+
+	/**
+	 * @var StepInterface[]|null Is only null if not yet initialized.
+	 */
+	private $steps = null;
+
+	/**
+	 * @var integer|null Is only null if not yet initialized.
+	 */
+	private $stepCount = null;
+
+	/**
+	 * @var string[]|null Is only null if not yet initialized.
+	 */
+	private $stepLabels = null;
+
+	/**
+	 * @var mixed|null Is only null if not yet initialized.
+	 */
+	private $formData = null;
+
+	/**
+	 * @var integer|null Is only null if not yet initialized.
+	 */
+	private $currentStepNumber = null;
+
+	/**
+	 * {@inheritDoc}
 	 */
 	public function setFormFactory(FormFactoryInterface $formFactory) {
 		$this->formFactory = $formFactory;
 	}
 
 	/**
-	 * @param Request $request
+	 * {@inheritDoc}
 	 */
 	public function setRequest(Request $request) {
 		$this->request = $request;
 	}
 
 	/**
-	 * @param StorageInterface $storage
+	 * {@inheritDoc}
 	 */
 	public function setStorage(StorageInterface $storage) {
 		$this->storage = $storage;
 	}
 
 	/**
-	 * @return StorageInterface
+	 * {@inheritDoc}
 	 */
 	public function getStorage() {
 		return $this->storage;
 	}
 
 	/**
-	 * @param EventDispatcherInterface $eventDispatcher
+	 * {@inheritDoc}
 	 */
 	public function setEventDispatcher(EventDispatcherInterface $eventDispatcher) {
 		$this->eventDispatcher = $eventDispatcher;
-	}
-
-	/**
-	 * @param FormTypeInterface $formType
-	 */
-	public function setFormType(FormTypeInterface $formType) {
-		$this->formType = $formType;
-		if (empty($this->id)) {
-			$this->id = 'flow_' . $this->formType->getName();
-		}
-		if (empty($this->validationGroupPrefix)) {
-			$this->validationGroupPrefix = $this->id. '_step';
-		}
-		if (empty($this->formStepKey)) {
-			$this->formStepKey = $this->id. '_step';
-		}
-		if (empty($this->formTransitionKey)) {
-			$this->formTransitionKey = $this->id. '_transition';
-		}
-		if (empty($this->stepDataKey)) {
-			$this->stepDataKey = $this->id. '_data';
-		}
 	}
 
 	public function setId($id) {
 		$this->id = $id;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public function getId() {
+		if ($this->id === null) {
+			$this->id = 'flow_' . $this->getName();
+		}
+
 		return $this->id;
 	}
 
@@ -180,6 +167,10 @@ class FormFlow {
 	}
 
 	public function getFormStepKey() {
+		if ($this->formStepKey === null) {
+			$this->formStepKey = $this->getId() . '_step';
+		}
+
 		return $this->formStepKey;
 	}
 
@@ -188,6 +179,10 @@ class FormFlow {
 	}
 
 	public function getFormTransitionKey() {
+		if ($this->formTransitionKey === null) {
+			$this->formTransitionKey = $this->getId() . '_transition';
+		}
+
 		return $this->formTransitionKey;
 	}
 
@@ -196,6 +191,10 @@ class FormFlow {
 	}
 
 	public function getStepDataKey() {
+		if ($this->stepDataKey === null) {
+			$this->stepDataKey = $this->getId() . '_data';
+		}
+
 		return $this->stepDataKey;
 	}
 
@@ -204,33 +203,53 @@ class FormFlow {
 	}
 
 	public function getValidationGroupPrefix() {
+		if ($this->validationGroupPrefix === null) {
+			$this->validationGroupPrefix = $this->getId() . '_step';
+		}
+
 		return $this->validationGroupPrefix;
 	}
 
-	public function getFormType() {
-		return $this->formType;
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getStepCount() {
+		if ($this->stepCount === null) {
+			$this->stepCount = count($this->getSteps());
+		}
+
+		return $this->stepCount;
 	}
 
-	public function setMaxSteps($maxSteps) {
-		$this->maxSteps = $maxSteps;
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getFormData() {
+		if ($this->formData === null) {
+			throw new \RuntimeException('Form data has not been evaluated yet and thus cannot be accessed.');
+		}
+
+		return $this->formData;
 	}
 
-	public function getMaxSteps() {
-		return $this->maxSteps;
-	}
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getCurrentStepNumber() {
+		if ($this->currentStepNumber === null) {
+			throw new \RuntimeException('The current step has not been determined yet and thus cannot be accessed.');
+		}
 
-	public function setCurrentStep($currentStep) {
-		$this->currentStep = $currentStep;
-	}
-
-	public function getCurrentStep() {
-		return $this->currentStep;
+		return $this->currentStepNumber;
 	}
 
 	public function setAllowDynamicStepNavigation($allowDynamicStepNavigation) {
 		$this->allowDynamicStepNavigation = $allowDynamicStepNavigation;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public function isAllowDynamicStepNavigation() {
 		return $this->allowDynamicStepNavigation;
 	}
@@ -244,152 +263,203 @@ class FormFlow {
 	}
 
 	/**
-	 * @param integer|integer[] $steps
+	 * {@inheritDoc}
 	 */
-	public function addSkipStep($steps) {
-		if (is_scalar($steps)) {
-			$steps = array($steps);
-		}
-
-		foreach ($steps as $step) {
-			if (!in_array($step, $this->skipSteps)) {
-				$this->skipSteps[] = $step;
-			}
-		}
+	public function isStepSkipped($stepNumber) {
+		return $this->getStep($stepNumber)->isSkipped();
 	}
 
 	/**
-	 * @param integer|integer[] $steps
-	 */
-	public function removeSkipStep($steps) {
-		if (is_scalar($steps)) {
-			$steps = array($steps);
-		}
-
-		foreach ($steps as $step) {
-			$key = array_search($step, $this->skipSteps, true);
-			if ($key !== false) {
-				unset($this->skipSteps[$key]);
-				$this->skipSteps = array_values($this->skipSteps);
-			}
-		}
-	}
-
-	public function hasSkipStep($step) {
-		return in_array($step, $this->skipSteps);
-	}
-
-	/**
-	 * @param integer $step Assumed step to which skipped steps shall be applied to.
+	 * @param integer $stepNumber Assumed step to which skipped steps shall be applied to.
 	 * @param integer $direction Either 1 (to skip forwards) or -1 (to skip backwards).
-	 * @return integer Target step with skipping applied.
+	 * @return integer Target step number with skipping applied.
+	 * @throws \InvalidArgumentException If the value of {@code $direction} is invalid.
 	 */
-	public function applySkipping($step, $direction = 1) {
+	protected function applySkipping($stepNumber, $direction = 1) {
 		if ($direction !== 1 && $direction !== -1) {
 			throw new \InvalidArgumentException(sprintf('Argument of either -1 or 1 expected, "%s" given.',
 					$direction));
 		}
 
-		while ($this->hasSkipStep($step)) {
-			$step += $direction;
+		while ($this->isStepSkipped($stepNumber)) {
+			$stepNumber += $direction;
 		}
 
-		return $step;
-	}
-
-	public function reset() {
-		$this->storage->remove($this->stepDataKey);
-		$this->currentStep = $this->getFirstStep();
+		return $stepNumber;
 	}
 
 	/**
-	 * @return integer First visible step, which may be greater than 1 if steps are skipped.
+	 * {@inheritDoc}
 	 */
-	public function getFirstStep() {
+	public function reset() {
+		$this->storage->remove($this->getStepDataKey());
+		$this->currentStepNumber = $this->getFirstStepNumber();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getFirstStepNumber() {
 		return $this->applySkipping(1);
 	}
 
 	/**
-	 * @return integer Last visible step, which may be less than $this->maxSteps if steps are skipped.
+	 * {@inheritDoc}
 	 */
-	public function getLastStep() {
-		return $this->applySkipping($this->maxSteps, -1);
+	public function getLastStepNumber() {
+		return $this->applySkipping($this->getStepCount(), -1);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public function nextStep() {
-		$this->currentStep = $this->applySkipping(++$this->currentStep);
+		$currentStepNumber = $this->currentStepNumber + 1;
 
-		return $this->currentStep <= $this->maxSteps;
-	}
+		foreach ($this->getSteps() as $step) {
+			$step->evaluateSkipping($currentStepNumber, $this);
+		}
 
-	public function isStepDone($step) {
-		if ($this->hasSkipStep($step)) {
+		// There is no "next" step as the target step exceeds the actual step count.
+		if ($currentStepNumber > $this->getLastStepNumber()) {
+			return false;
+		}
+
+		$currentStepNumber = $this->applySkipping($currentStepNumber);
+
+		if ($currentStepNumber <= $this->getStepCount()) {
+			$this->currentStepNumber = $currentStepNumber;
+
 			return true;
 		}
 
-		return array_key_exists($step, $this->retrieveStepData());
+		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isStepDone($stepNumber) {
+		if ($this->isStepSkipped($stepNumber)) {
+			return true;
+		}
+
+		return array_key_exists($stepNumber, $this->retrieveStepData());
 	}
 
 	public function getRequestedTransition() {
 		if (empty($this->transition)) {
-			$this->transition = strtolower($this->request->request->get($this->formTransitionKey));
+			$this->transition = strtolower($this->request->request->get($this->getFormTransitionKey()));
 		}
 
 		return $this->transition;
 	}
 
-	public function getRequestedStep() {
-		$defaultStep = 1;
+	protected function getRequestedStepNumber() {
+		$defaultStepNumber = 1;
 
 		switch ($this->request->getMethod()) {
 			case 'POST':
-				return intval($this->request->request->get($this->formStepKey, $defaultStep));
+				return intval($this->request->request->get($this->getFormStepKey(), $defaultStepNumber));
 			case 'GET':
 				return $this->allowDynamicStepNavigation ?
-						intval($this->request->query->get($this->dynamicStepNavigationParameter, $defaultStep)) :
-						$defaultStep;
+						intval($this->request->query->get($this->dynamicStepNavigationParameter, $defaultStepNumber)) :
+						$defaultStepNumber;
 		}
 
-		return $defaultStep;
+		return $defaultStepNumber;
 	}
 
-	public function determineCurrentStep() {
-		$requestedStep = $this->getRequestedStep();
+	/**
+	 * Finds out which step is the current one.
+	 * @return integer
+	 */
+	protected function determineCurrentStepNumber() {
+		$requestedStepNumber = $this->getRequestedStepNumber();
 
 		if ($this->getRequestedTransition() === self::TRANSITION_BACK) {
-			$requestedStep = $this->applySkipping(--$requestedStep, -1);
+			--$requestedStepNumber;
 		}
 
-		// skip steps
-		$requestedStep = $this->applySkipping($requestedStep);
+		$requestedStepNumber = $this->refineCurrentStepNumber($requestedStepNumber);
 
-		// ensure: first step <= $requestedStep <= $this->maxSteps
-		$requestedStep = min(max($this->getFirstStep(), $requestedStep), $this->maxSteps);
+		if ($this->getRequestedTransition() === self::TRANSITION_BACK) {
+			$requestedStepNumber = $this->applySkipping($requestedStepNumber, -1);
 
-		return $requestedStep;
+			// re-evaluate to not keep following steps marked as skipped (after skipping them while going back)
+			foreach ($this->getSteps() as $step) {
+				$step->evaluateSkipping($requestedStepNumber, $this);
+			}
+		} else {
+			$requestedStepNumber = $this->applySkipping($requestedStepNumber);
+		}
+
+		return $requestedStepNumber;
 	}
 
+	/**
+	 * Refines the current step number by evaluating and considering skipped steps.
+	 * @param integer $refinedStepNumber
+	 * @return integer
+	 */
+	protected function refineCurrentStepNumber($refinedStepNumber) {
+		foreach ($this->getSteps() as $step) {
+			$stepSkippedOld = $step->isSkipped();
+
+			$step->evaluateSkipping($refinedStepNumber, $this);
+
+			if (!$stepSkippedOld && $step->isSkipped()) {
+				return $this->refineCurrentStepNumber($refinedStepNumber);
+			}
+		}
+
+		return $refinedStepNumber;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function bind($formData) {
 		if ($this->hasListeners(FormFlowEvents::PRE_BIND)) {
 			$event = new PreBindEvent($this);
 			$this->eventDispatcher->dispatch(FormFlowEvents::PRE_BIND, $event);
 		}
 
+		$this->formData = $formData;
+
+		$this->bindFlow();
+
+		if ($this->hasListeners(FormFlowEvents::POST_BIND_FLOW)) {
+			$event = new PostBindFlowEvent($this, $this->formData);
+			$this->eventDispatcher->dispatch(FormFlowEvents::POST_BIND_FLOW, $event);
+		}
+	}
+
+	protected function bindFlow() {
+		$reset = false;
+
 		if (!$this->allowDynamicStepNavigation && $this->request->isMethod('GET')) {
-			$this->reset();
-			return;
+			$reset = true;
 		}
 
 		if ($this->getRequestedTransition() === self::TRANSITION_RESET) {
+			$reset = true;
+		}
+
+		if (!$reset) {
+			$this->applyDataFromSavedSteps();
+		}
+
+		$requestedStepNumber = $this->determineCurrentStepNumber();
+
+		if ($reset) {
 			$this->reset();
 			return;
 		}
 
-		$requestedStep = $this->determineCurrentStep();
-
 		// ensure that the requested step fits the current progress
-		if ($requestedStep > $this->getFirstStep()) {
-			for ($step = $this->getFirstStep(); $step < $requestedStep; ++$step) {
+		if ($requestedStepNumber > $this->getFirstStepNumber()) {
+			for ($step = $this->getFirstStepNumber(); $step < $requestedStepNumber; ++$step) {
 				if (!$this->isStepDone($step)) {
 					$this->reset();
 					return;
@@ -397,34 +467,37 @@ class FormFlow {
 			}
 		}
 
-		$this->currentStep = $requestedStep;
-		$this->applyDataFromSavedSteps($formData);
+		$this->currentStepNumber = $requestedStepNumber;
+
 		if (!$this->allowDynamicStepNavigation && $this->getRequestedTransition() === self::TRANSITION_BACK) {
 			/*
 			 * Don't invalidate data for the current step to properly show the filled out form for that step after
 			 * pressing "back" and refreshing the page. Otherwise, the form would be blank since the data has already
 			 * been invalidated previously.
 			 */
-			$this->invalidateStepData($this->currentStep + 1);
+			$this->invalidateStepData($this->currentStepNumber + 1);
 		}
 	}
 
-	public function saveCurrentStepData() {
+	/**
+	 * {@inheritDoc}
+	 */
+	public function saveCurrentStepData(FormInterface $form) {
 		$stepData = $this->retrieveStepData();
 
-		$stepData[$this->currentStep] = $this->request->request->get($this->formType->getName(), array());
+		$stepData[$this->currentStepNumber] = $this->request->request->get($form->getName(), array());
 
 		$this->saveStepData($stepData);
 	}
 
 	/**
-	 * Invalidates data for steps >= $fromStep.
-	 * @param integer $fromStep
+	 * Invalidates data for steps >= $fromStepNumber.
+	 * @param integer $fromStepNumber
 	 */
-	public function invalidateStepData($fromStep) {
+	public function invalidateStepData($fromStepNumber) {
 		$stepData = $this->retrieveStepData();
 
-		for ($step = $fromStep; $step < $this->maxSteps; ++$step) {
+		for ($step = $fromStepNumber; $step < $this->getStepCount(); ++$step) {
 			unset($stepData[$step]);
 		}
 
@@ -432,77 +505,116 @@ class FormFlow {
 	}
 
 	/**
-	 * Updates form data class with form data from previously saved steps.
-	 * @param mixed $formData
-	 * @param array $options
+	 * Updates form data class with previously saved form data of all steps.
 	 */
-	public function applyDataFromSavedSteps($formData, array $options = array()) {
+	protected function applyDataFromSavedSteps() {
 		$stepData = $this->retrieveStepData();
 
-		/*
-		 * Iteration $step === $this->currentStep is only needed to fill out the form when using the "back" button.
-		 */
-		for ($step = 1; $step <= $this->maxSteps; ++$step) {
-			if ($this->isStepDone($step)) {
-				if (array_key_exists($step, $stepData)) {
-					$stepForm = $this->createFormForStep($formData, $step, $options);
-					$stepForm->bind($stepData[$step]);
+		foreach ($this->getSteps() as $step) {
+			$stepNumber = $step->getNumber();
 
-					if ($this->hasListeners(FormFlowEvents::POST_BIND_SAVED_DATA)) {
-						$event = new PostBindSavedDataEvent($this, $formData, $step);
-						$this->eventDispatcher->dispatch(FormFlowEvents::POST_BIND_SAVED_DATA, $event);
-					}
+			if (array_key_exists($stepNumber, $stepData)) {
+				$stepForm = $this->createFormForStep($stepNumber);
+				$stepForm->bind($stepData[$stepNumber]);
+
+				if ($this->hasListeners(FormFlowEvents::POST_BIND_SAVED_DATA)) {
+					$event = new PostBindSavedDataEvent($this, $this->formData, $stepNumber);
+					$this->eventDispatcher->dispatch(FormFlowEvents::POST_BIND_SAVED_DATA, $event);
 				}
 			}
 		}
 	}
 
 	/**
-	 * Creates the form for the current step.
-	 * @param mixed $formData
-	 * @param array $options
-	 * @return FormInterface
+	 * {@inheritDoc}
 	 */
-	public function createForm($formData, array $options = array()) {
-		return $this->createFormForStep($formData, $this->currentStep, $options);
+	public function createForm(array $options = array()) {
+		return $this->createFormForStep($this->currentStepNumber, $options);
 	}
 
-	public function getFormOptions($formData, $step, array $options = array()) {
-		$options['flowStep'] = $step;
-
+	public function getFormOptions($step, array $options = array()) {
 		if (!array_key_exists('validation_groups', $options)) {
-			$options['validation_groups'] = $this->validationGroupPrefix . $step;
+			$options['validation_groups'] = $this->getValidationGroupPrefix() . $step;
 		}
 
 		return $options;
 	}
 
-	public function getStepDescriptions() {
-		if ($this->stepDescriptions === null) {
-			$this->stepDescriptions = $this->loadStepDescriptions();
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getStep($stepNumber) {
+		if (!is_int($stepNumber)) {
+			throw new InvalidTypeException($stepNumber, 'integer');
 		}
 
-		$stepDescriptionsCount = count($this->stepDescriptions);
-		if ($stepDescriptionsCount > 0 && $stepDescriptionsCount !== $this->maxSteps) {
-			throw new \RuntimeException(sprintf('The number of steps (%u) doesn\'t match the number of step descriptions (%u). Either update the descriptions or remove them.',
-					$this->maxSteps, $stepDescriptionsCount
-			));
+		$steps = $this->getSteps();
+		$index = $stepNumber - 1;
+
+		if (array_key_exists($index, $steps)) {
+			return $steps[$index];
 		}
 
-		return $this->stepDescriptions;
+		throw new \OutOfBoundsException(sprintf('The step "%d" does not exist.', $stepNumber));
 	}
 
-	public function getCurrentStepDescription() {
-		$stepDescriptions = $this->getStepDescriptions();
-		$index = $this->currentStep - 1;
-
-		if (array_key_exists($index, $stepDescriptions)) {
-			return $stepDescriptions[$index];
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getSteps() {
+		// The steps have been loaded already.
+		if ($this->steps !== null) {
+			return $this->steps;
 		}
 
-		return null;
+		// There are no listeners on the event at all, load from configuration.
+		if (!$this->hasListeners(FormFlowEvents::GET_STEPS)) {
+			$this->steps = $this->createStepsFromConfig($this->loadStepsConfig());
+
+			return $this->steps;
+		}
+
+		$event = new GetStepsEvent($this);
+		$this->eventDispatcher->dispatch(FormFlowEvents::GET_STEPS, $event);
+
+		// A listener has provided the steps for this flow.
+		if ($event->isPropagationStopped()) {
+			$this->steps = $event->getSteps();
+		// There are listeners, but none created the steps for this flow, so fallback to config.
+		} else {
+			$this->steps = $this->createStepsFromConfig($this->loadStepsConfig());
+		}
+
+		return $this->steps;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getStepLabels() {
+		if ($this->stepLabels === null) {
+			$stepLabels = array();
+
+			foreach ($this->getSteps() as $step) {
+				$stepLabels[] = $step->getLabel();
+			}
+
+			$this->stepLabels = $stepLabels;
+		}
+
+		return $this->stepLabels;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getCurrentStepLabel() {
+		return $this->getStep($this->currentStepNumber)->getLabel();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function isValid(FormInterface $form) {
 		if ($this->request->isMethod('POST') && !in_array($this->getRequestedTransition(), array(
 			self::TRANSITION_BACK,
@@ -511,7 +623,7 @@ class FormFlow {
 			$form->bind($this->request);
 
 			if ($this->hasListeners(FormFlowEvents::POST_BIND_REQUEST)) {
-				$event = new PostBindRequestEvent($this, $form->getData(), $this->currentStep);
+				$event = new PostBindRequestEvent($this, $form->getData(), $this->currentStepNumber);
 				$this->eventDispatcher->dispatch(FormFlowEvents::POST_BIND_REQUEST, $event);
 			}
 
@@ -529,39 +641,49 @@ class FormFlow {
 	}
 
 	/**
-	 * Creates the form for the given step.
-	 * @param mixed $formData
-	 * @param integer $step
+	 * Creates the form for the given step number.
+	 * @param integer $stepNumber
 	 * @param array $options
 	 * @return FormInterface
 	 */
-	protected function createFormForStep($formData, $step, array $options = array()) {
-		if (!$this->formType instanceof FormTypeInterface) {
-			throw new \RuntimeException(sprintf('The form type has to be an instance of type "%s", but "%s" given.',
-					'Symfony\Component\Form\FormTypeInterface',
-					is_object($this->formType) ? get_class($this->formType) : gettype($this->formType)
-			));
-		}
+	protected function createFormForStep($stepNumber, array $options = array()) {
+		$formType = $this->getStep($stepNumber)->getType();
+		$options = $this->getFormOptions($stepNumber, $options);
 
-		$options = $this->getFormOptions($formData, $step, $options);
-
-		return $this->formFactory->create($this->formType, $formData, $options);
+		return $this->formFactory->create($formType !== null ? $formType : 'form', $this->formData, $options);
 	}
 
 	/**
-	 * Defines a description for each step used to render the step list.
-	 * @return string[] Value with index 0 is description for step 1.
+	 * Creates all steps from the given configuration.
+	 * @return StepInterface[] Value with index 0 is step 1.
 	 */
-	protected function loadStepDescriptions() {
+	public function createStepsFromConfig(array $stepsConfig) {
+		$steps = array();
+
+		// fix array indexes not starting at 0
+		$stepsConfig = array_values($stepsConfig);
+
+		foreach ($stepsConfig as $index => $stepConfig) {
+			$steps[] = Step::createFromConfig($index + 1, $stepConfig);
+		}
+
+		return $steps;
+	}
+
+	/**
+	 * Defines the configuration for all steps of this flow.
+	 * @return array
+	 */
+	protected function loadStepsConfig() {
 		return array();
 	}
 
 	protected function retrieveStepData() {
-		return $this->storage->get($this->stepDataKey, array());
+		return $this->storage->get($this->getStepDataKey(), array());
 	}
 
 	protected function saveStepData(array $data) {
-		$this->storage->set($this->stepDataKey, $data);
+		$this->storage->set($this->getStepDataKey(), $data);
 	}
 
 	/**
@@ -570,6 +692,43 @@ class FormFlow {
 	 */
 	protected function hasListeners($eventName) {
 		return $this->eventDispatcher !== null && $this->eventDispatcher->hasListeners($eventName);
+	}
+
+	// methods for BC with third-party templates (e.g. MopaBootstrapBundle)
+
+	public function getCurrentStep() {
+		trigger_error('getCurrentStep() is deprecated since version 2.0. Use getCurrentStepNumber() instead.', E_USER_DEPRECATED);
+		return $this->getCurrentStepNumber();
+	}
+
+	public function getCurrentStepDescription() {
+		trigger_error('getCurrentStepDescription() is deprecated since version 2.0. Use getCurrentStepLabel() instead.', E_USER_DEPRECATED);
+		return $this->getCurrentStepLabel();
+	}
+
+	public function getMaxSteps() {
+		trigger_error('getMaxSteps() is deprecated since version 2.0. Use getStepCount() instead.', E_USER_DEPRECATED);
+		return $this->getStepCount();
+	}
+
+	public function getStepDescriptions() {
+		trigger_error('getStepDescriptions() is deprecated since version 2.0. Use getStepLabels() instead.', E_USER_DEPRECATED);
+		return $this->getStepLabels();
+	}
+
+	public function getFirstStep() {
+		trigger_error('getFirstStep() is deprecated since version 2.0. Use getFirstStepNumber() instead.', E_USER_DEPRECATED);
+		return $this->getFirstStepNumber();
+	}
+
+	public function getLastStep() {
+		trigger_error('getLastStep() is deprecated since version 2.0. Use getLastStepNumber() instead.', E_USER_DEPRECATED);
+		return $this->getLastStepNumber();
+	}
+
+	public function hasSkipStep() {
+		trigger_error('hasSkipStep() is deprecated since version 2.0. Use isStepSkipped() instead.', E_USER_DEPRECATED);
+		return $this->isStepSkipped();
 	}
 
 }
