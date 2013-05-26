@@ -36,9 +36,9 @@ class FormFlow {
 	protected $formFactory;
 
 	/**
-	 * @var Request
+	 * @var Request|null
 	 */
-	protected $request;
+	private $request = null;
 
 	/**
 	 * @var StorageInterface
@@ -118,10 +118,22 @@ class FormFlow {
 	}
 
 	/**
-	 * @param Request $request
+	 * @param Request|null $request
 	 */
-	public function setRequest(Request $request) {
+	public function setRequest(Request $request = null) {
 		$this->request = $request;
+	}
+
+	/**
+	 * @return Request
+	 * @throws \RuntimeException If the request is not available.
+	 */
+	protected function getRequest() {
+		if ($this->request === null) {
+			throw new \RuntimeException('The request is not available.');
+		}
+
+		return $this->request;
 	}
 
 	/**
@@ -332,7 +344,7 @@ class FormFlow {
 
 	public function getRequestedTransition() {
 		if (empty($this->transition)) {
-			$this->transition = strtolower($this->request->request->get($this->formTransitionKey));
+			$this->transition = strtolower($this->getRequest()->request->get($this->formTransitionKey));
 		}
 
 		return $this->transition;
@@ -341,12 +353,14 @@ class FormFlow {
 	public function getRequestedStep() {
 		$defaultStep = 1;
 
-		switch ($this->request->getMethod()) {
+		$request = $this->getRequest();
+
+		switch ($request->getMethod()) {
 			case 'POST':
-				return intval($this->request->request->get($this->formStepKey, $defaultStep));
+				return intval($request->request->get($this->formStepKey, $defaultStep));
 			case 'GET':
 				return $this->allowDynamicStepNavigation ?
-						intval($this->request->query->get($this->dynamicStepNavigationParameter, $defaultStep)) :
+						intval($request->query->get($this->dynamicStepNavigationParameter, $defaultStep)) :
 						$defaultStep;
 		}
 
@@ -375,7 +389,7 @@ class FormFlow {
 			$this->eventDispatcher->dispatch(FormFlowEvents::PRE_BIND, $event);
 		}
 
-		if (!$this->allowDynamicStepNavigation && $this->request->isMethod('GET')) {
+		if (!$this->allowDynamicStepNavigation && $this->getRequest()->isMethod('GET')) {
 			$this->reset();
 			return;
 		}
@@ -412,7 +426,7 @@ class FormFlow {
 	public function saveCurrentStepData() {
 		$stepData = $this->retrieveStepData();
 
-		$stepData[$this->currentStep] = $this->request->request->get($this->formType->getName(), array());
+		$stepData[$this->currentStep] = $this->getRequest()->request->get($this->formType->getName(), array());
 
 		$this->saveStepData($stepData);
 	}
@@ -504,11 +518,13 @@ class FormFlow {
 	}
 
 	public function isValid(FormInterface $form) {
-		if ($this->request->isMethod('POST') && !in_array($this->getRequestedTransition(), array(
+		$request = $this->getRequest();
+
+		if ($request->isMethod('POST') && !in_array($this->getRequestedTransition(), array(
 			self::TRANSITION_BACK,
 			self::TRANSITION_RESET,
 		))) {
-			$form->bind($this->request);
+			$form->bind($request);
 
 			if ($this->hasListeners(FormFlowEvents::POST_BIND_REQUEST)) {
 				$event = new PostBindRequestEvent($this, $form->getData(), $this->currentStep);

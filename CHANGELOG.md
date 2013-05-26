@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.0 (not yet released)
+
+* BC break: adjustments for Symfony 2.3 compatibility (follow `UPGRADE-1.2.md` to upgrade)
+
 ## 1.1.3 (2013-05-23)
 
 * added method `getStorage`

@@ -7,7 +7,7 @@ php:
 env:
   - SYMFONY_VERSION="2.1.*" MIN_STABILITY="stable"
   - SYMFONY_VERSION="2.2.*" MIN_STABILITY="stable"
-#  - SYMFONY_VERSION="2.3.*" MIN_STABILITY="dev"
+  - SYMFONY_VERSION="2.3.*" MIN_STABILITY="dev"
 before_script:
   - sh travis_before_build.sh
 notifications:
