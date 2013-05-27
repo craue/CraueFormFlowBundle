@@ -2,7 +2,7 @@
 
 namespace Craue\FormFlowBundle\Event;
 
-use Craue\FormFlowBundle\Form\FormFlow;
+use Craue\FormFlowBundle\Form\FormFlowInterface;
 
 /**
  * Is called for each step after binding its saved form data.
@@ -25,11 +25,11 @@ class PostBindSavedDataEvent extends FormFlowEvent {
 	protected $step;
 
 	/**
-	 * @param FormFlow $flow
+	 * @param FormFlowInterface $flow
 	 * @param mixed $formData
 	 * @param integer $step
 	 */
-	public function __construct(FormFlow $flow, $formData, $step) {
+	public function __construct(FormFlowInterface $flow, $formData, $step) {
 		$this->flow = $flow;
 		$this->formData = $formData;
 		$this->step = $step;

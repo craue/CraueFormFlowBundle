@@ -1,13 +1,13 @@
 {% block craue_flow_stepList_class %}
-	{%- if loop.index == flow.getCurrentStep() -%}
+	{%- if loop.index == flow.getCurrentStepNumber() -%}
 		{{- ' class="craue_formflow_current_step"' -}}
-	{%- elseif flow.hasSkipStep(loop.index) -%}
+	{%- elseif flow.isStepSkipped(loop.index) -%}
 		{{- ' class="craue_formflow_skipped_step"' -}}
 	{%- elseif flow.isStepDone(loop.index) -%}
 		{{- ' class="craue_formflow_done_step"' -}}
 	{%- endif -%}
 {% endblock %}
 
-{% block craue_flow_stepDescription %}
-	{{- stepDescription | trans -}}
+{% block craue_flow_stepLabel %}
+	{{- stepLabel | trans -}}
 {% endblock %}

@@ -11,7 +11,11 @@ class FormFlowEvents {
 
 	const PRE_BIND = 'flow.pre_bind';
 
+	const GET_STEPS = 'flow.get_steps';
+
 	const POST_BIND_SAVED_DATA = 'flow.post_bind_saved_data';
+
+	const POST_BIND_FLOW = 'flow.post_bind_flow';
 
 	const POST_BIND_REQUEST = 'flow.post_bind_request';
 
