@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.0 (not yet released)
+## 2.0.0 (2013-05-27)
 
 - BC breaks (follow `UPGRADE-2.0.md` to upgrade):
   - reworked the way steps are defined
