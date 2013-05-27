@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * @author Christian Raue <christian.raue@gmail.com>
  * @copyright 2011-2013 Christian Raue
- * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class CreateVehicleForm extends AbstractType {
 
