@@ -33,11 +33,6 @@ abstract class FormFlow implements FormFlowInterface {
 	protected $formFactory;
 
 	/**
-	 * @var Request
-	 */
-	protected $request;
-
-	/**
 	 * @var StorageInterface
 	 */
 	protected $storage;
@@ -61,6 +56,11 @@ abstract class FormFlow implements FormFlowInterface {
 	 * @var string
 	 */
 	protected $dynamicStepNavigationParameter = 'step';
+
+	/**
+	 * @var Request|null
+	 */
+	private $request = null;
 
 	/**
 	 * @var string|null Is only null if not yet initialized.
@@ -122,8 +122,20 @@ abstract class FormFlow implements FormFlowInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function setRequest(Request $request) {
+	public function setRequest(Request $request = null) {
 		$this->request = $request;
+	}
+
+	/**
+	 * @return Request
+	 * @throws \RuntimeException If the request is not available.
+	 */
+	public function getRequest() {
+		if ($this->request === null) {
+			throw new \RuntimeException('The request is not available.');
+		}
+
+		return $this->request;
 	}
 
 	/**
@@ -349,7 +361,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 	public function getRequestedTransition() {
 		if (empty($this->transition)) {
-			$this->transition = strtolower($this->request->request->get($this->getFormTransitionKey()));
+			$this->transition = strtolower($this->getRequest()->request->get($this->getFormTransitionKey()));
 		}
 
 		return $this->transition;
@@ -358,12 +370,14 @@ abstract class FormFlow implements FormFlowInterface {
 	protected function getRequestedStepNumber() {
 		$defaultStepNumber = 1;
 
-		switch ($this->request->getMethod()) {
+		$request = $this->getRequest();
+
+		switch ($request->getMethod()) {
 			case 'POST':
-				return intval($this->request->request->get($this->getFormStepKey(), $defaultStepNumber));
+				return intval($request->request->get($this->getFormStepKey(), $defaultStepNumber));
 			case 'GET':
 				return $this->allowDynamicStepNavigation ?
-						intval($this->request->query->get($this->dynamicStepNavigationParameter, $defaultStepNumber)) :
+						intval($request->query->get($this->dynamicStepNavigationParameter, $defaultStepNumber)) :
 						$defaultStepNumber;
 		}
 
@@ -438,7 +452,7 @@ abstract class FormFlow implements FormFlowInterface {
 	protected function bindFlow() {
 		$reset = false;
 
-		if (!$this->allowDynamicStepNavigation && $this->request->isMethod('GET')) {
+		if (!$this->allowDynamicStepNavigation && $this->getRequest()->isMethod('GET')) {
 			$reset = true;
 		}
 
@@ -485,7 +499,7 @@ abstract class FormFlow implements FormFlowInterface {
 	public function saveCurrentStepData(FormInterface $form) {
 		$stepData = $this->retrieveStepData();
 
-		$stepData[$this->currentStepNumber] = $this->request->request->get($form->getName(), array());
+		$stepData[$this->currentStepNumber] = $this->getRequest()->request->get($form->getName(), array());
 
 		$this->saveStepData($stepData);
 	}
@@ -616,11 +630,13 @@ abstract class FormFlow implements FormFlowInterface {
 	 * {@inheritDoc}
 	 */
 	public function isValid(FormInterface $form) {
-		if ($this->request->isMethod('POST') && !in_array($this->getRequestedTransition(), array(
+		$request = $this->getRequest();
+
+		if ($request->isMethod('POST') && !in_array($this->getRequestedTransition(), array(
 			self::TRANSITION_BACK,
 			self::TRANSITION_RESET,
 		))) {
-			$form->bind($this->request);
+			$form->bind($request);
 
 			if ($this->hasListeners(FormFlowEvents::POST_BIND_REQUEST)) {
 				$event = new PostBindRequestEvent($this, $form->getData(), $this->currentStepNumber);

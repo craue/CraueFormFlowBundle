@@ -2,7 +2,9 @@
 
 ## 2.0.0 (not yet released)
 
-* BC break: reworked the way steps are defined (follow `UPGRADE-2.0.md` to upgrade)
+* BC breaks (follow `UPGRADE-2.0.md` to upgrade):
+  * reworked the way steps are defined
+  * adjustments in handling the request for Symfony 2.3 compatibility
 * added `GetStepsEvent` and `PostBindFlowEvent`
 
 ## 1.1.3 (2013-05-23)

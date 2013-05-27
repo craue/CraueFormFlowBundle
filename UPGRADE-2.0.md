@@ -168,6 +168,7 @@
 	- `maxSteps`: `getStepCount`
 	- `stepDescriptions`: `getStepLabels`
 	- `currentStep`: `getCurrentStepNumber`
+	- `request`: `getRequest`
 
 - Some properties have been removed.
 
