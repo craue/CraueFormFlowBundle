@@ -66,6 +66,7 @@ This approach makes it easy to turn an existing (usual) form into a form flow.
 // src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Form\FormFlowInterface;
+use Symfony\Component\Form\FormTypeInterface;
 
 class CreateVehicleFlow extends FormFlow {
 
