@@ -1,18 +1,15 @@
 # Information
 
-CraueFormFlowBundle provides a facility for building and handling multi-step forms.
+CraueFormFlowBundle provides a facility for building and handling multi-step forms in your Symfony2 project.
 
 Features:
-
 - navigation (next, back, start over)
 - step labels
 - skipping of steps
 - different validation group for each step
 - dynamic step navigation
 
-A live demo can be found at http://craue.de/sf2playground/en/CraueFormFlow/.
-
-This bundle should be used in conjunction with Symfony2.
+A live demo showcasing these features is available at http://craue.de/sf2playground/en/CraueFormFlow/.
 
 # Installation
 
@@ -261,7 +258,7 @@ class CreateVehicleStep2Form extends AbstractType {
 }
 ```
 
-### Register your form type and flow as services
+### Register your flow as a service
 
 ```xml
 <services>
