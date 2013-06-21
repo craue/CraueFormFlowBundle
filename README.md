@@ -316,7 +316,7 @@ So place this in your base template:
 /**
  * @Template
  */
-public function createVehicle() {
+public function createVehicleAction() {
 	$formData = new Vehicle(); // Your form data class. Has to be an object, won't work properly with an array.
 
 	$flow = $this->get('myCompany.form.flow.createVehicle'); // must match the flow's service id
@@ -340,7 +340,7 @@ public function createVehicle() {
 		}
 	}
 
-	return array(
+	return $this->render('MyCompanyMyBundle:Vehicle:createVehicle.html.twig',array(
 		'form' => $form->createView(),
 		'flow' => $flow,
 	);
