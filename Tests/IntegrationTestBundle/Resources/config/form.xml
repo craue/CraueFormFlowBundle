@@ -18,6 +18,11 @@
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\CreateVehicleForm">
 			<tag name="form.type" alias="createVehicle" />
 		</service>
+
+		<service id="integrationTestBundle.form.issue64"
+				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\Issue64Form">
+			<tag name="form.type" alias="issue64" />
+		</service>
 	</services>
 
 </container>
