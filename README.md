@@ -340,7 +340,7 @@ public function createVehicleAction() {
 		}
 	}
 
-	return array(
+	return $this->render('MyCompanyMyBundle:Vehicle:createVehicle.html.twig',array(
 		'form' => $form->createView(),
 		'flow' => $flow,
 	);
