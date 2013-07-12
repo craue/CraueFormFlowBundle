@@ -306,6 +306,11 @@ abstract class FormFlow implements FormFlowInterface {
 	public function reset() {
 		$this->storage->remove($this->getStepDataKey());
 		$this->currentStepNumber = $this->getFirstStepNumber();
+
+		// re-evaluate to not keep steps marked as skipped when resetting
+		foreach ($this->getSteps() as $step) {
+			$step->evaluateSkipping($this->currentStepNumber, $this);
+		}
 	}
 
 	/**

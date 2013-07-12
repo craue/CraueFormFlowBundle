@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1 (2013-07-12)
+
+- fixed steps being incorrectly marked as skipped when resetting the flow
+
 ## 2.0.0 (2013-05-27)
 
 - BC breaks (follow `UPGRADE-2.0.md` to upgrade):

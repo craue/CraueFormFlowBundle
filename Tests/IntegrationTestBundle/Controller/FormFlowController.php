@@ -59,6 +59,14 @@ class FormFlowController extends Controller {
 		return $this->processFlow((object) array(), $this->get('integrationTestBundle.form.flow.skipFirstStepUsingClosure'));
 	}
 
+	/**
+	 * @Route("/removeSecondStepSkipMarkOnReset/", name="_FormFlow_removeSecondStepSkipMarkOnReset")
+	 * @Template("IntegrationTestBundle:FormFlow:removeSecondStepSkipMarkOnReset.html.twig")
+	 */
+	public function removeSecondStepSkipMarkOnResetAction() {
+		return $this->processFlow((object) array(), $this->get('integrationTestBundle.form.flow.removeSecondStepSkipMarkOnReset'));
+	}
+
 	protected function processFlow($formData, FormFlow $flow) {
 		$flow->bind($formData);
 

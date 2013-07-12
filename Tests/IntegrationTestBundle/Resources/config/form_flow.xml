@@ -35,6 +35,12 @@
 				parent="craue.form.flow"
 				scope="request">
 		</service>
+
+		<service id="integrationTestBundle.form.flow.removeSecondStepSkipMarkOnReset"
+				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\RemoveSecondStepSkipMarkOnResetFlow"
+				parent="craue.form.flow"
+				scope="request">
+		</service>
 	</services>
 
 </container>
