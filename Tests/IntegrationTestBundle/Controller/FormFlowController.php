@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Controller;
 
 use Craue\FormFlowBundle\Form\FormFlow;
+use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Issue64Data;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Topic;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Vehicle;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -49,6 +50,14 @@ class FormFlowController extends Controller {
 	 */
 	public function demo1Action() {
 		return $this->processFlow((object) array(), $this->get('integrationTestBundle.form.flow.demo1'));
+	}
+
+	/**
+	 * @Route("/issue64/", name="_FormFlow_issue64")
+	 * @Template("IntegrationTestBundle:FormFlow:issue64.html.twig")
+	 */
+	public function issue64Action() {
+		return $this->processFlow(new Issue64Data(), $this->get('integrationTestBundle.form.flow.issue64'));
 	}
 
 	/**

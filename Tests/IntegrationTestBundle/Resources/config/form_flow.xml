@@ -30,6 +30,12 @@
 				scope="request">
 		</service>
 
+		<service id="integrationTestBundle.form.flow.issue64"
+				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\Issue64Flow"
+				parent="craue.form.flow"
+				scope="request">
+		</service>
+
 		<service id="integrationTestBundle.form.flow.skipFirstStepUsingClosure"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\SkipFirstStepUsingClosureFlow"
 				parent="craue.form.flow"

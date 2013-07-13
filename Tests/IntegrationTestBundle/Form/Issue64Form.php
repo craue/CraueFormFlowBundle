@@ -1,0 +1,63 @@
+<?php
+
+namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form;
+
+use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Issue64SubData;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+/**
+ * @author Christian Raue <christian.raue@gmail.com>
+ * @copyright 2011-2013 Christian Raue
+ * @license http://opensource.org/licenses/mit-license.php MIT License
+ */
+class Issue64Form extends AbstractType {
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function buildForm(FormBuilderInterface $builder, array $options) {
+		switch ($options['flowStep']) {
+			case 1:
+				$subForm = $builder->create('sub', 'form', array(
+					'data_class' => get_class(new Issue64SubData()),
+				));
+				$subForm->add('prop1', 'text', array(
+					'required' => true,
+				));
+				$builder->add($subForm);
+				break;
+			case 2:
+			case 3:
+				$subForm = $builder->create('sub', 'form', array(
+					'data_class' => get_class(new Issue64SubData()),
+				));
+				$subForm->add('prop2', 'text', array(
+					'required' => true,
+				));
+				$builder->add($subForm);
+				break;
+			case 4:
+				// nothing
+				break;
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setDefaultOptions(OptionsResolverInterface $resolver) {
+		$resolver->setDefaults(array(
+			'flowStep' => null,
+		));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getName() {
+		return 'issue64';
+	}
+
+}
