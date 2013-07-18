@@ -313,6 +313,8 @@ So place this in your base template:
 
 ```php
 // in src/MyCompany/MyBundle/Controller/VehicleController.php
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
 /**
  * @Template
  */
