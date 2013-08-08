@@ -4,7 +4,6 @@ namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -17,7 +16,7 @@ class CreateVehicleForm extends AbstractType {
 	 * {@inheritDoc}
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options) {
-		switch ($options['flowStep']) {
+		switch ($options['flow_step']) {
 			case 1:
 				$choices = array(2, 4);
 				$builder->add('numberOfWheels', 'choice', array(
@@ -37,15 +36,6 @@ class CreateVehicleForm extends AbstractType {
 				));
 				break;
 		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function setDefaultOptions(OptionsResolverInterface $resolver) {
-		$resolver->setDefaults(array(
-			'flowStep' => null,
-		));
 	}
 
 	/**
