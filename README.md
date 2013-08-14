@@ -429,6 +429,8 @@ To validate the form data class a step-based validation group is passed to the f
 By default, if `getName()` of the flow returns `createVehicle`, such a group is named `flow_createVehicle_step1`
 for the first step.
 
+NOTE: If validation group is not set correctly, the accrording constraint won`t be assigned to form field.
+
 ## Passing step-based options to the form type
 
 If your form type needs options to build the form (e.g. conditional fields) you can override method `getFormOptions`
