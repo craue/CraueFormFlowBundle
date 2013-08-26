@@ -94,39 +94,28 @@ class CreateVehicleFlow extends FormFlow {
 				},
 			),
 			array(
-				'label' => 'confirmation',
-				'type' => $this->formType, // needed to avoid InvalidOptionsException regarding option 'flowStep'
+				'label' => 'confirmation'
 			),
 		);
 	}
-
-	public function getFormOptions($step, array $options = array()) {
-		$options = parent::getFormOptions($step, $options);
-
-		$options['flowStep'] = $step;
-
-		return $options;
-	}
-
 }
 ```
 
 ### Create a form type class
 
 You only have to create one form type class for a flow.
-Since you're passing an option called `flowStep` to the form type, it can decide which fields will be added to the form
+There is an option called flow_step you can use to decide which fields will be added to the form
 according to the step to render.
 
 ```php
 // src/MyCompany/MyBundle/Form/CreateVehicleForm.php
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CreateVehicleForm extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
-		switch ($options['flowStep']) {
+		switch ($options['flow_step']) {
 			case 1:
 				$validValues = array(2, 4);
 				$builder->add('numberOfWheels', 'choice', array(
@@ -140,12 +129,6 @@ class CreateVehicleForm extends AbstractType {
 				));
 				break;
 		}
-	}
-
-	public function setDefaultOptions(OptionsResolverInterface $resolver) {
-		$resolver->setDefaults(array(
-			'flowStep' => null,
-		));
 	}
 
 	public function getName() {
@@ -283,8 +266,6 @@ form according to the current step.
 	{% include 'CraueFormFlowBundle:FormFlow:stepList.html.twig' %}
 </div>
 <form method="post" {{ form_enctype(form) }}>
-	{% include 'CraueFormFlowBundle:FormFlow:stepField.html.twig' %}
-
 	{{ form_errors(form) }}
 
 	{% if flow.getCurrentStepNumber() == 1 %}

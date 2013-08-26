@@ -35,6 +35,13 @@
 				<argument type="service" id="event_dispatcher" />
 			</call>
 		</service>
+
+		<service id="craue.form.flow.form_extension" class="Craue\FormFlowBundle\Form\Extension\FormFlowFormExtension">
+			<tag name="form.type_extension" alias="form" />
+		</service>
+		<service id="craue.form.flow.step_field_extension" class="Craue\FormFlowBundle\Form\Extension\FormFlowStepFieldExtension">
+			<tag name="form.type_extension" alias="hidden" />
+		</service>
 	</services>
 
 </container>
