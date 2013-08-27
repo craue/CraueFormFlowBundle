@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.0 (TODO)
+
+- the hidden step field is automatically added to the form (follow `UPGRADE-2.1.md` to upgrade)
+
 ## 2.0.1 (2013-07-12)
 
 - fixed steps being incorrectly marked as skipped when resetting the flow
