@@ -94,7 +94,7 @@ class CreateVehicleFlow extends FormFlow {
 				},
 			),
 			array(
-				'label' => 'confirmation'
+				'label' => 'confirmation',
 			),
 		);
 	}
@@ -104,7 +104,7 @@ class CreateVehicleFlow extends FormFlow {
 ### Create a form type class
 
 You only have to create one form type class for a flow.
-There is an option called flow_step you can use to decide which fields will be added to the form
+There is an option called `flow_step` you can use to decide which fields will be added to the form
 according to the step to render.
 
 ```php

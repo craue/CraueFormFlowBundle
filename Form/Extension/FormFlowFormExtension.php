@@ -24,7 +24,10 @@ class FormFlowFormExtension extends AbstractTypeExtension {
 	 * {@inheritDoc}
 	 */
 	public function setDefaultOptions(OptionsResolverInterface $resolver) {
-		$resolver->setOptional(array('flow_step', 'flow_step_key'));
+		$resolver->setOptional(array(
+			'flow_step',
+			'flow_step_key',
+		));
 	}
 
 	/**
@@ -32,7 +35,12 @@ class FormFlowFormExtension extends AbstractTypeExtension {
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		if (array_key_exists('flow_step', $options) && array_key_exists('flow_step_key', $options)) {
-			$builder->add($options['flow_step_key'], 'hidden', array('data' => $options['flow_step'], 'mapped' => false, 'flow_step_key' => $options['flow_step_key']));
+			$builder->add($options['flow_step_key'], 'hidden', array(
+				'data' => $options['flow_step'],
+				'mapped' => false,
+				'flow_step_key' => $options['flow_step_key'],
+			));
 		}
 	}
+
 }

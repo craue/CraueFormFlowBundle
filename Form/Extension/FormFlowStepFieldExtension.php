@@ -25,16 +25,19 @@ class FormFlowStepFieldExtension extends AbstractTypeExtension {
 	 * {@inheritDoc}
 	 */
 	public function setDefaultOptions(OptionsResolverInterface $resolver) {
-		$resolver->setOptional(array('flow_step_key'));
+		$resolver->setOptional(array(
+			'flow_step_key',
+		));
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function finishView(FormView $view, FormInterface $form, array $options) {
-		if (isset($options['flow_step_key']) && $view->vars['name'] === $options['flow_step_key']) {
+		if (array_key_exists('flow_step_key', $options) && $view->vars['name'] === $options['flow_step_key']) {
 			$view->vars['value'] = $options['data'];
 			$view->vars['full_name'] = $options['flow_step_key'];
 		}
 	}
+
 }

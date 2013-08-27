@@ -2,8 +2,8 @@
 
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form;
 
-use Symfony\Component\Form\AbstractType;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Issue64SubData;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
