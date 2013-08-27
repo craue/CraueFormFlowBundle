@@ -294,7 +294,6 @@ So place this in your base template:
 
 ```php
 // in src/MyCompany/MyBundle/Controller/VehicleController.php
-
 public function createVehicleAction() {
 	$formData = new Vehicle(); // Your form data class. Has to be an object, won't work properly with an array.
 
