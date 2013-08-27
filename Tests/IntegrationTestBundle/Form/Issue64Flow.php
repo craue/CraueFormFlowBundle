@@ -3,7 +3,6 @@
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form;
 
 use Craue\FormFlowBundle\Form\FormFlow;
-use Craue\FormFlowBundle\Form\FormFlowInterface;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -50,7 +49,6 @@ class Issue64Flow extends FormFlow {
 		$options = parent::getFormOptions($step, $options);
 
 		$options['cascade_validation'] = true;
-		$options['flowStep'] = $step;
 
 		return $options;
 	}
