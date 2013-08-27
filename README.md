@@ -22,7 +22,7 @@ Let Composer download and install the bundle by first adding it to your composer
 ```json
 {
 	"require": {
-		"craue/formflow-bundle": "~2.0.0"
+		"craue/formflow-bundle": "~2.0"
 	}
 }
 ```

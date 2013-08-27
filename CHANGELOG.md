@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.1.0 (TODO)
+## 2.1.0 (2013-08-27)
 
 - the hidden step field is automatically added to the form (follow `UPGRADE-2.1.md` to upgrade)
 
