@@ -294,11 +294,7 @@ So place this in your base template:
 
 ```php
 // in src/MyCompany/MyBundle/Controller/VehicleController.php
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-/**
- * @Template
- */
 public function createVehicleAction() {
 	$formData = new Vehicle(); // Your form data class. Has to be an object, won't work properly with an array.
 
@@ -323,10 +319,10 @@ public function createVehicleAction() {
 		}
 	}
 
-	return array(
+	return $this->render('MyCompanyMyBundle:Vehicle:createVehicle.html.twig', array(
 		'form' => $form->createView(),
 		'flow' => $flow,
-	);
+	));
 }
 ```
 
