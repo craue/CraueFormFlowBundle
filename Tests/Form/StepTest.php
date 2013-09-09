@@ -159,4 +159,25 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider dataEvaluateSkipping_invalidReturnValueFromCallable
+	 * @expectedException \RuntimeException
+	 * @expectedExceptionMessage The callable did not return a boolean value.
+	 */
+	public function testEvaluateSkipping_invalidReturnValueFromCallable($returnValue) {
+		$step = Step::createFromConfig(1, array(
+			'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) use ($returnValue) {
+				return $returnValue;
+			},
+		));
+		$step->evaluateSkipping(1, $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface'));
+	}
+
+	public function dataEvaluateSkipping_invalidReturnValueFromCallable() {
+		return array(
+			array(null),
+			array(0),
+		);
+	}
+
 }

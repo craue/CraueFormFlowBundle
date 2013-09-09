@@ -28,7 +28,7 @@ class Step implements StepInterface {
 	protected $type;
 
 	/**
-	 * @var callable
+	 * @var callable|null
 	 */
 	private $skipFunction;
 
@@ -136,7 +136,13 @@ class Step implements StepInterface {
 	 */
 	public function evaluateSkipping($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 		if ($this->skipFunction !== null) {
-			$this->skipped = call_user_func_array($this->skipFunction, array($estimatedCurrentStepNumber, $flow));
+			$returnValue = call_user_func_array($this->skipFunction, array($estimatedCurrentStepNumber, $flow));
+
+			if (!is_bool($returnValue)) {
+				throw new \RuntimeException('The callable did not return a boolean value.');
+			}
+
+			$this->skipped = $returnValue;
 		}
 	}
 

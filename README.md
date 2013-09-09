@@ -357,7 +357,8 @@ Valid options per step are:
 - `skip` (`callable`|`boolean`)
 	- Decides whether the step will be skipped.
 	- If using a callable...
-		- it has to return a boolean value and will receive the estimated current step number and the flow as arguments;
+		- it will receive the estimated current step number and the flow as arguments;
+		- it has to return a boolean value;
 		- it might be called more than once until the actual current step number has been determined.
 
 ### Examples
