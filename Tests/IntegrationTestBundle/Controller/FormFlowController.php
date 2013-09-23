@@ -61,6 +61,15 @@ class FormFlowController extends Controller {
 	}
 
 	/**
+	 * No trailing slash here to add the step only when needed.
+	 * @Route("/issue87/{step}", defaults={"step"=1}, name="_FormFlow_issue87")
+	 * @Template("IntegrationTestBundle:FormFlow:issue87.html.twig")
+	 */
+	public function issue87Action() {
+		return $this->processFlow((object) array(), $this->get('integrationTestBundle.form.flow.issue87'));
+	}
+
+	/**
 	 * @Route("/skipFirstStepUsingClosure/", name="_FormFlow_skipFirstStepUsingClosure")
 	 * @Template("IntegrationTestBundle:FormFlow:skipFirstStepUsingClosure.html.twig")
 	 */
