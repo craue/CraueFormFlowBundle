@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.1 (2013-09-24)
+
+- ensure that `skip` callables always return a boolean value
+- the step parameter used in links to specific steps is not limited to be a query parameter anymore, e.g. can be a route parameter
+
 ## 2.1.0 (2013-08-27)
 
 - the hidden step field is automatically added to the form (follow `UPGRADE-2.1.md` to upgrade)
