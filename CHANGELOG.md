@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.2 (2013-09-26)
+
+- fixed the step list to render the last step already been visited (but not submitted) as a link
+
 ## 2.1.1 (2013-09-24)
 
 - ensure that `skip` callables always return a boolean value
