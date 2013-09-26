@@ -33,6 +33,15 @@ class FormFlowExtension extends \Twig_Extension {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	public function getFunctions() {
+		return array(
+			'craue_isStepLinkable' => new \Twig_Function_Method($this, 'isStepLinkable'),
+		);
+	}
+
+	/**
 	 * Adds the parameter for dynamic step navigation.
 	 * @param array $parameters Current route parameters.
 	 * @param FormFlow $flow The flow involved.
@@ -53,6 +62,16 @@ class FormFlowExtension extends \Twig_Extension {
 	public function removeDynamicStepNavigationParameter(array $parameters, FormFlow $flow) {
 		unset($parameters[$flow->getDynamicStepNavigationParameter()]);
 		return $parameters;
+	}
+
+	/**
+	 * @param FormFlow $flow The flow involved.
+	 * @param integer $stepNumber Number of the step being linked to.
+	 * @return boolean If the step can be linked to.
+	 */
+	public function isStepLinkable(FormFlow $flow, $stepNumber) {
+		return $flow->isAllowDynamicStepNavigation() && $stepNumber !== $flow->getCurrentStepNumber()
+				&& $flow->isStepDone($stepNumber) && !$flow->isStepSkipped($stepNumber);
 	}
 
 }
