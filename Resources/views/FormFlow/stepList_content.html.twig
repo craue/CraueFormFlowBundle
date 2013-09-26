@@ -4,7 +4,7 @@
 	<ol class="craue_formflow_steplist">
 		{% for stepLabel in flow.getStepLabels() %}
 			<li{{ block('craue_flow_stepList_class') }}>
-				{%- if flow.isAllowDynamicStepNavigation() and (loop.index != flow.getCurrentStepNumber()) and flow.isStepDone(loop.index) and (not flow.isStepSkipped(loop.index)) -%}
+				{%- if craue_isStepLinkable(flow, loop.index) -%}
 					<a href="{{ path(app.request.attributes.get('_route'), app.request.query.all
 							| merge(app.request.attributes.get('_route_params'))
 							| craue_addDynamicStepNavigationParameter(flow, loop.index)) }}">
