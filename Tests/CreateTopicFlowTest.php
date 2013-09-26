@@ -63,7 +63,7 @@ class CreateTopicFlowTest extends IntegrationTestCase {
 		$crawler = $this->client->request('GET', $linkToStep1);
 		$this->assertCurrentStepNumber(1, $crawler);
 		$this->assertCurrentFormData('{"title":"blah","description":null,"category":"BUG_REPORT","comment":"my comment","details":"blah blah"}', $crawler);
-		$this->assertCount(2, $crawler->filter('#step-list a'));
+		$this->assertCount(3, $crawler->filter('#step-list a'));
 
 		// discussion -> step 2
 		$form = $crawler->selectButton('next')->form();
@@ -73,7 +73,7 @@ class CreateTopicFlowTest extends IntegrationTestCase {
 		));
 		$this->assertCurrentStepNumber(2, $crawler);
 		$this->assertCurrentFormData('{"title":"blah","description":null,"category":"DISCUSSION","comment":"my comment","details":"blah blah"}', $crawler);
-		$this->assertCount(1, $crawler->filter('#step-list a'));
+		$this->assertCount(2, $crawler->filter('#step-list a'));
 
 		// keep as is -> step 4
 		$form = $crawler->selectButton('next')->form();
