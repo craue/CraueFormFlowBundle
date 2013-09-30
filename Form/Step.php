@@ -20,30 +20,43 @@ class Step implements StepInterface {
 	/**
 	 * @var string|null
 	 */
-	protected $label;
+	protected $label = null;
 
 	/**
 	 * @var FormTypeInterface|string|null
 	 */
-	protected $type;
+	protected $type = null;
 
 	/**
 	 * @var callable|null
 	 */
-	private $skipFunction;
+	private $skipFunction = null;
 
 	/**
 	 * @var boolean|null Is only null if not yet evaluated.
 	 */
-	private $skipped = null;
+	private $skipped = false;
 
 	public static function createFromConfig($number, array $config) {
 		$step = new static();
 
 		$step->setNumber($number);
-		$step->setLabel(array_key_exists('label', $config) ? $config['label'] : null);
-		$step->setType(array_key_exists('type', $config) ? $config['type'] : null);
-		$step->setSkip(array_key_exists('skip', $config) ? $config['skip'] : false);
+
+		foreach ($config as $key => $value) {
+			switch ($key) {
+				case 'label':
+					$step->setLabel($value);
+					break;
+				case 'type':
+					$step->setType($value);
+					break;
+				case 'skip':
+					$step->setSkip($value);
+					break;
+				default:
+					throw new \InvalidArgumentException(sprintf('Invalid step config option "%s" given.', $key));
+			}
+		}
 
 		return $step;
 	}
