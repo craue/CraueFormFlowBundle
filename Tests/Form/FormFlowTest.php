@@ -10,6 +10,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  * @group unit
  *
  * @author Toni Uebernickel <tuebernickel@gmail.com>
+ * @author Christian Raue <christian.raue@gmail.com>
  * @copyright 2011-2013 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
@@ -32,6 +33,22 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 		$flow->setEventDispatcher($dispatcher);
 
 		$this->assertEquals($steps, $flow->getSteps());
+	}
+
+	public function testCreateStepsFromConfig_fixArrayIndexes() {
+		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'loadStepsConfig'));
+
+		$flowStub
+			->expects($this->once())
+			->method('loadStepsConfig')
+			->will($this->returnValue(array(
+				2 => array(
+					'label' => 'step1',
+				),
+			)))
+		;
+
+		$this->assertEquals(1, $flowStub->getStep(1)->getNumber());
 	}
 
 }
