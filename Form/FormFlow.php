@@ -565,7 +565,11 @@ abstract class FormFlow implements FormFlowInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getStep($stepNumber) {
+	public function getStep($stepNumber = null) {
+		if (is_null($stepNumber)) {
+			$stepNumber = $this->getCurrentStepNumber();
+		}
+
 		if (!is_int($stepNumber)) {
 			throw new InvalidTypeException($stepNumber, 'integer');
 		}

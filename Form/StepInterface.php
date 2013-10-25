@@ -37,4 +37,14 @@ interface StepInterface {
 	 */
 	function evaluateSkipping($estimatedCurrentStepNumber, FormFlowInterface $flow);
 
+	/**
+	 * @param string $template
+	 * @return StepInterface
+	 */
+	function setTemplate($template);
+
+	/**
+	 * @return string
+	 */
+	function getTemplate();
 }

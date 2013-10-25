@@ -180,4 +180,18 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * @expectedException \Craue\FormFlowBundle\Exception\InvalidTypeException
+	 */
+	public function testSetGetTemplate_invalidArguments() {
+		$step = new Step;
+		$step->setTemplate(1337);
+	}
+
+	public function testSetGetTemplate() {
+		$step = new Step;
+		$step->setTemplate($tpl = 'step_template.html.twig');
+		$this->assertEquals($tpl, $step->getTemplate());
+	}
+
 }
