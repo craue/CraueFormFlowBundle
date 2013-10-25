@@ -28,6 +28,11 @@ class Step implements StepInterface {
 	protected $type;
 
 	/**
+	 * @var string
+	 */
+	protected $template;
+
+	/**
 	 * @var callable|null
 	 */
 	private $skipFunction;
@@ -44,6 +49,7 @@ class Step implements StepInterface {
 		$step->setLabel(array_key_exists('label', $config) ? $config['label'] : null);
 		$step->setType(array_key_exists('type', $config) ? $config['type'] : null);
 		$step->setSkip(array_key_exists('skip', $config) ? $config['skip'] : false);
+		$this->setTemplate(array_key_exists('template', $config) ? $config['template'] : null)
 
 		return $step;
 	}
@@ -151,6 +157,26 @@ class Step implements StepInterface {
 	 */
 	public function isSkipped() {
 		return $this->skipped;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setTemplate($template)
+	{
+		if (!is_string($template)) {
+			throw new InvalidTypeException($label, array('string'));
+		}
+		$this->template = $template;
+		return $this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getTemplate()
+	{
+		return $this->template;
 	}
 
 }

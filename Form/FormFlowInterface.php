@@ -137,7 +137,7 @@ interface FormFlowInterface {
 	function getStepLabels();
 
 	/**
-	 * @param integer $stepNumber
+	 * @param integer $stepNumber If null, returns step based on current step number.
 	 * @return StepInterface
 	 * @throws InvalidTypeException If {@code $stepNumber} is not an integer.
 	 * @throws \OutOfBoundsException If step {@code $stepNumber} doesn't exist.
