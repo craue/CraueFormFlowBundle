@@ -49,6 +49,7 @@ class Step implements StepInterface {
 		$step->setLabel(array_key_exists('label', $config) ? $config['label'] : null);
 		$step->setType(array_key_exists('type', $config) ? $config['type'] : null);
 		$step->setSkip(array_key_exists('skip', $config) ? $config['skip'] : false);
+		$this->setTemplate(array_key_exists('template', $config) ? $config['template'] : null)
 
 		return $step;
 	}
