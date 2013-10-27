@@ -63,6 +63,16 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * @expectedException \InvalidArgumentException
+	 * @expectedExceptionMessage Invalid step config option "lable" given.
+	 */
+	public function testCreateFromConfig_invalidOptions() {
+		$step = Step::createFromConfig(1, array(
+			'lable' => 'label for step1',
+		));
+	}
+
+	/**
 	 * @dataProvider dataSetGetNumber
 	 */
 	public function testSetGetNumber($number) {
