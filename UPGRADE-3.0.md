@@ -73,6 +73,35 @@ This version adds support for concurrent instances of the same flow, which requi
 	}
 	```
 
+## Removal of options from method `createForm`
+
+- Options cannot be passed to step forms using `createForm` anymore. You now have to use `getFormOptions` for that.
+
+	before:
+	```php
+	// in the action
+	$flow->bind($formData);
+	$form = $flow->createForm(array('i_want_it' => 'that_way'));
+	```
+
+	after:
+	```php
+	// in the action
+	$flow->bind($formData);
+	$formData->setIWantIt('that_way');
+	$form = $flow->createForm();
+
+	// in the flow class
+	public function getFormOptions($step, array $options = array()) {
+		$options = parent::getFormOptions($step, $options);
+
+		$formData = $this->getFormData();
+		$options['i_want_it'] = $formData->getIWantIt();
+
+		return $options;
+	}
+	```
+
 ## Events
 
 - Some methods have been renamed.
