@@ -1,0 +1,6 @@
+imports:
+  - { resource: config.yml }
+
+framework:
+  form:
+    csrf_protection: false
