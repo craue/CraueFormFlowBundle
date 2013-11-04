@@ -48,7 +48,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 			)))
 		;
 
-		$this->assertEquals(1, $flowStub->getStep(1)->getNumber());
+		$this->assertSame(1, $flowStub->getStep(1)->getNumber());
 	}
 
 }

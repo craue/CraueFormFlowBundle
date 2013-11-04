@@ -2,8 +2,8 @@
 
 namespace Craue\FormFlowBundle\Tests;
 
+use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\BrowserKit\Client;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpKernel\Kernel;
 
@@ -26,6 +26,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 		$configFile = 'config.yml';
 
 		// https://github.com/symfony/symfony/issues/9429
+		// TODO remove as soon as Symfony >= 2.4 is required
 		if (version_compare(Kernel::VERSION, '2.4', '>=')) {
 			$configFile = 'config_symfony_2.4.yml';
 		}

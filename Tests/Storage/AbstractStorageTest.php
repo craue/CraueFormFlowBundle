@@ -33,7 +33,7 @@ abstract class AbstractStorageTest extends \PHPUnit_Framework_TestCase {
 	public function testSet() {
 		$this->storage->set('foo', 'bar');
 		$this->assertTrue($this->storage->has('foo'));
-		$this->assertEquals('bar', $this->storage->get('foo'));
+		$this->assertSame('bar', $this->storage->get('foo'));
 	}
 
 	public function testGet() {
@@ -48,7 +48,7 @@ abstract class AbstractStorageTest extends \PHPUnit_Framework_TestCase {
 		$this->assertNull($this->storage->remove('foo'));
 
 		$this->storage->set('foo', 'bar');
-		$this->assertEquals('bar', $this->storage->remove('foo'));
+		$this->assertSame('bar', $this->storage->remove('foo'));
 	}
 
 }

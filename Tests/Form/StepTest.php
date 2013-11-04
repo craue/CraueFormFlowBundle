@@ -18,12 +18,12 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface');
 
 		$step = Step::createFromConfig(1, array());
-		$this->assertEquals(1, $step->getNumber());
-		$this->assertEquals(null, $step->getLabel());
-		$this->assertEquals(null, $step->getType());
-		$this->assertEquals(false, $step->isSkipped());
+		$this->assertSame(1, $step->getNumber());
+		$this->assertNull($step->getLabel());
+		$this->assertNull($step->getType());
+		$this->assertFalse($step->isSkipped());
 		$step->evaluateSkipping(1, $flowStub);
-		$this->assertEquals(false, $step->isSkipped());
+		$this->assertFalse($step->isSkipped());
 
 		$step = Step::createFromConfig(1, array(
 			'label' => 'country',
@@ -33,18 +33,18 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 		$step = Step::createFromConfig(1, array(
 			'skip' => true,
 		));
-		$this->assertEquals(true, $step->isSkipped());
+		$this->assertTrue($step->isSkipped());
 		$step->evaluateSkipping(1, $flowStub);
-		$this->assertEquals(true, $step->isSkipped());
+		$this->assertTrue($step->isSkipped());
 
 		$step = Step::createFromConfig(1, array(
 			'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 				return true;
 			},
 		));
-		$this->assertEquals(null, $step->isSkipped());
+		$this->assertNull($step->isSkipped());
 		$step->evaluateSkipping(1, $flowStub);
-		$this->assertEquals(true, $step->isSkipped());
+		$this->assertTrue($step->isSkipped());
 
 		$flowStubWithData = $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface');
 		$flowStubWithData
@@ -59,7 +59,7 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 			},
 		));
 		$step->evaluateSkipping(2, $flowStubWithData);
-		$this->assertEquals(true, $step->isSkipped());
+		$this->assertTrue($step->isSkipped());
 	}
 
 	/**
@@ -78,7 +78,7 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 	public function testSetGetNumber($number) {
 		$step = new Step();
 		$step->setNumber($number);
-		$this->assertEquals($number, $step->getNumber());
+		$this->assertSame($number, $step->getNumber());
 	}
 
 	public function dataSetGetNumber() {
@@ -110,7 +110,7 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 	public function testSetGetLabel($label) {
 		$step = new Step();
 		$step->setLabel($label);
-		$this->assertEquals($label, $step->getLabel());
+		$this->assertSame($label, $step->getLabel());
 	}
 
 	public function dataSetGetLabel() {
@@ -175,7 +175,7 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 	public function testEvaluateSkipping_validReturnValueFromCallable($returnValue) {
 		$step = $this->createStepWithSkipCallable(1, $returnValue);
 		$step->evaluateSkipping(1, $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface'));
-		$this->assertEquals($returnValue, $step->isSkipped());
+		$this->assertSame($returnValue, $step->isSkipped());
 	}
 
 	public function dataEvaluateSkipping_validReturnValueFromCallable() {

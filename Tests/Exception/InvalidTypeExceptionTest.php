@@ -18,7 +18,7 @@ class InvalidTypeExceptionTest extends \PHPUnit_Framework_TestCase {
 		try {
 			throw new InvalidTypeException($value, $allowedType);
 		} catch (InvalidTypeException $e) {
-			$this->assertEquals($expectedMessage, $e->getMessage());
+			$this->assertSame($expectedMessage, $e->getMessage());
 		}
 	}
 
