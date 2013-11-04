@@ -152,7 +152,8 @@ class Step implements StepInterface {
 			$returnValue = call_user_func_array($this->skipFunction, array($estimatedCurrentStepNumber, $flow));
 
 			if (!is_bool($returnValue)) {
-				throw new \RuntimeException('The callable did not return a boolean value.');
+				throw new \RuntimeException(sprintf('The skip callable for step %d did not return a boolean value.',
+						$this->number));
 			}
 
 			$this->skipped = $returnValue;

@@ -172,7 +172,7 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider dataEvaluateSkipping_invalidReturnValueFromCallable
 	 * @expectedException \RuntimeException
-	 * @expectedExceptionMessage The callable did not return a boolean value.
+	 * @expectedExceptionMessage The skip callable for step 1 did not return a boolean value.
 	 */
 	public function testEvaluateSkipping_invalidReturnValueFromCallable($returnValue) {
 		$step = Step::createFromConfig(1, array(
