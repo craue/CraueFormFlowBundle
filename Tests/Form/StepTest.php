@@ -42,7 +42,7 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 				return true;
 			},
 		));
-		$this->assertNull($step->isSkipped());
+		$this->assertFalse($step->isSkipped());
 		$step->evaluateSkipping(1, $flowStub);
 		$this->assertTrue($step->isSkipped());
 

@@ -164,7 +164,7 @@ class Step implements StepInterface {
 	 * {@inheritDoc}
 	 */
 	public function isSkipped() {
-		return $this->skipped;
+		return $this->skipped === true;
 	}
 
 }
