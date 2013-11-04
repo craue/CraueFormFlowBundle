@@ -170,16 +170,28 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * @dataProvider dataEvaluateSkipping_validReturnValueFromCallable
+	 */
+	public function testEvaluateSkipping_validReturnValueFromCallable($returnValue) {
+		$step = $this->createStepWithSkipCallable(1, $returnValue);
+		$step->evaluateSkipping(1, $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface'));
+		$this->assertEquals($returnValue, $step->isSkipped());
+	}
+
+	public function dataEvaluateSkipping_validReturnValueFromCallable() {
+		return array(
+			array(true),
+			array(false),
+		);
+	}
+
+	/**
 	 * @dataProvider dataEvaluateSkipping_invalidReturnValueFromCallable
 	 * @expectedException \RuntimeException
 	 * @expectedExceptionMessage The skip callable for step 1 did not return a boolean value.
 	 */
 	public function testEvaluateSkipping_invalidReturnValueFromCallable($returnValue) {
-		$step = Step::createFromConfig(1, array(
-			'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) use ($returnValue) {
-				return $returnValue;
-			},
-		));
+		$step = $this->createStepWithSkipCallable(1, $returnValue);
 		$step->evaluateSkipping(1, $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface'));
 	}
 
@@ -187,7 +199,16 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 		return array(
 			array(null),
 			array(0),
+			array('true'),
 		);
+	}
+
+	protected function createStepWithSkipCallable($number, $returnValue) {
+		return Step::createFromConfig($number, array(
+			'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) use ($returnValue) {
+				return $returnValue;
+			},
+		));
 	}
 
 }
