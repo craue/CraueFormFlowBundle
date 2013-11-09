@@ -14,6 +14,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -721,38 +722,44 @@ abstract class FormFlow implements FormFlowInterface {
 	// methods for BC with third-party templates (e.g. MopaBootstrapBundle)
 
 	public function getCurrentStep() {
-		trigger_error('getCurrentStep() is deprecated since version 2.0. Use getCurrentStepNumber() instead.', E_USER_DEPRECATED);
+		$this->triggerDeprecationError('getCurrentStep() is deprecated since version 2.0. Use getCurrentStepNumber() instead.');
 		return $this->getCurrentStepNumber();
 	}
 
 	public function getCurrentStepDescription() {
-		trigger_error('getCurrentStepDescription() is deprecated since version 2.0. Use getCurrentStepLabel() instead.', E_USER_DEPRECATED);
+		$this->triggerDeprecationError('getCurrentStepDescription() is deprecated since version 2.0. Use getCurrentStepLabel() instead.');
 		return $this->getCurrentStepLabel();
 	}
 
 	public function getMaxSteps() {
-		trigger_error('getMaxSteps() is deprecated since version 2.0. Use getStepCount() instead.', E_USER_DEPRECATED);
+		$this->triggerDeprecationError('getMaxSteps() is deprecated since version 2.0. Use getStepCount() instead.');
 		return $this->getStepCount();
 	}
 
 	public function getStepDescriptions() {
-		trigger_error('getStepDescriptions() is deprecated since version 2.0. Use getStepLabels() instead.', E_USER_DEPRECATED);
+		$this->triggerDeprecationError('getStepDescriptions() is deprecated since version 2.0. Use getStepLabels() instead.');
 		return $this->getStepLabels();
 	}
 
 	public function getFirstStep() {
-		trigger_error('getFirstStep() is deprecated since version 2.0. Use getFirstStepNumber() instead.', E_USER_DEPRECATED);
+		$this->triggerDeprecationError('getFirstStep() is deprecated since version 2.0. Use getFirstStepNumber() instead.');
 		return $this->getFirstStepNumber();
 	}
 
 	public function getLastStep() {
-		trigger_error('getLastStep() is deprecated since version 2.0. Use getLastStepNumber() instead.', E_USER_DEPRECATED);
+		$this->triggerDeprecationError('getLastStep() is deprecated since version 2.0. Use getLastStepNumber() instead.');
 		return $this->getLastStepNumber();
 	}
 
 	public function hasSkipStep() {
-		trigger_error('hasSkipStep() is deprecated since version 2.0. Use isStepSkipped() instead.', E_USER_DEPRECATED);
+		$this->triggerDeprecationError('hasSkipStep() is deprecated since version 2.0. Use isStepSkipped() instead.');
 		return $this->isStepSkipped();
+	}
+
+	protected function triggerDeprecationError($message) {
+		if (version_compare(Kernel::VERSION, '2.2', '>=')) {
+			trigger_error($message, E_USER_DEPRECATED);
+		}
 	}
 
 }
