@@ -155,7 +155,6 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 	public function dataSetGetType_invalidArguments() {
 		return array(
 			array(123),
-			array($this->getMock('Symfony\Component\Form\Test\FormInterface')),
 		);
 	}
 
