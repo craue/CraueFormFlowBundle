@@ -4,7 +4,7 @@ imports:
   - { resource: @IntegrationTestBundle/Resources/config/form.xml }
 
 framework:
-  csrf_protection: false
+  csrf_protection: ~
   form: ~
   router:
     resource: %kernel.root_dir%/config/routing.yml
