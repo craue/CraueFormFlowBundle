@@ -70,10 +70,28 @@ class FormFlowExtension extends \Twig_Extension {
 	 * @return boolean If the step can be linked to.
 	 */
 	public function isStepLinkable(FormFlow $flow, $stepNumber) {
-		return $flow->isAllowDynamicStepNavigation()
-				&& $stepNumber !== $flow->getCurrentStepNumber()
-				&& ($flow->isStepDone($stepNumber) || $flow->isStepDone($stepNumber - 1))
-				&& !$flow->isStepSkipped($stepNumber);
+		if (!$flow->isAllowDynamicStepNavigation()
+				|| $flow->getCurrentStepNumber() === $stepNumber
+				|| $flow->isStepSkipped($stepNumber)) {
+			return false;
+		}
+
+		$lastStepConsecutivelyDone = 0;
+		for ($i = $flow->getFirstStepNumber(); $i < $flow->getLastStepNumber(); ++$i) {
+			if ($flow->isStepDone($i)) {
+				$lastStepConsecutivelyDone = $i;
+			} else {
+				break;
+			}
+		}
+
+		$lastStepLinkable = $lastStepConsecutivelyDone + 1;
+
+		if ($stepNumber <= $lastStepLinkable) {
+			return true;
+		}
+
+		return false;
 	}
 
 }
