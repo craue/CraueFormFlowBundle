@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.1.3 (2013-11-18)
+
+- [#94]: disallow invalid step config options
+- ensure that `Step#isSkipped` always returns a boolean value
+- avoid triggering deprecation errors when used with Symfony 2.1.x
+- [#100]: fixed the step list to avoid linking not yet accessible steps
+
+[#94]: https://github.com/craue/CraueFormFlowBundle/issues/94
+[#100]: https://github.com/craue/CraueFormFlowBundle/issues/100
+
 ## 2.1.2 (2013-09-26)
 
 - [#90]: fixed the step list to render the last step already been visited (but not submitted) as a link
