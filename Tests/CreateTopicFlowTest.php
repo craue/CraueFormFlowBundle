@@ -73,7 +73,7 @@ class CreateTopicFlowTest extends IntegrationTestCase {
 		));
 		$this->assertCurrentStepNumber(2, $crawler);
 		$this->assertCurrentFormData('{"title":"blah","description":null,"category":"DISCUSSION","comment":"my comment","details":"blah blah"}', $crawler);
-		$this->assertCount(2, $crawler->filter('#step-list a'));
+		$this->assertCount(2, $crawler->filter('#step-list a')); // link the last step as it's been visited already
 
 		// keep as is -> step 4
 		$form = $crawler->selectButton('next')->form();
@@ -86,6 +86,32 @@ class CreateTopicFlowTest extends IntegrationTestCase {
 		$form = $crawler->selectButton('finish')->form();
 		$this->client->submit($form);
 		$this->assertJsonResponse('{"title":"blah","description":null,"category":"DISCUSSION","comment":"my comment","details":null}');
+
+// var_dump($this->client->getResponse()->getContent());
+// die;
+	}
+
+	public function testCreateTopic_dynamicStepNavigation2() {
+		$this->client->followRedirects();
+		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic_start'));
+		$this->assertSame(200, $this->client->getResponse()->getStatusCode());
+		$this->assertCurrentStepNumber(1, $crawler);
+		$this->assertCount(0, $crawler->filter('#step-list a'));
+
+		// discussion -> step 2
+		$form = $crawler->selectButton('next')->form();
+		$crawler = $this->client->submit($form, array(
+			'createTopic[title]' => 'blah',
+			'createTopic[category]' => 'DISCUSSION',
+		));
+		$this->assertCurrentStepNumber(2, $crawler);
+		$this->assertCount(1, $crawler->filter('#step-list a')); // don't link the last step as it's not been visited yet
+
+		// keep as is -> step 4
+		$form = $crawler->selectButton('next')->form();
+		$crawler = $this->client->submit($form);
+		$this->assertCurrentStepNumber(4, $crawler);
+		$this->assertCount(2, $crawler->filter('#step-list a'));
 
 // var_dump($this->client->getResponse()->getContent());
 // die;
