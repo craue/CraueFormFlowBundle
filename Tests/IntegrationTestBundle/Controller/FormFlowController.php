@@ -4,6 +4,7 @@ namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Controller;
 
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Issue64Data;
+use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\RevalidatePreviousStepsData;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Topic;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Vehicle;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -57,6 +58,14 @@ class FormFlowController extends Controller {
 	 */
 	public function issue87Action() {
 		return $this->processFlow((object) array(), $this->get('integrationTestBundle.form.flow.issue87'));
+	}
+
+	/**
+	 * @Route("/revalidatePreviousSteps/", name="_FormFlow_revalidatePreviousSteps")
+	 * @Template("IntegrationTestBundle:FormFlow:revalidatePreviousSteps.html.twig")
+	 */
+	public function revalidatePreviousStepsAction() {
+		return $this->processFlow(new RevalidatePreviousStepsData(), $this->get('integrationTestBundle.form.flow.revalidatePreviousSteps'));
 	}
 
 	/**
