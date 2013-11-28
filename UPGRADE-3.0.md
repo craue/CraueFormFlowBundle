@@ -44,6 +44,35 @@ This version adds support for concurrent instances of the same flow, which requi
 	<a href="{{ path('createTopic') }}">create a topic</a>
 	```
 
+- To remove saved step data from the session when finishing the flow you should call `$flow->reset()` at the end of the
+  action.
+
+	before:
+	```php
+	public function createTopicAction() {
+		// ...
+
+		// flow finished
+		// persist data to the DB or whatever...
+
+		// redirect when done...
+	}
+	```
+
+	after:
+	```php
+	public function createTopicAction() {
+		// ...
+
+		// flow finished
+		// persist data to the DB or whatever...
+
+		$flow->reset();
+
+		// redirect when done...
+	}
+	```
+
 ## Flow
 
 - Some methods have been renamed.

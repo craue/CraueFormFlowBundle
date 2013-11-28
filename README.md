@@ -304,6 +304,8 @@ public function createVehicleAction() {
 			$em->persist($formData);
 			$em->flush();
 
+			$flow->reset(); // remove step data from the session
+
 			return $this->redirect($this->generateUrl('home')); // redirect when done
 		}
 	}
@@ -447,21 +449,6 @@ class CreateVehicleFlow extends FormFlow {
 
 	// ...
 
-}
-```
-
-To force clearing of saved step data when finishing the flow you should call `$flow->reset()` in the action:
-
-```php
-// in src/MyCompany/MyBundle/Controller/VehicleController.php
-public function createVehicleAction() {
-	// ...
-
-	// flow finished
-	// ...
-	$flow->reset();
-
-	// ...
 }
 ```
 
