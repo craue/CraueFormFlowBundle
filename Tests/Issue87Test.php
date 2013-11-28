@@ -28,7 +28,7 @@ class Issue87Test extends IntegrationTestCase {
 
 		// make sure the DSN link contains the step as a route parameter
 		$linkToStep2 = $crawler->filter('#step-list a')->selectLink('step2')->link();
-		$this->assertSame('/issue87/2', $linkToStep2->getNode()->attributes->getNamedItem('href')->textContent);
+		$this->assertStringStartsWith('/issue87/2', $linkToStep2->getNode()->attributes->getNamedItem('href')->textContent);
 
 		// back to step 2 via DSN
 		$crawler = $this->client->request('GET', $linkToStep2->getUri());

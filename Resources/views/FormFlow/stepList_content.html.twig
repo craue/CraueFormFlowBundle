@@ -7,7 +7,7 @@
 				{%- if craue_isStepLinkable(flow, loop.index) -%}
 					<a href="{{ path(app.request.attributes.get('_route'), app.request.query.all
 							| merge(app.request.attributes.get('_route_params'))
-							| craue_addDynamicStepNavigationParameter(flow, loop.index)) }}">
+							| craue_addDynamicStepNavigationParameters(flow, loop.index)) }}">
 						{{- block('craue_flow_stepLabel') -}}
 					</a>
 				{%- else -%}

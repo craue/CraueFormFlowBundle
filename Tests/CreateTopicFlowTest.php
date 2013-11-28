@@ -15,7 +15,7 @@ class CreateTopicFlowTest extends IntegrationTestCase {
 
 	public function testCreateTopic_dynamicStepNavigation() {
 		$this->client->followRedirects();
-		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic_start'));
+		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic'));
 		$this->assertSame(200, $this->client->getResponse()->getStatusCode());
 		$this->assertCurrentStepNumber(1, $crawler);
 		$this->assertCurrentFormData('{"title":null,"description":null,"category":null,"comment":null,"details":null}', $crawler);
@@ -91,9 +91,9 @@ class CreateTopicFlowTest extends IntegrationTestCase {
 // die;
 	}
 
-	public function testCreateTopic_dynamicStepNavigation2() {
+	public function testCreateTopic_dynamicStepNavigation_noLinkForNonVisitedStep() {
 		$this->client->followRedirects();
-		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic_start'));
+		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic'));
 		$this->assertSame(200, $this->client->getResponse()->getStatusCode());
 		$this->assertCurrentStepNumber(1, $crawler);
 		$this->assertCount(0, $crawler->filter('#step-list a'));
@@ -117,9 +117,9 @@ class CreateTopicFlowTest extends IntegrationTestCase {
 // die;
 	}
 
-	public function testCreateTopic_preserveDataOnGetRequest() {
+	public function testCreateTopic_dynamicStepNavigation_preserveDataOnGetRequestWithInstanceId() {
 		$this->client->followRedirects();
-		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic_start'));
+		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic'));
 
 		// discussion -> step 2
 		$form = $crawler->selectButton('next')->form();
@@ -129,9 +129,28 @@ class CreateTopicFlowTest extends IntegrationTestCase {
 		));
 
 		// GET request -> step 1 with data preserved
-		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic'));
+		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic', array(
+			'instance' => $form->get('flow_createTopic_instance')->getValue(),
+		)));
 		$this->assertCurrentStepNumber(1, $crawler);
 		$this->assertCurrentFormData('{"title":"blah","description":null,"category":"DISCUSSION","comment":null,"details":null}', $crawler);
+	}
+
+	public function testCreateTopic_dynamicStepNavigation_newFlowInstanceOnGetRequest() {
+		$this->client->followRedirects();
+		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic'));
+
+		// discussion -> step 2
+		$form = $crawler->selectButton('next')->form();
+		$crawler = $this->client->submit($form, array(
+			'createTopic[title]' => 'blah',
+			'createTopic[category]' => 'DISCUSSION',
+		));
+
+		// GET request -> step 1 with new flow instance
+		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic'));
+		$this->assertCurrentStepNumber(1, $crawler);
+		$this->assertCurrentFormData('{"title":null,"description":null,"category":null,"comment":null,"details":null}', $crawler);
 	}
 
 }

@@ -226,6 +226,7 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 			// impossible to send invalid values with DomCrawler, see https://github.com/symfony/symfony/issues/7672
 			// TODO remove as soon as Symfony >= 2.4 is required
 			$crawler = $this->client->request($form->getMethod(), $form->getUri(), array(
+				'flow_createVehicle_instance' => $form->get('flow_createVehicle_instance')->getValue(),
 				'flow_createVehicle_step' => 1,
 				'createVehicle' => array(
 					'numberOfWheels' => 99,
@@ -253,6 +254,7 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 			// impossible to send invalid values with DomCrawler, see https://github.com/symfony/symfony/issues/7672
 			// TODO remove as soon as Symfony >= 2.4 is required
 			$crawler = $this->client->request($form->getMethod(), $form->getUri(), array(
+				'flow_createVehicle_instance' => $form->get('flow_createVehicle_instance')->getValue(),
 				'flow_createVehicle_step' => 2,
 				'createVehicle' => array(
 					'engine' => 'magic',
