@@ -5,9 +5,10 @@ php:
   - 5.4
   - 5.5
 env:
-  - SYMFONY_VERSION="2.1.*" MIN_STABILITY="stable"
-  - SYMFONY_VERSION="2.2.*" MIN_STABILITY="stable"
-  - SYMFONY_VERSION="2.3.*" MIN_STABILITY="stable"
+  - SYMFONY_VERSION="2.1.*"
+  - SYMFONY_VERSION="2.2.*"
+  - SYMFONY_VERSION="2.3.*"
+  - SYMFONY_VERSION="2.4.*" SENSIO_FRAMEWORK_EXTRA_BUNDLE_VERSION="3.*"
   - SYMFONY_VERSION="dev-master" MIN_STABILITY="dev"
 before_script:
   - sh travis_before_build.sh
