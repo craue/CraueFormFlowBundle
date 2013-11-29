@@ -680,6 +680,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 	/**
 	 * Creates all steps from the given configuration.
+	 * @param array $stepsConfig
 	 * @return StepInterface[] Value with index 0 is step 1.
 	 */
 	public function createStepsFromConfig(array $stepsConfig) {
