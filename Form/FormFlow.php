@@ -257,7 +257,7 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	public function setAllowDynamicStepNavigation($allowDynamicStepNavigation) {
-		$this->allowDynamicStepNavigation = $allowDynamicStepNavigation;
+		$this->allowDynamicStepNavigation = (boolean) $allowDynamicStepNavigation;
 	}
 
 	/**
