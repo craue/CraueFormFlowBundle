@@ -400,6 +400,23 @@ To validate the form data class a step-based validation group is passed to the f
 By default, if `getName()` of the flow returns `createVehicle`, such a group is named `flow_createVehicle_step1`
 for the first step.
 
+## Disabling revalidation of previous steps
+
+Take a look at [#98](https://github.com/craue/CraueFormFlowBundle/issues/98) for an example on why it's useful to
+revalidate previous steps by default. But if you want (or need) to avoid revalidating previous steps, you could extend
+the flow class mentioned in the example above as follows:
+
+```php
+// in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
+class CreateVehicleFlow extends FormFlow {
+
+	protected $revalidatePreviousSteps = false;
+
+	// ...
+
+}
+```
+
 ## Passing step-based options to the form type
 
 If your form type needs options to build the form (e.g. conditional fields) you can override method `getFormOptions`

@@ -61,11 +61,15 @@ class FormFlowController extends Controller {
 	}
 
 	/**
-	 * @Route("/revalidatePreviousSteps/", name="_FormFlow_revalidatePreviousSteps")
+	 * @Route("/revalidatePreviousSteps/enabled/", defaults={"enabled"=true}, name="_FormFlow_revalidatePreviousSteps_enabled")
+	 * @Route("/revalidatePreviousSteps/disabled/", defaults={"enabled"=false}, name="_FormFlow_revalidatePreviousSteps_disabled")
 	 * @Template("IntegrationTestBundle:FormFlow:revalidatePreviousSteps.html.twig")
 	 */
-	public function revalidatePreviousStepsAction() {
-		return $this->processFlow(new RevalidatePreviousStepsData(), $this->get('integrationTestBundle.form.flow.revalidatePreviousSteps'));
+	public function revalidatePreviousStepsAction($enabled) {
+		$flow = $this->get('integrationTestBundle.form.flow.revalidatePreviousSteps');
+		$flow->setRevalidatePreviousSteps($enabled);
+
+		return $this->processFlow(new RevalidatePreviousStepsData(), $flow);
 	}
 
 	/**

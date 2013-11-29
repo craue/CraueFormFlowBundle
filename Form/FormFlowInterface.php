@@ -55,6 +55,11 @@ interface FormFlowInterface {
 	/**
 	 * @return boolean
 	 */
+	function isRevalidatePreviousSteps();
+
+	/**
+	 * @return boolean
+	 */
 	function isAllowDynamicStepNavigation();
 
 	/**

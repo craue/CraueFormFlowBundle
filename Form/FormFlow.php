@@ -59,6 +59,11 @@ abstract class FormFlow implements FormFlowInterface {
 	/**
 	 * @var boolean
 	 */
+	protected $revalidatePreviousSteps = true;
+
+	/**
+	 * @var boolean
+	 */
 	protected $allowDynamicStepNavigation = false;
 
 	/**
@@ -313,6 +318,17 @@ abstract class FormFlow implements FormFlowInterface {
 		}
 
 		return $this->currentStepNumber;
+	}
+
+	public function setRevalidatePreviousSteps($revalidatePreviousSteps) {
+		$this->revalidatePreviousSteps = (boolean) $revalidatePreviousSteps;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isRevalidatePreviousSteps() {
+		return $this->revalidatePreviousSteps;
 	}
 
 	public function setAllowDynamicStepNavigation($allowDynamicStepNavigation) {
@@ -618,13 +634,21 @@ abstract class FormFlow implements FormFlowInterface {
 
 		$this->stepForms = array();
 
+		$options = array();
+		if (!$this->revalidatePreviousSteps) {
+			$options['validation_groups'] = array(); // disable validation
+		}
+
 		foreach ($this->getSteps() as $step) {
 			$stepNumber = $step->getNumber();
 
 			if (array_key_exists($stepNumber, $stepData)) {
-				$stepForm = $this->createFormForStep($stepNumber);
-				$stepForm->bind($stepData[$stepNumber]); // the form is also validated here
-				$this->stepForms[$stepNumber] = $stepForm;
+				$stepForm = $this->createFormForStep($stepNumber, $options);
+				$stepForm->bind($stepData[$stepNumber]); // the form is validated here
+
+				if ($this->revalidatePreviousSteps) {
+					$this->stepForms[$stepNumber] = $stepForm;
+				}
 
 				if ($this->hasListeners(FormFlowEvents::POST_BIND_SAVED_DATA)) {
 					$event = new PostBindSavedDataEvent($this, $this->formData, $stepNumber);
@@ -744,22 +768,24 @@ abstract class FormFlow implements FormFlowInterface {
 				$this->eventDispatcher->dispatch(FormFlowEvents::POST_BIND_REQUEST, $event);
 			}
 
-			// check if forms of previous steps are still valid
-			foreach ($this->stepForms as $stepNumber => $stepForm) {
-				// ignore form of the current step
-				if ($this->currentStepNumber === $stepNumber) {
-					break;
-				}
+			if ($this->revalidatePreviousSteps) {
+				// check if forms of previous steps are still valid
+				foreach ($this->stepForms as $stepNumber => $stepForm) {
+					// ignore form of the current step
+					if ($this->currentStepNumber === $stepNumber) {
+						break;
+					}
 
-				// ignore forms of skipped steps
-				if ($this->isStepSkipped($stepNumber)) {
-					break;
-				}
+					// ignore forms of skipped steps
+					if ($this->isStepSkipped($stepNumber)) {
+						break;
+					}
 
-				if (!$stepForm->isValid()) {
-					$form->addError($this->getPreviousStepInvalidFormError($stepNumber));
+					if (!$stepForm->isValid()) {
+						$form->addError($this->getPreviousStepInvalidFormError($stepNumber));
 
-					return false;
+						return false;
+					}
 				}
 			}
 

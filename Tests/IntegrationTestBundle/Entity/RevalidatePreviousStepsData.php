@@ -16,6 +16,10 @@ class RevalidatePreviousStepsData {
 
 	private static $validationCalls;
 
+	public static function resetValidationCalls() {
+		self::$validationCalls = 0;
+	}
+
 	// TODO replace with ExecutionContextInterface as soon as Symfony >= 2.2 is required
 	public function isDataValid(ExecutionContext $context) {
 		// valid only on first call
