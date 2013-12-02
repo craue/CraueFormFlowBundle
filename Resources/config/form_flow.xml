@@ -32,7 +32,7 @@
 				<argument type="service" id="craue.form.flow.storage" />
 			</call>
 			<call method="setEventDispatcher">
-				<argument type="service" id="event_dispatcher" />
+				<argument type="service" id="event_dispatcher" on-invalid="ignore" />
 			</call>
 		</service>
 
