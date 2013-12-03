@@ -17,20 +17,10 @@ Please use tag 1.0.0 of this bundle if you need Symfony 2.0.x compatibility.
 
 ## Get the bundle
 
-Let Composer download and install the bundle by first adding it to your composer.json
-
-```json
-{
-	"require": {
-		"craue/formflow-bundle": "~2.0"
-	}
-}
-```
-
-and then running
+Let Composer download and install the bundle by running
 
 ```sh
-php composer.phar update craue/formflow-bundle
+php composer.phar require craue/formflow-bundle:~2.0
 ```
 
 in a shell.
