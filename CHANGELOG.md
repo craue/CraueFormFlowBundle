@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.4 (2013-12-05)
+
+- adjusted Composer constraint to allow being used with SensioFrameworkExtraBundle 3.0
+
 ## 2.1.3 (2013-11-18)
 
 - [#94]: disallow invalid step config options
