@@ -25,10 +25,10 @@ class FormFlowExtension extends \Twig_Extension {
 	 */
 	public function getFilters() {
 		return array(
-			'craue_addDynamicStepNavigationParameter' =>
-					new \Twig_Filter_Method($this, 'addDynamicStepNavigationParameter'),
-			'craue_removeDynamicStepNavigationParameter' =>
-					new \Twig_Filter_Method($this, 'removeDynamicStepNavigationParameter'),
+			'craue_addDynamicStepNavigationParameters' =>
+					new \Twig_Filter_Method($this, 'addDynamicStepNavigationParameters'),
+			'craue_removeDynamicStepNavigationParameters' =>
+					new \Twig_Filter_Method($this, 'removeDynamicStepNavigationParameters'),
 		);
 	}
 
@@ -42,25 +42,29 @@ class FormFlowExtension extends \Twig_Extension {
 	}
 
 	/**
-	 * Adds the parameter for dynamic step navigation.
+	 * Adds parameters for dynamic step navigation.
 	 * @param array $parameters Current route parameters.
 	 * @param FormFlow $flow The flow involved.
 	 * @param integer $stepNumber Number of the step the link will be generated for.
-	 * @return array Route parameters plus the step parameter.
+	 * @return array Route parameters plus instance and step parameter.
 	 */
-	public function addDynamicStepNavigationParameter(array $parameters, FormFlow $flow, $stepNumber) {
-		$parameters[$flow->getDynamicStepNavigationParameter()] = $stepNumber;
+	public function addDynamicStepNavigationParameters(array $parameters, FormFlow $flow, $stepNumber) {
+		$parameters[$flow->getDynamicStepNavigationInstanceParameter()] = $flow->getInstanceId();
+		$parameters[$flow->getDynamicStepNavigationStepParameter()] = $stepNumber;
+
 		return $parameters;
 	}
 
 	/**
-	 * Removes the parameter for dynamic step navigation.
+	 * Removes parameters for dynamic step navigation.
 	 * @param array $parameters Current route parameters.
 	 * @param FormFlow $flow The flow involved.
-	 * @return array Route parameters without the step parameter.
+	 * @return array Route parameters without instance and step parameter.
 	 */
-	public function removeDynamicStepNavigationParameter(array $parameters, FormFlow $flow) {
-		unset($parameters[$flow->getDynamicStepNavigationParameter()]);
+	public function removeDynamicStepNavigationParameters(array $parameters, FormFlow $flow) {
+		unset($parameters[$flow->getDynamicStepNavigationInstanceParameter()]);
+		unset($parameters[$flow->getDynamicStepNavigationStepParameter()]);
+
 		return $parameters;
 	}
 

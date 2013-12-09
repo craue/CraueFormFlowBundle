@@ -10,6 +10,7 @@ use Craue\FormFlowBundle\Event\PostValidateEvent;
 use Craue\FormFlowBundle\Event\PreBindEvent;
 use Craue\FormFlowBundle\Exception\InvalidTypeException;
 use Craue\FormFlowBundle\Storage\StorageInterface;
+use Craue\FormFlowBundle\Util\StringUtil;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -56,7 +57,12 @@ abstract class FormFlow implements FormFlowInterface {
 	/**
 	 * @var string
 	 */
-	protected $dynamicStepNavigationParameter = 'step';
+	protected $dynamicStepNavigationInstanceParameter = 'instance';
+
+	/**
+	 * @var string
+	 */
+	protected $dynamicStepNavigationStepParameter = 'step';
 
 	/**
 	 * @var Request|null
@@ -67,6 +73,16 @@ abstract class FormFlow implements FormFlowInterface {
 	 * @var string|null Is only null if not yet initialized.
 	 */
 	private $id = null;
+
+	/**
+	 * @var string|null Is only null if not yet initialized.
+	 */
+	private $instanceKey = null;
+
+	/**
+	 * @var string|null Is only null if not yet initialized.
+	 */
+	private $instanceId = null;
 
 	/**
 	 * @var string|null Is only null if not yet initialized.
@@ -175,6 +191,30 @@ abstract class FormFlow implements FormFlowInterface {
 		return $this->id;
 	}
 
+	public function setInstanceKey($instanceKey) {
+		$this->instanceKey = $instanceKey;
+	}
+
+	public function getInstanceKey() {
+		if ($this->instanceKey === null) {
+			$this->instanceKey = $this->getId() . '_instance';
+		}
+
+		return $this->instanceKey;
+	}
+
+	public function setInstanceId($instanceId) {
+		$this->instanceId = $instanceId;
+	}
+
+	public function getInstanceId() {
+		if ($this->instanceId === null) {
+			$this->instanceId = $this->getId();
+		}
+
+		return $this->instanceId;
+	}
+
 	public function setFormStepKey($formStepKey) {
 		$this->formStepKey = $formStepKey;
 	}
@@ -267,12 +307,20 @@ abstract class FormFlow implements FormFlowInterface {
 		return $this->allowDynamicStepNavigation;
 	}
 
-	public function setDynamicStepNavigationParameter($dynamicStepNavigationParameter) {
-		$this->dynamicStepNavigationParameter = $dynamicStepNavigationParameter;
+	public function setDynamicStepNavigationInstanceParameter($dynamicStepNavigationInstanceParameter) {
+		$this->dynamicStepNavigationInstanceParameter = $dynamicStepNavigationInstanceParameter;
 	}
 
-	public function getDynamicStepNavigationParameter() {
-		return $this->dynamicStepNavigationParameter;
+	public function getDynamicStepNavigationInstanceParameter() {
+		return $this->dynamicStepNavigationInstanceParameter;
+	}
+
+	public function setDynamicStepNavigationStepParameter($dynamicStepNavigationStepParameter) {
+		$this->dynamicStepNavigationStepParameter = $dynamicStepNavigationStepParameter;
+	}
+
+	public function getDynamicStepNavigationStepParameter() {
+		return $this->dynamicStepNavigationStepParameter;
 	}
 
 	/**
@@ -383,7 +431,7 @@ abstract class FormFlow implements FormFlowInterface {
 				return intval($request->request->get($this->getFormStepKey(), $defaultStepNumber));
 			case 'GET':
 				return $this->allowDynamicStepNavigation ?
-						intval($request->get($this->dynamicStepNavigationParameter, $defaultStepNumber)) :
+						intval($request->get($this->dynamicStepNavigationStepParameter, $defaultStepNumber)) :
 						$defaultStepNumber;
 		}
 
@@ -440,6 +488,9 @@ abstract class FormFlow implements FormFlowInterface {
 	 * {@inheritDoc}
 	 */
 	public function bind($formData) {
+		$this->setInstanceId($this->determineInstanceId());
+		$this->setStepDataKey($this->getId() . '_data_' . $this->getInstanceId());
+
 		if ($this->hasListeners(FormFlowEvents::PRE_BIND)) {
 			$event = new PreBindEvent($this);
 			$this->eventDispatcher->dispatch(FormFlowEvents::PRE_BIND, $event);
@@ -453,6 +504,22 @@ abstract class FormFlow implements FormFlowInterface {
 			$event = new PostBindFlowEvent($this, $this->formData);
 			$this->eventDispatcher->dispatch(FormFlowEvents::POST_BIND_FLOW, $event);
 		}
+	}
+
+	protected function determineInstanceId() {
+		$request = $this->getRequest();
+
+		$instanceId = null;
+
+		if ($this->allowDynamicStepNavigation) {
+			$instanceId = $request->get($this->getDynamicStepNavigationInstanceParameter());
+		}
+
+		if ($instanceId === null) {
+			$instanceId = $request->request->get($this->getInstanceKey(), StringUtil::generateRandomString(10));
+		}
+
+		return $instanceId;
 	}
 
 	protected function bindFlow() {
@@ -556,6 +623,9 @@ abstract class FormFlow implements FormFlowInterface {
 		if (!array_key_exists('validation_groups', $options)) {
 			$options['validation_groups'] = $this->getValidationGroupPrefix() . $step;
 		}
+
+		$options['flow_instance'] = $this->getInstanceId();
+		$options['flow_instance_key'] = $this->getInstanceKey();
 
 		$options['flow_step'] = $step;
 		$options['flow_step_key'] = $this->getFormStepKey();

@@ -1,5 +1,12 @@
 # Changelog
 
+## master
+
+- BC break (follow `UPGRADE-3.0.md` to upgrade):
+  - [#101]: support for concurrent instances of the same flow
+
+[#101]: https://github.com/craue/CraueFormFlowBundle/issues/101
+
 ## 2.1.4 (2013-12-05)
 
 - adjusted Composer constraint to allow being used with SensioFrameworkExtraBundle 3.0

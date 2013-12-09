@@ -304,6 +304,8 @@ public function createVehicleAction() {
 			$em->persist($formData);
 			$em->flush();
 
+			$flow->reset(); // remove step data from the session
+
 			return $this->redirect($this->generateUrl('home')); // redirect when done
 		}
 	}
@@ -450,42 +452,12 @@ class CreateVehicleFlow extends FormFlow {
 }
 ```
 
-To force clearing of saved step data when finishing the flow you should call `$flow->reset()` in the action:
-
-```php
-// in src/MyCompany/MyBundle/Controller/VehicleController.php
-public function createVehicleAction() {
-	// ...
-
-	// flow finished
-	// ...
-	$flow->reset();
-
-	// ...
-}
-```
-
-To ensure starting a flow with clean data, it would be a good idea to add a separate action as an entry point which
-just resets the flow and redirects to the usual action:
-
-```php
-// in src/MyCompany/MyBundle/Controller/VehicleController.php
-public function createVehicleStartAction() {
-	// ...
-
-	$flow = $this->get('myCompany.form.flow.createVehicle');
-	$flow->reset();
-
-	return $this->redirect($this->generateUrl('...')); // route name for createVehicleAction
-}
-```
-
-Furthermore, if you'd like to remove the step parameter (added by using such a direct link) when submitting the form
+If you'd like to remove the parameters (added by using such a direct link) when submitting the form
 you should modify the opening form tag in the form template like this:
 
 ```html+jinja
 <form method="post" action="{{ path(app.request.attributes.get('_route'),
-		app.request.query.all | craue_removeDynamicStepNavigationParameter(flow)) }}" {{ form_enctype(form) }}>
+		app.request.query.all | craue_removeDynamicStepNavigationParameters(flow)) }}" {{ form_enctype(form) }}>
 ```
 
 ## Using events

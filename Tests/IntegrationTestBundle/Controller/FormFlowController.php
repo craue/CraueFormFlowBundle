@@ -19,16 +19,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class FormFlowController extends Controller {
 
 	/**
-	 * @Route("/create-topic/start/", name="_FormFlow_createTopic_start")
-	 */
-	public function createTopicStartAction() {
-		$flow = $this->get('integrationTestBundle.form.flow.createTopic');
-		$flow->reset();
-
-		return $this->redirect($this->generateUrl('_FormFlow_createTopic'));
-	}
-
-	/**
 	 * @Route("/create-topic/", name="_FormFlow_createTopic")
 	 * @Template("IntegrationTestBundle:FormFlow:createTopic.html.twig")
 	 */
