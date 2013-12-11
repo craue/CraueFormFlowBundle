@@ -1,10 +1,10 @@
 {% block craue_flow_stepList_class %}
 	{%- if loop.index == flow.getCurrentStepNumber() -%}
-		{{- ' class="craue_formflow_current_step"' -}}
+		{{ ' class="craue_formflow_current_step"' }}
 	{%- elseif flow.isStepSkipped(loop.index) -%}
-		{{- ' class="craue_formflow_skipped_step"' -}}
+		{{ ' class="craue_formflow_skipped_step"' }}
 	{%- elseif flow.isStepDone(loop.index) -%}
-		{{- ' class="craue_formflow_done_step"' -}}
+		{{ ' class="craue_formflow_done_step"' }}
 	{%- endif -%}
 {% endblock %}
 
