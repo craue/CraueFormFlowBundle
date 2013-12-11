@@ -90,4 +90,4 @@ This version adds support for concurrent instances of the same flow, which requi
   renamed to `craue_addDynamicStepNavigationParameters` and `craue_removeDynamicStepNavigationParameters`, i.e.
   pluralized, since they now handle more than one parameter.
 
-- The template `CraueFormFlowBundle:FormFlow:stepField.html.twig` (being deprecated in 2.1.0) has now been removed.
+- The template `CraueFormFlowBundle:FormFlow:stepField.html.twig` (deprecated in 2.1.0) has been removed.
