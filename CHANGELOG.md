@@ -2,8 +2,9 @@
 
 ## master
 
-- BC break (follow `UPGRADE-3.0.md` to upgrade):
+- BC breaks (follow `UPGRADE-3.0.md` to upgrade):
   - [#101]: support for concurrent instances of the same flow
+  - removed the step field template
 
 [#101]: https://github.com/craue/CraueFormFlowBundle/issues/101
 
