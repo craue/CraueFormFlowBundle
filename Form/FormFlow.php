@@ -12,10 +12,12 @@ use Craue\FormFlowBundle\Exception\InvalidTypeException;
 use Craue\FormFlowBundle\Storage\StorageInterface;
 use Craue\FormFlowBundle\Util\StringUtil;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -45,9 +47,19 @@ abstract class FormFlow implements FormFlowInterface {
 	protected $eventDispatcher = null;
 
 	/**
+	 * @var TranslatorInterface
+	 */
+	protected $translator;
+
+	/**
 	 * @var string
 	 */
 	protected $transition;
+
+	/**
+	 * @var boolean
+	 */
+	protected $revalidatePreviousSteps = true;
 
 	/**
 	 * @var boolean
@@ -130,6 +142,11 @@ abstract class FormFlow implements FormFlowInterface {
 	private $currentStepNumber = null;
 
 	/**
+	 * @var FormInterface[]
+	 */
+	private $stepForms = array();
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public function setFormFactory(FormFactoryInterface $formFactory) {
@@ -174,6 +191,13 @@ abstract class FormFlow implements FormFlowInterface {
 	 */
 	public function setEventDispatcher(EventDispatcherInterface $eventDispatcher) {
 		$this->eventDispatcher = $eventDispatcher;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setTranslator(TranslatorInterface $translator) {
+		$this->translator = $translator;
 	}
 
 	public function setId($id) {
@@ -294,6 +318,17 @@ abstract class FormFlow implements FormFlowInterface {
 		}
 
 		return $this->currentStepNumber;
+	}
+
+	public function setRevalidatePreviousSteps($revalidatePreviousSteps) {
+		$this->revalidatePreviousSteps = (boolean) $revalidatePreviousSteps;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isRevalidatePreviousSteps() {
+		return $this->revalidatePreviousSteps;
 	}
 
 	public function setAllowDynamicStepNavigation($allowDynamicStepNavigation) {
@@ -597,12 +632,23 @@ abstract class FormFlow implements FormFlowInterface {
 	protected function applyDataFromSavedSteps() {
 		$stepData = $this->retrieveStepData();
 
+		$this->stepForms = array();
+
+		$options = array();
+		if (!$this->revalidatePreviousSteps) {
+			$options['validation_groups'] = array(); // disable validation
+		}
+
 		foreach ($this->getSteps() as $step) {
 			$stepNumber = $step->getNumber();
 
 			if (array_key_exists($stepNumber, $stepData)) {
-				$stepForm = $this->createFormForStep($stepNumber);
-				$stepForm->bind($stepData[$stepNumber]);
+				$stepForm = $this->createFormForStep($stepNumber, $options);
+				$stepForm->bind($stepData[$stepNumber]); // the form is validated here
+
+				if ($this->revalidatePreviousSteps) {
+					$this->stepForms[$stepNumber] = $stepForm;
+				}
 
 				if ($this->hasListeners(FormFlowEvents::POST_BIND_SAVED_DATA)) {
 					$event = new PostBindSavedDataEvent($this, $this->formData, $stepNumber);
@@ -722,6 +768,27 @@ abstract class FormFlow implements FormFlowInterface {
 				$this->eventDispatcher->dispatch(FormFlowEvents::POST_BIND_REQUEST, $event);
 			}
 
+			if ($this->revalidatePreviousSteps) {
+				// check if forms of previous steps are still valid
+				foreach ($this->stepForms as $stepNumber => $stepForm) {
+					// ignore form of the current step
+					if ($this->currentStepNumber === $stepNumber) {
+						break;
+					}
+
+					// ignore forms of skipped steps
+					if ($this->isStepSkipped($stepNumber)) {
+						break;
+					}
+
+					if (!$stepForm->isValid()) {
+						$form->addError($this->getPreviousStepInvalidFormError($stepNumber));
+
+						return false;
+					}
+				}
+			}
+
 			if ($form->isValid()) {
 				if ($this->hasListeners(FormFlowEvents::POST_VALIDATE)) {
 					$event = new PostValidateEvent($this, $form->getData());
@@ -788,6 +855,23 @@ abstract class FormFlow implements FormFlowInterface {
 	 */
 	protected function hasListeners($eventName) {
 		return $this->eventDispatcher !== null && $this->eventDispatcher->hasListeners($eventName);
+	}
+
+	/**
+	 * @param integer $stepNumber
+	 * @return FormError
+	 */
+	protected function getPreviousStepInvalidFormError($stepNumber) {
+		$messageId = 'craueFormFlow.previousStepInvalid';
+		$messageParameters = array('%stepNumber%' => $stepNumber);
+
+		if (version_compare(Kernel::VERSION, '2.2', '>=')) {
+			$message = $this->translator->trans($messageId, $messageParameters, 'validators');
+			return new FormError($message, $messageId, $messageParameters);
+		}
+
+		// TODO remove as soon as Symfony >= 2.2 is required
+		return new FormError($messageId, $messageParameters);
 	}
 
 	// methods for BC with third-party templates (e.g. MopaBootstrapBundle)

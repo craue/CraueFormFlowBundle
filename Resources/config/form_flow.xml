@@ -34,6 +34,9 @@
 			<call method="setEventDispatcher">
 				<argument type="service" id="event_dispatcher" on-invalid="ignore" />
 			</call>
+			<call method="setTranslator">
+				<argument type="service" id="translator" />
+			</call>
 		</service>
 
 		<service id="craue.form.flow.form_extension" class="Craue\FormFlowBundle\Form\Extension\FormFlowFormExtension">

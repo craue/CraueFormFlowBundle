@@ -8,6 +8,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -45,6 +46,16 @@ interface FormFlowInterface {
 	 * @param EventDispatcherInterface $eventDispatcher
 	 */
 	function setEventDispatcher(EventDispatcherInterface $eventDispatcher);
+
+	/**
+	 * @param TranslatorInterface $translator
+	 */
+	function setTranslator(TranslatorInterface $translator);
+
+	/**
+	 * @return boolean
+	 */
+	function isRevalidatePreviousSteps();
 
 	/**
 	 * @return boolean
