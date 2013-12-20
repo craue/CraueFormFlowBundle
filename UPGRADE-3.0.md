@@ -73,6 +73,18 @@ This version adds support for concurrent instances of the same flow, which requi
 	}
 	```
 
+## Events
+
+- Some methods have been renamed.
+
+	- `PostBindRequestEvent`: `getStep` to `getStepNumber`
+	- `PostBindSavedDataEvent`: `getStep` to `getStepNumber`
+
+- Some properties have been renamed.
+
+	- `PostBindRequestEvent`: `step` to `stepNumber`
+	- `PostBindSavedDataEvent`: `step` to `stepNumber`
+
 ## Flow
 
 - Some methods have been renamed.

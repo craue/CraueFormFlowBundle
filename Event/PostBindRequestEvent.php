@@ -22,17 +22,17 @@ class PostBindRequestEvent extends FormFlowEvent {
 	/**
 	 * @var integer
 	 */
-	protected $step;
+	protected $stepNumber;
 
 	/**
 	 * @param FormFlowInterface $flow
 	 * @param mixed $formData
-	 * @param integer $step
+	 * @param integer $stepNumber
 	 */
-	public function __construct(FormFlowInterface $flow, $formData, $step) {
+	public function __construct(FormFlowInterface $flow, $formData, $stepNumber) {
 		$this->flow = $flow;
 		$this->formData = $formData;
-		$this->step = $step;
+		$this->stepNumber = $stepNumber;
 	}
 
 	/**
@@ -45,8 +45,8 @@ class PostBindRequestEvent extends FormFlowEvent {
 	/**
 	 * @return integer
 	 */
-	public function getStep() {
-		return $this->step;
+	public function getStepNumber() {
+		return $this->stepNumber;
 	}
 
 }

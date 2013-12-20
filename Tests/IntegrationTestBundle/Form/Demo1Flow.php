@@ -112,7 +112,7 @@ class Demo1Flow extends FormFlow implements EventSubscriberInterface {
 	}
 
 	public function onPostBindSavedData(PostBindSavedDataEvent $event) {
-		$this->logEventCall('onPostBindSavedData #' . $event->getStep());
+		$this->logEventCall('onPostBindSavedData #' . $event->getStepNumber());
 	}
 
 	public function onPostBindFlow(PostBindFlowEvent $event) {
