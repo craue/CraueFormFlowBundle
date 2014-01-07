@@ -2,12 +2,12 @@
 
 ## master
 
-- [#98]: add a validation error to the current form if a form of a previous step became invalid
-- [#107]: added Czech translation
 - BC breaks (follow `UPGRADE-3.0.md` to upgrade):
   - [#101]: support for concurrent instances of the same flow
   - removed the step field template
   - renamed property `step` to `stepNumber` and method `getStep` to `getStepNumber` within event classes
+- [#98]: add a validation error to the current form if a form of a previous step became invalid
+- [#107]: added Czech translation
 
 [#98]: https://github.com/craue/CraueFormFlowBundle/issues/98
 [#101]: https://github.com/craue/CraueFormFlowBundle/issues/101
