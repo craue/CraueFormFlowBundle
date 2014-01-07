@@ -866,8 +866,7 @@ abstract class FormFlow implements FormFlowInterface {
 		$messageParameters = array('%stepNumber%' => $stepNumber);
 
 		if (version_compare(Kernel::VERSION, '2.2', '>=')) {
-			$message = $this->translator->trans($messageId, $messageParameters, 'validators');
-			return new FormError($message, $messageId, $messageParameters);
+			return new FormError($this->translator->trans($messageId, $messageParameters, 'validators'));
 		}
 
 		// TODO remove as soon as Symfony >= 2.2 is required
