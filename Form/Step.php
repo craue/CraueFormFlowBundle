@@ -4,6 +4,7 @@ namespace Craue\FormFlowBundle\Form;
 
 use Craue\FormFlowBundle\Exception\InvalidTypeException;
 use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -106,13 +107,13 @@ class Step implements StepInterface {
 	 * @throws InvalidTypeException
 	 */
 	public function setType($type) {
-		if ($type === null || is_string($type) || $type instanceof FormTypeInterface) {
+		if ($type === null || is_string($type) || $type instanceof FormTypeInterface || $type InstanceOf FormInterface) {
 			$this->type = $type;
 
 			return;
 		}
 
-		throw new InvalidTypeException($type, array('null', 'string', 'Symfony\Component\Form\FormTypeInterface'));
+		throw new InvalidTypeException($type, array('null', 'string', 'Symfony\Component\Form\FormTypeInterface', 'Symfony\Component\Form\FormInterface'));
 	}
 
 	/**
