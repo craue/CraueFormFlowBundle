@@ -8,10 +8,12 @@
   - renamed property `step` to `stepNumber` and method `getStep` to `getStepNumber` within event classes
 - [#98]: add a validation error to the current form if a form of a previous step became invalid
 - [#107]: added Czech translation
+- [#112]: improved Dutch translation
 
 [#98]: https://github.com/craue/CraueFormFlowBundle/issues/98
 [#101]: https://github.com/craue/CraueFormFlowBundle/issues/101
 [#107]: https://github.com/craue/CraueFormFlowBundle/issues/107
+[#112]: https://github.com/craue/CraueFormFlowBundle/issues/112
 
 ## 2.1.4 (2013-12-05)
 
