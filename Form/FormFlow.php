@@ -661,8 +661,8 @@ abstract class FormFlow implements FormFlowInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function createForm(array $options = array()) {
-		return $this->createFormForStep($this->currentStepNumber, $options);
+	public function createForm() {
+		return $this->createFormForStep($this->currentStepNumber);
 	}
 
 	public function getFormOptions($step, array $options = array()) {

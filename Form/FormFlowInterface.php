@@ -80,10 +80,9 @@ interface FormFlowInterface {
 
 	/**
 	 * Creates the form for the current step.
-	 * @param array $options
 	 * @return FormInterface
 	 */
-	function createForm(array $options = array());
+	function createForm();
 
 	/**
 	 * @param integer $stepNumber
