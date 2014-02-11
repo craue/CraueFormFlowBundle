@@ -10,12 +10,14 @@
 - [#98]: add a validation error to the current form if a form of a previous step became invalid
 - [#107]: added Czech translation
 - [#112]: improved Dutch translation
+- [#117]: method `getFormOptions` returns an array for the `validation_groups` option
 
 [#98]: https://github.com/craue/CraueFormFlowBundle/issues/98
 [#101]: https://github.com/craue/CraueFormFlowBundle/issues/101
 [#104]: https://github.com/craue/CraueFormFlowBundle/issues/104
 [#107]: https://github.com/craue/CraueFormFlowBundle/issues/107
 [#112]: https://github.com/craue/CraueFormFlowBundle/issues/112
+[#117]: https://github.com/craue/CraueFormFlowBundle/issues/117
 
 ## 2.1.4 (2013-12-05)
 
