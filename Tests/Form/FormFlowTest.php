@@ -51,4 +51,35 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSame(1, $flowStub->getStep(1)->getNumber());
 	}
 
+	/**
+	 * Ensure that the "validation_groups" option can be overridden.
+	 */
+	public function testGetFormOptions_overrideValidationGroups() {
+		$flow = $this->getMockForAbstractClass('\Craue\FormFlowBundle\Form\FormFlow');
+
+		$options = $flow->getFormOptions(1, array(
+			'validation_groups' => 'Default',
+		));
+
+		$this->assertEquals('Default', $options['validation_groups']);
+	}
+
+	/**
+	 * Ensure that the generated default value for "validation_groups" is an array, which can be used to just add
+	 * other groups.
+	 */
+	public function testGetFormOptions_generatedValidationGroupIsArray() {
+		$flow = $this->getMockForAbstractClass('\Craue\FormFlowBundle\Form\FormFlow');
+
+		$flow
+			->expects($this->once())
+			->method('getName')
+			->will($this->returnValue('createTopic'))
+		;
+
+		$options = $flow->getFormOptions(1);
+
+		$this->assertEquals(array('flow_createTopic_step1'), $options['validation_groups']);
+	}
+
 }
