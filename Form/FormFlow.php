@@ -462,6 +462,7 @@ abstract class FormFlow implements FormFlowInterface {
 		$request = $this->getRequest();
 
 		switch ($request->getMethod()) {
+			case 'PUT':
 			case 'POST':
 				return intval($request->request->get($this->getFormStepKey(), $defaultStepNumber));
 			case 'GET':
@@ -759,7 +760,7 @@ abstract class FormFlow implements FormFlowInterface {
 	public function isValid(FormInterface $form) {
 		$request = $this->getRequest();
 
-		if ($request->isMethod('POST') && !in_array($this->getRequestedTransition(), array(
+		if (($request->isMethod('POST') || $request->isMethod('PUT')) && !in_array($this->getRequestedTransition(), array(
 			self::TRANSITION_BACK,
 			self::TRANSITION_RESET,
 		))) {
