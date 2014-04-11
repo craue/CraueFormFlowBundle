@@ -417,10 +417,25 @@ class CreateVehicleFlow extends FormFlow {
 }
 ```
 
+## Passing generic options to the form type
+
+To set options common for the form type(s) of all steps you can use method `setGenericFormOptions`:
+
+```php
+// in src/MyCompany/MyBundle/Controller/VehicleController.php
+public function createVehicleAction() {
+	// ...
+	$flow->bind($formData);
+	$flow->setGenericFormOptions(array('action' => 'targetUrl'));
+	$form = $flow->createForm();
+	// ...
+}
+```
+
 ## Passing step-based options to the form type
 
-If your form type needs options to build the form (e.g. conditional fields) you can override method `getFormOptions`
-of your flow class.
+To set options based on previous steps (e.g. to render fields depending on submitted data) you can override method
+`getFormOptions` of your flow class.
 Before you can use the options you have to define them in your form type class:
 
 ```php
