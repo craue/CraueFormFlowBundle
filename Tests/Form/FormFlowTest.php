@@ -82,4 +82,19 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(array('flow_createTopic_step1'), $options['validation_groups']);
 	}
 
+	/**
+	 * Ensure that generic options are considered.
+	 */
+	public function testGetFormOptions_considerGenericOptions() {
+		$flow = $this->getMockForAbstractClass('\Craue\FormFlowBundle\Form\FormFlow');
+
+		$flow->setGenericFormOptions(array(
+			'action' => 'targetUrl',
+		));
+
+		$options = $flow->getFormOptions(1);
+
+		$this->assertEquals('targetUrl', $options['action']);
+	}
+
 }

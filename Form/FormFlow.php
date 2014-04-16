@@ -147,6 +147,12 @@ abstract class FormFlow implements FormFlowInterface {
 	private $stepForms = array();
 
 	/**
+	 * Options applied to forms of all steps.
+	 * @var array
+	 */
+	private $genericFormOptions = array();
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public function setFormFactory(FormFactoryInterface $formFactory) {
@@ -356,6 +362,14 @@ abstract class FormFlow implements FormFlowInterface {
 
 	public function getDynamicStepNavigationStepParameter() {
 		return $this->dynamicStepNavigationStepParameter;
+	}
+
+	public function setGenericFormOptions(array $genericFormOptions) {
+		$this->genericFormOptions = $genericFormOptions;
+	}
+
+	public function getGenericFormOptions() {
+		return $this->genericFormOptions;
 	}
 
 	/**
@@ -666,6 +680,8 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	public function getFormOptions($step, array $options = array()) {
+		$options = array_merge($this->getGenericFormOptions(), $options);
+
 		if (!array_key_exists('validation_groups', $options)) {
 			$options['validation_groups'] = array(
 				$this->getValidationGroupPrefix() . $step,
