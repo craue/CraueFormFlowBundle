@@ -6,15 +6,10 @@
 		See http://stackoverflow.com/questions/1963245/multiple-submit-buttons-specifying-default-button
 	#}
 	<button type="submit" class="craue_formflow_button_last">
-		{%- if flow.getCurrentStepNumber() < flow.getLastStepNumber() -%}
-			{{ 'button.next' | trans({}, 'CraueFormFlowBundle') }}
-		{%- else -%}
-			{{ 'button.finish' | trans({}, 'CraueFormFlowBundle') }}
-		{%- endif -%}
+		{{- (flow.getCurrentStepNumber() < flow.getLastStepNumber() ? 'button.next' : 'button.finish') | trans({}, 'CraueFormFlowBundle') -}}
 	</button>
 
 	{% if renderBackButton %}
-		{# see http://www.html5rocks.com/en/tutorials/forms/html5forms/ #}
 		<button type="submit" name="{{ flow.getFormTransitionKey() }}" value="back" formnovalidate="formnovalidate">
 			{{- 'button.back' | trans({}, 'CraueFormFlowBundle') -}}
 		</button>
