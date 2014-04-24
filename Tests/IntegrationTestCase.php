@@ -33,6 +33,13 @@ abstract class IntegrationTestCase extends WebTestCase {
 	}
 
 	/**
+	 * @return \Twig_Environment
+	 */
+	protected function getTwig() {
+		return static::$kernel->getContainer()->get('twig');
+	}
+
+	/**
 	 * @param string $route
 	 * @param array $parameters
 	 * @param boolean $absolute
