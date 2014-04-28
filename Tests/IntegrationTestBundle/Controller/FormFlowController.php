@@ -88,6 +88,14 @@ class FormFlowController extends Controller {
 		return $this->processFlow((object) array(), $this->get('integrationTestBundle.form.flow.removeSecondStepSkipMarkOnReset'));
 	}
 
+	/**
+	 * @Route("/onlyOneStep/", name="_FormFlow_onlyOneStep")
+	 * @Template("IntegrationTestBundle:FormFlow:onlyOneStep.html.twig")
+	 */
+	public function onlyOneStepAction() {
+		return $this->processFlow((object) array(), $this->get('integrationTestBundle.form.flow.onlyOneStep'));
+	}
+
 	protected function processFlow($formData, FormFlow $flow) {
 		$flow->bind($formData);
 

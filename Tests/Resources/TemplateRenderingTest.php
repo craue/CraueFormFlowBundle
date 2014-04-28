@@ -69,6 +69,25 @@ class TemplateRenderingTest extends IntegrationTestCase {
 		$this->assertContains('<button type="submit" class="craue_formflow_button_first" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
 	}
 
+	public function testButtons_onlyOneStep() {
+		$flow = $this->getFlowStub(array(), array(
+			array(
+				'label' => 'step1',
+			),
+		));
+
+		// first step
+		$flow->nextStep();
+
+		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
+			'flow' => $flow,
+		));
+
+		$this->assertContains('<div class="craue_formflow_buttons craue_formflow_button_count_2">', $renderedTemplate);
+		$this->assertContains('<button type="submit" class="craue_formflow_button_last">finish</button>', $renderedTemplate);
+		$this->assertContains('<button type="submit" class="craue_formflow_button_first" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
+	}
+
 	public function testStepList() {
 		$flow = $this->getFlowStub();
 
