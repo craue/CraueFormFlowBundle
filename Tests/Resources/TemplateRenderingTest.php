@@ -46,6 +46,29 @@ class TemplateRenderingTest extends IntegrationTestCase {
 		$this->assertContains('<button type="submit" class="craue_formflow_button_first" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
 	}
 
+	public function testButtons_firstStepSkipped() {
+		$flow = $this->getFlowStub(array(), array(
+			array(
+				'label' => 'step1',
+				'skip' => true,
+			),
+			array(
+				'label' => 'step2',
+			),
+		));
+
+		// second step
+		$flow->nextStep();
+
+		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
+			'flow' => $flow,
+		));
+
+		$this->assertContains('<div class="craue_formflow_buttons craue_formflow_button_count_2">', $renderedTemplate);
+		$this->assertContains('<button type="submit" class="craue_formflow_button_last">finish</button>', $renderedTemplate);
+		$this->assertContains('<button type="submit" class="craue_formflow_button_first" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
+	}
+
 	public function testStepList() {
 		$flow = $this->getFlowStub();
 
@@ -92,7 +115,15 @@ class TemplateRenderingTest extends IntegrationTestCase {
 	}
 
 	public function testStepList_stepSkipped() {
-		$flow = $this->getFlowStub(array(), true);
+		$flow = $this->getFlowStub(array(), array(
+			array(
+				'label' => 'step1',
+				'skip' => true,
+			),
+			array(
+				'label' => 'step2',
+			),
+		));
 
 		// second step
 		$flow->nextStep();
@@ -106,9 +137,11 @@ class TemplateRenderingTest extends IntegrationTestCase {
 	}
 
 	/**
+	 * @param string[] $stubbedMethods names of additionally stubbed methods
+	 * @param array $stepsConfig steps config
 	 * @return \PHPUnit_Framework_MockObject_MockObject|\Craue\FormFlowBundle\Form\FormFlow
 	 */
-	protected function getFlowStub(array $stubbedMethods = array(), $step1Skip = null) {
+	protected function getFlowStub(array $stubbedMethods = array(), array $stepsConfig = null) {
 		/* @var $flow \PHPUnit_Framework_MockObject_MockObject|\Craue\FormFlowBundle\Form\FormFlow */
 		$flow = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array_merge(array('getName', 'loadStepsConfig'), $stubbedMethods));
 
@@ -120,17 +153,15 @@ class TemplateRenderingTest extends IntegrationTestCase {
 			->will($this->returnValue('renderingTest'))
 		;
 
-		$stepsConfig = array(
-			1 => array(
-				'label' => 'step1',
-			),
-			2 => array(
-				'label' => 'step2',
-			),
-		);
-
-		if ($step1Skip !== null) {
-			$stepsConfig[1]['skip'] = $step1Skip;
+		if ($stepsConfig === null) {
+			$stepsConfig = array(
+				1 => array(
+					'label' => 'step1',
+				),
+				2 => array(
+					'label' => 'step2',
+				),
+			);
 		}
 
 		$flow
