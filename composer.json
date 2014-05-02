@@ -22,7 +22,7 @@
 	},
 	"require-dev": {
 		"doctrine/common": "~2.3",
-		"phpunit/phpunit": "~3.7.10",
+		"phpunit/phpunit": "~4.0",
 		"sensio/framework-extra-bundle": ">=2.1",
 		"symfony/symfony": "~2.1"
 	},
