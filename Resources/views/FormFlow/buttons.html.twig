@@ -5,17 +5,24 @@
 		Thus, all buttons are defined in reverse order and will be reversed again via CSS.
 		See http://stackoverflow.com/questions/1963245/multiple-submit-buttons-specifying-default-button
 	#}
-	<button type="submit" class="craue_formflow_button_last">
-		{{- (flow.getCurrentStepNumber() < flow.getLastStepNumber() ? 'button.next' : 'button.finish') | trans({}, 'CraueFormFlowBundle') -}}
+	{% set isLastStep = flow.getCurrentStepNumber() == flow.getLastStepNumber() %}
+
+	{% set craue_formflow_button_class_last = isLastStep
+		? craue_formflow_button_class_finish|default('')
+		: craue_formflow_button_class_next|default('')
+	%}
+
+	<button type="submit" class="craue_formflow_button_last {{ craue_formflow_button_class_last }}">
+		{{- (isLastStep ? 'button.finish' : 'button.next') | trans({}, 'CraueFormFlowBundle') -}}
 	</button>
 
 	{% if renderBackButton %}
-		<button type="submit" name="{{ flow.getFormTransitionKey() }}" value="back" formnovalidate="formnovalidate">
+		<button type="submit" class="{{ craue_formflow_button_class_back|default('') }}" name="{{ flow.getFormTransitionKey() }}" value="back" formnovalidate="formnovalidate">
 			{{- 'button.back' | trans({}, 'CraueFormFlowBundle') -}}
 		</button>
 	{% endif %}
 
-	<button type="submit" class="craue_formflow_button_first" name="{{ flow.getFormTransitionKey() }}" value="reset" formnovalidate="formnovalidate">
+	<button type="submit" class="craue_formflow_button_first {{ craue_formflow_button_class_reset|default('') }}" name="{{ flow.getFormTransitionKey() }}" value="reset" formnovalidate="formnovalidate">
 		{{- 'button.reset' | trans({}, 'CraueFormFlowBundle') -}}
 	</button>
 </div>

@@ -30,8 +30,8 @@ class TemplateRenderingTest extends IntegrationTestCase {
 		));
 
 		$this->assertContains('<div class="craue_formflow_buttons craue_formflow_button_count_2">', $renderedTemplate);
-		$this->assertContains('<button type="submit" class="craue_formflow_button_last">next</button>', $renderedTemplate);
-		$this->assertContains('<button type="submit" class="craue_formflow_button_first" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
+		$this->assertContains('<button type="submit" class="craue_formflow_button_last ">next</button>', $renderedTemplate);
+		$this->assertContains('<button type="submit" class="craue_formflow_button_first " name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
 
 		// next step
 		$flow->nextStep();
@@ -41,9 +41,9 @@ class TemplateRenderingTest extends IntegrationTestCase {
 		));
 
 		$this->assertContains('<div class="craue_formflow_buttons craue_formflow_button_count_3">', $renderedTemplate);
-		$this->assertContains('<button type="submit" class="craue_formflow_button_last">finish</button>', $renderedTemplate);
-		$this->assertContains('<button type="submit" name="flow_renderingTest_transition" value="back" formnovalidate="formnovalidate">back</button>', $renderedTemplate);
-		$this->assertContains('<button type="submit" class="craue_formflow_button_first" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
+		$this->assertContains('<button type="submit" class="craue_formflow_button_last ">finish</button>', $renderedTemplate);
+		$this->assertContains('<button type="submit" class="" name="flow_renderingTest_transition" value="back" formnovalidate="formnovalidate">back</button>', $renderedTemplate);
+		$this->assertContains('<button type="submit" class="craue_formflow_button_first " name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
 	}
 
 	public function testButtons_firstStepSkipped() {
@@ -65,8 +65,8 @@ class TemplateRenderingTest extends IntegrationTestCase {
 		));
 
 		$this->assertContains('<div class="craue_formflow_buttons craue_formflow_button_count_2">', $renderedTemplate);
-		$this->assertContains('<button type="submit" class="craue_formflow_button_last">finish</button>', $renderedTemplate);
-		$this->assertContains('<button type="submit" class="craue_formflow_button_first" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
+		$this->assertContains('<button type="submit" class="craue_formflow_button_last ">finish</button>', $renderedTemplate);
+		$this->assertContains('<button type="submit" class="craue_formflow_button_first " name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
 	}
 
 	public function testButtons_onlyOneStep() {
@@ -84,8 +84,83 @@ class TemplateRenderingTest extends IntegrationTestCase {
 		));
 
 		$this->assertContains('<div class="craue_formflow_buttons craue_formflow_button_count_2">', $renderedTemplate);
-		$this->assertContains('<button type="submit" class="craue_formflow_button_last">finish</button>', $renderedTemplate);
-		$this->assertContains('<button type="submit" class="craue_formflow_button_first" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
+		$this->assertContains('<button type="submit" class="craue_formflow_button_last ">finish</button>', $renderedTemplate);
+		$this->assertContains('<button type="submit" class="craue_formflow_button_first " name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
+	}
+
+	public function testCustomNextButtonClass() {
+		$flow = $this->getFlowStub(array(), array(
+			array(
+				'label' => 'step1',
+			),
+			array(
+				'label' => 'step2',
+			),
+		));
+
+		$flow->nextStep();
+
+		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
+			'flow' => $flow,
+			'craue_formflow_button_class_next' => 'next',
+		));
+
+		$this->assertContains('<button type="submit" class="craue_formflow_button_last next">next</button>', $renderedTemplate);
+	}
+
+	public function testCustomBackButtonClass() {
+		$flow = $this->getFlowStub(array(), array(
+			array(
+				'label' => 'step1',
+			),
+			array(
+				'label' => 'step2',
+			),
+		));
+
+		$flow->nextStep();
+		$flow->nextStep();
+
+		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
+			'flow' => $flow,
+			'craue_formflow_button_class_back' => 'back',
+		));
+
+		$this->assertContains('<button type="submit" class="back" name="flow_renderingTest_transition" value="back" formnovalidate="formnovalidate">back</button>', $renderedTemplate);
+	}
+
+	public function testCustomResetButtonClass() {
+		$flow = $this->getFlowStub(array(), array(
+			array(
+				'label' => 'step1',
+			),
+		));
+
+		$flow->nextStep();
+
+		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
+			'flow' => $flow,
+			'craue_formflow_button_class_reset' => 'reset',
+		));
+
+		$this->assertContains('<button type="submit" class="craue_formflow_button_first reset" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
+	}
+
+	public function testCustomFinishButtonClass() {
+		$flow = $this->getFlowStub(array(), array(
+			array(
+				'label' => 'step1',
+			),
+		));
+
+		$flow->nextStep();
+
+		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
+			'flow' => $flow,
+			'craue_formflow_button_class_finish' => 'finish',
+		));
+
+		$this->assertContains('<button type="submit" class="craue_formflow_button_last finish">finish</button>', $renderedTemplate);
 	}
 
 	public function testStepList() {
