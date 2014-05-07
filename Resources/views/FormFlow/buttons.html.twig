@@ -7,9 +7,11 @@
 	#}
 	{% set isLastStep = flow.getCurrentStepNumber() == flow.getLastStepNumber() %}
 
+	{% set craue_formflow_button_class_last = craue_formflow_button_class_last|default('') %}
+
 	{% set craue_formflow_button_class_last = isLastStep
-		? craue_formflow_button_class_finish|default('')
-		: craue_formflow_button_class_next|default('')
+		? craue_formflow_button_class_finish|default(craue_formflow_button_class_last)
+		: craue_formflow_button_class_next|default(craue_formflow_button_class_last)
 	%}
 
 	<button type="submit" class="craue_formflow_button_last {{ craue_formflow_button_class_last }}">

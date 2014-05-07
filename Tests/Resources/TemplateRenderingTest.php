@@ -108,6 +108,58 @@ class TemplateRenderingTest extends IntegrationTestCase {
 		$this->assertContains('<button type="submit" class="craue_formflow_button_last next">next</button>', $renderedTemplate);
 	}
 
+	public function testCustomFinishButtonClass() {
+		$flow = $this->getFlowStub(array(), array(
+			array(
+				'label' => 'step1',
+			),
+		));
+
+		$flow->nextStep();
+
+		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
+			'flow' => $flow,
+			'craue_formflow_button_class_finish' => 'finish',
+		));
+
+		$this->assertContains('<button type="submit" class="craue_formflow_button_last finish">finish</button>', $renderedTemplate);
+	}
+
+	public function testCustomLastButtonClass() {
+		$flow = $this->getFlowStub(array(), array(
+			array(
+				'label' => 'step1',
+			),
+		));
+
+		$flow->nextStep();
+
+		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
+			'flow' => $flow,
+			'craue_formflow_button_class_last' => 'last',
+		));
+
+		$this->assertContains('<button type="submit" class="craue_formflow_button_last last">finish</button>', $renderedTemplate);
+
+		$flow = $this->getFlowStub(array(), array(
+			array(
+				'label' => 'step1',
+			),
+			array(
+				'label' => 'step2',
+			),
+		));
+
+		$flow->nextStep();
+
+		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
+			'flow' => $flow,
+			'craue_formflow_button_class_last' => 'last',
+		));
+
+		$this->assertContains('<button type="submit" class="craue_formflow_button_last last">next</button>', $renderedTemplate);
+	}
+
 	public function testCustomBackButtonClass() {
 		$flow = $this->getFlowStub(array(), array(
 			array(
@@ -144,23 +196,6 @@ class TemplateRenderingTest extends IntegrationTestCase {
 		));
 
 		$this->assertContains('<button type="submit" class="craue_formflow_button_first reset" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
-	}
-
-	public function testCustomFinishButtonClass() {
-		$flow = $this->getFlowStub(array(), array(
-			array(
-				'label' => 'step1',
-			),
-		));
-
-		$flow->nextStep();
-
-		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
-			'flow' => $flow,
-			'craue_formflow_button_class_finish' => 'finish',
-		));
-
-		$this->assertContains('<button type="submit" class="craue_formflow_button_last finish">finish</button>', $renderedTemplate);
 	}
 
 	public function testStepList() {
