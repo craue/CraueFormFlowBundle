@@ -282,20 +282,20 @@ So place this in your base template:
 
 You can easily customize the default button look by using these variables to add one or more CSS classes to them:
 
-* `craue_formflow_button_class_last` will apply either to the __next__ or __finish__ button
-* `craue_formflow_button_class_finish` will specifically apply to the __finish__ button
-* `craue_formflow_button_class_next` will specifically apply to the __next__ button
-* `craue_formflow_button_class_back` will apply to the __back__ button
-* `craue_formflow_button_class_reset` will apply to the __reset__ button
+- `craue_formflow_button_class_last` will apply either to the __next__ or __finish__ button
+- `craue_formflow_button_class_finish` will specifically apply to the __finish__ button
+- `craue_formflow_button_class_next` will specifically apply to the __next__ button
+- `craue_formflow_button_class_back` will apply to the __back__ button
+- `craue_formflow_button_class_reset` will apply to the __reset__ button
 
 Example with Bootstrap button classes:
 
 ```html+jinja
 {% include 'CraueFormFlowBundle:FormFlow:buttons.html.twig' with {
-	craue_formflow_button_class_last: 'btn btn-primary',
-	craue_formflow_button_class_back: 'btn',
-	craue_formflow_button_class_reset: 'btn btn-warning'
-} %}
+		craue_formflow_button_class_last: 'btn btn-primary',
+		craue_formflow_button_class_back: 'btn',
+		craue_formflow_button_class_reset: 'btn btn-warning',
+	} %}
 ```
 
 ## Create an action
