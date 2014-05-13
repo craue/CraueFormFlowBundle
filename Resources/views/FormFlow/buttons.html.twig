@@ -14,7 +14,7 @@
 		: craue_formflow_button_class_next|default(craue_formflow_button_class_last)
 	%}
 
-	<button type="submit" class="craue_formflow_button_last {{ craue_formflow_button_class_last }}">
+	<button type="submit" class="{{ craue_formflow_button_class_last|default('craue_formflow_button_last') }}">
 		{{- (isLastStep ? 'button.finish' : 'button.next') | trans({}, 'CraueFormFlowBundle') -}}
 	</button>
 
@@ -24,7 +24,7 @@
 		</button>
 	{% endif %}
 
-	<button type="submit" class="craue_formflow_button_first {{ craue_formflow_button_class_reset|default('') }}" name="{{ flow.getFormTransitionKey() }}" value="reset" formnovalidate="formnovalidate">
+	<button type="submit" class="{{ craue_formflow_button_class_reset|default('craue_formflow_button_first') }}" name="{{ flow.getFormTransitionKey() }}" value="reset" formnovalidate="formnovalidate">
 		{{- 'button.reset' | trans({}, 'CraueFormFlowBundle') -}}
 	</button>
 </div>
