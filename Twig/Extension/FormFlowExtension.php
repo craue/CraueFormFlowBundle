@@ -25,10 +25,10 @@ class FormFlowExtension extends \Twig_Extension {
 	 */
 	public function getFilters() {
 		return array(
-			'craue_addDynamicStepNavigationParameters' =>
-					new \Twig_Filter_Method($this, 'addDynamicStepNavigationParameters'),
-			'craue_removeDynamicStepNavigationParameters' =>
-					new \Twig_Filter_Method($this, 'removeDynamicStepNavigationParameters'),
+			new \Twig_SimpleFilter('craue_addDynamicStepNavigationParameters',
+					array($this, 'addDynamicStepNavigationParameters')),
+			new \Twig_SimpleFilter('craue_removeDynamicStepNavigationParameters',
+					array($this, 'removeDynamicStepNavigationParameters')),
 		);
 	}
 
@@ -37,7 +37,7 @@ class FormFlowExtension extends \Twig_Extension {
 	 */
 	public function getFunctions() {
 		return array(
-			'craue_isStepLinkable' => new \Twig_Function_Method($this, 'isStepLinkable'),
+			new \Twig_SimpleFunction('craue_isStepLinkable', array($this, 'isStepLinkable')),
 		);
 	}
 
