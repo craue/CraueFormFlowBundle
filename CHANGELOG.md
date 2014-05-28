@@ -11,6 +11,7 @@
 - [#107]: added Czech translation
 - [#112]: improved Dutch translation
 - [#117]: method `getFormOptions` returns an array for the `validation_groups` option
+- [#122]: added support for PUT method
 - [#125]: added generic form options to simplify passing options to all steps
 - [#126]: allow custom classes on buttons
 
@@ -20,6 +21,7 @@
 [#107]: https://github.com/craue/CraueFormFlowBundle/issues/107
 [#112]: https://github.com/craue/CraueFormFlowBundle/issues/112
 [#117]: https://github.com/craue/CraueFormFlowBundle/issues/117
+[#122]: https://github.com/craue/CraueFormFlowBundle/issues/122
 [#125]: https://github.com/craue/CraueFormFlowBundle/issues/125
 [#126]: https://github.com/craue/CraueFormFlowBundle/issues/126
 

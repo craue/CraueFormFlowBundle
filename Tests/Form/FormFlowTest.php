@@ -143,7 +143,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 			array('POST', array(), false, 1),
 			array('POST', array('flow_createTopic_step' => 2), false, 2),
 			array('PUT', array(), false, 1),
-// 			array('PUT', array('flow_createTopic_step' => 2), false, 2),
+			array('PUT', array('flow_createTopic_step' => 2), false, 2),
 		);
 	}
 
@@ -187,7 +187,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 			array('POST', array(), true),
 			array('POST', array('flow_createTopic_transition' => 'back'), false),
 			array('POST', array('flow_createTopic_transition' => 'reset'), false),
-// 			array('PUT', array(), true),
+			array('PUT', array(), true),
 			array('PUT', array('flow_createTopic_transition' => 'back'), false),
 			array('PUT', array('flow_createTopic_transition' => 'reset'), false),
 		);
