@@ -752,9 +752,9 @@ abstract class FormFlow implements FormFlowInterface {
 		return $this->getLastStepNumber();
 	}
 
-	public function hasSkipStep() {
+	public function hasSkipStep($stepNumber) {
 		$this->triggerDeprecationError('hasSkipStep() is deprecated since version 2.0. Use isStepSkipped() instead.');
-		return $this->isStepSkipped();
+		return $this->isStepSkipped($stepNumber);
 	}
 
 	protected function triggerDeprecationError($message) {
