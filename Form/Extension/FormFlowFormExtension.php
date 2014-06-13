@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Konstantin Myakshin <koc-dp@yandex.ru>
- * @copyright 2011-2013 Christian Raue
+ * @copyright 2011-2014 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class FormFlowFormExtension extends AbstractTypeExtension {

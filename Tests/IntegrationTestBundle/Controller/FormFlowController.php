@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
- * @copyright 2011-2013 Christian Raue
+ * @copyright 2011-2014 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class FormFlowController extends Controller {
