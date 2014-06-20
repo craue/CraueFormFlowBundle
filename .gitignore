@@ -1,0 +1,15 @@
+/.buildpath
+/.project
+/.settings
+/composer-install.bat
+/composer-update.bat
+/composer.lock
+.DS_Store
+/git.bat
+/phpunit-tests-run.bat
+/phpunit.php
+/phpunit.xml
+/vendor
+/vendors-install.bat
+/vendors-update.bat
+/vendors-whatsnew.bat
