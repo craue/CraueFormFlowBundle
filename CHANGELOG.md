@@ -14,6 +14,7 @@
 - [#122]: added support for PUT method
 - [#125]: added generic form options to simplify passing options to all steps
 - [#126]: allow custom classes on buttons
+- [#133]+[#134]: added Farsi translation
 
 [#98]: https://github.com/craue/CraueFormFlowBundle/issues/98
 [#101]: https://github.com/craue/CraueFormFlowBundle/issues/101
@@ -24,6 +25,8 @@
 [#122]: https://github.com/craue/CraueFormFlowBundle/issues/122
 [#125]: https://github.com/craue/CraueFormFlowBundle/issues/125
 [#126]: https://github.com/craue/CraueFormFlowBundle/issues/126
+[#133]: https://github.com/craue/CraueFormFlowBundle/issues/133
+[#134]: https://github.com/craue/CraueFormFlowBundle/issues/134
 
 ## 2.1.5 (2014-06-13)
 
