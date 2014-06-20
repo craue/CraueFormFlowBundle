@@ -25,6 +25,12 @@
 [#125]: https://github.com/craue/CraueFormFlowBundle/issues/125
 [#126]: https://github.com/craue/CraueFormFlowBundle/issues/126
 
+## 2.1.5 (2014-06-13)
+
+- [#132]: fixed BC method `hasSkipStep`
+
+[#132]: https://github.com/craue/CraueFormFlowBundle/issues/132
+
 ## 2.1.4 (2013-12-05)
 
 - adjusted Composer constraint to allow being used with SensioFrameworkExtraBundle 3.0
