@@ -2,10 +2,10 @@
 
 namespace Craue\FormFlowBundle\Tests;
 
-use Craue\FormFlowBundle\Form\FormFlow;
-use Craue\FormFlowBundle\Form\FormFlowInterface;
-use Craue\FormFlowBundle\Form\StepInterface;
-use Craue\FormFlowBundle\Storage\DataManagerInterface;
+use Craue\FormFlowBundle\FormFlow\FormFlow;
+use Craue\FormFlowBundle\FormFlow\FormFlowInterface;
+use Craue\FormFlowBundle\FormFlow\StepInterface;
+use Craue\FormFlowBundle\FormFlow\Storage\DataManagerInterface;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -56,14 +56,14 @@ abstract class UnitTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return \PHPUnit_Framework_MockObject_MockObject|FormFlow
 	 */
 	protected function getMockedFlow() {
-		return $this->getMockForAbstractClass('\Craue\FormFlowBundle\Form\FormFlow');
+		return $this->getMockForAbstractClass('\Craue\FormFlowBundle\FormFlow\FormFlow');
 	}
 
 	/**
 	 * @return \PHPUnit_Framework_MockObject_MockObject|FormFlowInterface
 	 */
 	protected function getMockedFlowInterface() {
-		return $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface');
+		return $this->getMock('\Craue\FormFlowBundle\FormFlow\FormFlowInterface');
 	}
 
 	/**
@@ -71,21 +71,21 @@ abstract class UnitTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return PHPUnit_Framework_MockObject_MockObject|FormFlow
 	 */
 	protected function getFlowWithMockedMethods(array $methodNames) {
-		return $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', $methodNames);
+		return $this->getMock('\Craue\FormFlowBundle\FormFlow\FormFlow', $methodNames);
 	}
 
 	/**
 	 * @return \PHPUnit_Framework_MockObject_MockObject|StepInterface
 	 */
 	protected function getMockedStepInterface() {
-		return $this->getMock('\Craue\FormFlowBundle\Form\StepInterface');
+		return $this->getMock('\Craue\FormFlowBundle\FormFlow\StepInterface');
 	}
 
 	/**
 	 * @return \PHPUnit_Framework_MockObject_MockObject|DataManagerInterface
 	 */
 	protected function getMockedDataManagerInterface() {
-		return $this->getMock('\Craue\FormFlowBundle\Storage\DataManagerInterface');
+		return $this->getMock('\Craue\FormFlowBundle\FormFlow\Storage\DataManagerInterface');
 	}
 
 }

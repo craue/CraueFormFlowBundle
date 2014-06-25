@@ -2,7 +2,7 @@
 
 namespace Craue\FormFlowBundle;
 
-use Craue\FormFlowBundle\Util\TempFileUtil;
+use Craue\FormFlowBundle\FormFlow\Util\TempFileUtil;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**

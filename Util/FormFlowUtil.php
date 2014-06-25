@@ -2,7 +2,7 @@
 
 namespace Craue\FormFlowBundle\Util;
 
-use Craue\FormFlowBundle\Form\FormFlow;
+use Craue\FormFlowBundle\FormFlow\FormFlow;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
