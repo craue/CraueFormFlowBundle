@@ -26,6 +26,9 @@
 		"sensio/framework-extra-bundle": ">=2.1",
 		"symfony/symfony": "~2.1"
 	},
+	"replace": {
+		"craue/formflow": "self.version"
+	},
 	"minimum-stability": "stable",
 	"prefer-stable": true,
 	"autoload": {
