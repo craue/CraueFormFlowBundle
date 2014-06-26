@@ -2,8 +2,6 @@
 
 namespace Craue\FormFlowBundle\Event;
 
-use Craue\FormFlowBundle\Form\FormFlowInterface;
-
 /**
  * Is called once prior to binding any (neither saved nor request) data.
  * You can use this event to define steps to skip prior to determinating the current step, e.g. based on custom
@@ -15,5 +13,4 @@ use Craue\FormFlowBundle\Form\FormFlowInterface;
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class PreBindEvent extends FormFlowEvent {
-
 }
