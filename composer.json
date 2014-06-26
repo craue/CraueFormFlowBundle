@@ -30,7 +30,7 @@
 	"prefer-stable": true,
 	"autoload": {
 		"psr-0": {
-			"Craue\\FormFlowBundle": ""
+			"Craue\\FormFlowBundle\\": ""
 		}
 	},
 	"target-dir": "Craue/FormFlowBundle",
