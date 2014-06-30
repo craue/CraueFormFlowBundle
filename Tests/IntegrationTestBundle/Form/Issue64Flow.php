@@ -42,15 +42,4 @@ class Issue64Flow extends FormFlow {
 		);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getFormOptions($step, array $options = array()) {
-		$options = parent::getFormOptions($step, $options);
-
-		$options['cascade_validation'] = true;
-
-		return $options;
-	}
-
 }
