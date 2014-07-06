@@ -5,10 +5,10 @@
 	Copyright: 2011-2014 Christian Raue
 	License: http://opensource.org/licenses/mit-license.php MIT License
 -->
-<container xmlns="http://symfony.com/schema/dic/services"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
+<container
+		xmlns="http://symfony.com/schema/dic/services"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 	<parameters>
 		<parameter key="craue.form.flow.class">Craue\FormFlowBundle\Form\FormFlow</parameter>
 		<parameter key="craue.form.flow.storage.class">Craue\FormFlowBundle\Storage\SessionStorage</parameter>
@@ -47,5 +47,4 @@
 			<tag name="form.type_extension" alias="hidden" />
 		</service>
 	</services>
-
 </container>
