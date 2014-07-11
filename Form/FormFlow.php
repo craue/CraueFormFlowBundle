@@ -634,7 +634,7 @@ abstract class FormFlow implements FormFlowInterface {
 	public function invalidateStepData($fromStepNumber) {
 		$stepData = $this->retrieveStepData();
 
-		for ($step = $fromStepNumber; $step < $this->getStepCount(); ++$step) {
+		for ($step = $fromStepNumber, $stepCount = $this->getStepCount(); $step < $stepCount; ++$step) {
 			unset($stepData[$step]);
 		}
 

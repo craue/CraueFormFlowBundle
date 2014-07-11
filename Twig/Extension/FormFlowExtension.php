@@ -81,7 +81,7 @@ class FormFlowExtension extends \Twig_Extension {
 		}
 
 		$lastStepConsecutivelyDone = 0;
-		for ($i = $flow->getFirstStepNumber(); $i < $flow->getLastStepNumber(); ++$i) {
+		for ($i = $flow->getFirstStepNumber(), $lastStepNumber = $flow->getLastStepNumber(); $i < $lastStepNumber; ++$i) {
 			if ($flow->isStepDone($i)) {
 				$lastStepConsecutivelyDone = $i;
 			} else {
