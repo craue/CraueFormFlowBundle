@@ -12,6 +12,11 @@ env:
   - SYMFONY_VERSION="dev-master" MIN_STABILITY="dev"
 before_script:
   - sh travis_before_build.sh
+script:
+  - mkdir -p build/logs
+  - phpunit --coverage-clover build/logs/clover.xml
+after_script:
+  - php vendor/bin/coveralls -v
 notifications:
   email:
     on_success: always
