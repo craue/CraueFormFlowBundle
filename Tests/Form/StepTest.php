@@ -170,6 +170,22 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * @dataProvider dataSetSkip_invalidArguments
+	 * @expectedException \Craue\FormFlowBundle\Exception\InvalidTypeException
+	 */
+	public function testSetSkip_invalidArguments($skip) {
+		$step = new Step();
+		$step->setSkip($skip);
+	}
+
+	public function dataSetSkip_invalidArguments() {
+		return array(
+			array(null),
+			array(1),
+		);
+	}
+
+	/**
 	 * @dataProvider dataEvaluateSkipping_validReturnValueFromCallable
 	 */
 	public function testEvaluateSkipping_validReturnValueFromCallable($returnValue) {

@@ -448,7 +448,7 @@ abstract class FormFlow implements FormFlowInterface {
 			return true;
 		}
 
-		return false;
+		return false; // should never be reached, but just in case
 	}
 
 	/**
