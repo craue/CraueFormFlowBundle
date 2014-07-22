@@ -175,7 +175,7 @@
 	- `formType`
 	- `skipSteps`
 
-- After calling `nextStep`, now the method `getCurrentStepNumber` won't return a value greater than what `getStepCount` returns. This used to be different in 1.x, where `getCurrentStep` returned `getMaxSteps() + 1` in case the flow is finished. 
+- After calling `nextStep`, now the method `getCurrentStepNumber` won't return a value greater than what `getStepCount` returns. This used to be different in 1.x, where `getCurrentStep` returned `getMaxSteps() + 1` in case the flow is finished.
 
 ## Template
 
