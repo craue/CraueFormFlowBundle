@@ -321,7 +321,7 @@ public function createVehicleAction() {
 			$form = $flow->createForm();
 		} else {
 			// flow finished
-			$em = $this->getDoctrine()->getEntityManager();
+			$em = $this->getDoctrine()->getManager();
 			$em->persist($formData);
 			$em->flush();
 
