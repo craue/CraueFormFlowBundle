@@ -36,6 +36,7 @@ class RevalidatePreviousStepsFlowTest extends IntegrationTestCase {
 		$crawler = $this->client->submit($form);
 		$this->assertCurrentStepNumber(2, $crawler);
 		$this->assertContainsFormError('The form for step 1 is invalid. Please go back and try to submit it again.', $crawler);
+		$this->assertEquals(array('onPreviousStepInvalid #1'), $this->getCalledEvents());
 
 		// back -> step 1
 		$form = $crawler->selectButton('back')->form();
@@ -66,6 +67,17 @@ class RevalidatePreviousStepsFlowTest extends IntegrationTestCase {
 
 // var_dump($this->client->getResponse()->getContent());
 // die;
+	}
+
+	protected function getCalledEvents() {
+		$container = static::$kernel->getContainer();
+		$container->enterScope('request');
+		$container->set('request', $this->client->getRequest(), 'request');
+
+		$flow = $container->get('integrationTestBundle.form.flow.revalidatePreviousSteps');
+		$storage = $container->get('craue.form.flow.storage');
+
+		return $storage->get($flow->getCalledEventsSessionKey());
 	}
 
 }

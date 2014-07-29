@@ -19,6 +19,8 @@ class FormFlowEvents {
 
 	const POST_BIND_REQUEST = 'flow.post_bind_request';
 
+	const PREVIOUS_STEP_INVALID = 'flow.previous_step_invalid';
+
 	const POST_VALIDATE = 'flow.post_validate';
 
 }

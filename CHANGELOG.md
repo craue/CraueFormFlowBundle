@@ -7,7 +7,7 @@
   - [#104]: removed options from method `createForm`
   - removed the step field template
   - renamed property `step` to `stepNumber` and method `getStep` to `getStepNumber` within event classes
-- [#98]: add a validation error to the current form if a form of a previous step became invalid
+- [#98]+[#143]: add a validation error to the current form if a form of a previous step became invalid
 - [#107]: added Czech translation
 - [#112]: improved Dutch translation
 - [#117]: method `getFormOptions` returns an array for the `validation_groups` option
@@ -27,6 +27,7 @@
 [#126]: https://github.com/craue/CraueFormFlowBundle/issues/126
 [#133]: https://github.com/craue/CraueFormFlowBundle/issues/133
 [#134]: https://github.com/craue/CraueFormFlowBundle/issues/134
+[#143]: https://github.com/craue/CraueFormFlowBundle/issues/143
 
 ## 2.1.5 (2014-06-13)
 
