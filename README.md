@@ -11,7 +11,8 @@ Features:
 - skipping of steps
 - different validation group for each step
 - handling of file uploads
-- dynamic step navigation
+- dynamic step navigation (optional)
+- redirect after submit (a.k.a. "Post/Redirect/Get", optional)
 
 A live demo showcasing these features is available at http://craue.de/sf2playground/en/CraueFormFlow/.
 
@@ -568,6 +569,48 @@ class CreateVehicleFlow extends FormFlow {
 
 	// ...
 
+}
+```
+
+## Enabling redirect after submit
+
+This feature will allow performing a redirect after submitting a step to load the page containing the next step using a GET request.
+To enable it you could extend the flow class mentioned in the example above as follows:
+
+```php
+// in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
+class CreateVehicleFlow extends FormFlow {
+
+	protected $allowRedirectAfterSubmit = true;
+
+	// ...
+
+}
+```
+
+But you still have to perform the redirect yourself, so update your action like this:
+
+```php
+// in src/MyCompany/MyBundle/Controller/VehicleController.php
+public function createVehicleAction() {
+	// ...
+	$flow->bind($formData);
+	$form = $submittedForm = $flow->createForm();
+	if ($flow->isValid($submittedForm)) {
+		$flow->saveCurrentStepData($submittedForm);
+		// ...
+	}
+
+	if ($flow->redirectAfterSubmit($submittedForm)) {
+		$request = $this->getRequest();
+		$params = $this->get('craue_formflow_util')->addRouteParameters(array_merge($request->query->all(),
+				$request->attributes->get('_route_params')), $flow);
+
+		return $this->redirect($this->generateUrl($request->attributes->get('_route'), $params));
+	}
+
+	// ...
+	// return ...
 }
 ```
 

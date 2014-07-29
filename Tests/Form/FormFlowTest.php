@@ -325,6 +325,17 @@ class FormFlowTest extends UnitTestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider dataBooleanSetter
+	 */
+	public function testSetIsAllowRedirectAfterSubmit($expectedValue, $allowRedirectAfterSubmit) {
+		$flow = $this->getMockedFlow();
+
+		$flow->setAllowRedirectAfterSubmit($allowRedirectAfterSubmit);
+
+		$this->assertEquals($expectedValue, $flow->isAllowRedirectAfterSubmit());
+	}
+
 	public function testSetGetDynamicStepNavigationInstanceParameter() {
 		$flow = $this->getMockedFlow();
 

@@ -67,6 +67,11 @@ interface FormFlowInterface {
 	function getHandleFileUploadsTempDir();
 
 	/**
+	 * @return boolean
+	 */
+	function isAllowRedirectAfterSubmit();
+
+	/**
 	 * @return string
 	 */
 	function getId();

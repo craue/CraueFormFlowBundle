@@ -29,6 +29,18 @@ class FormFlowController extends Controller {
 	}
 
 	/**
+	 * @Route("/create-topic-redirect-after-submit/", name="_FormFlow_createTopic_redirectAfterSubmit")
+	 * @Template("IntegrationTestBundle:FormFlow:createTopic.html.twig")
+	 */
+	public function createTopicRedirectAfterSubmitAction() {
+		$flow = $this->get('integrationTestBundle.form.flow.createTopic');
+		$flow->setAllowDynamicStepNavigation(false);
+		$flow->setAllowRedirectAfterSubmit(true);
+
+		return $this->processFlow(new Topic(), $flow);
+	}
+
+	/**
 	 * @Route("/create-vehicle/", name="_FormFlow_createVehicle")
 	 * @Template("IntegrationTestBundle:FormFlow:createVehicle.html.twig")
 	 */
@@ -108,9 +120,9 @@ class FormFlowController extends Controller {
 	protected function processFlow($formData, FormFlow $flow) {
 		$flow->bind($formData);
 
-		$form = $flow->createForm();
-		if ($flow->isValid($form)) {
-			$flow->saveCurrentStepData($form);
+		$form = $submittedForm = $flow->createForm();
+		if ($flow->isValid($submittedForm)) {
+			$flow->saveCurrentStepData($submittedForm);
 
 			if ($flow->nextStep()) {
 				// create form for next step
@@ -121,6 +133,14 @@ class FormFlowController extends Controller {
 
 				return new JsonResponse($formData);
 			}
+		}
+
+		if ($flow->redirectAfterSubmit($submittedForm)) {
+			$request = $this->getRequest();
+			$params = $this->get('craue_formflow_util')->addRouteParameters(array_merge($request->query->all(),
+					$request->attributes->get('_route_params')), $flow);
+
+			return $this->redirect($this->generateUrl($request->attributes->get('_route'), $params));
 		}
 
 		return array(
