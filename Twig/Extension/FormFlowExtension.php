@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Twig\Extension;
 
 use Craue\FormFlowBundle\Form\FormFlow;
+use Craue\FormFlowBundle\Util\FormFlowUtil;
 
 /**
  * Twig extension for form flows.
@@ -12,6 +13,15 @@ use Craue\FormFlowBundle\Form\FormFlow;
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class FormFlowExtension extends \Twig_Extension {
+
+	/**
+	 * @var FormFlowUtil
+	 */
+	protected $formFlowUtil;
+
+	public function setFormFlowUtil(FormFlowUtil $formFlowUtil) {
+		$this->formFlowUtil = $formFlowUtil;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -42,30 +52,24 @@ class FormFlowExtension extends \Twig_Extension {
 	}
 
 	/**
-	 * Adds parameters for dynamic step navigation.
+	 * Adds route parameters for dynamic step navigation.
 	 * @param array $parameters Current route parameters.
 	 * @param FormFlow $flow The flow involved.
 	 * @param integer $stepNumber Number of the step the link will be generated for.
 	 * @return array Route parameters plus instance and step parameter.
 	 */
 	public function addDynamicStepNavigationParameters(array $parameters, FormFlow $flow, $stepNumber) {
-		$parameters[$flow->getDynamicStepNavigationInstanceParameter()] = $flow->getInstanceId();
-		$parameters[$flow->getDynamicStepNavigationStepParameter()] = $stepNumber;
-
-		return $parameters;
+		return $this->formFlowUtil->addRouteParameters($parameters, $flow, $stepNumber);
 	}
 
 	/**
-	 * Removes parameters for dynamic step navigation.
+	 * Removes route parameters for dynamic step navigation.
 	 * @param array $parameters Current route parameters.
 	 * @param FormFlow $flow The flow involved.
 	 * @return array Route parameters without instance and step parameter.
 	 */
 	public function removeDynamicStepNavigationParameters(array $parameters, FormFlow $flow) {
-		unset($parameters[$flow->getDynamicStepNavigationInstanceParameter()]);
-		unset($parameters[$flow->getDynamicStepNavigationStepParameter()]);
-
-		return $parameters;
+		return $this->formFlowUtil->removeRouteParameters($parameters, $flow);
 	}
 
 	/**
