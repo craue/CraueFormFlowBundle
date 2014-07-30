@@ -133,6 +133,7 @@ class CreateVehicleForm extends AbstractType {
 
 ### Register your form type and flow as services
 
+XML
 ```xml
 <services>
 	<service id="myCompany.form.createVehicle"
@@ -149,6 +150,22 @@ class CreateVehicleForm extends AbstractType {
 		</call>
 	</service>
 </services>
+```
+
+YAML
+```yaml
+services:
+    myCompany.form.createVehicle:
+        class: MyCompany\MyBundle\Form\CreateVehicleForm
+        tags:
+            - { name: form.type, alias: createVehicle }
+    
+    myCompany.form.flow.createVehicle:
+        class: MyCompany\MyBundle\Form\CreateVehicleFlow
+        parent: craue.form.flow
+        scope: request
+        calls:
+            - [ setFormType, [ "@myCompany.form.createVehicle" ] ]
 ```
 
 ## Approach B: One form type per step
@@ -236,6 +253,7 @@ class CreateVehicleStep2Form extends AbstractType {
 
 ### Register your flow as a service
 
+XML
 ```xml
 <services>
 	<service id="myCompany.form.flow.createVehicle"
@@ -244,6 +262,15 @@ class CreateVehicleStep2Form extends AbstractType {
 			scope="request">
 	</service>
 </services>
+```
+
+YAML
+```yaml
+services:
+    myCompany.form.flow.createVehicle:
+        class: MyCompany\MyBundle\Form\CreateVehicleFlow
+        parent: craue.form.flow
+        scope: request
 ```
 
 ## Create a form template
