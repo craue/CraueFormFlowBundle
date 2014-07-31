@@ -17,7 +17,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -704,7 +703,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 			if (array_key_exists($stepNumber, $stepData)) {
 				$stepForm = $this->createFormForStep($stepNumber, $options);
-				$stepForm->bind($stepData[$stepNumber]); // the form is validated here
+				$stepForm->submit($stepData[$stepNumber]); // the form is validated here
 
 				if ($this->revalidatePreviousSteps) {
 					$this->stepForms[$stepNumber] = $stepForm;
@@ -825,7 +824,7 @@ abstract class FormFlow implements FormFlowInterface {
 			self::TRANSITION_BACK,
 			self::TRANSITION_RESET,
 		))) {
-			$form->bind($request);
+			$form->submit($request);
 
 			if ($this->hasListeners(FormFlowEvents::POST_BIND_REQUEST)) {
 				$event = new PostBindRequestEvent($this, $form->getData(), $this->currentStepNumber);
@@ -1000,9 +999,7 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	protected function triggerDeprecationError($message) {
-		if (version_compare(Kernel::VERSION, '2.2', '>=')) {
-			trigger_error($message, E_USER_DEPRECATED);
-		}
+		trigger_error($message, E_USER_DEPRECATED);
 	}
 
 }

@@ -5,6 +5,7 @@
 - BC breaks (follow `UPGRADE-3.0.md` to upgrade):
   - [#101]: support for concurrent instances of the same flow
   - [#104]: removed options from method `createForm`
+  - [#145]: bumped Symfony dependency to 2.3
   - removed the step field template
   - renamed property `step` to `stepNumber` and method `getStep` to `getStepNumber` within event classes
 - [#98]+[#143]: add a validation error to the current form if a form of a previous step became invalid
@@ -31,6 +32,7 @@
 [#134]: https://github.com/craue/CraueFormFlowBundle/issues/134
 [#142]: https://github.com/craue/CraueFormFlowBundle/issues/142
 [#143]: https://github.com/craue/CraueFormFlowBundle/issues/143
+[#145]: https://github.com/craue/CraueFormFlowBundle/issues/145
 [#146]: https://github.com/craue/CraueFormFlowBundle/issues/146
 
 ## 2.1.5 (2014-06-13)

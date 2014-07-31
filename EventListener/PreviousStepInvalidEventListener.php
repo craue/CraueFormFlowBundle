@@ -4,7 +4,6 @@ namespace Craue\FormFlowBundle\EventListener;
 
 use Craue\FormFlowBundle\Event\PreviousStepInvalidEvent;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -37,12 +36,7 @@ class PreviousStepInvalidEventListener {
 		$messageId = 'craueFormFlow.previousStepInvalid';
 		$messageParameters = array('%stepNumber%' => $stepNumber);
 
-		if (version_compare(Kernel::VERSION, '2.2', '>=')) {
-			return new FormError($this->translator->trans($messageId, $messageParameters, 'validators'));
-		}
-
-		// TODO remove as soon as Symfony >= 2.2 is required
-		return new FormError($messageId, $messageParameters);
+		return new FormError($this->translator->trans($messageId, $messageParameters, 'validators'));
 	}
 
 }

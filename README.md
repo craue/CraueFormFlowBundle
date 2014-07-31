@@ -18,8 +18,6 @@ A live demo showcasing these features is available at http://craue.de/sf2playgro
 
 # Installation
 
-Please use tag 1.0.0 of this bundle if you need Symfony 2.0.x compatibility.
-
 ## Get the bundle
 
 Let Composer download and install the bundle by running
