@@ -8,16 +8,15 @@ use Craue\FormFlowBundle\Event\PostBindRequestEvent;
 use Craue\FormFlowBundle\Event\PostBindSavedDataEvent;
 use Craue\FormFlowBundle\Event\PostValidateEvent;
 use Craue\FormFlowBundle\Event\PreBindEvent;
+use Craue\FormFlowBundle\Event\PreviousStepInvalidEvent;
 use Craue\FormFlowBundle\Exception\InvalidTypeException;
 use Craue\FormFlowBundle\Storage\StorageInterface;
 use Craue\FormFlowBundle\Util\StringUtil;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -45,11 +44,6 @@ abstract class FormFlow implements FormFlowInterface {
 	 * @var EventDispatcherInterface|null
 	 */
 	protected $eventDispatcher = null;
-
-	/**
-	 * @var TranslatorInterface
-	 */
-	protected $translator;
 
 	/**
 	 * @var string
@@ -197,13 +191,6 @@ abstract class FormFlow implements FormFlowInterface {
 	 */
 	public function setEventDispatcher(EventDispatcherInterface $eventDispatcher) {
 		$this->eventDispatcher = $eventDispatcher;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function setTranslator(TranslatorInterface $translator) {
-		$this->translator = $translator;
 	}
 
 	public function setId($id) {
@@ -801,7 +788,10 @@ abstract class FormFlow implements FormFlowInterface {
 					}
 
 					if (!$stepForm->isValid()) {
-						$form->addError($this->getPreviousStepInvalidFormError($stepNumber));
+						if ($this->hasListeners(FormFlowEvents::PREVIOUS_STEP_INVALID)) {
+							$event = new PreviousStepInvalidEvent($this, $form, $stepNumber);
+							$this->eventDispatcher->dispatch(FormFlowEvents::PREVIOUS_STEP_INVALID, $event);
+						}
 
 						return false;
 					}
@@ -874,22 +864,6 @@ abstract class FormFlow implements FormFlowInterface {
 	 */
 	protected function hasListeners($eventName) {
 		return $this->eventDispatcher !== null && $this->eventDispatcher->hasListeners($eventName);
-	}
-
-	/**
-	 * @param integer $stepNumber
-	 * @return FormError
-	 */
-	protected function getPreviousStepInvalidFormError($stepNumber) {
-		$messageId = 'craueFormFlow.previousStepInvalid';
-		$messageParameters = array('%stepNumber%' => $stepNumber);
-
-		if (version_compare(Kernel::VERSION, '2.2', '>=')) {
-			return new FormError($this->translator->trans($messageId, $messageParameters, 'validators'));
-		}
-
-		// TODO remove as soon as Symfony >= 2.2 is required
-		return new FormError($messageId, $messageParameters);
 	}
 
 	// methods for BC with third-party templates (e.g. MopaBootstrapBundle)

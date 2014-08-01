@@ -12,6 +12,8 @@
 	<parameters>
 		<parameter key="craue.form.flow.class">Craue\FormFlowBundle\Form\FormFlow</parameter>
 		<parameter key="craue.form.flow.storage.class">Craue\FormFlowBundle\Storage\SessionStorage</parameter>
+		<parameter key="craue.form.flow.event_listener.previous_step_invalid.class">Craue\FormFlowBundle\EventListener\PreviousStepInvalidEventListener</parameter>
+		<parameter key="craue.form.flow.event_listener.previous_step_invalid.event" type="constant">Craue\FormFlowBundle\Form\FormFlowEvents::PREVIOUS_STEP_INVALID</parameter>
 	</parameters>
 
 	<services>
@@ -34,9 +36,6 @@
 			<call method="setEventDispatcher">
 				<argument type="service" id="event_dispatcher" on-invalid="ignore" />
 			</call>
-			<call method="setTranslator">
-				<argument type="service" id="translator" />
-			</call>
 		</service>
 
 		<service id="craue.form.flow.form_extension" class="Craue\FormFlowBundle\Form\Extension\FormFlowFormExtension">
@@ -45,6 +44,13 @@
 
 		<service id="craue.form.flow.hidden_field_extension" class="Craue\FormFlowBundle\Form\Extension\FormFlowHiddenFieldExtension">
 			<tag name="form.type_extension" alias="hidden" />
+		</service>
+
+		<service id="craue.form.flow.event_listener.previous_step_invalid" class="%craue.form.flow.event_listener.previous_step_invalid.class%">
+			<tag name="kernel.event_listener" event="%craue.form.flow.event_listener.previous_step_invalid.event%" method="onPreviousStepInvalid" />
+			<call method="setTranslator">
+				<argument type="service" id="translator" />
+			</call>
 		</service>
 	</services>
 </container>
