@@ -77,9 +77,6 @@ class ConcurrentFlowsTest extends IntegrationTestCase {
 		$formB = $crawlerB->selectButton('finish')->form();
 		$this->client->submit($formB);
 		$this->assertJsonResponse('{"title":"question","description":null,"category":"DISCUSSION","comment":null,"details":null}');
-
-// var_dump($this->client->getResponse()->getContent());
-// die;
 	}
 
 }

@@ -48,9 +48,6 @@ class Issue64Test extends IntegrationTestCase {
 		$form = $crawler->selectButton('finish')->form();
 		$this->client->submit($form);
 		$this->assertJsonResponse('{"sub":{"prop1":"foo","prop2":"baz"}}');
-
-// var_dump($this->client->getResponse()->getContent());
-// die;
 	}
 
 }

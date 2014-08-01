@@ -47,9 +47,6 @@ class RevalidatePreviousStepsFlowTest extends IntegrationTestCase {
 		$crawler = $this->client->submit($form);
 		$this->assertCurrentStepNumber(1, $crawler);
 		$this->assertContainsFormError('Take this!', $crawler);
-
-// var_dump($this->client->getResponse()->getContent());
-// die;
 	}
 
 	public function testRevalidatePreviousSteps_disabled() {
@@ -64,9 +61,6 @@ class RevalidatePreviousStepsFlowTest extends IntegrationTestCase {
 		$form = $crawler->selectButton('next')->form();
 		$crawler = $this->client->submit($form);
 		$this->assertCurrentStepNumber(3, $crawler);
-
-// var_dump($this->client->getResponse()->getContent());
-// die;
 	}
 
 	protected function getCalledEvents() {

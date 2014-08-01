@@ -54,9 +54,6 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 		$form = $crawler->selectButton('finish')->form();
 		$this->client->submit($form);
 		$this->assertJsonResponse('{"numberOfWheels":4,"engine":"gas"}');
-
-// var_dump($this->client->getResponse()->getContent());
-// die;
 	}
 
 	public function testCreateVehicle_invalidateStepData() {

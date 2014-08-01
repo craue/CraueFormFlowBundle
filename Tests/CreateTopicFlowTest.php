@@ -86,9 +86,6 @@ class CreateTopicFlowTest extends IntegrationTestCase {
 		$form = $crawler->selectButton('finish')->form();
 		$this->client->submit($form);
 		$this->assertJsonResponse('{"title":"blah","description":null,"category":"DISCUSSION","comment":"my comment","details":null}');
-
-// var_dump($this->client->getResponse()->getContent());
-// die;
 	}
 
 	public function testCreateTopic_dynamicStepNavigation_noLinkForNonVisitedStep() {
@@ -112,9 +109,6 @@ class CreateTopicFlowTest extends IntegrationTestCase {
 		$crawler = $this->client->submit($form);
 		$this->assertCurrentStepNumber(4, $crawler);
 		$this->assertCount(2, $crawler->filter('#step-list a'));
-
-// var_dump($this->client->getResponse()->getContent());
-// die;
 	}
 
 	public function testCreateTopic_dynamicStepNavigation_preserveDataOnGetRequestWithInstanceId() {
