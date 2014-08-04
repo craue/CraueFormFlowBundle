@@ -1,4 +1,5 @@
 language: php
+
 php:
   - 5.3
   - 5.4
@@ -27,8 +28,10 @@ matrix:
     - php: 5.5
       env: SYMFONY_VERSION="dev-master" MIN_STABILITY="dev"
 
+install:
+  - sh travis_install_dependencies.sh
+
 before_script:
-  - sh travis_before_build.sh
   - mkdir -p build/logs
 
 script:
