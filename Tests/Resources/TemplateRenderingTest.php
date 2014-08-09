@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests\Form;
 
 use Craue\FormFlowBundle\Form\FormFlow;
+use Craue\FormFlowBundle\Storage\DataManager;
 use Craue\FormFlowBundle\Storage\SessionStorage;
 use Craue\FormFlowBundle\Tests\IntegrationTestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -275,7 +276,7 @@ class TemplateRenderingTest extends IntegrationTestCase {
 		/* @var $flow \PHPUnit_Framework_MockObject_MockObject|FormFlow */
 		$flow = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array_merge(array('getName', 'loadStepsConfig'), $stubbedMethods));
 
-		$flow->setStorage(new SessionStorage(new Session(new MockArraySessionStorage())));
+		$flow->setDataManager(new DataManager(new SessionStorage(new Session(new MockArraySessionStorage()))));
 
 		$flow
 			->expects($this->any())

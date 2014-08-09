@@ -3,7 +3,7 @@
 namespace Craue\FormFlowBundle\Form;
 
 use Craue\FormFlowBundle\Exception\InvalidTypeException;
-use Craue\FormFlowBundle\Storage\StorageInterface;
+use Craue\FormFlowBundle\Storage\DataManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -32,14 +32,14 @@ interface FormFlowInterface {
 	function setRequest(Request $request = null);
 
 	/**
-	 * @param StorageInterface $storage
+	 * @param DataManagerInterface $dataManager
 	 */
-	function setStorage(StorageInterface $storage);
+	function setDataManager(DataManagerInterface $dataManager);
 
 	/**
-	 * @return StorageInterface
+	 * @return DataManagerInterface
 	 */
-	function getStorage();
+	function getDataManager();
 
 	/**
 	 * @param EventDispatcherInterface $eventDispatcher
@@ -75,6 +75,11 @@ interface FormFlowInterface {
 	 * @return string
 	 */
 	function getId();
+
+	/**
+	 * @return string
+	 */
+	function getInstanceId();
 
 	/**
 	 * Restores previously saved form data of all steps and determines the current step.
