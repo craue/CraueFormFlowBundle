@@ -90,6 +90,19 @@ abstract class IntegrationTestCase extends WebTestCase {
 	}
 
 	/**
+	 * @param string $expectedSrcAttr
+	 * @param Crawler $crawler
+	 */
+	protected function assertRenderedImageUrl($expectedSrcAttr, Crawler $crawler) {
+		$selector = '#rendered-image';
+		try {
+			$this->assertEquals($expectedSrcAttr, $crawler->filter($selector)->attr('src'));
+		} catch (\InvalidArgumentException $e) {
+			$this->fail(sprintf("No node found for selector '%s'. Content:\n%s", $selector, $this->client->getResponse()->getContent()));
+		}
+	}
+
+	/**
 	 * @param string $expectedError
 	 * @param Crawler $crawler
 	 */

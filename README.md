@@ -10,6 +10,7 @@ Features:
 - step labels
 - skipping of steps
 - different validation group for each step
+- handling of file uploads
 - dynamic step navigation
 
 A live demo showcasing these features is available at http://craue.de/sf2playground/en/CraueFormFlow/.
@@ -538,6 +539,36 @@ you should modify the opening form tag in the form template like this:
 ```html+jinja
 <form method="post" action="{{ path(app.request.attributes.get('_route'),
 		app.request.query.all | craue_removeDynamicStepNavigationParameters(flow)) }}" {{ form_enctype(form) }}>
+```
+
+## Handling of file uploads
+
+File uploads are transparently handled by Base64-encoding the content and storing it in the session, so it may affect performance.
+This feature is enabled by default for convenience, but can be disabled in the flow class as follows:
+
+```php
+// in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
+class CreateVehicleFlow extends FormFlow {
+
+	protected $handleFileUploads = false;
+
+	// ...
+
+}
+```
+
+By default, the system's directory for temporary files will be used for files restored from the session while loading step data.
+You can set a custom one:
+
+```php
+// in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
+class CreateVehicleFlow extends FormFlow {
+
+	protected $handleFileUploadsTempDir = '/path/for/flow/uploads';
+
+	// ...
+
+}
 ```
 
 ## Using events

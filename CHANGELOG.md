@@ -15,6 +15,7 @@
 - [#125]: added generic form options to simplify passing options to all steps
 - [#126]: allow custom classes on buttons
 - [#133]+[#134]: added Farsi translation
+- [#146]: handling of file uploads
 
 [#98]: https://github.com/craue/CraueFormFlowBundle/issues/98
 [#101]: https://github.com/craue/CraueFormFlowBundle/issues/101
@@ -28,6 +29,7 @@
 [#133]: https://github.com/craue/CraueFormFlowBundle/issues/133
 [#134]: https://github.com/craue/CraueFormFlowBundle/issues/134
 [#143]: https://github.com/craue/CraueFormFlowBundle/issues/143
+[#146]: https://github.com/craue/CraueFormFlowBundle/issues/146
 
 ## 2.1.5 (2014-06-13)
 
