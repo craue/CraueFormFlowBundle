@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests\Event;
 
 use Craue\FormFlowBundle\Event\PostBindFlowEvent;
+use Craue\FormFlowBundle\Tests\UnitTestCase;
 
 /**
  * @group unit
@@ -11,12 +12,12 @@ use Craue\FormFlowBundle\Event\PostBindFlowEvent;
  * @copyright 2011-2014 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class PostBindFlowEventTest extends \PHPUnit_Framework_TestCase {
+class PostBindFlowEventTest extends UnitTestCase {
 
 	public function testEvent() {
 		$formData = array('blah' => '123');
 
-		$event = new PostBindFlowEvent($this->getMockForAbstractClass('\Craue\FormFlowBundle\Form\FormFlow'), $formData);
+		$event = new PostBindFlowEvent($this->getMockedFlowInterface(), $formData);
 
 		$this->assertEquals($formData, $event->getFormData());
 	}

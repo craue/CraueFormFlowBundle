@@ -4,6 +4,7 @@ namespace Craue\FormFlowBundle\Tests\Form;
 
 use Craue\FormFlowBundle\Form\FormFlowInterface;
 use Craue\FormFlowBundle\Form\Step;
+use Craue\FormFlowBundle\Tests\UnitTestCase;
 
 /**
  * @group unit
@@ -12,10 +13,10 @@ use Craue\FormFlowBundle\Form\Step;
  * @copyright 2011-2014 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class StepTest extends \PHPUnit_Framework_TestCase {
+class StepTest extends UnitTestCase {
 
 	public function testCreateFromConfig() {
-		$flow = $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface');
+		$flow = $this->getMockedFlowInterface();
 
 		$step = Step::createFromConfig(1, array());
 		$this->assertSame(1, $step->getNumber());
@@ -46,7 +47,7 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 		$step->evaluateSkipping(1, $flow);
 		$this->assertTrue($step->isSkipped());
 
-		$flowWithData = $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface');
+		$flowWithData = $this->getMockedFlowInterface();
 		$flowWithData
 			->expects($this->once())
 			->method('getFormData')
@@ -190,7 +191,7 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testEvaluateSkipping_validReturnValueFromCallable($returnValue) {
 		$step = $this->createStepWithSkipCallable(1, $returnValue);
-		$step->evaluateSkipping(1, $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface'));
+		$step->evaluateSkipping(1, $this->getMockedFlowInterface());
 		$this->assertSame($returnValue, $step->isSkipped());
 	}
 
@@ -208,7 +209,7 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testEvaluateSkipping_invalidReturnValueFromCallable($returnValue) {
 		$step = $this->createStepWithSkipCallable(1, $returnValue);
-		$step->evaluateSkipping(1, $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface'));
+		$step->evaluateSkipping(1, $this->getMockedFlowInterface());
 	}
 
 	public function dataEvaluateSkipping_invalidReturnValueFromCallable() {

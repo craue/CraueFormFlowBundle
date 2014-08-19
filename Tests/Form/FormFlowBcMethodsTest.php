@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests\Form;
 
 use Craue\FormFlowBundle\Form\FormFlow;
+use Craue\FormFlowBundle\Tests\UnitTestCase;
 
 /**
  * Ensure that the methods for BC do what they should.
@@ -13,7 +14,7 @@ use Craue\FormFlowBundle\Form\FormFlow;
  * @copyright 2011-2014 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class FormFlowBcMethodsTest extends \PHPUnit_Framework_TestCase {
+class FormFlowBcMethodsTest extends UnitTestCase {
 
 	public function testBcMethodDelegation_getCurrentStep() {
 		$flow = $this->getFlowWithMockedDeprecationTriggerMethod('getCurrentStep', 'getCurrentStepNumber');
@@ -105,7 +106,7 @@ class FormFlowBcMethodsTest extends \PHPUnit_Framework_TestCase {
 	 * @return PHPUnit_Framework_MockObject_MockObject|FormFlow
 	 */
 	protected function getFlowWithMockedDeprecationTriggerMethod($bcMethodName, $realMethodName) {
-		$flow = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'triggerDeprecationError', $realMethodName));
+		$flow = $this->getFlowWithMockedMethods(array('getName', 'triggerDeprecationError', $realMethodName));
 
 		$class = new \ReflectionClass($flow);
 		foreach ($class->getMethods() as $method) {

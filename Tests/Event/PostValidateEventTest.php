@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests\Event;
 
 use Craue\FormFlowBundle\Event\PostValidateEvent;
+use Craue\FormFlowBundle\Tests\UnitTestCase;
 
 /**
  * @group unit
@@ -11,12 +12,12 @@ use Craue\FormFlowBundle\Event\PostValidateEvent;
  * @copyright 2011-2014 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class PostValidateEventTest extends \PHPUnit_Framework_TestCase {
+class PostValidateEventTest extends UnitTestCase {
 
 	public function testEvent() {
 		$formData = array('blah' => '123');
 
-		$event = new PostValidateEvent($this->getMockForAbstractClass('\Craue\FormFlowBundle\Form\FormFlow'), $formData);
+		$event = new PostValidateEvent($this->getMockedFlowInterface(), $formData);
 
 		$this->assertEquals($formData, $event->getFormData());
 	}

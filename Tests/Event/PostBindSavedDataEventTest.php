@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests\Event;
 
 use Craue\FormFlowBundle\Event\PostBindSavedDataEvent;
+use Craue\FormFlowBundle\Tests\UnitTestCase;
 
 /**
  * @group unit
@@ -11,13 +12,13 @@ use Craue\FormFlowBundle\Event\PostBindSavedDataEvent;
  * @copyright 2011-2014 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class PostBindSavedDataEventTest extends \PHPUnit_Framework_TestCase {
+class PostBindSavedDataEventTest extends UnitTestCase {
 
 	public function testEvent() {
 		$formData = array('blah' => '123');
 		$stepNumber = 2;
 
-		$event = new PostBindSavedDataEvent($this->getMockForAbstractClass('\Craue\FormFlowBundle\Form\FormFlow'), $formData, $stepNumber);
+		$event = new PostBindSavedDataEvent($this->getMockedFlowInterface(), $formData, $stepNumber);
 
 		$this->assertEquals($formData, $event->getFormData());
 		$this->assertEquals($stepNumber, $event->getStepNumber());

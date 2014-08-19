@@ -3,8 +3,8 @@
 namespace Craue\FormFlowBundle\Tests\Form;
 
 use Craue\FormFlowBundle\Event\GetStepsEvent;
-use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Form\FormFlowEvents;
+use Craue\FormFlowBundle\Tests\UnitTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\FormBuilder;
@@ -18,11 +18,11 @@ use Symfony\Component\HttpFoundation\Request;
  * @copyright 2011-2014 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class FormFlowTest extends \PHPUnit_Framework_TestCase {
+class FormFlowTest extends UnitTestCase {
 
 	public function testStepListener() {
 		$steps = array(
-			$this->getMock('\Craue\FormFlowBundle\Form\StepInterface'),
+			$this->getMockedStepInterface(),
 		);
 
 		$dispatcher = new EventDispatcher();
@@ -32,14 +32,14 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 			$event->stopPropagation();
 		});
 
-		$flow = $this->getFlowMock();
+		$flow = $this->getMockedFlow();
 		$flow->setEventDispatcher($dispatcher);
 
 		$this->assertEquals($steps, $flow->getSteps());
 	}
 
 	public function testCreateStepsFromConfig_fixArrayIndexes() {
-		$flow = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'loadStepsConfig'));
+		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
 
 		$flow
 			->expects($this->once())
@@ -58,7 +58,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	 * Ensure that the "validation_groups" option can be overridden.
 	 */
 	public function testGetFormOptions_overrideValidationGroups() {
-		$options = $this->getFlowMock()->getFormOptions(1, array(
+		$options = $this->getMockedFlow()->getFormOptions(1, array(
 			'validation_groups' => 'Default',
 		));
 
@@ -70,7 +70,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	 * other groups.
 	 */
 	public function testGetFormOptions_generatedValidationGroupIsArray() {
-		$flow = $this->getFlowMock();
+		$flow = $this->getMockedFlow();
 
 		$flow
 			->expects($this->once())
@@ -87,7 +87,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	 * Ensure that generic options are considered.
 	 */
 	public function testGetFormOptions_considerGenericOptions() {
-		$flow = $this->getFlowMock();
+		$flow = $this->getMockedFlow();
 
 		$flow->setGenericFormOptions(array(
 			'action' => 'targetUrl',
@@ -109,7 +109,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	 * @param integer $expectedStepNumber The expected step number being requested.
 	 */
 	public function testGetRequestedStepNumber($httpMethod, $parameters, $dsnEnabled, $expectedStepNumber) {
-		$flow = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'getRequest'));
+		$flow = $this->getFlowWithMockedMethods(array('getName', 'getRequest'));
 
 		if ($dsnEnabled) {
 			$flow->setAllowDynamicStepNavigation(true);
@@ -156,7 +156,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	 * @param integer $expectedStepNumber The expected step number being requested.
 	 */
 	public function testIsValid($httpMethod, $parameters, $expectedValid) {
-		$flow = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'getRequest'));
+		$flow = $this->getFlowWithMockedMethods(array('getName', 'getRequest'));
 
 		$flow->setRevalidatePreviousSteps(false);
 
@@ -193,7 +193,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetRequest() {
-		$flow = $this->getFlowMock();
+		$flow = $this->getMockedFlow();
 
 		$request = Request::create('');
 		$flow->setRequest($request);
@@ -202,16 +202,16 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetStorage() {
-		$flow = $this->getFlowMock();
+		$flow = $this->getMockedFlow();
 
-		$storage = $this->getMock('\Craue\FormFlowBundle\Storage\StorageInterface');
+		$storage = $this->getMockedStorageInterface();
 		$flow->setStorage($storage);
 
 		$this->assertSame($storage, $flow->getStorage());
 	}
 
 	public function testSetGetId() {
-		$flow = $this->getFlowMock();
+		$flow = $this->getMockedFlow();
 
 		$id = 'flow-id';
 		$flow->setId($id);
@@ -220,7 +220,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetInstanceKey() {
-		$flow = $this->getFlowMock();
+		$flow = $this->getMockedFlow();
 
 		$instanceKey = 'instance-key';
 		$flow->setInstanceKey($instanceKey);
@@ -229,7 +229,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetInstanceId() {
-		$flow = $this->getFlowMock();
+		$flow = $this->getMockedFlow();
 
 		$instanceId = 'instance-id';
 		$flow->setInstanceId($instanceId);
@@ -238,7 +238,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetFormStepKey() {
-		$flow = $this->getFlowMock();
+		$flow = $this->getMockedFlow();
 
 		$formStepKey = 'form-step-key';
 		$flow->setFormStepKey($formStepKey);
@@ -247,7 +247,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetFormTransitionKey() {
-		$flow = $this->getFlowMock();
+		$flow = $this->getMockedFlow();
 
 		$formTransitionKey = 'form-transition-key';
 		$flow->setFormTransitionKey($formTransitionKey);
@@ -256,7 +256,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetStepDataKey() {
-		$flow = $this->getFlowMock();
+		$flow = $this->getMockedFlow();
 
 		$stepDataKey = 'step-data-key';
 		$flow->setStepDataKey($stepDataKey);
@@ -265,7 +265,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetValidationGroupPrefix() {
-		$flow = $this->getFlowMock();
+		$flow = $this->getMockedFlow();
 
 		$validationGroupPrefix = 'validation-group-prefix';
 		$flow->setValidationGroupPrefix($validationGroupPrefix);
@@ -277,7 +277,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dataBooleanSetter
 	 */
 	public function testSetIsRevalidatePreviousSteps($expectedValue, $revalidatePreviousSteps) {
-		$flow = $this->getFlowMock();
+		$flow = $this->getMockedFlow();
 
 		$flow->setRevalidatePreviousSteps($revalidatePreviousSteps);
 
@@ -288,7 +288,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dataBooleanSetter
 	 */
 	public function testSetIsAllowDynamicStepNavigation($expectedValue, $allowDynamicStepNavigation) {
-		$flow = $this->getFlowMock();
+		$flow = $this->getMockedFlow();
 
 		$flow->setAllowDynamicStepNavigation($allowDynamicStepNavigation);
 
@@ -296,7 +296,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetDynamicStepNavigationInstanceParameter() {
-		$flow = $this->getFlowMock();
+		$flow = $this->getMockedFlow();
 
 		$dynamicStepNavigationInstanceParameter = 'dsn-instance';
 		$flow->setDynamicStepNavigationInstanceParameter($dynamicStepNavigationInstanceParameter);
@@ -305,7 +305,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetDynamicStepNavigationStepParameter() {
-		$flow = $this->getFlowMock();
+		$flow = $this->getMockedFlow();
 
 		$dynamicStepNavigationStepParameter = 'dsn-step';
 		$flow->setDynamicStepNavigationStepParameter($dynamicStepNavigationStepParameter);
@@ -318,7 +318,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	 * @expectedExceptionMessage The request is not available.
 	 */
 	public function testGetRequest_notAvailable() {
-		$this->getFlowMock()->getRequest();
+		$this->getMockedFlow()->getRequest();
 	}
 
 	/**
@@ -326,7 +326,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	 * @expectedExceptionMessage Form data has not been evaluated yet and thus cannot be accessed.
 	 */
 	public function testGetFormData_notAvailable() {
-		$this->getFlowMock()->getFormData();
+		$this->getMockedFlow()->getFormData();
 	}
 
 	/**
@@ -334,7 +334,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	 * @expectedExceptionMessage The current step has not been determined yet and thus cannot be accessed.
 	 */
 	public function testGetCurrentStepNumber_notAvailable() {
-		$this->getFlowMock()->getCurrentStepNumber();
+		$this->getMockedFlow()->getCurrentStepNumber();
 	}
 
 	/**
@@ -342,7 +342,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function testApplySkipping_invalidArguments($direction) {
-		$flow = $this->getFlowMock();
+		$flow = $this->getMockedFlow();
 
 		$method = new \ReflectionMethod($flow, 'applySkipping');
 		$method->setAccessible(true);
@@ -363,7 +363,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	 * @expectedException \Craue\FormFlowBundle\Exception\InvalidTypeException
 	 */
 	public function testGetStep_invalidArguments($stepNumber) {
-		$this->getFlowMock()->getStep($stepNumber);
+		$this->getMockedFlow()->getStep($stepNumber);
 	}
 
 	public function dataGetStep_invalidArguments() {
@@ -379,7 +379,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	 * @expectedExceptionMessage The step "2" does not exist.
 	 */
 	public function testGetStep_invalidStep($stepNumber) {
-		$this->getFlowMock()->getStep($stepNumber);
+		$this->getMockedFlow()->getStep($stepNumber);
 	}
 
 	public function dataGetStep_invalidStep() {
@@ -391,7 +391,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	public function testGetCurrentStepLabel() {
 		$label = 'step1';
 
-		$flow = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'loadStepsConfig'));
+		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
 
 		$flow
 			->expects($this->once())
@@ -409,7 +409,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLoadStepsConfig() {
-		$flow = $this->getFlowMock();
+		$flow = $this->getMockedFlow();
 
 		$method = new \ReflectionMethod($flow, 'loadStepsConfig');
 		$method->setAccessible(true);
@@ -425,13 +425,6 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 			array(false, 0),
 			array(false, null),
 		);
-	}
-
-	/**
-	 * @return \PHPUnit_Framework_MockObject_MockObject|FormFlow
-	 */
-	protected function getFlowMock() {
-		return $this->getMockForAbstractClass('\Craue\FormFlowBundle\Form\FormFlow');
 	}
 
 }
