@@ -2,6 +2,7 @@
 
 namespace Craue\FormFlowBundle\Tests\Form;
 
+use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Storage\SessionStorage;
 use Craue\FormFlowBundle\Tests\IntegrationTestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -268,10 +269,10 @@ class TemplateRenderingTest extends IntegrationTestCase {
 	/**
 	 * @param string[] $stubbedMethods names of additionally stubbed methods
 	 * @param array $stepsConfig steps config
-	 * @return \PHPUnit_Framework_MockObject_MockObject|\Craue\FormFlowBundle\Form\FormFlow
+	 * @return \PHPUnit_Framework_MockObject_MockObject|FormFlow
 	 */
 	protected function getFlowStub(array $stubbedMethods = array(), array $stepsConfig = null) {
-		/* @var $flow \PHPUnit_Framework_MockObject_MockObject|\Craue\FormFlowBundle\Form\FormFlow */
+		/* @var $flow \PHPUnit_Framework_MockObject_MockObject|FormFlow */
 		$flow = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array_merge(array('getName', 'loadStepsConfig'), $stubbedMethods));
 
 		$flow->setStorage(new SessionStorage(new Session(new MockArraySessionStorage())));

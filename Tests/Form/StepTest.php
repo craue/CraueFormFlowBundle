@@ -15,14 +15,14 @@ use Craue\FormFlowBundle\Form\Step;
 class StepTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCreateFromConfig() {
-		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface');
+		$flow = $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface');
 
 		$step = Step::createFromConfig(1, array());
 		$this->assertSame(1, $step->getNumber());
 		$this->assertNull($step->getLabel());
 		$this->assertNull($step->getType());
 		$this->assertFalse($step->isSkipped());
-		$step->evaluateSkipping(1, $flowStub);
+		$step->evaluateSkipping(1, $flow);
 		$this->assertFalse($step->isSkipped());
 
 		$step = Step::createFromConfig(1, array(
@@ -34,7 +34,7 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 			'skip' => true,
 		));
 		$this->assertTrue($step->isSkipped());
-		$step->evaluateSkipping(1, $flowStub);
+		$step->evaluateSkipping(1, $flow);
 		$this->assertTrue($step->isSkipped());
 
 		$step = Step::createFromConfig(1, array(
@@ -43,11 +43,11 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 			},
 		));
 		$this->assertFalse($step->isSkipped());
-		$step->evaluateSkipping(1, $flowStub);
+		$step->evaluateSkipping(1, $flow);
 		$this->assertTrue($step->isSkipped());
 
-		$flowStubWithData = $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface');
-		$flowStubWithData
+		$flowWithData = $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface');
+		$flowWithData
 			->expects($this->once())
 			->method('getFormData')
 			->will($this->returnValue(array('blah' => true)))
@@ -58,7 +58,7 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 				return $estimatedCurrentStepNumber > 1 && $formData['blah'] === true;
 			},
 		));
-		$step->evaluateSkipping(2, $flowStubWithData);
+		$step->evaluateSkipping(2, $flowWithData);
 		$this->assertTrue($step->isSkipped());
 	}
 
