@@ -1,0 +1,9 @@
+{% extends 'IntegrationTestBundle::layout_flow.html.twig' %}
+
+{% block content %}
+	{{ parent() }}
+
+	{% if flow.getCurrentStepNumber() == 3 %}
+		<img id="rendered-image" src="data:{{ formData.getPhotoMimeType() }};base64,{{ formData.getPhotoDataBase64Encoded() }}" />
+	{% endif %}
+{% endblock %}

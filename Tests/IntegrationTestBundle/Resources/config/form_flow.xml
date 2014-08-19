@@ -65,6 +65,12 @@
 				parent="craue.form.flow"
 				scope="request">
 		</service>
+
+		<service id="integrationTestBundle.form.flow.photoUpload"
+				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\PhotoUploadFlow"
+				parent="craue.form.flow"
+				scope="request">
+		</service>
 	</services>
 
 </container>

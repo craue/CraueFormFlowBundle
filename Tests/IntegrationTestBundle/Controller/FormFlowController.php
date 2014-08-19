@@ -4,6 +4,7 @@ namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Controller;
 
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Issue64Data;
+use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\PhotoUpload;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\RevalidatePreviousStepsData;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Topic;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Vehicle;
@@ -94,6 +95,14 @@ class FormFlowController extends Controller {
 	 */
 	public function onlyOneStepAction() {
 		return $this->processFlow((object) array(), $this->get('integrationTestBundle.form.flow.onlyOneStep'));
+	}
+
+	/**
+	 * @Route("/photoUpload/", name="_FormFlow_photoUpload")
+	 * @Template("IntegrationTestBundle:FormFlow:photoUpload.html.twig")
+	 */
+	public function photoUploadAction() {
+		return $this->processFlow(new PhotoUpload(), $this->get('integrationTestBundle.form.flow.photoUpload'));
 	}
 
 	protected function processFlow($formData, FormFlow $flow) {

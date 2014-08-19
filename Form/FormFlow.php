@@ -10,6 +10,7 @@ use Craue\FormFlowBundle\Event\PostValidateEvent;
 use Craue\FormFlowBundle\Event\PreBindEvent;
 use Craue\FormFlowBundle\Event\PreviousStepInvalidEvent;
 use Craue\FormFlowBundle\Exception\InvalidTypeException;
+use Craue\FormFlowBundle\Storage\SerializableFile;
 use Craue\FormFlowBundle\Storage\StorageInterface;
 use Craue\FormFlowBundle\Util\StringUtil;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -59,6 +60,16 @@ abstract class FormFlow implements FormFlowInterface {
 	 * @var boolean
 	 */
 	protected $allowDynamicStepNavigation = false;
+
+	/**
+	 * @var boolean If file uploads should be handled by serializing them into the storage.
+	 */
+	protected $handleFileUploads = true;
+
+	/**
+	 * @var string|null Directory for storing temporary files while handling uploads. If {@code null}, the system's default will be used.
+	 */
+	protected $handleFileUploadsTempDir = null;
 
 	/**
 	 * @var string
@@ -335,6 +346,28 @@ abstract class FormFlow implements FormFlowInterface {
 		return $this->allowDynamicStepNavigation;
 	}
 
+	public function setHandleFileUploads($handleFileUploads) {
+		$this->handleFileUploads = (boolean) $handleFileUploads;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isHandleFileUploads() {
+		return $this->handleFileUploads;
+	}
+
+	public function setHandleFileUploadsTempDir($handleFileUploadsTempDir) {
+		$this->handleFileUploadsTempDir = $handleFileUploadsTempDir !== null ? (string) $handleFileUploadsTempDir : null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getHandleFileUploadsTempDir() {
+		return $this->handleFileUploadsTempDir;
+	}
+
 	public function setDynamicStepNavigationInstanceParameter($dynamicStepNavigationInstanceParameter) {
 		$this->dynamicStepNavigationInstanceParameter = $dynamicStepNavigationInstanceParameter;
 	}
@@ -609,7 +642,16 @@ abstract class FormFlow implements FormFlowInterface {
 	public function saveCurrentStepData(FormInterface $form) {
 		$stepData = $this->retrieveStepData();
 
-		$stepData[$this->currentStepNumber] = $this->getRequest()->request->get($form->getName(), array());
+		$request = $this->getRequest();
+		$formName = $form->getName();
+
+		$currentStepData = $request->request->get($formName, array());
+
+		if ($this->handleFileUploads) {
+			$currentStepData = array_merge($currentStepData, $request->files->get($formName, array()));
+		}
+
+		$stepData[$this->currentStepNumber] = $currentStepData;
 
 		$this->saveStepData($stepData);
 	}
@@ -851,10 +893,29 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	protected function retrieveStepData() {
-		return $this->storage->get($this->getStepDataKey(), array());
+		$data = $this->storage->get($this->getStepDataKey(), array());
+
+		if ($this->handleFileUploads) {
+			$tempDir = $this->handleFileUploadsTempDir;
+			array_walk_recursive($data, function(&$value, $key) use ($tempDir) {
+				if ($value instanceof SerializableFile) {
+					$value = $value->getAsFile($tempDir);
+				}
+			});
+		}
+
+		return $data;
 	}
 
 	protected function saveStepData(array $data) {
+		if ($this->handleFileUploads) {
+			array_walk_recursive($data, function(&$value, $key) {
+				if (SerializableFile::isSupported($value)) {
+					$value = new SerializableFile($value);
+				}
+			});
+		}
+
 		$this->storage->set($this->getStepDataKey(), $data);
 	}
 

@@ -57,6 +57,16 @@ interface FormFlowInterface {
 	function isAllowDynamicStepNavigation();
 
 	/**
+	 * @return boolean If file uploads should be handled by serializing them into the storage.
+	 */
+	function isHandleFileUploads();
+
+	/**
+	 * @return string|null Directory for storing temporary files while handling uploads. If {@code null}, the system's default will be used.
+	 */
+	function getHandleFileUploadsTempDir();
+
+	/**
 	 * @return string
 	 */
 	function getId();

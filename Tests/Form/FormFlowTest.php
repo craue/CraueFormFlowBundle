@@ -295,6 +295,36 @@ class FormFlowTest extends UnitTestCase {
 		$this->assertEquals($expectedValue, $flow->isAllowDynamicStepNavigation());
 	}
 
+	/**
+	 * @dataProvider dataBooleanSetter
+	 */
+	public function testSetIsHandleFileUploads($expectedValue, $handleFileUploads) {
+		$flow = $this->getMockedFlow();
+
+		$flow->setHandleFileUploads($handleFileUploads);
+
+		$this->assertEquals($expectedValue, $flow->isHandleFileUploads());
+	}
+
+	/**
+	 * @dataProvider dataSetGetHandleFileUploadsTempDir
+	 */
+	public function testSetGetHandleFileUploadsTempDir($expectedValue, $handleFileUploadsTempDir) {
+		$flow = $this->getMockedFlow();
+
+		$flow->setHandleFileUploadsTempDir($handleFileUploadsTempDir);
+
+		$this->assertEquals($expectedValue, $flow->getHandleFileUploadsTempDir());
+	}
+
+	public function dataSetGetHandleFileUploadsTempDir() {
+		return array(
+			array(null, null),
+			array('1', 1),
+			array('/tmp', '/tmp'),
+		);
+	}
+
 	public function testSetGetDynamicStepNavigationInstanceParameter() {
 		$flow = $this->getMockedFlow();
 
