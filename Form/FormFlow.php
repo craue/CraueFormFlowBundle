@@ -821,7 +821,7 @@ abstract class FormFlow implements FormFlowInterface {
 	public function isValid(FormInterface $form) {
 		$request = $this->getRequest();
 
-		if (($request->isMethod('POST') || $request->isMethod('PUT')) && !in_array($this->getRequestedTransition(), array(
+		if (in_array($request->getMethod(), array('POST', 'PUT')) && !in_array($this->getRequestedTransition(), array(
 			self::TRANSITION_BACK,
 			self::TRANSITION_RESET,
 		))) {
