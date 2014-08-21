@@ -72,6 +72,11 @@ abstract class FormFlow implements FormFlowInterface {
 	protected $handleFileUploadsTempDir = null;
 
 	/**
+	 * @var boolean
+	 */
+	protected $allowRedirectAfterSubmit = false;
+
+	/**
 	 * @var string
 	 */
 	protected $dynamicStepNavigationInstanceParameter = 'instance';
@@ -368,6 +373,17 @@ abstract class FormFlow implements FormFlowInterface {
 		return $this->handleFileUploadsTempDir;
 	}
 
+	public function setAllowRedirectAfterSubmit($allowRedirectAfterSubmit) {
+		$this->allowRedirectAfterSubmit = (boolean) $allowRedirectAfterSubmit;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isAllowRedirectAfterSubmit() {
+		return $this->allowRedirectAfterSubmit;
+	}
+
 	public function setDynamicStepNavigationInstanceParameter($dynamicStepNavigationInstanceParameter) {
 		$this->dynamicStepNavigationInstanceParameter = $dynamicStepNavigationInstanceParameter;
 	}
@@ -500,7 +516,7 @@ abstract class FormFlow implements FormFlowInterface {
 			case 'POST':
 				return intval($request->request->get($this->getFormStepKey(), $defaultStepNumber));
 			case 'GET':
-				return $this->allowDynamicStepNavigation ?
+				return $this->allowDynamicStepNavigation || $this->allowRedirectAfterSubmit ?
 						intval($request->get($this->dynamicStepNavigationStepParameter, $defaultStepNumber)) :
 						$defaultStepNumber;
 		}
@@ -581,7 +597,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 		$instanceId = null;
 
-		if ($this->allowDynamicStepNavigation) {
+		if ($this->allowDynamicStepNavigation || $this->allowRedirectAfterSubmit) {
 			$instanceId = $request->get($this->getDynamicStepNavigationInstanceParameter());
 		}
 
@@ -595,7 +611,7 @@ abstract class FormFlow implements FormFlowInterface {
 	protected function bindFlow() {
 		$reset = false;
 
-		if (!$this->allowDynamicStepNavigation && $this->getRequest()->isMethod('GET')) {
+		if (!$this->allowDynamicStepNavigation && !$this->allowRedirectAfterSubmit && $this->getRequest()->isMethod('GET')) {
 			$reset = true;
 		}
 
@@ -847,6 +863,25 @@ abstract class FormFlow implements FormFlowInterface {
 				}
 
 				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param FormInterface $submittedForm
+	 * @return boolean If a redirection should be performed.
+	 */
+	public function redirectAfterSubmit(FormInterface $submittedForm) {
+		if ($this->allowRedirectAfterSubmit && in_array($this->getRequest()->getMethod(), array('POST', 'PUT'))) {
+			switch ($this->getRequestedTransition()) {
+				case self::TRANSITION_BACK:
+				case self::TRANSITION_RESET:
+					return true;
+				default:
+					// redirect after submit only if there are no errors for the submitted form
+					return $submittedForm->isValid();
 			}
 		}
 
