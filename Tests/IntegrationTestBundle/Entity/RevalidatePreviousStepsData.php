@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -19,8 +20,7 @@ class RevalidatePreviousStepsData {
 		self::$validationCalls = 0;
 	}
 
-	// TODO add Symfony\Component\Validator\ExecutionContextInterface type hint as soon as Symfony >= 2.2 is required
-	public function isDataValid($context) {
+	public function isDataValid(ExecutionContextInterface $context) {
 		// valid only on first call
 		if (++self::$validationCalls > 1) {
 			$context->addViolation('Take this!');
