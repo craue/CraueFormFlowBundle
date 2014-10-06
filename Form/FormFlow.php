@@ -769,23 +769,20 @@ abstract class FormFlow implements FormFlowInterface {
 			return $this->steps;
 		}
 
-		// There are no listeners on the event at all, load from configuration.
-		if (!$this->hasListeners(FormFlowEvents::GET_STEPS)) {
-			$this->steps = $this->createStepsFromConfig($this->loadStepsConfig());
+		if ($this->hasListeners(FormFlowEvents::GET_STEPS)) {
+			$event = new GetStepsEvent($this);
+			$this->eventDispatcher->dispatch(FormFlowEvents::GET_STEPS, $event);
 
-			return $this->steps;
+			// A listener has provided the steps for this flow.
+			if ($event->isPropagationStopped()) {
+				$this->steps = $event->getSteps();
+
+				return $this->steps;
+			}
 		}
 
-		$event = new GetStepsEvent($this);
-		$this->eventDispatcher->dispatch(FormFlowEvents::GET_STEPS, $event);
-
-		// A listener has provided the steps for this flow.
-		if ($event->isPropagationStopped()) {
-			$this->steps = $event->getSteps();
-		// There are listeners, but none created the steps for this flow, so fallback to config.
-		} else {
-			$this->steps = $this->createStepsFromConfig($this->loadStepsConfig());
-		}
+		// There are either no listeners on the event at all or none created the steps for this flow, so load from configuration.
+		$this->steps = $this->createStepsFromConfig($this->loadStepsConfig());
 
 		return $this->steps;
 	}
