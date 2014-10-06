@@ -62,7 +62,7 @@ interface FormFlowInterface {
 	function isHandleFileUploads();
 
 	/**
-	 * @return string|null Directory for storing temporary files while handling uploads. If {@code null}, the system's default will be used.
+	 * @return string|null Directory for storing temporary files while handling uploads. If <code>null</code>, the system's default will be used.
 	 */
 	function getHandleFileUploadsTempDir();
 
@@ -134,7 +134,7 @@ interface FormFlowInterface {
 	function getFirstStepNumber();
 
 	/**
-	 * @return integer Last visible step, which may be less than {@code getStepCount()} if steps are skipped.
+	 * @return integer Last visible step, which may be less than <code>getStepCount()</code> if steps are skipped.
 	 */
 	function getLastStepNumber();
 
@@ -158,8 +158,8 @@ interface FormFlowInterface {
 	/**
 	 * @param integer $stepNumber
 	 * @return StepInterface
-	 * @throws InvalidTypeException If {@code $stepNumber} is not an integer.
-	 * @throws \OutOfBoundsException If step {@code $stepNumber} doesn't exist.
+	 * @throws InvalidTypeException If <code>$stepNumber</code> is not an integer.
+	 * @throws \OutOfBoundsException If step <code>$stepNumber</code> doesn't exist.
 	 */
 	function getStep($stepNumber);
 

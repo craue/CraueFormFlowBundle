@@ -7,7 +7,7 @@ use Craue\FormFlowBundle\Util\TempFileUtil;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * Representation of a serializable file. Only supports {@code UploadedFile} currently.
+ * Representation of a serializable file. Only supports <code>UploadedFile</code> currently.
  *
  * @author Christian Raue <christian.raue@gmail.com>
  * @copyright 2011-2014 Christian Raue
@@ -15,8 +15,15 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class SerializableFile {
 
+	/**
+	 * @var string Base64-encoded content of the original file.
+	 */
 	protected $content;
-	protected $type; // for possible future support of further types
+
+	/**
+	 * @var string FQCN of the object encapsulating the original file. Not used yet, but meant for possible future support of further types.
+	 */
+	protected $type;
 
 	protected $clientOriginalName;
 	protected $clientMimeType;
@@ -24,7 +31,7 @@ class SerializableFile {
 
 	/**
 	 * @param mixed $file An object meant to be serialized.
-	 * @throws InvalidTypeException If the type of {@code $file} is unsupported.
+	 * @throws InvalidTypeException If the type of <code>$file</code> is unsupported.
 	 */
 	public function __construct($file) {
 		if (!self::isSupported($file)) {
@@ -40,7 +47,7 @@ class SerializableFile {
 	}
 
 	/**
-	 * @param string|null $tempDir Directory for storing temporary files. If {@code null}, the system's default will be used.
+	 * @param string|null $tempDir Directory for storing temporary files. If <code>null</code>, the system's default will be used.
 	 * @return mixed The unserialized object.
 	 */
 	public function getAsFile($tempDir = null) {

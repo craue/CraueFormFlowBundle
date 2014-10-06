@@ -66,7 +66,7 @@ abstract class FormFlow implements FormFlowInterface {
 	protected $handleFileUploads = true;
 
 	/**
-	 * @var string|null Directory for storing temporary files while handling uploads. If {@code null}, the system's default will be used.
+	 * @var string|null Directory for storing temporary files while handling uploads. If <code>null</code>, the system's default will be used.
 	 */
 	protected $handleFileUploadsTempDir = null;
 
@@ -418,7 +418,7 @@ abstract class FormFlow implements FormFlowInterface {
 	 * @param integer $stepNumber Assumed step to which skipped steps shall be applied to.
 	 * @param integer $direction Either 1 (to skip forwards) or -1 (to skip backwards).
 	 * @return integer Target step number with skipping applied.
-	 * @throws \InvalidArgumentException If the value of {@code $direction} is invalid.
+	 * @throws \InvalidArgumentException If the value of <code>$direction</code> is invalid.
 	 */
 	protected function applySkipping($stepNumber, $direction = 1) {
 		if ($direction !== 1 && $direction !== -1) {
