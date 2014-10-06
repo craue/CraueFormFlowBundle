@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Controller;
 
 use Craue\FormFlowBundle\Form\FormFlow;
+use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Issue149Data;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Issue64Data;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\PhotoUpload;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\RevalidatePreviousStepsData;
@@ -71,6 +72,14 @@ class FormFlowController extends Controller {
 	 */
 	public function issue87Action() {
 		return $this->processFlow((object) array(), $this->get('integrationTestBundle.form.flow.issue87'));
+	}
+
+	/**
+	 * @Route("/issue149/", name="_FormFlow_issue149")
+	 * @Template("IntegrationTestBundle:FormFlow:issue149.html.twig")
+	 */
+	public function issue149Action() {
+		return $this->processFlow(new Issue149Data(), $this->get('integrationTestBundle.form.flow.issue149'));
 	}
 
 	/**
