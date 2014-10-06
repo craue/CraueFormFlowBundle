@@ -59,6 +59,17 @@ class RevalidatePreviousStepsFlow extends FormFlow implements EventSubscriberInt
 	/**
 	 * {@inheritDoc}
 	 */
+	public function getFormOptions($step, array $options = array()) {
+		$options = parent::getFormOptions($step, $options);
+
+		$options['cascade_validation'] = true;
+
+		return $options;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function bind($formData) {
 		$this->storage->set($this->getCalledEventsSessionKey(), array());
 		parent::bind($formData);
