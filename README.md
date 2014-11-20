@@ -78,6 +78,7 @@ class CreateVehicleFlow extends FormFlow {
 			array(
 				'label' => 'wheels',
 				'type' => $this->formType,
+				'options' => array(...) //form options
 			),
 			array(
 				'label' => 'engine',
@@ -159,7 +160,7 @@ services:
         class: MyCompany\MyBundle\Form\CreateVehicleForm
         tags:
             - { name: form.type, alias: createVehicle }
-    
+
     myCompany.form.flow.createVehicle:
         class: MyCompany\MyBundle\Form\CreateVehicleFlow
         parent: craue.form.flow

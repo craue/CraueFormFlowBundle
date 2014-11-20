@@ -725,7 +725,11 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	public function getFormOptions($step, array $options = array()) {
-		$options = array_merge($this->getGenericFormOptions(), $options);
+		$options = array_merge(
+			$this->getGenericFormOptions(),
+			$this->getStep($step)->getOptions(),
+			$options
+		);
 
 		if (!array_key_exists('validation_groups', $options)) {
 			$options['validation_groups'] = array(

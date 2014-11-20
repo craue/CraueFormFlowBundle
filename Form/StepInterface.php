@@ -17,6 +17,11 @@ interface StepInterface {
 	function getNumber();
 
 	/**
+	 * @return array
+	 */
+	function getOptions();
+
+	/**
 	 * @return string|null
 	 */
 	function getLabel();
