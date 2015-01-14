@@ -153,7 +153,7 @@ class FormFlowTest extends UnitTestCase {
 	 *
 	 * @param string $httpMethod The HTTP method.
 	 * @param array $parameters Parameters for the query/request.
-	 * @param integer $expectedStepNumber The expected step number being requested.
+	 * @param boolean $expectedValid If the form is expected to be valid.
 	 */
 	public function testIsValid($httpMethod, $parameters, $expectedValid) {
 		$flow = $this->getFlowWithMockedMethods(array('getName', 'getRequest'));
