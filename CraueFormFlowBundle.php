@@ -2,7 +2,9 @@
 
 namespace Craue\FormFlowBundle;
 
+use Craue\FormFlowBundle\DependencyInjection\Compiler\UseRequestStackCompilerPass;
 use Craue\FormFlowBundle\Util\TempFileUtil;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -23,6 +25,15 @@ class CraueFormFlowBundle extends Bundle {
 		register_shutdown_function(function() {
 			TempFileUtil::removeTempFiles();
 		});
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function build(ContainerBuilder $container) {
+		parent::build($container);
+
+		$container->addCompilerPass(new UseRequestStackCompilerPass());
 	}
 
 }

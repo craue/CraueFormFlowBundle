@@ -11,6 +11,7 @@ use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @group unit
@@ -349,6 +350,36 @@ class FormFlowTest extends UnitTestCase {
 		$flow->setRequest($request);
 
 		$this->assertSame($request, $flow->getRequest());
+	}
+
+	public function testSetGetRequest_withRequestStack() {
+		if (!class_exists('Symfony\Component\HttpFoundation\RequestStack')) {
+			$this->markTestSkipped();
+		}
+
+		$flow = $this->getMockedFlow();
+
+		$request = Request::create('');
+		$requestStack = new RequestStack();
+		$requestStack->push($request);
+		$flow->setRequest($requestStack);
+
+		$this->assertSame($request, $flow->getRequest());
+	}
+
+	public function testSetRequest_withNull() {
+		$flow = $this->getMockedFlow();
+
+		$flow->setRequest(null);
+	}
+
+	/**
+	 * @expectedException \Craue\FormFlowBundle\Exception\InvalidTypeException
+	 */
+	public function testSetRequest_withInvalidType() {
+		$flow = $this->getMockedFlow();
+
+		$flow->setRequest(new \stdClass());
 	}
 
 	public function testSetGetDataManager() {
