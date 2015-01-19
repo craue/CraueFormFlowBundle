@@ -1,5 +1,6 @@
 #!/bin/sh
 
+composer self-update
 composer config -g preferred-install source
 
 if [ -n "${MIN_STABILITY:-}" ]; then
