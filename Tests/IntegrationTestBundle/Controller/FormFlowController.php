@@ -145,7 +145,7 @@ class FormFlowController extends Controller {
 		}
 
 		if ($flow->redirectAfterSubmit($submittedForm)) {
-			$request = $this->getRequest();
+			$request = $this->getCurrentRequest();
 			$params = $this->get('craue_formflow_util')->addRouteParameters(array_merge($request->query->all(),
 					$request->attributes->get('_route_params')), $flow);
 
@@ -157,6 +157,17 @@ class FormFlowController extends Controller {
 			'flow' => $flow,
 			'formData' => $formData,
 		);
+	}
+
+	public function getCurrentRequest() {
+		if ($this->has('request_stack')) {
+			return $this->get('request_stack')->getCurrentRequest();
+		}
+
+		// TODO remove as soon as Symfony >= 2.4 is required
+		if ($this->has('request')) {
+			return $this->get('request');
+		}
 	}
 
 }
