@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  * @author Christian Raue <christian.raue@gmail.com>
- * @copyright 2011-2014 Christian Raue
+ * @copyright 2011-2015 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class FormFlowTest extends UnitTestCase {

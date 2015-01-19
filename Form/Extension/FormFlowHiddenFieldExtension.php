@@ -5,12 +5,13 @@ namespace Craue\FormFlowBundle\Form\Extension;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Konstantin Myakshin <koc-dp@yandex.ru>
  * @author Christian Raue <christian.raue@gmail.com>
- * @copyright 2011-2014 Christian Raue
+ * @copyright 2011-2015 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class FormFlowHiddenFieldExtension extends AbstractTypeExtension {
@@ -26,10 +27,16 @@ class FormFlowHiddenFieldExtension extends AbstractTypeExtension {
 	 * {@inheritDoc}
 	 */
 	public function setDefaultOptions(OptionsResolverInterface $resolver) {
-		$resolver->setOptional(array(
+		$optionNames = array(
 			'flow_instance_key',
 			'flow_step_key',
-		));
+		);
+
+		if (version_compare(Kernel::VERSION, '2.6', '>=')) {
+			$resolver->setDefined($optionNames);
+		} else {
+			$resolver->setOptional($optionNames);
+		}
 	}
 
 	/**

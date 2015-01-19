@@ -1,5 +1,6 @@
 #!/bin/sh
 
+composer self-update
 composer config -g preferred-install source
 
 if [ -n "${MIN_STABILITY:-}" ]; then
@@ -7,6 +8,6 @@ if [ -n "${MIN_STABILITY:-}" ]; then
 fi
 
 composer --no-interaction require --no-update satooshi/php-coveralls:~0.6@stable
-composer --no-interaction require --no-update symfony/form:${SYMFONY_VERSION} symfony/http-kernel:${SYMFONY_VERSION} symfony/translation:${SYMFONY_VERSION} symfony/yaml:${SYMFONY_VERSION}
+composer --no-interaction remove --no-update symfony/form symfony/http-kernel symfony/translation symfony/yaml
 composer --no-interaction require --no-update --dev sensio/framework-extra-bundle:${SENSIO_FRAMEWORK_EXTRA_BUNDLE_VERSION:-${SYMFONY_VERSION}} symfony/symfony:${SYMFONY_VERSION}
 composer --no-interaction update
