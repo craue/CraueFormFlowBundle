@@ -535,7 +535,11 @@ abstract class FormFlow implements FormFlowInterface {
 
 			if (array_key_exists($stepNumber, $stepData)) {
 				$stepForm = $this->createFormForStep($stepNumber);
-				$stepForm->bind($stepData[$stepNumber]);
+				if (Kernel::VERSION_ID < 20300) {
+					$stepForm->bind($stepData[$stepNumber]);
+				} else {
+					$stepForm->submit($stepData[$stepNumber]);
+				}
 
 				if ($this->hasListeners(FormFlowEvents::POST_BIND_SAVED_DATA)) {
 					$event = new PostBindSavedDataEvent($this, $this->formData, $stepNumber);
@@ -645,7 +649,11 @@ abstract class FormFlow implements FormFlowInterface {
 			self::TRANSITION_BACK,
 			self::TRANSITION_RESET,
 		))) {
-			$form->bind($request);
+			if (Kernel::VERSION_ID < 20300) {
+				$form->bind($request);
+			} else {
+				$form->handleRequest($request);
+			}
 
 			if ($this->hasListeners(FormFlowEvents::POST_BIND_REQUEST)) {
 				$event = new PostBindRequestEvent($this, $form->getData(), $this->currentStepNumber);
