@@ -5,7 +5,7 @@ namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Topic;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -48,7 +48,7 @@ class CreateTopicForm extends AbstractType {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function setDefaultOptions(OptionsResolverInterface $resolver) {
+	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefaults(array(
 			'isBugReport' => false,
 		));
