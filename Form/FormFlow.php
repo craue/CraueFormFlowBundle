@@ -821,7 +821,7 @@ abstract class FormFlow implements FormFlowInterface {
 			self::TRANSITION_BACK,
 			self::TRANSITION_RESET,
 		))) {
-			$form->submit($request);
+			$form->handleRequest($request);
 
 			if ($this->hasListeners(FormFlowEvents::POST_BIND_REQUEST)) {
 				$event = new PostBindRequestEvent($this, $form->getData(), $this->currentStepNumber);
