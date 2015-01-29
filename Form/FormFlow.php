@@ -758,7 +758,7 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	protected function triggerDeprecationError($message) {
-		if (version_compare(Kernel::VERSION, '2.2', '>=')) {
+		if (Kernel::VERSION_ID >= 20200) {
 			trigger_error($message, E_USER_DEPRECATED);
 		}
 	}

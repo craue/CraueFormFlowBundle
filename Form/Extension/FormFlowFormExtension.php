@@ -30,10 +30,10 @@ class FormFlowFormExtension extends AbstractTypeExtension {
 			'flow_step_key',
 		);
 
-		if (version_compare(Kernel::VERSION, '2.6', '>=')) {
-			$resolver->setDefined($optionNames);
-		} else {
+		if (Kernel::VERSION_ID < 20600) {
 			$resolver->setOptional($optionNames);
+		} else {
+			$resolver->setDefined($optionNames);
 		}
 	}
 
