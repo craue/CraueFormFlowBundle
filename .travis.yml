@@ -17,6 +17,8 @@ matrix:
     - env: SYMFONY_VERSION="2.7.*" SENSIO_FRAMEWORK_EXTRA_BUNDLE_VERSION="3.*" MIN_STABILITY="dev"
     - env: SYMFONY_VERSION="dev-master" MIN_STABILITY="dev"
   include:
+    - php: 5.3.3
+      env: SYMFONY_VERSION="2.3.*"
     - php: 5.5
       env: SYMFONY_VERSION="2.4.*" SENSIO_FRAMEWORK_EXTRA_BUNDLE_VERSION="3.*"
     - php: 5.5
