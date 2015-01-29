@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * @copyright 2011-2015 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class LegacyFormFlowStepFieldExtension extends FormFlowStepFieldExtension {
+class LegacyFormFlowHiddenFieldExtension extends FormFlowHiddenFieldExtension {
 
 	/**
 	 * {@inheritDoc}

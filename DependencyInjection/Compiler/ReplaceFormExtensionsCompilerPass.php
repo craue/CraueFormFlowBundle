@@ -21,7 +21,7 @@ class ReplaceFormExtensionsCompilerPass implements CompilerPassInterface {
 	public function process(ContainerBuilder $container) {
 		if (Kernel::VERSION_ID < 20700) {
 			$container->findDefinition('craue.form.flow.form_extension')->setClass('Craue\FormFlowBundle\Form\Extension\LegacyFormFlowFormExtension');
-			$container->findDefinition('craue.form.flow.step_field_extension')->setClass('Craue\FormFlowBundle\Form\Extension\LegacyFormFlowStepFieldExtension');
+			$container->findDefinition('craue.form.flow.hidden_field_extension')->setClass('Craue\FormFlowBundle\Form\Extension\LegacyFormFlowHiddenFieldExtension');
 		}
 	}
 
