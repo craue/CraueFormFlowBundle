@@ -29,10 +29,17 @@ class RevalidatePreviousStepsData {
 
 	// TODO replace by a proper annotation on class-level as soon as Symfony >= 2.4 is required
 	public static function loadValidatorMetadata(ClassMetadata $metadata) {
-		$metadata->addConstraint(new Assert\Callback(array(
-			Kernel::VERSION_ID < 20400 ? 'methods' : 'callback' => 'isDataValid',
+		$callbackConstraintOptions = array(
 			'groups' => 'flow_revalidatePreviousSteps_step1',
-		)));
+		);
+
+		if (Kernel::VERSION_ID < 20400) {
+			$callbackConstraintOptions['methods'] = array('isDataValid');
+		} else {
+			$callbackConstraintOptions['callback'] = 'isDataValid';
+		}
+
+		$metadata->addConstraint(new Assert\Callback($callbackConstraintOptions));
 	}
 
 }
