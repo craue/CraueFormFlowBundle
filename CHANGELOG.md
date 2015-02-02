@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.6 (2015-02-02)
+
+- added conditional code updates to avoid deprecation notices
+
 ## 2.1.5 (2014-06-13)
 
 - [#132]: fixed BC method `hasSkipStep`
