@@ -5,7 +5,7 @@ namespace Craue\FormFlowBundle\Tests;
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Form\FormFlowInterface;
 use Craue\FormFlowBundle\Form\StepInterface;
-use Craue\FormFlowBundle\Storage\StorageInterface;
+use Craue\FormFlowBundle\Storage\DataManagerInterface;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -44,10 +44,10 @@ abstract class UnitTestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @return \PHPUnit_Framework_MockObject_MockObject|StorageInterface
+	 * @return \PHPUnit_Framework_MockObject_MockObject|DataManagerInterface
 	 */
-	protected function getMockedStorageInterface() {
-		return $this->getMock('\Craue\FormFlowBundle\Storage\StorageInterface');
+	protected function getMockedDataManagerInterface() {
+		return $this->getMock('\Craue\FormFlowBundle\Storage\DataManagerInterface');
 	}
 
 }

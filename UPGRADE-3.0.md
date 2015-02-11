@@ -104,6 +104,11 @@ This version adds support for concurrent instances of the same flow, which requi
 
 ## Flow
 
+- Some methods have been removed.
+
+	- `setStepDataKey`/`getStepDataKey`
+	- `setStorage`/`getStorage` (use `setDataManager`/`getDataManager` instead)
+
 - Some methods have been renamed.
 
 	- `setDynamicStepNavigationParameter` to `setDynamicStepNavigationStepParameter`
