@@ -159,7 +159,7 @@ class FormFlowController extends Controller {
 		);
 	}
 
-	public function getCurrentRequest() {
+	protected function getCurrentRequest() {
 		if ($this->has('request_stack')) {
 			return $this->get('request_stack')->getCurrentRequest();
 		}
