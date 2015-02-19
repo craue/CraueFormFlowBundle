@@ -18,6 +18,8 @@ matrix:
     - env: SYMFONY_VERSION="dev-master" MIN_STABILITY="dev"
   include:
     - php: 5.3.3
+      env: USE_DEPS="lowest"
+    - php: 5.5
       env: SYMFONY_VERSION="2.1.*"
     - php: 5.5
       env: SYMFONY_VERSION="2.2.*"
