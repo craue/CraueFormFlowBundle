@@ -20,11 +20,13 @@ A live demo showcasing these features is available at http://craue.de/sf2playgro
 
 ## Get the bundle
 
-Let Composer download and install the bundle by running in a shell.
+Let Composer download and install the bundle by running
 
 ```sh
-php composer.phar require craue/formflow-bundle:dev-master
+php composer.phar require craue/formflow-bundle:*
 ```
+
+in a shell.
 
 ## Enable the bundle
 
@@ -308,7 +310,7 @@ So place this in your base template:
 {% endstylesheets %}
 ```
 
-You can easily customize the default button look by using these variables to add one or more CSS classes to them:
+You can easily customize the default button look by using these variables to add one or more CSS classes to them (option not available in the stable version):
 
 - `craue_formflow_button_class_last` will apply either to the __next__ or __finish__ button
 - `craue_formflow_button_class_finish` will specifically apply to the __finish__ button
