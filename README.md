@@ -23,7 +23,7 @@ A live demo showcasing these features is available at http://craue.de/sf2playgro
 Let Composer download and install the bundle by running
 
 ```sh
-php composer.phar require craue/formflow-bundle:~2.1
+php composer.phar require craue/formflow-bundle:~3.0@dev
 ```
 
 in a shell.
