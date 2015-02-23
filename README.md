@@ -310,7 +310,7 @@ So place this in your base template:
 {% endstylesheets %}
 ```
 
-You can easily customize the default button look by using these variables to add one or more CSS classes to them (option not available in the stable version):
+You can easily customize the default button look by using these variables to add one or more CSS classes to them (option not available in all versions):
 
 - `craue_formflow_button_class_last` will apply either to the __next__ or __finish__ button
 - `craue_formflow_button_class_finish` will specifically apply to the __finish__ button
