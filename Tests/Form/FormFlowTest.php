@@ -6,6 +6,7 @@ use Craue\FormFlowBundle\Event\GetStepsEvent;
 use Craue\FormFlowBundle\Form\FormFlowEvents;
 use Craue\FormFlowBundle\Tests\UnitTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\HttpFoundation\Request;
@@ -174,21 +175,34 @@ class FormFlowTest extends UnitTestCase {
 
 		$dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 		$factory = Forms::createFormFactoryBuilder()->getFormFactory();
-		$formBuilder = new FormBuilder(null, null, $dispatcher, $factory);
-		$form = $formBuilder->getForm();
+		$formBuilder = new FormBuilder(null, get_class(new \stdClass()), $dispatcher, $factory);
+
+		$form = $formBuilder
+			->setCompound(true)
+			->setDataMapper($this->getMock('Symfony\Component\Form\DataMapperInterface'))
+			->add('aField', 'text')
+			->setMethod($httpMethod)
+			->setRequestHandler(new HttpFoundationRequestHandler())
+			->getForm()
+		;
 
 		$this->assertSame($expectedValid, $flow->isValid($form));
 	}
 
 	public function dataIsValid() {
+		$defaultData = array('aField' => '');
+
 		return array(
 			array('GET', array(), false),
-			array('POST', array(), true),
-			array('POST', array('flow_createTopic_transition' => 'back'), false),
-			array('POST', array('flow_createTopic_transition' => 'reset'), false),
-			array('PUT', array(), true),
-			array('PUT', array('flow_createTopic_transition' => 'back'), false),
-			array('PUT', array('flow_createTopic_transition' => 'reset'), false),
+			array('GET', $defaultData, false),
+			array('POST', array(), false),
+			array('POST', $defaultData, true),
+			array('POST', array_merge($defaultData, array('flow_createTopic_transition' => 'back')), false),
+			array('POST', array_merge($defaultData, array('flow_createTopic_transition' => 'reset')), false),
+			array('PUT', array(), false),
+			array('PUT', $defaultData, true),
+			array('PUT', array_merge($defaultData, array('flow_createTopic_transition' => 'back')), false),
+			array('PUT', array_merge($defaultData, array('flow_createTopic_transition' => 'reset')), false),
 		);
 	}
 
@@ -201,13 +215,13 @@ class FormFlowTest extends UnitTestCase {
 		$this->assertSame($request, $flow->getRequest());
 	}
 
-	public function testSetGetStorage() {
+	public function testSetGetDataManager() {
 		$flow = $this->getMockedFlow();
 
-		$storage = $this->getMockedStorageInterface();
-		$flow->setStorage($storage);
+		$dataManager = $this->getMockedDataManagerInterface();
+		$flow->setDataManager($dataManager);
 
-		$this->assertSame($storage, $flow->getStorage());
+		$this->assertSame($dataManager, $flow->getDataManager());
 	}
 
 	public function testSetGetId() {
@@ -253,15 +267,6 @@ class FormFlowTest extends UnitTestCase {
 		$flow->setFormTransitionKey($formTransitionKey);
 
 		$this->assertEquals($formTransitionKey, $flow->getFormTransitionKey());
-	}
-
-	public function testSetGetStepDataKey() {
-		$flow = $this->getMockedFlow();
-
-		$stepDataKey = 'step-data-key';
-		$flow->setStepDataKey($stepDataKey);
-
-		$this->assertEquals($stepDataKey, $flow->getStepDataKey());
 	}
 
 	public function testSetGetValidationGroupPrefix() {

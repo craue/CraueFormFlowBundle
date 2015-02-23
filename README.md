@@ -23,7 +23,7 @@ A live demo showcasing these features is available at http://craue.de/sf2playgro
 Let Composer download and install the bundle by running
 
 ```sh
-php composer.phar require craue/formflow-bundle:*
+php composer.phar require craue/formflow-bundle:~2.1
 ```
 
 in a shell.
@@ -285,7 +285,7 @@ form according to the current step.
 	Steps:
 	{% include 'CraueFormFlowBundle:FormFlow:stepList.html.twig' %}
 </div>
-<form method="post" {{ form_enctype(form) }}>
+{{ form_start(form) }}
 	{{ form_errors(form) }}
 
 	{% if flow.getCurrentStepNumber() == 1 %}
@@ -298,7 +298,7 @@ form according to the current step.
 	{{ form_rest(form) }}
 
 	{% include 'CraueFormFlowBundle:FormFlow:buttons.html.twig' %}
-</form>
+{{ form_end(form) }}
 ```
 
 For the buttons to render correctly you need to tell Assetic to include a CSS file.
@@ -533,11 +533,11 @@ class CreateVehicleFlow extends FormFlow {
 ```
 
 If you'd like to remove the parameters (added by using such a direct link) when submitting the form
-you should modify the opening form tag in the form template like this:
+you should modify the action for the opening form tag in the template like this:
 
 ```html+jinja
-<form method="post" action="{{ path(app.request.attributes.get('_route'),
-		app.request.query.all | craue_removeDynamicStepNavigationParameters(flow)) }}" {{ form_enctype(form) }}>
+{{ form_start(form, {'action': path(app.request.attributes.get('_route'),
+		app.request.query.all | craue_removeDynamicStepNavigationParameters(flow))}) }}
 ```
 
 ## Handling of file uploads

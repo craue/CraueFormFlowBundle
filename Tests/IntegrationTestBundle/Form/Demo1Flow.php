@@ -89,7 +89,7 @@ class Demo1Flow extends FormFlow implements EventSubscriberInterface {
 	 * {@inheritDoc}
 	 */
 	public function bind($formData) {
-		$this->storage->set($this->getCalledEventsSessionKey(), array());
+		$this->dataManager->getStorage()->set($this->getCalledEventsSessionKey(), array());
 		parent::bind($formData);
 	}
 
@@ -98,9 +98,9 @@ class Demo1Flow extends FormFlow implements EventSubscriberInterface {
 	}
 
 	protected function logEventCall($name) {
-		$calledEvents = $this->storage->get($this->getCalledEventsSessionKey());
+		$calledEvents = $this->dataManager->getStorage()->get($this->getCalledEventsSessionKey());
 		$calledEvents[] = $name;
-		$this->storage->set($this->getCalledEventsSessionKey(), $calledEvents);
+		$this->dataManager->getStorage()->set($this->getCalledEventsSessionKey(), $calledEvents);
 	}
 
 	public function onPreBind(PreBindEvent $event) {
