@@ -22,7 +22,13 @@ abstract class IntegrationTestCase extends WebTestCase {
 	 * {@inheritDoc}
 	 */
 	protected static function createKernel(array $options = array()) {
-		return new AppKernel(isset($options['config']) ? $options['config'] : 'config.yml');
+		$configFile = isset($options['config']) ? $options['config'] : 'config.yml';
+
+		if (class_exists('Craue\FormFlowBundle\Tests\LocalAppKernel')) {
+			return new LocalAppKernel($configFile);
+		}
+
+		return new AppKernel($configFile);
 	}
 
 	/**
