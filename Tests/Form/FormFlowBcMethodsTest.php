@@ -117,7 +117,7 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 					$flow
 						->expects($this->once())
 						->method($methodName)
-						->with(sprintf('%s() is deprecated since version 2.0. Use %s() instead.', $bcMethodName, $realMethodName))
+						->with(sprintf('Method Craue\FormFlowBundle\Form\FormFlow::%s is deprecated since version 2.0. Use method %s instead.', $bcMethodName, $realMethodName))
 					;
 					break;
 				case $realMethodName:
