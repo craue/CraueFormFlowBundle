@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests;
 
 use Craue\FormFlowBundle\Tests\IntegrationTestCase;
+use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * @group integration
@@ -132,6 +133,79 @@ class CreateTopicFlowTest extends IntegrationTestCase {
 		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic'));
 		$this->assertCurrentStepNumber(1, $crawler);
 		$this->assertCurrentFormData('{"title":"blah","description":null,"category":"DISCUSSION","comment":null,"details":null}', $crawler);
+	}
+
+	public function testCreateTopic_dynamicStepNavigation_invalidStep_exceedLowerLimit() {
+		$this->proceedToStep(2);
+
+		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic', array(
+			'step' => 0,
+		)));
+		$this->assertSame(200, $this->client->getResponse()->getStatusCode());
+		$this->assertCurrentStepNumber(1, $crawler);
+	}
+
+	public function testCreateTopic_dynamicStepNavigation_invalidStep_exceedUpperLimit() {
+		$this->proceedToStep(4);
+
+		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic', array(
+			'step' => 5,
+		)));
+		$this->assertSame(200, $this->client->getResponse()->getStatusCode());
+		$this->assertCurrentStepNumber(4, $crawler);
+	}
+
+	public function testCreateTopic_dynamicStepNavigation_invalidStep_noInteger() {
+		$this->proceedToStep(2);
+
+		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic', array(
+			'step' => 'x',
+		)));
+		$this->assertSame(200, $this->client->getResponse()->getStatusCode());
+		$this->assertCurrentStepNumber(1, $crawler);
+	}
+
+	/**
+	 * Processes through the flow up to the given step by filling out the forms with some valid data.
+	 * @param integer $stepNumber The targeted step number.
+	 * @return Crawler
+	 */
+	private function proceedToStep($stepNumber) {
+		$this->client->followRedirects();
+		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic_start'));
+
+		if ($stepNumber < 2) {
+			return $crawler;
+		}
+
+		// bug report -> step 2
+		$form = $crawler->selectButton('next')->form();
+		$crawler = $this->client->submit($form, array(
+			'createTopic[title]' => 'blah',
+			'createTopic[category]' => 'BUG_REPORT',
+		));
+
+		if ($stepNumber < 3) {
+			return $crawler;
+		}
+
+		// comment -> step 3
+		$form = $crawler->selectButton('next')->form();
+		$crawler = $this->client->submit($form, array(
+			'createTopic[comment]' => 'my comment',
+		));
+
+		if ($stepNumber < 4) {
+			return $crawler;
+		}
+
+		// bug details -> step 4
+		$form = $crawler->selectButton('next')->form();
+		$crawler = $this->client->submit($form, array(
+			'createTopic[details]' => 'blah blah',
+		));
+
+		return $crawler;
 	}
 
 }

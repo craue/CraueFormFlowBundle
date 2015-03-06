@@ -401,6 +401,9 @@ abstract class FormFlow implements FormFlowInterface {
 			--$requestedStepNumber;
 		}
 
+		// ensure that the step number is within the range of defined steps to avoid a possible OutOfBoundsException
+		$requestedStepNumber = max(min($requestedStepNumber, $this->getStepCount()), 1);
+
 		$requestedStepNumber = $this->refineCurrentStepNumber($requestedStepNumber);
 
 		if ($this->getRequestedTransition() === self::TRANSITION_BACK) {
