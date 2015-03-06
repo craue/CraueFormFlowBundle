@@ -246,9 +246,11 @@ class CreateTopicFlowTest extends IntegrationTestCase {
 	}
 
 	public function testCreateTopic_dynamicStepNavigation_invalidStep_exceedLowerLimit() {
-		$this->proceedToStep(2);
+		$crawler = $this->proceedToStep(2);
 
+		$form = $crawler->selectButton('next')->form();
 		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic', array(
+			'instance' => $form->get('flow_createTopic_instance')->getValue(),
 			'step' => 0,
 		)));
 		$this->assertSame(200, $this->client->getResponse()->getStatusCode());
@@ -256,9 +258,11 @@ class CreateTopicFlowTest extends IntegrationTestCase {
 	}
 
 	public function testCreateTopic_dynamicStepNavigation_invalidStep_exceedUpperLimit() {
-		$this->proceedToStep(4);
+		$crawler = $this->proceedToStep(4);
 
+		$form = $crawler->selectButton('finish')->form();
 		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic', array(
+			'instance' => $form->get('flow_createTopic_instance')->getValue(),
 			'step' => 5,
 		)));
 		$this->assertSame(200, $this->client->getResponse()->getStatusCode());
@@ -266,9 +270,11 @@ class CreateTopicFlowTest extends IntegrationTestCase {
 	}
 
 	public function testCreateTopic_dynamicStepNavigation_invalidStep_noInteger() {
-		$this->proceedToStep(2);
+		$crawler = $this->proceedToStep(2);
 
+		$form = $crawler->selectButton('next')->form();
 		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic', array(
+			'instance' => $form->get('flow_createTopic_instance')->getValue(),
 			'step' => 'x',
 		)));
 		$this->assertSame(200, $this->client->getResponse()->getStatusCode());
@@ -282,7 +288,7 @@ class CreateTopicFlowTest extends IntegrationTestCase {
 	 */
 	private function proceedToStep($stepNumber) {
 		$this->client->followRedirects();
-		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic_start'));
+		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic'));
 
 		if ($stepNumber < 2) {
 			return $crawler;
