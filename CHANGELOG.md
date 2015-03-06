@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.7 (2015-03-06)
+
+- avoid bubbling up of a possible OutOfBoundsException while determining the current step number
+- fixed minimum version of Symfony
+
 ## 2.1.6 (2015-02-02)
 
 - added conditional code updates to avoid deprecation notices
