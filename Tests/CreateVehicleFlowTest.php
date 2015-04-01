@@ -167,7 +167,7 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 		$this->assertCurrentFormData('{"numberOfWheels":null,"engine":null}', $crawler);
 	}
 
-	public function testCreateVehicle_tamperWithHiddenField() {
+	public function testCreateVehicle_tamperWithHiddenStepField() {
 		$crawler = $this->client->request('GET', $this->url('_FormFlow_createVehicle'));
 
 		// no number of wheels -> step 1 again

@@ -580,7 +580,6 @@ abstract class FormFlow implements FormFlowInterface {
 
 	protected function determineInstanceId() {
 		$request = $this->getRequest();
-
 		$instanceId = null;
 
 		if ($this->allowDynamicStepNavigation || $this->allowRedirectAfterSubmit) {
@@ -588,7 +587,12 @@ abstract class FormFlow implements FormFlowInterface {
 		}
 
 		if ($instanceId === null) {
-			$instanceId = $request->request->get($this->getInstanceKey(), StringUtil::generateRandomString(10));
+			$instanceId = $request->request->get($this->getInstanceKey());
+		}
+
+		$instanceIdLength = 10;
+		if ($instanceId === null || !StringUtil::isRandomString($instanceId, $instanceIdLength)) {
+			$instanceId = StringUtil::generateRandomString($instanceIdLength);
 		}
 
 		return $instanceId;

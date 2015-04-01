@@ -245,6 +245,36 @@ class CreateTopicFlowTest extends IntegrationTestCase {
 		$this->assertJsonResponse('{"title":"blah","description":null,"category":"BUG_REPORT","comment":"my comment","details":"blah blah"}');
 	}
 
+	public function testCreateTopic_dynamicStepNavigation_invalidInstanceId_onGetRequest() {
+		$crawler = $this->proceedToStep(2);
+
+		$fakeInstanceId = 'invalid instance id';
+
+		$crawler = $this->client->request('GET', $this->url('_FormFlow_createTopic', array(
+			'instance' => $fakeInstanceId,
+			'step' => 2,
+		)));
+		$this->assertSame(200, $this->client->getResponse()->getStatusCode());
+		$this->assertCurrentStepNumber(1, $crawler);
+
+		$this->assertNotEquals($fakeInstanceId, $crawler->selectButton('next')->form()->get('flow_createTopic_instance')->getValue());
+	}
+
+	public function testCreateTopic_dynamicStepNavigation_invalidInstanceId_onPostRequest() {
+		$crawler = $this->proceedToStep(2);
+
+		$fakeInstanceId = 'invalid instance id';
+
+		$form = $crawler->selectButton('next')->form();
+		$crawler = $this->client->submit($form, array(
+			'flow_createTopic_instance' => $fakeInstanceId,
+		));
+		$this->assertSame(200, $this->client->getResponse()->getStatusCode());
+		$this->assertCurrentStepNumber(1, $crawler);
+
+		$this->assertNotEquals($fakeInstanceId, $crawler->selectButton('next')->form()->get('flow_createTopic_instance')->getValue());
+	}
+
 	public function testCreateTopic_dynamicStepNavigation_invalidStep_exceedLowerLimit() {
 		$crawler = $this->proceedToStep(2);
 
