@@ -5,7 +5,7 @@ namespace Craue\FormFlowBundle\Form\Extension;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Konstantin Myakshin <koc-dp@yandex.ru>
@@ -24,7 +24,7 @@ class FormFlowFormExtension extends AbstractTypeExtension {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function configureOptions(OptionsResolver $resolver) {
+	public function setDefaultOptions(OptionsResolverInterface $resolver) {
 		$optionNames = array(
 			'flow_step',
 			'flow_step_key',

@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Konstantin Myakshin <koc-dp@yandex.ru>
@@ -25,7 +25,7 @@ class FormFlowStepFieldExtension extends AbstractTypeExtension {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function configureOptions(OptionsResolver $resolver) {
+	public function setDefaultOptions(OptionsResolverInterface $resolver) {
 		$optionNames = array(
 			'flow_step_key',
 		);
