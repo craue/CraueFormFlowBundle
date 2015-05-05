@@ -59,11 +59,22 @@ class FormFlowTest extends UnitTestCase {
 	 * Ensure that the "validation_groups" option can be overridden.
 	 */
 	public function testGetFormOptions_overrideValidationGroups() {
-		$options = $this->getMockedFlow()->getFormOptions(1, array(
+		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
+
+		// add a step
+		$flow
+			->expects($this->once())
+			->method('loadStepsConfig')
+			->will($this->returnValue(array(
+				array(),
+			)))
+		;
+
+		$options = $flow->getFormOptions(1, array(
 			'validation_groups' => 'Default',
 		));
 
-		$this->assertEquals('Default', $options['validation_groups']);
+		$this->assertEquals(array('Default'), $options['validation_groups']);
 	}
 
 	/**
@@ -71,12 +82,21 @@ class FormFlowTest extends UnitTestCase {
 	 * other groups.
 	 */
 	public function testGetFormOptions_generatedValidationGroupIsArray() {
-		$flow = $this->getMockedFlow();
+		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
 
 		$flow
 			->expects($this->once())
 			->method('getName')
 			->will($this->returnValue('createTopic'))
+		;
+
+		// add a step
+		$flow
+			->expects($this->once())
+			->method('loadStepsConfig')
+			->will($this->returnValue(array(
+				array(),
+			)))
 		;
 
 		$options = $flow->getFormOptions(1);
@@ -85,10 +105,47 @@ class FormFlowTest extends UnitTestCase {
 	}
 
 	/**
+	 * Ensure that the resulting "validation_groups" option values are unique.
+	 */
+	public function testGetFormOptions_uniqueValidationGroups() {
+		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
+
+		$flow
+			->expects($this->once())
+			->method('getName')
+			->will($this->returnValue('createTopic'))
+		;
+
+		// add a step
+		$flow
+			->expects($this->once())
+			->method('loadStepsConfig')
+			->will($this->returnValue(array(
+				array(
+					'additional_validation_groups' => array('group1', 'group1', 'group2'),
+				),
+			)))
+		;
+
+		$options = $flow->getFormOptions(1);
+
+		$this->assertEquals(array('flow_createTopic_step1', 'group1', 'group2'), $options['validation_groups']);
+	}
+
+	/**
 	 * Ensure that generic options are considered.
 	 */
 	public function testGetFormOptions_considerGenericOptions() {
-		$flow = $this->getMockedFlow();
+		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
+
+		// add a step
+		$flow
+			->expects($this->once())
+			->method('loadStepsConfig')
+			->will($this->returnValue(array(
+				array(),
+			)))
+		;
 
 		$flow->setGenericFormOptions(array(
 			'action' => 'targetUrl',

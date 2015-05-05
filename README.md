@@ -394,6 +394,8 @@ Valid options per step are:
 - `type` (`FormTypeInterface`|`string`|`null`)
 	- The form type used to build the form for that step.
 	- If using a string, it has to be the registered alias of the form type.
+- `additional_validation_groups` (`string[]`|`string`|`null`)
+	- Additional validation groups for that step.
 - `skip` (`callable`|`boolean`)
 	- Decides whether the step will be skipped.
 	- If using a callable...
@@ -411,6 +413,7 @@ protected function loadStepsConfig() {
 		),
 		array(
 			'type' => new CreateVehicleStep2Form(),
+			'additional_validation_groups' => 'Default',
 			'skip' => true,
 		),
 		array(

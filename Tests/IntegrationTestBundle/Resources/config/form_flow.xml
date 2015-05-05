@@ -77,6 +77,12 @@
 				parent="craue.form.flow"
 				scope="request">
 		</service>
+
+		<service id="integrationTestBundle.form.flow.additionalValidationGroupsPerStep"
+				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\AdditionalValidationGroupsPerStepFlow"
+				parent="craue.form.flow"
+				scope="request">
+		</service>
 	</services>
 
 </container>

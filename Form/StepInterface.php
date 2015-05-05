@@ -27,6 +27,11 @@ interface StepInterface {
 	function getType();
 
 	/**
+	 * @return string[]
+	 */
+	function getAdditionalValidationGroups();
+
+	/**
 	 * @return boolean
 	 */
 	function isSkipped();

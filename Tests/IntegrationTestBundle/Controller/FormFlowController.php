@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Controller;
 
 use Craue\FormFlowBundle\Form\FormFlow;
+use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\AdditionalValidationGroupsPerStepData;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Issue149Data;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Issue64Data;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\PhotoUpload;
@@ -124,6 +125,14 @@ class FormFlowController extends Controller {
 	 */
 	public function photoUploadAction() {
 		return $this->processFlow(new PhotoUpload(), $this->get('integrationTestBundle.form.flow.photoUpload'));
+	}
+
+	/**
+	 * @Route("/additionalValidationGroupsPerStep/", name="_FormFlow_additionalValidationGroupsPerStep")
+	 * @Template("IntegrationTestBundle::layout_flow.html.twig")
+	 */
+	public function additionalValidationGroupsPerStepAction() {
+		return $this->processFlow(new AdditionalValidationGroupsPerStepData(), $this->get('integrationTestBundle.form.flow.additionalValidationGroupsPerStep'));
 	}
 
 	protected function processFlow($formData, FormFlow $flow) {
