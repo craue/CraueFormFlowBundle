@@ -31,7 +31,7 @@ class FormFlowController extends Controller {
 
 	/**
 	 * @Route("/create-topic-redirect-after-submit/", name="_FormFlow_createTopic_redirectAfterSubmit")
-	 * @Template("IntegrationTestBundle:FormFlow:createTopic.html.twig")
+	 * @Template("IntegrationTestBundle::layout_flow.html.twig")
 	 */
 	public function createTopicRedirectAfterSubmitAction() {
 		$flow = $this->get('integrationTestBundle.form.flow.createTopic');
@@ -76,7 +76,7 @@ class FormFlowController extends Controller {
 
 	/**
 	 * @Route("/issue149/", name="_FormFlow_issue149")
-	 * @Template("IntegrationTestBundle:FormFlow:issue149.html.twig")
+	 * @Template("IntegrationTestBundle::layout_flow.html.twig")
 	 */
 	public function issue149Action() {
 		return $this->processFlow(new Issue149Data(), $this->get('integrationTestBundle.form.flow.issue149'));
@@ -85,7 +85,7 @@ class FormFlowController extends Controller {
 	/**
 	 * @Route("/revalidatePreviousSteps/enabled/", defaults={"enabled"=true}, name="_FormFlow_revalidatePreviousSteps_enabled")
 	 * @Route("/revalidatePreviousSteps/disabled/", defaults={"enabled"=false}, name="_FormFlow_revalidatePreviousSteps_disabled")
-	 * @Template("IntegrationTestBundle:FormFlow:revalidatePreviousSteps.html.twig")
+	 * @Template("IntegrationTestBundle::layout_flow.html.twig")
 	 */
 	public function revalidatePreviousStepsAction($enabled) {
 		$flow = $this->get('integrationTestBundle.form.flow.revalidatePreviousSteps');
@@ -112,7 +112,7 @@ class FormFlowController extends Controller {
 
 	/**
 	 * @Route("/onlyOneStep/", name="_FormFlow_onlyOneStep")
-	 * @Template("IntegrationTestBundle:FormFlow:onlyOneStep.html.twig")
+	 * @Template("IntegrationTestBundle::layout_flow.html.twig")
 	 */
 	public function onlyOneStepAction() {
 		return $this->processFlow((object) array(), $this->get('integrationTestBundle.form.flow.onlyOneStep'));
