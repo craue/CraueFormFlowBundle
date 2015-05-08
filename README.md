@@ -78,6 +78,7 @@ class CreateVehicleFlow extends FormFlow {
 			array(
 				'label' => 'wheels',
 				'type' => $this->formType,
+				'options' => array(...), //form options
 			),
 			array(
 				'label' => 'engine',
