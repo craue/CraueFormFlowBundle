@@ -23,7 +23,7 @@ class StepTest extends UnitTestCase {
 		$this->assertNull($step->getLabel());
 		$this->assertNull($step->getType());
 		$this->assertFalse($step->isSkipped());
-		$this->assertEmpty($step->getOptions());
+		$this->assertEquals(array(), $step->getFormOptions());
 		$step->evaluateSkipping(1, $flow);
 		$this->assertFalse($step->isSkipped());
 
@@ -63,11 +63,11 @@ class StepTest extends UnitTestCase {
 		$step->evaluateSkipping(2, $flowWithData);
 		$this->assertTrue($step->isSkipped());
 
-		$options = array('foo' => 'bar');
+		$form_options = array('foo' => 'bar');
 		$step = Step::createFromConfig(1, array(
-			'options' => $options,
+			'form_options' => $form_options,
 		));
-		$this->assertEquals($options, $step->getOptions());
+		$this->assertEquals($form_options, $step->getFormOptions());
 	}
 
 	/**

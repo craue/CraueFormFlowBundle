@@ -66,7 +66,7 @@ class FormFlowTest extends UnitTestCase {
 			->method('loadStepsConfig')
 			->will($this->returnValue(array(
 				1 => array(
-					'options' => array(
+					'form_options' => array(
 						'validation_groups' => 'Not Default',
 					)
 				),
@@ -144,7 +144,7 @@ class FormFlowTest extends UnitTestCase {
 			->method('loadStepsConfig')
 			->will($this->returnValue(array(
 				1 => array(
-					'options' => array(
+					'form_options' => array(
 						'action' => 'specificTargetUrl',
 					)
 				),

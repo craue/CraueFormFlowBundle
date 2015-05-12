@@ -718,7 +718,7 @@ abstract class FormFlow implements FormFlowInterface {
 	public function getFormOptions($step, array $options = array()) {
 		$options = array_merge(
 			$this->getGenericFormOptions(),
-			$this->getStep($step)->getOptions(),
+			$this->getStep($step)->getFormOptions(),
 			$options
 		);
 
