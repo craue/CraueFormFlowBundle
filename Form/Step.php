@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Form;
 
 use Craue\FormFlowBundle\Exception\InvalidTypeException;
+use Craue\FormFlowBundle\Util\DataTypeUtil;
 use Symfony\Component\Form\FormTypeInterface;
 
 /**
@@ -28,6 +29,11 @@ class Step implements StepInterface {
 	protected $type = null;
 
 	/**
+	 * @var string[]
+	 */
+	protected $additionalValidationGroups = array();
+
+	/**
 	 * @var callable|null
 	 */
 	private $skipFunction = null;
@@ -49,6 +55,9 @@ class Step implements StepInterface {
 					break;
 				case 'type':
 					$step->setType($value);
+					break;
+				case 'additional_validation_groups':
+					$step->setAdditionalValidationGroups($value);
 					break;
 				case 'skip':
 					$step->setSkip($value);
@@ -120,6 +129,33 @@ class Step implements StepInterface {
 	 */
 	public function getType() {
 		return $this->type;
+	}
+
+	/**
+	 * @param string[]|string|null $additionalValidationGroups
+	 * @throws InvalidTypeException
+	 */
+	public function setAdditionalValidationGroups($additionalValidationGroups) {
+		if ($additionalValidationGroups === null) {
+			$this->additionalValidationGroups = array();
+
+			return;
+		}
+
+		if (is_string($additionalValidationGroups) || DataTypeUtil::isStringArray($additionalValidationGroups)) {
+			$this->additionalValidationGroups = (array) $additionalValidationGroups;
+
+			return;
+		}
+
+		throw new InvalidTypeException($additionalValidationGroups, array('null', 'string', 'string[]'));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getAdditionalValidationGroups() {
+		return $this->additionalValidationGroups;
 	}
 
 	/**

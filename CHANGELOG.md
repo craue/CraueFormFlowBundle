@@ -19,6 +19,7 @@
 - [#133]+[#134]: added Farsi translation
 - [#142]: added support for the "redirect after submit" pattern
 - [#146]: handling of file uploads
+- [#172]: added support for additional validation groups per step
 
 [#98]: https://github.com/craue/CraueFormFlowBundle/issues/98
 [#101]: https://github.com/craue/CraueFormFlowBundle/issues/101
@@ -36,6 +37,7 @@
 [#145]: https://github.com/craue/CraueFormFlowBundle/issues/145
 [#146]: https://github.com/craue/CraueFormFlowBundle/issues/146
 [#148]: https://github.com/craue/CraueFormFlowBundle/issues/148
+[#172]: https://github.com/craue/CraueFormFlowBundle/issues/172
 
 ## 2.1.7 (2015-03-06)
 

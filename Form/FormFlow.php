@@ -719,10 +719,13 @@ abstract class FormFlow implements FormFlowInterface {
 		$options = array_merge($this->getGenericFormOptions(), $options);
 
 		if (!array_key_exists('validation_groups', $options)) {
-			$options['validation_groups'] = array(
-				$this->getValidationGroupPrefix() . $step,
-			);
+			$options['validation_groups'] = $this->getValidationGroupPrefix() . $step;
 		}
+
+		$options['validation_groups'] = array_values(array_unique(array_merge(
+				(array) $options['validation_groups'],
+				$this->getStep($step)->getAdditionalValidationGroups()
+		)));
 
 		$options['flow_instance'] = $this->getInstanceId();
 		$options['flow_instance_key'] = $this->getInstanceKey();

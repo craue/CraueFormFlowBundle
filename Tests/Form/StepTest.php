@@ -171,6 +171,42 @@ class StepTest extends UnitTestCase {
 	}
 
 	/**
+	 * @dataProvider dataSetGetAdditionalValidationGroups
+	 */
+	public function testSetGetAdditionalValidationGroups($expectedValue, $additionalValidationGroups) {
+		$step = new Step();
+		$step->setAdditionalValidationGroups($additionalValidationGroups);
+		$this->assertEquals($expectedValue, $step->getAdditionalValidationGroups());
+	}
+
+	public function dataSetGetAdditionalValidationGroups() {
+		return array(
+			array(array(), null),
+			array(array('myGroup'), 'myGroup'),
+			array(array('myGroup1', 'myGroup2'), array('myGroup1', 'myGroup2')),
+		);
+	}
+
+	/**
+	 * @dataProvider dataSetGetAdditionalValidationGroups_invalidArguments
+	 * @expectedException \Craue\FormFlowBundle\Exception\InvalidTypeException
+	 */
+	public function testSetGetAdditionalValidationGroups_invalidArguments($additionalValidationGroups) {
+		$step = new Step();
+		$step->setAdditionalValidationGroups($additionalValidationGroups);
+	}
+
+	public function dataSetGetAdditionalValidationGroups_invalidArguments() {
+		return array(
+			array(123),
+			array(true),
+			array(false),
+			array(array('myGroup', null)),
+			array(array('myGroup', array())),
+		);
+	}
+
+	/**
 	 * @dataProvider dataSetSkip_invalidArguments
 	 * @expectedException \Craue\FormFlowBundle\Exception\InvalidTypeException
 	 */
