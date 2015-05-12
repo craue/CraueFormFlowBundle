@@ -113,7 +113,7 @@ This version comes with two changes which allow you to remove some superfluous c
 - Including the template `CraueFormFlowBundle:FormFlow:stepField.html.twig` is no longer needed.
 
 	before:
-	```html+jinja
+	```twig
 	<form method="post" {{ form_enctype(form) }}>
 		{% include 'CraueFormFlowBundle:FormFlow:stepField.html.twig' %}
 		{{ form_errors(form) }}
@@ -123,7 +123,7 @@ This version comes with two changes which allow you to remove some superfluous c
 	```
 
 	after:
-	```html+jinja
+	```twig
 	<form method="post" {{ form_enctype(form) }}>
 		{{ form_errors(form) }}
 		{{ form_rest(form) }}
