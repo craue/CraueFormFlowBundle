@@ -182,24 +182,24 @@
 - Block `craue_flow_stepDescription` has been renamed to `craue_flow_stepLabel` and the variable it accesses has been renamed from `stepDescription` to `stepLabel`.
 
 	before:
-	```html+jinja
+	```twig
 	{{ block('craue_flow_stepDescription') }}
 	```
 
 	after:
-	```html+jinja
+	```twig
 	{{ block('craue_flow_stepLabel') }}
 	```
 
 	before:
-	```html+jinja
+	```twig
 	{% block craue_flow_stepDescription %}
 		<span>{{ stepDescription | trans }}</span>
 	{% endblock %}
 	```
 
 	after:
-	```html+jinja
+	```twig
 	{% block craue_flow_stepLabel %}
 		<span>{{ stepLabel | trans }}</span>
 	{% endblock %}

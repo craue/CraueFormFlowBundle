@@ -249,7 +249,7 @@ You only need one template for a flow.
 The instance of your flow class is passed to the template in a variable called `flow` so you can use it to render the
 form according to the current step.
 
-```html+jinja
+```twig
 {# in src/MyCompany/MyBundle/Resources/views/Vehicle/createVehicle.html.twig #}
 <div>
 	Steps:
@@ -274,7 +274,7 @@ form according to the current step.
 For the buttons to render correctly you need to tell Assetic to include a CSS file.
 So place this in your base template:
 
-```html+jinja
+```twig
 {% stylesheets '@CraueFormFlowBundle/Resources/assets/css/buttons.css' %}
 	<link type="text/css" rel="stylesheet" href="{{ asset_url }}" />
 {% endstylesheets %}
@@ -483,7 +483,7 @@ public function createVehicleStartAction() {
 Furthermore, if you'd like to remove the step parameter (added by using such a direct link) when submitting the form
 you should modify the opening form tag in the form template like this:
 
-```html+jinja
+```twig
 <form method="post" action="{{ path(app.request.attributes.get('_route'),
 		app.request.query.all | craue_removeDynamicStepNavigationParameter(flow)) }}" {{ form_enctype(form) }}>
 ```
