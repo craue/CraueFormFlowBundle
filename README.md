@@ -320,7 +320,7 @@ You can easily customize the default button look by using these variables to add
 
 Example with Bootstrap button classes:
 
-```html+jinja
+```twig
 {% include 'CraueFormFlowBundle:FormFlow:buttons.html.twig' with {
 		craue_formflow_button_class_last: 'btn btn-primary',
 		craue_formflow_button_class_back: 'btn',
@@ -535,7 +535,7 @@ class CreateVehicleFlow extends FormFlow {
 If you'd like to remove the parameters (added by using such a direct link) when submitting the form
 you should modify the action for the opening form tag in the template like this:
 
-```html+jinja
+```twig
 {{ form_start(form, {'action': path(app.request.attributes.get('_route'),
 		app.request.query.all | craue_removeDynamicStepNavigationParameters(flow))}) }}
 ```

@@ -11,12 +11,12 @@ This version adds support for concurrent instances of the same flow, which requi
   parameter `instance` (per default).
 
 	before:
-	```html+jinja
+	```twig
 	<a href="{{ path('createTopic', {'step': 2}) }}">continue creating a topic</a>
 	```
 
 	after:
-	```html+jinja
+	```twig
 	<a href="{{ path('createTopic', {'instance': flow.getInstanceId(), 'step': 2}) }}">continue creating a topic</a>
 	```
 
@@ -35,12 +35,12 @@ This version adds support for concurrent instances of the same flow, which requi
 		return $this->redirect($this->generateUrl('createTopic'));
 	}
 	```
-	```html+jinja
+	```twig
 	<a href="{{ path('createTopic_start') }}">create a topic</a>
 	```
 
 	after:
-	```html+jinja
+	```twig
 	<a href="{{ path('createTopic') }}">create a topic</a>
 	```
 
