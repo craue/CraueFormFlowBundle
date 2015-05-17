@@ -32,6 +32,11 @@ interface StepInterface {
 	function isSkipped();
 
 	/**
+	 * @return array
+	 */
+	function getFormOptions();
+
+	/**
 	 * @param integer $estimatedCurrentStepNumber
 	 * @param FormFlowInterface $flow
 	 */
