@@ -24,7 +24,7 @@ interface StepInterface {
 	/**
 	 * @return FormTypeInterface|string|null
 	 */
-	function getType();
+	function getFormType();
 
 	/**
 	 * @return array

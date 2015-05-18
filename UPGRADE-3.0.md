@@ -1,5 +1,34 @@
 # Upgrade from 2.1.x to 3.0
 
+## Renaming step config option `type` to `form_type`
+
+The step config option to specify the form type for each step within the `loadStepsConfig` method has been renamed from
+`type` to `form_type`. This was done for the sake of consistency with the newly added option `form_options`.
+
+	before:
+	```php
+	protected function loadStepsConfig() {
+		return array(
+			array(
+				'form' => $this->formType,
+			),
+			// ...
+		);
+	}
+	```
+
+	after:
+	```php
+	protected function loadStepsConfig() {
+		return array(
+			array(
+				'form_type' => $this->formType,
+			),
+			// ...
+		);
+	}
+	```
+
 ## Concurrent instances of the same flow
 
 This version adds support for concurrent instances of the same flow, which required a change in the handling of flows.
@@ -117,6 +146,17 @@ This version adds support for concurrent instances of the same flow, which requi
 - A property has been renamed.
 
 	- `dynamicStepNavigationParameter` to `dynamicStepNavigationStepParameter`
+
+## Step
+
+- Some methods have been renamed.
+
+	- `setType` to `setFormType`
+	- `getType` to `getFormType`
+
+- A property has been renamed.
+
+	- `type` to `formType`
 
 ## Template
 

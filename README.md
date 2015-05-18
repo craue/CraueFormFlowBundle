@@ -77,11 +77,11 @@ class CreateVehicleFlow extends FormFlow {
 		return array(
 			array(
 				'label' => 'wheels',
-				'type' => $this->formType,
+				'form_type' => $this->formType,
 			),
 			array(
 				'label' => 'engine',
-				'type' => $this->formType,
+				'form_type' => $this->formType,
 				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
 				},
@@ -189,11 +189,11 @@ class CreateVehicleFlow extends FormFlow {
 		return array(
 			array(
 				'label' => 'wheels',
-				'type' => new CreateVehicleStep1Form(),
+				'form_type' => new CreateVehicleStep1Form(),
 			),
 			array(
 				'label' => 'engine',
-				'type' => new CreateVehicleStep2Form(),
+				'form_type' => new CreateVehicleStep2Form(),
 				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
 				},
@@ -391,7 +391,7 @@ Valid options per step are:
 - `label` (`string`|`null`)
 	- If you'd like to render an overview of all steps you have to set the `label` option for each step.
 	- By default, the labels will be translated using the `messages` domain when rendered in Twig.
-- `type` (`FormTypeInterface`|`string`|`null`)
+- `form_type` (`FormTypeInterface`|`string`|`null`)
 	- The form type used to build the form for that step.
 	- If using a string, it has to be the registered alias of the form type.
 - `form_options` (`array`)
@@ -409,10 +409,10 @@ Valid options per step are:
 protected function loadStepsConfig() {
 	return array(
 		array(
-			'type' => new CreateVehicleStep1Form(),
+			'form_type' => new CreateVehicleStep1Form(),
 		),
 		array(
-			'type' => new CreateVehicleStep2Form(),
+			'form_type' => new CreateVehicleStep2Form(),
 			'skip' => true,
 		),
 		array(
@@ -426,11 +426,11 @@ protected function loadStepsConfig() {
 	return array(
 		1 => array(
 			'label' => 'wheels',
-			'type' => new CreateVehicleStep1Form(),
+			'form_type' => new CreateVehicleStep1Form(),
 		),
 		2 => array(
 			'label' => 'engine',
-			'type' => 'createVehicleStep2',
+			'form_type' => 'createVehicleStep2',
 			'form_options' => array(
 				'validation_groups' => array('Default'),
 			),
@@ -495,7 +495,7 @@ protected function loadStepsConfig() {
 	return array(
 		array(
 			'label' => 'wheels',
-			'type' => 'createVehicleStep1',
+			'form_type' => 'createVehicleStep1',
 			'form_options' => array(
 				'validation_groups' => array('Default'),
 			),

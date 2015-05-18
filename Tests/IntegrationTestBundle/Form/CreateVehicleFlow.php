@@ -26,11 +26,11 @@ class CreateVehicleFlow extends FormFlow {
 		return array(
 			array(
 				'label' => 'wheels',
-				'type' => 'createVehicle',
+				'form_type' => 'createVehicle',
 			),
 			array(
 				'label' => 'engine',
-				'type' => 'createVehicle',
+				'form_type' => 'createVehicle',
 				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
 				},

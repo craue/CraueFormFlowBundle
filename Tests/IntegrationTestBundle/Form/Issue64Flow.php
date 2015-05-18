@@ -25,19 +25,19 @@ class Issue64Flow extends FormFlow {
 		return array(
 			array(
 				'label' => 'step1',
-				'type' => 'issue64',
+				'form_type' => 'issue64',
 			),
 			array(
 				'label' => 'step2',
-				'type' => 'issue64',
+				'form_type' => 'issue64',
 			),
 			array(
 				'label' => 'step3',
-				'type' => 'issue64',
+				'form_type' => 'issue64',
 			),
 			array(
 				'label' => 'step4',
-				'type' => 'issue64',
+				'form_type' => 'issue64',
 			),
 		);
 	}

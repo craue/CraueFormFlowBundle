@@ -25,7 +25,7 @@ class Step implements StepInterface {
 	/**
 	 * @var FormTypeInterface|string|null
 	 */
-	protected $type = null;
+	protected $formType = null;
 
 	/**
 	 * @var array
@@ -52,8 +52,8 @@ class Step implements StepInterface {
 				case 'label':
 					$step->setLabel($value);
 					break;
-				case 'type':
-					$step->setType($value);
+				case 'form_type':
+					$step->setFormType($value);
 					break;
 				case 'form_options':
 					$step->setFormOptions($value);
@@ -113,21 +113,21 @@ class Step implements StepInterface {
 	 * @param FormTypeInterface|string|null $type
 	 * @throws InvalidTypeException
 	 */
-	public function setType($type) {
-		if ($type === null || is_string($type) || $type instanceof FormTypeInterface) {
-			$this->type = $type;
+	public function setFormType($formType) {
+		if ($formType === null || is_string($formType) || $formType instanceof FormTypeInterface) {
+			$this->formType = $formType;
 
 			return;
 		}
 
-		throw new InvalidTypeException($type, array('null', 'string', 'Symfony\Component\Form\FormTypeInterface'));
+		throw new InvalidTypeException($formType, array('null', 'string', 'Symfony\Component\Form\FormTypeInterface'));
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getType() {
-		return $this->type;
+	public function getFormType() {
+		return $this->formType;
 	}
 
 	/**

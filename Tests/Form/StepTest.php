@@ -21,7 +21,7 @@ class StepTest extends UnitTestCase {
 		$step = Step::createFromConfig(1, array());
 		$this->assertSame(1, $step->getNumber());
 		$this->assertNull($step->getLabel());
-		$this->assertNull($step->getType());
+		$this->assertNull($step->getFormType());
 		$this->assertFalse($step->isSkipped());
 		$this->assertEquals(array(), $step->getFormOptions());
 		$step->evaluateSkipping(1, $flow);
@@ -145,15 +145,15 @@ class StepTest extends UnitTestCase {
 	}
 
 	/**
-	 * @dataProvider dataSetGetType
+	 * @dataProvider dataSetGetFormType
 	 */
-	public function testSetGetType($type) {
+	public function testSetGetFormType($formType) {
 		$step = new Step();
-		$step->setType($type);
-		$this->assertEquals($type, $step->getType());
+		$step->setFormType($formType);
+		$this->assertEquals($formType, $step->getFormType());
 	}
 
-	public function dataSetGetType() {
+	public function dataSetGetFormType() {
 		return array(
 			array(null),
 			array('myFormType'),
@@ -162,15 +162,15 @@ class StepTest extends UnitTestCase {
 	}
 
 	/**
-	 * @dataProvider dataSetGetType_invalidArguments
+	 * @dataProvider dataSetGetFormType_invalidArguments
 	 * @expectedException \Craue\FormFlowBundle\Exception\InvalidTypeException
 	 */
-	public function testSetGetType_invalidArguments($type) {
+	public function testSetGetFormType_invalidArguments($formType) {
 		$step = new Step();
-		$step->setType($type);
+		$step->setFormType($formType);
 	}
 
-	public function dataSetGetType_invalidArguments() {
+	public function dataSetGetFormType_invalidArguments() {
 		return array(
 			array(123),
 			array($this->getMock('Symfony\Component\Form\Test\FormInterface')),
