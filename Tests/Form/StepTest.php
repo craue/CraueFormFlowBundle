@@ -178,6 +178,43 @@ class StepTest extends UnitTestCase {
 	}
 
 	/**
+	 * @dataProvider dataSetGetFormOptions
+	 */
+	public function testSetGetFormOptions($formOptions) {
+		$step = new Step();
+		$step->setFormOptions($formOptions);
+		$this->assertEquals($formOptions, $step->getFormOptions());
+	}
+
+	public function dataSetGetFormOptions() {
+		return array(
+			array(array()),
+			array(array(
+				'validation_groups' => array('Default'),
+			)),
+		);
+	}
+
+	/**
+	 * @dataProvider dataSetGetFormOptions_invalidArguments
+	 * @expectedException \Craue\FormFlowBundle\Exception\InvalidTypeException
+	 */
+	public function testSetGetFormOptions_invalidArguments($formOptions) {
+		$step = new Step();
+		$step->setFormOptions($formOptions);
+	}
+
+	public function dataSetGetFormOptions_invalidArguments() {
+		return array(
+			array(null),
+			array(true),
+			array(false),
+			array(123),
+			array(new \stdClass()),
+		);
+	}
+
+	/**
 	 * @dataProvider dataSetSkip_invalidArguments
 	 * @expectedException \Craue\FormFlowBundle\Exception\InvalidTypeException
 	 */
