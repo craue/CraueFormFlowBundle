@@ -27,14 +27,14 @@ interface StepInterface {
 	function getType();
 
 	/**
-	 * @return boolean
-	 */
-	function isSkipped();
-
-	/**
 	 * @return array
 	 */
 	function getFormOptions();
+
+	/**
+	 * @return boolean
+	 */
+	function isSkipped();
 
 	/**
 	 * @param integer $estimatedCurrentStepNumber

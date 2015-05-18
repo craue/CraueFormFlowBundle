@@ -55,11 +55,11 @@ class Step implements StepInterface {
 				case 'type':
 					$step->setType($value);
 					break;
-				case 'skip':
-					$step->setSkip($value);
-					break;
 				case 'form_options':
 					$step->setFormOptions($value);
+					break;
+				case 'skip':
+					$step->setSkip($value);
 					break;
 				default:
 					throw new \InvalidArgumentException(sprintf('Invalid step config option "%s" given.', $key));
@@ -67,26 +67,6 @@ class Step implements StepInterface {
 		}
 
 		return $step;
-	}
-
-	/**
-	 * @param array $formOptions
-	 */
-	public function setFormOptions($formOptions) {
-		if (is_array($formOptions)) {
-			$this->formOptions = $formOptions;
-
-			return;
-		}
-
-		throw new InvalidTypeException($formOptions, 'array');
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getFormOptions() {
-		return $this->formOptions;
 	}
 
 	/**
@@ -151,6 +131,26 @@ class Step implements StepInterface {
 	}
 
 	/**
+	 * @param array $formOptions
+	 */
+	public function setFormOptions($formOptions) {
+		if (is_array($formOptions)) {
+			$this->formOptions = $formOptions;
+
+			return;
+		}
+
+		throw new InvalidTypeException($formOptions, 'array');
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getFormOptions() {
+		return $this->formOptions;
+	}
+
+	/**
 	 * @param boolean|callable $skip
 	 * @throws InvalidTypeException
 	 */
@@ -194,4 +194,5 @@ class Step implements StepInterface {
 	public function isSkipped() {
 		return $this->skipped === true;
 	}
+
 }
