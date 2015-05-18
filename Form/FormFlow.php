@@ -686,7 +686,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 		$options = array();
 		if (!$this->revalidatePreviousSteps) {
-			$options['validation_groups'] = array(); // disable validation
+			$options['validation_groups'] = false; // disable validation
 		}
 
 		foreach ($this->getSteps() as $step) {
@@ -716,15 +716,20 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	public function getFormOptions($step, array $options = array()) {
+		// override options in a specific order
 		$options = array_merge(
 			$this->getGenericFormOptions(),
 			$this->getStep($step)->getFormOptions(),
 			$options
 		);
 
+		// always add the generated step-based validation group (unless it's set to false explicitly)
 		if (!array_key_exists('validation_groups', $options)) {
-			$options['validation_groups'] = array(
-				$this->getValidationGroupPrefix() . $step,
+			$options['validation_groups'] = array($this->getValidationGroupPrefix() . $step);
+		} elseif ($options['validation_groups'] !== false) {
+			$options['validation_groups'] = array_merge(
+				array($this->getValidationGroupPrefix() . $step),
+				(array) $options['validation_groups']
 			);
 		}
 
