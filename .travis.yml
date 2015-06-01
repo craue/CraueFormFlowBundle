@@ -8,7 +8,7 @@ php:
   - hhvm
 
 env:
-  - SYMFONY_VERSION="2.7.*"
+  - SYMFONY_VERSION="2.7.*" SENSIO_FRAMEWORK_EXTRA_BUNDLE_VERSION="3.*"
 
 matrix:
   include:
