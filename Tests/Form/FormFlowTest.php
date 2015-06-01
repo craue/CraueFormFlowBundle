@@ -56,27 +56,74 @@ class FormFlowTest extends UnitTestCase {
 	}
 
 	/**
-	 * Ensure that the "validation_groups" option can be overridden.
+	 * Ensure that the generated step-based validation group is added.
 	 */
-	public function testGetFormOptions_overrideValidationGroups() {
-		$options = $this->getMockedFlow()->getFormOptions(1, array(
-			'validation_groups' => 'Default',
-		));
-
-		$this->assertEquals('Default', $options['validation_groups']);
-	}
-
-	/**
-	 * Ensure that the generated default value for "validation_groups" is an array, which can be used to just add
-	 * other groups.
-	 */
-	public function testGetFormOptions_generatedValidationGroupIsArray() {
-		$flow = $this->getMockedFlow();
+	public function testGetFormOptions_addGeneratedValidationGroup() {
+		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
 
 		$flow
 			->expects($this->once())
 			->method('getName')
 			->will($this->returnValue('createTopic'))
+		;
+
+		$flow
+			->expects($this->once())
+			->method('loadStepsConfig')
+			->will($this->returnValue(array(
+				array(
+					'form_options' => array(
+						'validation_groups' => 'Default',
+					)
+				),
+			)))
+		;
+
+		$options = $flow->getFormOptions(1);
+
+		$this->assertEquals(array('flow_createTopic_step1', 'Default'), $options['validation_groups']);
+	}
+
+	/**
+	 * Ensure that the "validation_groups" option can be set to false to disable validation.
+	 */
+	public function testGetFormOptions_setValidationGroupsToFalse() {
+		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
+
+		$flow
+			->expects($this->once())
+			->method('loadStepsConfig')
+			->will($this->returnValue(array(
+				array(),
+			)))
+		;
+
+		$options = $flow->getFormOptions(1, array(
+			'validation_groups' => false,
+		));
+
+		$this->assertFalse($options['validation_groups']);
+	}
+
+	/**
+	 * Ensure that the generated step-based value for "validation_groups" is an array, which can be used to just add
+	 * other groups.
+	 */
+	public function testGetFormOptions_generatedValidationGroupIsArray() {
+		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
+
+		$flow
+			->expects($this->once())
+			->method('getName')
+			->will($this->returnValue('createTopic'))
+		;
+
+		$flow
+			->expects($this->once())
+			->method('loadStepsConfig')
+			->will($this->returnValue(array(
+				array(),
+			)))
 		;
 
 		$options = $flow->getFormOptions(1);
@@ -88,7 +135,15 @@ class FormFlowTest extends UnitTestCase {
 	 * Ensure that generic options are considered.
 	 */
 	public function testGetFormOptions_considerGenericOptions() {
-		$flow = $this->getMockedFlow();
+		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
+
+		$flow
+			->expects($this->once())
+			->method('loadStepsConfig')
+			->will($this->returnValue(array(
+				array(),
+			)))
+		;
 
 		$flow->setGenericFormOptions(array(
 			'action' => 'targetUrl',
@@ -97,6 +152,62 @@ class FormFlowTest extends UnitTestCase {
 		$options = $flow->getFormOptions(1);
 
 		$this->assertEquals('targetUrl', $options['action']);
+	}
+
+	/**
+	 * Ensure that step specific options override generic options.
+	 */
+	public function testGetFormOptions_considerStepSpecificOptions() {
+		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
+
+		$flow
+			->expects($this->once())
+			->method('loadStepsConfig')
+			->will($this->returnValue(array(
+				array(
+					'form_options' => array(
+						'action' => 'specificTargetUrl',
+					)
+				),
+			)))
+		;
+
+		$flow->setGenericFormOptions(array(
+			'action' => 'targetUrl',
+		));
+
+		$options = $flow->getFormOptions(1);
+
+		$this->assertEquals('specificTargetUrl', $options['action']);
+	}
+
+	/**
+	 * Ensure that options can be overridden directly.
+	 */
+	public function testGetFormOptions_considerDirectlyPassedOptions() {
+		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
+
+		$flow
+			->expects($this->once())
+			->method('loadStepsConfig')
+			->will($this->returnValue(array(
+				array(
+					'form_options' => array(
+						'action' => 'specificTargetUrl',
+					)
+				),
+			)))
+		;
+
+		$flow->setGenericFormOptions(array(
+			'action' => 'targetUrl',
+		));
+
+		$options = $flow->getFormOptions(1, array(
+			'action' => 'finalTargetUrl',
+		));
+
+		$this->assertEquals('finalTargetUrl', $options['action']);
 	}
 
 	/**

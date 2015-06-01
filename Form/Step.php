@@ -28,6 +28,11 @@ class Step implements StepInterface {
 	protected $type = null;
 
 	/**
+	 * @var array
+	 */
+	protected $formOptions = array();
+
+	/**
 	 * @var callable|null
 	 */
 	private $skipFunction = null;
@@ -49,6 +54,9 @@ class Step implements StepInterface {
 					break;
 				case 'type':
 					$step->setType($value);
+					break;
+				case 'form_options':
+					$step->setFormOptions($value);
 					break;
 				case 'skip':
 					$step->setSkip($value);
@@ -120,6 +128,26 @@ class Step implements StepInterface {
 	 */
 	public function getType() {
 		return $this->type;
+	}
+
+	/**
+	 * @param array $formOptions
+	 */
+	public function setFormOptions($formOptions) {
+		if (is_array($formOptions)) {
+			$this->formOptions = $formOptions;
+
+			return;
+		}
+
+		throw new InvalidTypeException($formOptions, 'array');
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getFormOptions() {
+		return $this->formOptions;
 	}
 
 	/**

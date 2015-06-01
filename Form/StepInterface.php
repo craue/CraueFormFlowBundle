@@ -27,6 +27,11 @@ interface StepInterface {
 	function getType();
 
 	/**
+	 * @return array
+	 */
+	function getFormOptions();
+
+	/**
 	 * @return boolean
 	 */
 	function isSkipped();

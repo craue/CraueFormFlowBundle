@@ -394,6 +394,8 @@ Valid options per step are:
 - `type` (`FormTypeInterface`|`string`|`null`)
 	- The form type used to build the form for that step.
 	- If using a string, it has to be the registered alias of the form type.
+- `form_options` (`array`)
+	- Options passed to the form type of that step.
 - `skip` (`callable`|`boolean`)
 	- Decides whether the step will be skipped.
 	- If using a callable...
@@ -429,6 +431,9 @@ protected function loadStepsConfig() {
 		2 => array(
 			'label' => 'engine',
 			'type' => 'createVehicleStep2',
+			'form_options' => array(
+				'validation_groups' => array('Default'),
+			),
 			'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 				return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
 			},
@@ -482,23 +487,25 @@ public function createVehicleAction() {
 
 ## Passing step-based options to the form type
 
-To set options based on previous steps (e.g. to render fields depending on submitted data) you can override method
-`getFormOptions` of your flow class.
-Before you can use the options you have to define them in your form type class:
+To pass individual options to each step's form type you can use the step config option `form_options`:
 
 ```php
-// in src/MyCompany/MyBundle/Form/CreateVehicleStep2Form.php
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
-public function setDefaultOptions(OptionsResolverInterface $resolver) {
-	$resolver->setDefaults(array(
-		// ...
-		'numberOfWheels' => null,
-	));
+// in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
+protected function loadStepsConfig() {
+	return array(
+		array(
+			'label' => 'wheels',
+			'type' => 'createVehicleStep1',
+			'form_options' => array(
+				'validation_groups' => array('Default'),
+			),
+		),
+	);
 }
 ```
 
-Then you can set them in your flow class.
+Alternatively, to set options based on previous steps (e.g. to render fields depending on submitted data) you can override method
+`getFormOptions` of your flow class:
 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php

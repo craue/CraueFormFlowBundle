@@ -23,6 +23,7 @@ class StepTest extends UnitTestCase {
 		$this->assertNull($step->getLabel());
 		$this->assertNull($step->getType());
 		$this->assertFalse($step->isSkipped());
+		$this->assertEquals(array(), $step->getFormOptions());
 		$step->evaluateSkipping(1, $flow);
 		$this->assertFalse($step->isSkipped());
 
@@ -61,6 +62,12 @@ class StepTest extends UnitTestCase {
 		));
 		$step->evaluateSkipping(2, $flowWithData);
 		$this->assertTrue($step->isSkipped());
+
+		$form_options = array('foo' => 'bar');
+		$step = Step::createFromConfig(1, array(
+			'form_options' => $form_options,
+		));
+		$this->assertEquals($form_options, $step->getFormOptions());
 	}
 
 	/**
@@ -167,6 +174,43 @@ class StepTest extends UnitTestCase {
 		return array(
 			array(123),
 			array($this->getMock('Symfony\Component\Form\Test\FormInterface')),
+		);
+	}
+
+	/**
+	 * @dataProvider dataSetGetFormOptions
+	 */
+	public function testSetGetFormOptions($formOptions) {
+		$step = new Step();
+		$step->setFormOptions($formOptions);
+		$this->assertEquals($formOptions, $step->getFormOptions());
+	}
+
+	public function dataSetGetFormOptions() {
+		return array(
+			array(array()),
+			array(array(
+				'validation_groups' => array('Default'),
+			)),
+		);
+	}
+
+	/**
+	 * @dataProvider dataSetGetFormOptions_invalidArguments
+	 * @expectedException \Craue\FormFlowBundle\Exception\InvalidTypeException
+	 */
+	public function testSetGetFormOptions_invalidArguments($formOptions) {
+		$step = new Step();
+		$step->setFormOptions($formOptions);
+	}
+
+	public function dataSetGetFormOptions_invalidArguments() {
+		return array(
+			array(null),
+			array(true),
+			array(false),
+			array(123),
+			array(new \stdClass()),
 		);
 	}
 
