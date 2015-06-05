@@ -25,15 +25,15 @@ class PhotoUploadFlow extends FormFlow {
 		return array(
 			array(
 				'label' => 'select a photo',
-				'type' => new PhotoUploadForm(),
+				'form_type' => new PhotoUploadForm(),
 			),
 			array(
 				'label' => 'describe the photo',
-				'type' => new PhotoUploadForm(),
+				'form_type' => new PhotoUploadForm(),
 			),
 			array(
 				'label' => 'confirmation',
-				'type' => new PhotoUploadForm(),
+				'form_type' => new PhotoUploadForm(),
 			),
 		);
 	}

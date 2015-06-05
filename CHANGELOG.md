@@ -7,6 +7,7 @@
   - [#104]: removed options from method `createForm`
   - [#145]: bumped Symfony dependency to 2.3
   - [#148]: restructured data storage
+  - [#180]: renamed step config option `type` to `form_type`
   - removed the step field template
   - renamed property `step` to `stepNumber` and method `getStep` to `getStepNumber` within event classes
 - [#98]+[#143]: add a validation error to the current form if a form of a previous step became invalid
@@ -39,6 +40,7 @@
 [#148]: https://github.com/craue/CraueFormFlowBundle/issues/148
 [#175]: https://github.com/craue/CraueFormFlowBundle/issues/175
 [#178]: https://github.com/craue/CraueFormFlowBundle/issues/178
+[#180]: https://github.com/craue/CraueFormFlowBundle/issues/180
 
 ## 2.1.7 (2015-03-06)
 

@@ -41,15 +41,15 @@ class CreateTopicFlow extends FormFlow {
 		return array(
 			array(
 				'label' => 'basics',
-				'type' => $this->formType,
+				'form_type' => $this->formType,
 			),
 			array(
 				'label' => 'comment',
-				'type' => $this->formType,
+				'form_type' => $this->formType,
 			),
 			array(
 				'label' => 'bug_details',
-				'type' => $this->formType,
+				'form_type' => $this->formType,
 				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->isBugReport();
 				},

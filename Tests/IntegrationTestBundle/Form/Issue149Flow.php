@@ -25,15 +25,15 @@ class Issue149Flow extends FormFlow {
 		return array(
 			array(
 				'label' => 'step1',
-				'type' => 'issue149',
+				'form_type' => 'issue149',
 			),
 			array(
 				'label' => 'step2',
-				'type' => 'issue149',
+				'form_type' => 'issue149',
 			),
 			array(
 				'label' => 'step3',
-				'type' => 'issue149',
+				'form_type' => 'issue149',
 			),
 		);
 	}
