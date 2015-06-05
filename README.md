@@ -478,8 +478,8 @@ To set options common for the form type(s) of all steps you can use method `setG
 // in src/MyCompany/MyBundle/Controller/VehicleController.php
 public function createVehicleAction() {
 	// ...
-	$flow->bind($formData);
 	$flow->setGenericFormOptions(array('action' => 'targetUrl'));
+	$flow->bind($formData);
 	$form = $flow->createForm();
 	// ...
 }

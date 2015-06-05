@@ -114,8 +114,8 @@ This version adds support for concurrent instances of the same flow, which requi
 
 	after:
 	```php
-	$flow->bind($formData);
 	$flow->setGenericFormOptions(array('action' => 'targetUrl'));
+	$flow->bind($formData);
 	$form = $flow->createForm();
 	```
 
