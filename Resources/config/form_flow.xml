@@ -36,8 +36,8 @@
 			<call method="setFormFactory">
 				<argument type="service" id="form.factory" />
 			</call>
-			<call method="setRequest">
-				<argument type="service" id="request" />
+			<call method="setRequestStack">
+				<argument type="service" id="request_stack" />
 			</call>
 			<call method="setEventDispatcher">
 				<argument type="service" id="event_dispatcher" on-invalid="ignore" />

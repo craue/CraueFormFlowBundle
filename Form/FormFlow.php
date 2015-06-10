@@ -86,9 +86,9 @@ abstract class FormFlow implements FormFlowInterface {
 	protected $dynamicStepNavigationStepParameter = 'step';
 
 	/**
-	 * @var Request|RequestStack|null
+	 * @var RequestStack|Request|null
 	 */
-	private $request = null;
+	private $requestStack = null;
 
 	/**
 	 * @var string|null Is only null if not yet initialized.
@@ -166,14 +166,15 @@ abstract class FormFlow implements FormFlowInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function setRequest($request) {
-		if ($request === null || $request instanceof Request || $request instanceof RequestStack) {
-			$this->request = $request;
+	public function setRequestStack($requestStack) {
+		// TODO passing Request or null is only required for Symfony 2.3 compatibility, remove both as soon as Symfony >= 2.4 is required
+		if ($requestStack instanceof RequestStack || $requestStack instanceof Request || $requestStack === null) {
+			$this->requestStack = $requestStack;
 
 			return;
 		}
 
-		throw new InvalidTypeException($request, array('null', 'Symfony\Component\HttpFoundation\Request', 'Symfony\Component\HttpFoundation\RequestStack'));
+		throw new InvalidTypeException($requestStack, array('Symfony\Component\HttpFoundation\RequestStack', 'Symfony\Component\HttpFoundation\Request', 'null'));
 	}
 
 	/**
@@ -181,7 +182,7 @@ abstract class FormFlow implements FormFlowInterface {
 	 * @throws \RuntimeException If the request is not available.
 	 */
 	public function getRequest() {
-		$currentRequest = $this->request;
+		$currentRequest = $this->requestStack;
 
 		if ($currentRequest instanceof RequestStack) {
 			$currentRequest = $currentRequest->getCurrentRequest();

@@ -28,9 +28,9 @@ interface FormFlowInterface {
 	function setFormFactory(FormFactoryInterface $formFactory);
 
 	/**
-	 * @param Request|RequestStack|null $request
+	 * @param RequestStack|Request|null $requestStack
 	 */
-	function setRequest($request);
+	function setRequestStack($requestStack);
 
 	/**
 	 * @param DataManagerInterface $dataManager

@@ -343,16 +343,7 @@ class FormFlowTest extends UnitTestCase {
 		);
 	}
 
-	public function testSetGetRequest() {
-		$flow = $this->getMockedFlow();
-
-		$request = Request::create('');
-		$flow->setRequest($request);
-
-		$this->assertSame($request, $flow->getRequest());
-	}
-
-	public function testSetGetRequest_withRequestStack() {
+	public function testSetGetRequestStack() {
 		if (!class_exists('Symfony\Component\HttpFoundation\RequestStack')) {
 			$this->markTestSkipped();
 		}
@@ -362,24 +353,33 @@ class FormFlowTest extends UnitTestCase {
 		$request = Request::create('');
 		$requestStack = new RequestStack();
 		$requestStack->push($request);
-		$flow->setRequest($requestStack);
+		$flow->setRequestStack($requestStack);
 
 		$this->assertSame($request, $flow->getRequest());
 	}
 
-	public function testSetRequest_withNull() {
+	public function testSetGetRequestStack_withRequest() {
 		$flow = $this->getMockedFlow();
 
-		$flow->setRequest(null);
+		$request = Request::create('');
+		$flow->setRequestStack($request);
+
+		$this->assertSame($request, $flow->getRequest());
+	}
+
+	public function testSetRequestStack_withNull() {
+		$flow = $this->getMockedFlow();
+
+		$flow->setRequestStack(null);
 	}
 
 	/**
 	 * @expectedException \Craue\FormFlowBundle\Exception\InvalidTypeException
 	 */
-	public function testSetRequest_withInvalidType() {
+	public function testSetRequestStack_withInvalidType() {
 		$flow = $this->getMockedFlow();
 
-		$flow->setRequest(new \stdClass());
+		$flow->setRequestStack(new \stdClass());
 	}
 
 	public function testSetGetDataManager() {
@@ -530,7 +530,7 @@ class FormFlowTest extends UnitTestCase {
 	 * @expectedException \RuntimeException
 	 * @expectedExceptionMessage The request is not available.
 	 */
-	public function testGetRequest_notAvailable() {
+	public function testGetRequestStack_notAvailable() {
 		$this->getMockedFlow()->getRequest();
 	}
 
