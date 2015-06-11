@@ -734,44 +734,38 @@ abstract class FormFlow implements FormFlowInterface {
 	// methods for BC with third-party templates (e.g. MopaBootstrapBundle)
 
 	public function getCurrentStep() {
-		$this->triggerDeprecationError('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method getCurrentStepNumber instead.');
+		@trigger_error('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method getCurrentStepNumber instead.', E_USER_DEPRECATED);
 		return $this->getCurrentStepNumber();
 	}
 
 	public function getCurrentStepDescription() {
-		$this->triggerDeprecationError('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method getCurrentStepLabel instead.');
+		@trigger_error('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method getCurrentStepLabel instead.', E_USER_DEPRECATED);
 		return $this->getCurrentStepLabel();
 	}
 
 	public function getMaxSteps() {
-		$this->triggerDeprecationError('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method getStepCount instead.');
+		@trigger_error('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method getStepCount instead.', E_USER_DEPRECATED);
 		return $this->getStepCount();
 	}
 
 	public function getStepDescriptions() {
-		$this->triggerDeprecationError('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method getStepLabels instead.');
+		@trigger_error('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method getStepLabels instead.', E_USER_DEPRECATED);
 		return $this->getStepLabels();
 	}
 
 	public function getFirstStep() {
-		$this->triggerDeprecationError('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method getFirstStepNumber instead.');
+		@trigger_error('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method getFirstStepNumber instead.', E_USER_DEPRECATED);
 		return $this->getFirstStepNumber();
 	}
 
 	public function getLastStep() {
-		$this->triggerDeprecationError('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method getLastStepNumber instead.');
+		@trigger_error('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method getLastStepNumber instead.', E_USER_DEPRECATED);
 		return $this->getLastStepNumber();
 	}
 
 	public function hasSkipStep($stepNumber) {
-		$this->triggerDeprecationError('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method isStepSkipped instead.');
+		@trigger_error('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method isStepSkipped instead.', E_USER_DEPRECATED);
 		return $this->isStepSkipped($stepNumber);
-	}
-
-	protected function triggerDeprecationError($message) {
-		if (Kernel::VERSION_ID >= 20200) {
-			trigger_error($message, E_USER_DEPRECATED);
-		}
 	}
 
 }
