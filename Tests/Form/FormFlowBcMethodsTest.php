@@ -2,8 +2,10 @@
 
 namespace Craue\FormFlowBundle\Tests\Form;
 
+use Craue\FormFlowBundle\Tests\UnitTestCase;
+
 /**
- * Ensure that the methods for BC do what they should.
+ * Tests for BC.
  *
  * @group unit
  *
@@ -11,10 +13,14 @@ namespace Craue\FormFlowBundle\Tests\Form;
  * @copyright 2011-2015 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class FormFlowBcMethodsTest extends \PHPUnit_Framework_TestCase {
+class FormFlowBcMethodsTest extends UnitTestCase {
+
+	protected $collectDeprecationNotices = true;
+
+	private $deprecatedMessage = 'Method Craue\FormFlowBundle\Form\FormFlow::%s is deprecated since version 2.0. Use method %s instead.';
 
 	public function testBcMethodDelegation_getCurrentStep() {
-		$flowStub = $this->getFlowWithMockedDeprecationTriggerMethod('getCurrentStep', 'getCurrentStepNumber');
+		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'getCurrentStepNumber'));
 
 		$flowStub
 			->expects($this->once())
@@ -23,10 +29,11 @@ class FormFlowBcMethodsTest extends \PHPUnit_Framework_TestCase {
 		;
 
 		$this->assertSame(1, $flowStub->getCurrentStep());
+		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'getCurrentStep', 'getCurrentStepNumber')), $this->getDeprecationNotices());
 	}
 
 	public function testBcMethodDelegation_getCurrentStepDescription() {
-		$flowStub = $this->getFlowWithMockedDeprecationTriggerMethod('getCurrentStepDescription', 'getCurrentStepLabel');
+		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'getCurrentStepLabel'));
 
 		$flowStub
 			->expects($this->once())
@@ -35,10 +42,11 @@ class FormFlowBcMethodsTest extends \PHPUnit_Framework_TestCase {
 		;
 
 		$this->assertSame('summary', $flowStub->getCurrentStepDescription());
+		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'getCurrentStepDescription', 'getCurrentStepLabel')), $this->getDeprecationNotices());
 	}
 
 	public function testBcMethodDelegation_getMaxSteps() {
-		$flowStub = $this->getFlowWithMockedDeprecationTriggerMethod('getMaxSteps', 'getStepCount');
+		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'getStepCount'));
 
 		$flowStub
 			->expects($this->once())
@@ -47,10 +55,11 @@ class FormFlowBcMethodsTest extends \PHPUnit_Framework_TestCase {
 		;
 
 		$this->assertSame(3, $flowStub->getMaxSteps());
+		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'getMaxSteps', 'getStepCount')), $this->getDeprecationNotices());
 	}
 
 	public function testBcMethodDelegation_getStepDescriptions() {
-		$flowStub = $this->getFlowWithMockedDeprecationTriggerMethod('getStepDescriptions', 'getStepLabels');
+		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'getStepLabels'));
 
 		$flowStub
 			->expects($this->once())
@@ -59,10 +68,11 @@ class FormFlowBcMethodsTest extends \PHPUnit_Framework_TestCase {
 		;
 
 		$this->assertSame(array('step1', 'step2'), $flowStub->getStepDescriptions());
+		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'getStepDescriptions', 'getStepLabels')), $this->getDeprecationNotices());
 	}
 
 	public function testBcMethodDelegation_getFirstStep() {
-		$flowStub = $this->getFlowWithMockedDeprecationTriggerMethod('getFirstStep', 'getFirstStepNumber');
+		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'getFirstStepNumber'));
 
 		$flowStub
 			->expects($this->once())
@@ -71,10 +81,11 @@ class FormFlowBcMethodsTest extends \PHPUnit_Framework_TestCase {
 		;
 
 		$this->assertSame(2, $flowStub->getFirstStep());
+		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'getFirstStep', 'getFirstStepNumber')), $this->getDeprecationNotices());
 	}
 
 	public function testBcMethodDelegation_getLastStep() {
-		$flowStub = $this->getFlowWithMockedDeprecationTriggerMethod('getLastStep', 'getLastStepNumber');
+		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'getLastStepNumber'));
 
 		$flowStub
 			->expects($this->once())
@@ -83,10 +94,11 @@ class FormFlowBcMethodsTest extends \PHPUnit_Framework_TestCase {
 		;
 
 		$this->assertSame(5, $flowStub->getLastStep());
+		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'getLastStep', 'getLastStepNumber')), $this->getDeprecationNotices());
 	}
 
 	public function testBcMethodDelegation_hasSkipStep() {
-		$flowStub = $this->getFlowWithMockedDeprecationTriggerMethod('hasSkipStep', 'isStepSkipped');
+		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'isStepSkipped'));
 
 		$flowStub
 			->expects($this->once())
@@ -95,41 +107,7 @@ class FormFlowBcMethodsTest extends \PHPUnit_Framework_TestCase {
 		;
 
 		$this->assertTrue($flowStub->hasSkipStep(1));
-	}
-
-	/**
-	 * @param string $bcMethodName Name of the method for BC.
-	 * @param string $realMethodName Name of the new method actually being called.
-	 * @return PHPUnit_Framework_MockObject_MockObject|\Craue\FormFlowBundle\Form\FormFlow
-	 */
-	protected function getFlowWithMockedDeprecationTriggerMethod($bcMethodName, $realMethodName) {
-		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'triggerDeprecationError', $realMethodName));
-
-		$class = new \ReflectionClass($flowStub);
-		foreach ($class->getMethods() as $method) {
-			$methodName = $method->getName();
-
-			switch ($methodName) {
-				case 'triggerDeprecationError':
-					$flowStub
-						->expects($this->once())
-						->method($methodName)
-						->with(sprintf('Method Craue\FormFlowBundle\Form\FormFlow::%s is deprecated since version 2.0. Use method %s instead.', $bcMethodName, $realMethodName))
-					;
-					break;
-				case $realMethodName:
-					break;
-				default:
-					// assert that no other methods (of the flow class) are called
-					$flowStub
-						->expects($this->never())
-						->method($methodName)
-					;
-					break;
-			}
-		}
-
-		return $flowStub;
+		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'hasSkipStep', 'isStepSkipped')), $this->getDeprecationNotices());
 	}
 
 }
