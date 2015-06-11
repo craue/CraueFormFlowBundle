@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.8 (2015-06-11)
+
+- [#169]: simplified some code meant for avoiding deprecation notices
+- suppress errors when triggering deprecation notices
+
+[#169]: https://github.com/craue/CraueFormFlowBundle/issues/169
+
 ## 2.1.7 (2015-03-06)
 
 - avoid bubbling up of a possible OutOfBoundsException while determining the current step number
