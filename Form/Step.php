@@ -53,7 +53,7 @@ class Step implements StepInterface {
 					$step->setLabel($value);
 					break;
 				case 'type':
-					trigger_error('Step config option "type" is deprecated since version 3.0. Use "form_type" instead.', E_USER_DEPRECATED);
+					@trigger_error('Step config option "type" is deprecated since version 3.0. Use "form_type" instead.', E_USER_DEPRECATED);
 				case 'form_type':
 					$step->setFormType($value);
 					break;
