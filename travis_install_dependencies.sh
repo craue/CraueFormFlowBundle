@@ -12,7 +12,7 @@ composer require --no-update satooshi/php-coveralls:"~0.6@stable" guzzle/guzzle:
 composer remove --no-update symfony/framework-bundle symfony/form
 
 if [ -n "${SYMFONY_VERSION:-}" ]; then
-	composer require --no-update --dev sensio/framework-extra-bundle:"${SENSIO_FRAMEWORK_EXTRA_BUNDLE_VERSION:-${SYMFONY_VERSION}}" symfony/symfony:"${SYMFONY_VERSION}"
+	composer require --no-update --dev symfony/symfony:"${SYMFONY_VERSION}"
 fi
 
 if [ "${USE_DEPS:-}" = "lowest" ]; then

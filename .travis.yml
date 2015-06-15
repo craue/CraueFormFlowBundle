@@ -8,7 +8,7 @@ php:
   - hhvm
 
 env:
-  - SYMFONY_VERSION="2.7.*" SENSIO_FRAMEWORK_EXTRA_BUNDLE_VERSION="3.*"
+  - SYMFONY_VERSION="2.7.*"
 
 matrix:
   include:
@@ -21,18 +21,18 @@ matrix:
     - php: 5.5
       env: SYMFONY_VERSION="2.3.*"
     - php: 5.5
-      env: SYMFONY_VERSION="2.4.*" SENSIO_FRAMEWORK_EXTRA_BUNDLE_VERSION="3.*"
+      env: SYMFONY_VERSION="2.4.*"
     - php: 5.5
-      env: SYMFONY_VERSION="2.5.*" SENSIO_FRAMEWORK_EXTRA_BUNDLE_VERSION="3.*"
+      env: SYMFONY_VERSION="2.5.*"
     - php: 5.5
-      env: SYMFONY_VERSION="2.6.*" SENSIO_FRAMEWORK_EXTRA_BUNDLE_VERSION="3.*"
+      env: SYMFONY_VERSION="2.6.*"
     - php: 5.5
-      env: SYMFONY_VERSION="2.8.*" SENSIO_FRAMEWORK_EXTRA_BUNDLE_VERSION="3.*" MIN_STABILITY="dev"
+      env: SYMFONY_VERSION="2.8.*" MIN_STABILITY="dev"
     - php: 5.5
       env: SYMFONY_VERSION="dev-master" MIN_STABILITY="dev"
   allow_failures:
     - php: hhvm
-    - env: SYMFONY_VERSION="2.8.*" SENSIO_FRAMEWORK_EXTRA_BUNDLE_VERSION="3.*" MIN_STABILITY="dev"
+    - env: SYMFONY_VERSION="2.8.*" MIN_STABILITY="dev"
     - env: SYMFONY_VERSION="dev-master" MIN_STABILITY="dev"
   fast_finish: true
 
