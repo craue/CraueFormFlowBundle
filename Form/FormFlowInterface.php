@@ -7,7 +7,6 @@ use Craue\FormFlowBundle\Storage\DataManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -28,9 +27,9 @@ interface FormFlowInterface {
 	function setFormFactory(FormFactoryInterface $formFactory);
 
 	/**
-	 * @param RequestStack|Request|null $requestStack
+	 * @param RequestStack $requestStack
 	 */
-	function setRequestStack($requestStack);
+	function setRequestStack(RequestStack $requestStack);
 
 	/**
 	 * @param DataManagerInterface $dataManager

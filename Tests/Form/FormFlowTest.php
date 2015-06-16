@@ -344,10 +344,6 @@ class FormFlowTest extends UnitTestCase {
 	}
 
 	public function testSetGetRequestStack() {
-		if (!class_exists('Symfony\Component\HttpFoundation\RequestStack')) {
-			$this->markTestSkipped();
-		}
-
 		$flow = $this->getMockedFlow();
 
 		$request = Request::create('');
@@ -358,28 +354,14 @@ class FormFlowTest extends UnitTestCase {
 		$this->assertSame($request, $flow->getRequest());
 	}
 
-	public function testSetGetRequestStack_withRequest() {
-		$flow = $this->getMockedFlow();
-
-		$request = Request::create('');
-		$flow->setRequestStack($request);
-
-		$this->assertSame($request, $flow->getRequest());
-	}
-
-	public function testSetRequestStack_withNull() {
-		$flow = $this->getMockedFlow();
-
-		$flow->setRequestStack(null);
-	}
-
 	/**
-	 * @expectedException \Craue\FormFlowBundle\Exception\InvalidTypeException
+	 * @expectedException \RuntimeException
+	 * @expectedExceptionMessage The request is not available.
 	 */
-	public function testSetRequestStack_withInvalidType() {
+	public function testGetRequestStack_notAvailable() {
 		$flow = $this->getMockedFlow();
-
-		$flow->setRequestStack(new \stdClass());
+		$flow->setRequestStack(new RequestStack());
+		$flow->getRequest();
 	}
 
 	public function testSetGetDataManager() {
@@ -524,14 +506,6 @@ class FormFlowTest extends UnitTestCase {
 		$flow->setDynamicStepNavigationStepParameter($dynamicStepNavigationStepParameter);
 
 		$this->assertEquals($dynamicStepNavigationStepParameter, $flow->getDynamicStepNavigationStepParameter());
-	}
-
-	/**
-	 * @expectedException \RuntimeException
-	 * @expectedExceptionMessage The request is not available.
-	 */
-	public function testGetRequestStack_notAvailable() {
-		$this->getMockedFlow()->getRequest();
 	}
 
 	/**

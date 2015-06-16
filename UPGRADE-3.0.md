@@ -134,9 +134,9 @@
 
 ## Flow
 
-- The signature of method `setRequest` has changed to allow passing either a `RequestStack` or a `Request` instance.
+- The signature of method `setRequest` has changed to accept a `RequestStack` instance.
 
-	- `public function setRequest(Request $request = null)` to `public function setRequestStack($requestStack)`
+	- `public function setRequest(Request $request = null)` to `public function setRequestStack(RequestStack $requestStack)`
 
 - Some methods have been removed.
 
