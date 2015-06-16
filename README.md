@@ -143,8 +143,7 @@ XML
 
 	<service id="myCompany.form.flow.createVehicle"
 			class="MyCompany\MyBundle\Form\CreateVehicleFlow"
-			parent="craue.form.flow"
-			scope="request">
+			parent="craue.form.flow">
 		<call method="setFormType">
 			<argument type="service" id="myCompany.form.createVehicle" />
 		</call>
@@ -163,7 +162,6 @@ services:
     myCompany.form.flow.createVehicle:
         class: MyCompany\MyBundle\Form\CreateVehicleFlow
         parent: craue.form.flow
-        scope: request
         calls:
             - [ setFormType, [ "@myCompany.form.createVehicle" ] ]
 ```
@@ -258,8 +256,7 @@ XML
 <services>
 	<service id="myCompany.form.flow.createVehicle"
 			class="MyCompany\MyBundle\Form\CreateVehicleFlow"
-			parent="craue.form.flow"
-			scope="request">
+			parent="craue.form.flow">
 	</service>
 </services>
 ```
@@ -270,7 +267,6 @@ services:
     myCompany.form.flow.createVehicle:
         class: MyCompany\MyBundle\Form\CreateVehicleFlow
         parent: craue.form.flow
-        scope: request
 ```
 
 ## Create a form template

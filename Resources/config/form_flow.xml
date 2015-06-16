@@ -17,19 +17,19 @@
 	</parameters>
 
 	<services>
-		<service id="craue.form.flow.storage_default" class="%craue.form.flow.storage.class%" scope="request" public="false">
+		<service id="craue.form.flow.storage_default" class="%craue.form.flow.storage.class%" public="false">
 			<argument type="service" id="session" />
 		</service>
 
-		<service id="craue.form.flow.storage" alias="craue.form.flow.storage_default" scope="request" />
+		<service id="craue.form.flow.storage" alias="craue.form.flow.storage_default" />
 
-		<service id="craue.form.flow.data_manager_default" class="Craue\FormFlowBundle\Storage\DataManager" scope="request" public="false">
+		<service id="craue.form.flow.data_manager_default" class="Craue\FormFlowBundle\Storage\DataManager" public="false">
 			<argument type="service" id="craue.form.flow.storage" />
 		</service>
 
-		<service id="craue.form.flow.data_manager" alias="craue.form.flow.data_manager_default" scope="request" />
+		<service id="craue.form.flow.data_manager" alias="craue.form.flow.data_manager_default" />
 
-		<service id="craue.form.flow" class="%craue.form.flow.class%" scope="request">
+		<service id="craue.form.flow" class="%craue.form.flow.class%">
 			<call method="setDataManager">
 				<argument type="service" id="craue.form.flow.data_manager" />
 			</call>

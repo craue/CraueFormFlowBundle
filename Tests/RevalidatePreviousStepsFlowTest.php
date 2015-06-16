@@ -65,13 +65,8 @@ class RevalidatePreviousStepsFlowTest extends IntegrationTestCase {
 
 	protected function getCalledEvents() {
 		$container = static::$kernel->getContainer();
-		$container->enterScope('request');
-		$container->set('request', $this->client->getRequest(), 'request');
-
 		$flow = $container->get('integrationTestBundle.form.flow.revalidatePreviousSteps');
 		$storage = $container->get('craue.form.flow.storage');
-
-		$container->leaveScope('request');
 
 		return $storage->get($flow->getCalledEventsSessionKey());
 	}

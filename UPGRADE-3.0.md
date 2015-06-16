@@ -1,5 +1,27 @@
 # Upgrade from 2.1.x to 3.0
 
+## Removal of request scope from service definitions
+
+- To ensure compatibility with the latest versions of Symfony, the request scope has been removed from all service
+  definitions. You in turn also have to remove the scope from your flows and connected form types.
+
+	before:
+	```xml
+	<service id="myCompany.form.flow.createTopic"
+			class="MyCompany\MyBundle\Form\CreateTopicFlow"
+			parent="craue.form.flow"
+			scope="request">
+	</service>
+	```
+
+	after:
+	```xml
+	<service id="myCompany.form.flow.createTopic"
+			class="MyCompany\MyBundle\Form\CreateTopicFlow"
+			parent="craue.form.flow">
+	</service>
+	```
+
 ## Renaming step config option `type` to `form_type`
 
 - The step config option to specify the form type for each step within the `loadStepsConfig` method has been renamed

@@ -11,68 +11,57 @@
 	<services>
 		<service id="integrationTestBundle.form.flow.createTopic"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\CreateTopicFlow"
-				parent="craue.form.flow"
-				scope="request">
+				parent="craue.form.flow">
 		</service>
 
 		<service id="integrationTestBundle.form.flow.createVehicle"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\CreateVehicleFlow"
-				parent="craue.form.flow"
-				scope="request">
+				parent="craue.form.flow">
 		</service>
 
 		<service id="integrationTestBundle.form.flow.demo1"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\Demo1Flow"
-				parent="craue.form.flow"
-				scope="request">
+				parent="craue.form.flow">
 		</service>
 
 		<service id="integrationTestBundle.form.flow.issue64"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\Issue64Flow"
-				parent="craue.form.flow"
-				scope="request">
+				parent="craue.form.flow">
 		</service>
 
 		<service id="integrationTestBundle.form.flow.issue87"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\Issue87Flow"
-				parent="craue.form.flow"
-				scope="request">
+				parent="craue.form.flow">
 		</service>
 
 		<service id="integrationTestBundle.form.flow.issue149"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\Issue149Flow"
-				parent="craue.form.flow"
-				scope="request">
+				parent="craue.form.flow">
 		</service>
 
 		<service id="integrationTestBundle.form.flow.revalidatePreviousSteps"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\RevalidatePreviousStepsFlow"
-				parent="craue.form.flow"
-				scope="request">
+				parent="craue.form.flow">
 		</service>
 
 		<service id="integrationTestBundle.form.flow.skipFirstStepUsingClosure"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\SkipFirstStepUsingClosureFlow"
-				parent="craue.form.flow"
-				scope="request">
+				parent="craue.form.flow">
 		</service>
 
 		<service id="integrationTestBundle.form.flow.removeSecondStepSkipMarkOnReset"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\RemoveSecondStepSkipMarkOnResetFlow"
-				parent="craue.form.flow"
-				scope="request">
+				parent="craue.form.flow">
 		</service>
 
 		<service id="integrationTestBundle.form.flow.onlyOneStep"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\OnlyOneStepFlow"
-				parent="craue.form.flow"
-				scope="request">
+				parent="craue.form.flow">
 		</service>
 
 		<service id="integrationTestBundle.form.flow.photoUpload"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\PhotoUploadFlow"
-				parent="craue.form.flow"
-				scope="request">
+				parent="craue.form.flow">
 		</service>
 	</services>
 
