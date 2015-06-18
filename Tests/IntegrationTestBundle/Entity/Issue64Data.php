@@ -14,6 +14,7 @@ class Issue64Data {
 	/**
 	 * @var Issue64SubData
 	 * @Assert\NotNull(groups={"flow_issue64_step1", "flow_issue64_step2"})
+	 * @Assert\Valid
 	 */
 	public $sub;
 
