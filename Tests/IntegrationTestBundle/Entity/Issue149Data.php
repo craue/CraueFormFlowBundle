@@ -2,6 +2,8 @@
 
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @author Christian Raue <christian.raue@gmail.com>
  * @copyright 2011-2015 Christian Raue
@@ -11,6 +13,7 @@ class Issue149Data {
 
 	/**
 	 * @var Issue149SubData
+	 * @Assert\Valid
 	 */
 	public $photo;
 
