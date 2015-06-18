@@ -66,8 +66,6 @@ class CreateTopicFlow extends FormFlow {
 	public function getFormOptions($step, array $options = array()) {
 		$options = parent::getFormOptions($step, $options);
 
-		$options['cascade_validation'] = true;
-
 		if ($step === 3) {
 			$options['isBugReport'] = $this->getFormData()->isBugReport();
 		}
