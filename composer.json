@@ -2,7 +2,7 @@
 	"name": "craue/formflow-bundle",
 	"type": "symfony-bundle",
 	"description": "Multi-step forms for your Symfony2 project.",
-	"keywords": ["symfony2", "form"],
+	"keywords": ["symfony2", "form", "wizard", "step"],
 	"homepage": "https://github.com/craue/CraueFormFlowBundle",
 	"license": "MIT",
 	"authors": [
