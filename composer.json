@@ -31,11 +31,10 @@
 	"minimum-stability": "stable",
 	"prefer-stable": true,
 	"autoload": {
-		"psr-0": {
+		"psr-4": {
 			"Craue\\FormFlowBundle\\": ""
 		}
 	},
-	"target-dir": "Craue/FormFlowBundle",
 	"extra": {
 		"branch-alias": {
 			"dev-master": "3.0.x-dev"
