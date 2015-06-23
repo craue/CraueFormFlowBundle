@@ -2,7 +2,7 @@
 
 namespace Craue\FormFlowBundle\Tests\Util;
 
-use Craue\FormFlowBundle\Form\FormFlow;
+use Craue\FormFlowBundle\Tests\UnitTestCase;
 use Craue\FormFlowBundle\Util\FormFlowUtil;
 
 /**
@@ -12,7 +12,7 @@ use Craue\FormFlowBundle\Util\FormFlowUtil;
  * @copyright 2011-2015 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class FormFlowUtilTest extends \PHPUnit_Framework_TestCase {
+class FormFlowUtilTest extends UnitTestCase {
 
 	/**
 	 * @var FormFlowUtil
@@ -65,14 +65,6 @@ class FormFlowUtilTest extends \PHPUnit_Framework_TestCase {
 		$actualParameters = $this->util->removeRouteParameters(array('key' => 'value', 'instance' => 'xyz', 'step' => 2), $flow);
 
 		$this->assertEquals(array('key' => 'value'), $actualParameters);
-	}
-
-	/**
-	 * @param string[] $methodNames Names of methods to be mocked.
-	 * @return PHPUnit_Framework_MockObject_MockObject|FormFlow
-	 */
-	protected function getFlowWithMockedMethods(array $methodNames) {
-		return $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', $methodNames);
 	}
 
 }
