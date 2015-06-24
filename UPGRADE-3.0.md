@@ -2,8 +2,9 @@
 
 ## Renaming step config option `type` to `form_type`
 
-The step config option to specify the form type for each step within the `loadStepsConfig` method has been renamed from
-`type` to `form_type`. This was done for the sake of consistency with the newly added option `form_options`.
+- The step config option to specify the form type for each step within the `loadStepsConfig` method has been renamed
+  from `type` to `form_type`. This was done for the sake of consistency with the newly added option `form_options`.
+  The old option `form` is still available, but deprecated.
 
 	before:
 	```php
@@ -31,7 +32,7 @@ The step config option to specify the form type for each step within the `loadSt
 
 ## Concurrent instances of the same flow
 
-This version adds support for concurrent instances of the same flow, which required a change in the handling of flows.
+- This version adds support for concurrent instances of the same flow, which required a change in the handling of flows.
 
 - When performing a GET request _without any additional parameters_ to run a flow with dynamic step navigation enabled,
   it has just been reused as there could only be one instance using the default session storage. So previously, the
