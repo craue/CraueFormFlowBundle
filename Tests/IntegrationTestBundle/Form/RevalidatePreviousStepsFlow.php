@@ -2,9 +2,9 @@
 
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form;
 
-use Craue\FormFlowBundle\Event\PreviousStepInvalidEvent;
-use Craue\FormFlowBundle\Form\FormFlow;
-use Craue\FormFlowBundle\Form\FormFlowEvents;
+use Craue\FormFlowBundle\FormFlow\Event\PreviousStepInvalidEvent;
+use Craue\FormFlowBundle\FormFlow\FormFlow;
+use Craue\FormFlowBundle\FormFlow\FormFlowEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

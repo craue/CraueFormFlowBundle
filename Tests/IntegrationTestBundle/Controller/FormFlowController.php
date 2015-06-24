@@ -2,7 +2,7 @@
 
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Controller;
 
-use Craue\FormFlowBundle\Form\FormFlow;
+use Craue\FormFlowBundle\FormFlow\FormFlow;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Issue149Data;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Issue64Data;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\PhotoUpload;

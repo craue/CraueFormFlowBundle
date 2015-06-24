@@ -10,10 +10,10 @@
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 	<parameters>
-		<parameter key="craue.form.flow.class">Craue\FormFlowBundle\Form\FormFlow</parameter>
-		<parameter key="craue.form.flow.storage.class">Craue\FormFlowBundle\Storage\SessionStorage</parameter>
-		<parameter key="craue.form.flow.event_listener.previous_step_invalid.class">Craue\FormFlowBundle\EventListener\PreviousStepInvalidEventListener</parameter>
-		<parameter key="craue.form.flow.event_listener.previous_step_invalid.event" type="constant">Craue\FormFlowBundle\Form\FormFlowEvents::PREVIOUS_STEP_INVALID</parameter>
+		<parameter key="craue.form.flow.class">Craue\FormFlowBundle\FormFlow\FormFlow</parameter>
+		<parameter key="craue.form.flow.storage.class">Craue\FormFlowBundle\FormFlow\Storage\SessionStorage</parameter>
+		<parameter key="craue.form.flow.event_listener.previous_step_invalid.class">Craue\FormFlowBundle\FormFlow\EventListener\PreviousStepInvalidEventListener</parameter>
+		<parameter key="craue.form.flow.event_listener.previous_step_invalid.event" type="constant">Craue\FormFlowBundle\FormFlow\FormFlowEvents::PREVIOUS_STEP_INVALID</parameter>
 	</parameters>
 
 	<services>
@@ -23,7 +23,7 @@
 
 		<service id="craue.form.flow.storage" alias="craue.form.flow.storage_default" scope="request" />
 
-		<service id="craue.form.flow.data_manager_default" class="Craue\FormFlowBundle\Storage\DataManager" scope="request" public="false">
+		<service id="craue.form.flow.data_manager_default" class="Craue\FormFlowBundle\FormFlow\Storage\DataManager" scope="request" public="false">
 			<argument type="service" id="craue.form.flow.storage" />
 		</service>
 
@@ -44,11 +44,11 @@
 			</call>
 		</service>
 
-		<service id="craue.form.flow.form_extension" class="Craue\FormFlowBundle\Form\Extension\FormFlowFormExtension">
+		<service id="craue.form.flow.form_extension" class="Craue\FormFlowBundle\FormFlow\Extension\FormFlowFormExtension">
 			<tag name="form.type_extension" alias="form" />
 		</service>
 
-		<service id="craue.form.flow.hidden_field_extension" class="Craue\FormFlowBundle\Form\Extension\FormFlowHiddenFieldExtension">
+		<service id="craue.form.flow.hidden_field_extension" class="Craue\FormFlowBundle\FormFlow\Extension\FormFlowHiddenFieldExtension">
 			<tag name="form.type_extension" alias="hidden" />
 		</service>
 

@@ -2,14 +2,14 @@
 
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form;
 
-use Craue\FormFlowBundle\Event\GetStepsEvent;
-use Craue\FormFlowBundle\Event\PostBindFlowEvent;
-use Craue\FormFlowBundle\Event\PostBindRequestEvent;
-use Craue\FormFlowBundle\Event\PostBindSavedDataEvent;
-use Craue\FormFlowBundle\Event\PostValidateEvent;
-use Craue\FormFlowBundle\Event\PreBindEvent;
-use Craue\FormFlowBundle\Form\FormFlow;
-use Craue\FormFlowBundle\Form\FormFlowEvents;
+use Craue\FormFlowBundle\FormFlow\Event\GetStepsEvent;
+use Craue\FormFlowBundle\FormFlow\Event\PostBindFlowEvent;
+use Craue\FormFlowBundle\FormFlow\Event\PostBindRequestEvent;
+use Craue\FormFlowBundle\FormFlow\Event\PostBindSavedDataEvent;
+use Craue\FormFlowBundle\FormFlow\Event\PostValidateEvent;
+use Craue\FormFlowBundle\FormFlow\Event\PreBindEvent;
+use Craue\FormFlowBundle\FormFlow\FormFlow;
+use Craue\FormFlowBundle\FormFlow\FormFlowEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

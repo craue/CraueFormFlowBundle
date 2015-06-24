@@ -2,8 +2,8 @@
 
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form;
 
-use Craue\FormFlowBundle\Form\FormFlow;
-use Craue\FormFlowBundle\Form\FormFlowInterface;
+use Craue\FormFlowBundle\FormFlow\FormFlow;
+use Craue\FormFlowBundle\FormFlow\FormFlowInterface;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
