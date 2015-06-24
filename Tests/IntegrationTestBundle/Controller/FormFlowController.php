@@ -7,7 +7,6 @@ use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Issue64Data;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Topic;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Vehicle;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -30,7 +29,6 @@ class FormFlowController extends Controller {
 
 	/**
 	 * @Route("/create-topic/", name="_FormFlow_createTopic")
-	 * @Template("IntegrationTestBundle::layout_flow.html.twig")
 	 */
 	public function createTopicAction() {
 		return $this->processFlow(new Topic(), $this->get('integrationTestBundle.form.flow.createTopic'));
@@ -38,7 +36,6 @@ class FormFlowController extends Controller {
 
 	/**
 	 * @Route("/create-vehicle/", name="_FormFlow_createVehicle")
-	 * @Template("IntegrationTestBundle::layout_flow.html.twig")
 	 */
 	public function createVehicleAction() {
 		return $this->processFlow(new Vehicle(), $this->get('integrationTestBundle.form.flow.createVehicle'));
@@ -46,15 +43,13 @@ class FormFlowController extends Controller {
 
 	/**
 	 * @Route("/demo1/", name="_FormFlow_demo1")
-	 * @Template("IntegrationTestBundle::layout_flow.html.twig")
 	 */
 	public function demo1Action() {
-		return $this->processFlow((object) array(), $this->get('integrationTestBundle.form.flow.demo1'));
+		return $this->processFlow(new \stdClass(), $this->get('integrationTestBundle.form.flow.demo1'));
 	}
 
 	/**
 	 * @Route("/issue64/", name="_FormFlow_issue64")
-	 * @Template("IntegrationTestBundle::layout_flow.html.twig")
 	 */
 	public function issue64Action() {
 		return $this->processFlow(new Issue64Data(), $this->get('integrationTestBundle.form.flow.issue64'));
@@ -63,29 +58,26 @@ class FormFlowController extends Controller {
 	/**
 	 * No trailing slash here to add the step only when needed.
 	 * @Route("/issue87/{step}", defaults={"step"=1}, name="_FormFlow_issue87")
-	 * @Template("IntegrationTestBundle::layout_flow.html.twig")
 	 */
 	public function issue87Action() {
-		return $this->processFlow((object) array(), $this->get('integrationTestBundle.form.flow.issue87'));
+		return $this->processFlow(new \stdClass(), $this->get('integrationTestBundle.form.flow.issue87'));
 	}
 
 	/**
 	 * @Route("/skipFirstStepUsingClosure/", name="_FormFlow_skipFirstStepUsingClosure")
-	 * @Template("IntegrationTestBundle::layout_flow.html.twig")
 	 */
 	public function skipFirstStepUsingClosureAction() {
-		return $this->processFlow((object) array(), $this->get('integrationTestBundle.form.flow.skipFirstStepUsingClosure'));
+		return $this->processFlow(new \stdClass(), $this->get('integrationTestBundle.form.flow.skipFirstStepUsingClosure'));
 	}
 
 	/**
 	 * @Route("/removeSecondStepSkipMarkOnReset/", name="_FormFlow_removeSecondStepSkipMarkOnReset")
-	 * @Template("IntegrationTestBundle::layout_flow.html.twig")
 	 */
 	public function removeSecondStepSkipMarkOnResetAction() {
-		return $this->processFlow((object) array(), $this->get('integrationTestBundle.form.flow.removeSecondStepSkipMarkOnReset'));
+		return $this->processFlow(new \stdClass(), $this->get('integrationTestBundle.form.flow.removeSecondStepSkipMarkOnReset'));
 	}
 
-	protected function processFlow($formData, FormFlow $flow) {
+	protected function processFlow($formData, FormFlow $flow, $template = 'IntegrationTestBundle::layout_flow.html.twig') {
 		$flow->bind($formData);
 
 		$form = $flow->createForm();
@@ -103,11 +95,11 @@ class FormFlowController extends Controller {
 			}
 		}
 
-		return array(
+		return $this->render($template, array(
 			'form' => $form->createView(),
 			'flow' => $flow,
 			'formData' => $formData,
-		);
+		));
 	}
 
 }
