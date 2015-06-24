@@ -38,12 +38,18 @@ class FormFlowExtension extends \Twig_Extension {
 			return array(
 				'craue_addDynamicStepNavigationParameters' => new \Twig_Filter_Method($this, 'addDynamicStepNavigationParameters'),
 				'craue_removeDynamicStepNavigationParameters' => new \Twig_Filter_Method($this, 'removeDynamicStepNavigationParameters'),
+				// methods for BC with third-party templates (e.g. MopaBootstrapBundle)
+				'craue_addDynamicStepNavigationParameter' => new \Twig_Filter_Method($this, 'addDynamicStepNavigationParameter'),
+				'craue_removeDynamicStepNavigationParameter' => new \Twig_Filter_Method($this, 'removeDynamicStepNavigationParameter'),
 			);
 		}
 
 		return array(
 			new \Twig_SimpleFilter('craue_addDynamicStepNavigationParameters', array($this, 'addDynamicStepNavigationParameters')),
 			new \Twig_SimpleFilter('craue_removeDynamicStepNavigationParameters', array($this, 'removeDynamicStepNavigationParameters')),
+			// methods for BC with third-party templates (e.g. MopaBootstrapBundle)
+			new \Twig_SimpleFilter('craue_addDynamicStepNavigationParameter', array($this, 'addDynamicStepNavigationParameter')),
+			new \Twig_SimpleFilter('craue_removeDynamicStepNavigationParameter', array($this, 'removeDynamicStepNavigationParameter')),
 		);
 	}
 
@@ -111,6 +117,18 @@ class FormFlowExtension extends \Twig_Extension {
 		}
 
 		return false;
+	}
+
+	// methods for BC with third-party templates (e.g. MopaBootstrapBundle)
+
+	public function addDynamicStepNavigationParameter(array $parameters, FormFlow $flow, $stepNumber) {
+		@trigger_error('Twig filter craue_addDynamicStepNavigationParameter is deprecated since version 3.0. Use filter craue_addDynamicStepNavigationParameters instead.', E_USER_DEPRECATED);
+		return $this->addDynamicStepNavigationParameters($parameters, $flow, $stepNumber);
+	}
+
+	public function removeDynamicStepNavigationParameter(array $parameters, FormFlow $flow) {
+		@trigger_error('Twig filter craue_removeDynamicStepNavigationParameter is deprecated since version 3.0. Use filter craue_removeDynamicStepNavigationParameters instead.', E_USER_DEPRECATED);
+		return $this->removeDynamicStepNavigationParameters($parameters, $flow);
 	}
 
 }
