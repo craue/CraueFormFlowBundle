@@ -25,10 +25,9 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 		$flow
 			->expects($this->once())
 			->method('getCurrentStepNumber')
-			->will($this->returnValue(1))
 		;
 
-		$this->assertSame(1, $flow->getCurrentStep());
+		$flow->getCurrentStep();
 		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'getCurrentStep', 'getCurrentStepNumber')), $this->getDeprecationNotices());
 	}
 
@@ -38,10 +37,9 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 		$flow
 			->expects($this->once())
 			->method('getCurrentStepLabel')
-			->will($this->returnValue('summary'))
 		;
 
-		$this->assertSame('summary', $flow->getCurrentStepDescription());
+		$flow->getCurrentStepDescription();
 		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'getCurrentStepDescription', 'getCurrentStepLabel')), $this->getDeprecationNotices());
 	}
 
@@ -51,10 +49,9 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 		$flow
 			->expects($this->once())
 			->method('getStepCount')
-			->will($this->returnValue(3))
 		;
 
-		$this->assertSame(3, $flow->getMaxSteps());
+		$flow->getMaxSteps();
 		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'getMaxSteps', 'getStepCount')), $this->getDeprecationNotices());
 	}
 
@@ -64,10 +61,9 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 		$flow
 			->expects($this->once())
 			->method('getStepLabels')
-			->will($this->returnValue(array('step1', 'step2')))
 		;
 
-		$this->assertSame(array('step1', 'step2'), $flow->getStepDescriptions());
+		$flow->getStepDescriptions();
 		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'getStepDescriptions', 'getStepLabels')), $this->getDeprecationNotices());
 	}
 
@@ -77,10 +73,9 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 		$flow
 			->expects($this->once())
 			->method('getFirstStepNumber')
-			->will($this->returnValue(2))
 		;
 
-		$this->assertSame(2, $flow->getFirstStep());
+		$flow->getFirstStep();
 		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'getFirstStep', 'getFirstStepNumber')), $this->getDeprecationNotices());
 	}
 
@@ -90,23 +85,24 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 		$flow
 			->expects($this->once())
 			->method('getLastStepNumber')
-			->will($this->returnValue(5))
 		;
 
-		$this->assertSame(5, $flow->getLastStep());
+		$flow->getLastStep();
 		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'getLastStep', 'getLastStepNumber')), $this->getDeprecationNotices());
 	}
 
 	public function testBcMethodDelegation_hasSkipStep() {
 		$flow = $this->getFlowWithMockedMethods(array('getName', 'isStepSkipped'));
 
+		$stepNumber = 1;
+
 		$flow
 			->expects($this->once())
 			->method('isStepSkipped')
-			->will($this->returnValueMap(array(array(1, true))))
+			->with($this->equalTo($stepNumber))
 		;
 
-		$this->assertTrue($flow->hasSkipStep(1));
+		$flow->hasSkipStep($stepNumber);
 		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'hasSkipStep', 'isStepSkipped')), $this->getDeprecationNotices());
 	}
 
