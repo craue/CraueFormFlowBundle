@@ -4,14 +4,14 @@
 
 - The step config option to specify the form type for each step within the `loadStepsConfig` method has been renamed
   from `type` to `form_type`. This was done for the sake of consistency with the newly added option `form_options`.
-  The old option `form` is still available, but deprecated.
+  The old option `type` is still available, but deprecated.
 
 	before:
 	```php
 	protected function loadStepsConfig() {
 		return array(
 			array(
-				'form' => $this->formType,
+				'type' => $this->formType,
 			),
 			// ...
 		);
@@ -137,12 +137,17 @@
 - Some methods have been removed.
 
 	- `setStepDataKey`/`getStepDataKey`
-	- `setStorage`/`getStorage` (use `setDataManager`/`getDataManager` instead)
+	- `setStorage`/`getStorage` (call `getDataManager()->getStorage()` instead or adapt your code to use
+	  `setDataManager`/`getDataManager`)
 
 - Some methods have been renamed.
 
 	- `setDynamicStepNavigationParameter` to `setDynamicStepNavigationStepParameter`
 	- `getDynamicStepNavigationParameter` to `getDynamicStepNavigationStepParameter`
+
+- A property has been removed.
+
+	- `storage` (call `$this->dataManager->getStorage()` instead)
 
 - A property has been renamed.
 
