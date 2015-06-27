@@ -48,3 +48,11 @@ notifications:
   email:
     on_success: always
     on_failure: always
+
+# use container-based infrastructure
+sudo: false
+
+# cache Composer's package cache
+cache:
+  directories:
+    - $HOME/.composer/cache
