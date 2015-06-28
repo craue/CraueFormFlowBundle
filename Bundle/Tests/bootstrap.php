@@ -4,7 +4,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\HttpKernel\Kernel;
 
-$loader = require __DIR__.'/../vendor/autoload.php';
+$loader = require __DIR__ . '/../../vendor/autoload.php';
 AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
 if (Kernel::VERSION_ID >= 20600) {

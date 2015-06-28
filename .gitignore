@@ -4,7 +4,6 @@
 /composer-install.bat
 /composer-update.bat
 /composer.lock
-.DS_Store
 /git.bat
 /phpunit-tests-run-with-coverage.bat
 /phpunit-tests-run.bat
@@ -14,3 +13,4 @@
 /vendors-install.bat
 /vendors-update.bat
 /vendors-whatsnew.bat
+.DS_Store

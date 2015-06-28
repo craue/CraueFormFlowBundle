@@ -3,18 +3,18 @@
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.1/phpunit.xsd"
 		backupGlobals="false"
-		bootstrap="Tests/bootstrap.php"
+		bootstrap="Bundle/Tests/bootstrap.php"
 		colors="true">
 	<testsuites>
 		<testsuite name="CraueFormFlowBundle">
-			<directory suffix="Test.php">Tests</directory>
+			<directory suffix="Test.php">Bundle/Tests</directory>
 		</testsuite>
 	</testsuites>
 	<filter>
 		<whitelist>
 			<directory suffix=".php">.</directory>
 			<exclude>
-				<directory suffix=".php">Tests</directory>
+				<directory suffix=".php">Bundle/Tests</directory>
 				<directory suffix=".php">vendor</directory>
 				<file>phpunit.php</file>
 			</exclude>
