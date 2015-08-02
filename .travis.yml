@@ -8,7 +8,7 @@ php:
   - hhvm
 
 env:
-  - SYMFONY_VERSION="2.7.*"
+  - SYMFONY_VERSION="2.7.*" PHPUNIT_BRIDGE=true
 
 matrix:
   include:
@@ -27,10 +27,10 @@ matrix:
     - php: 5.5
       env: SYMFONY_VERSION="2.6.*"
     - php: 5.5
-      env: SYMFONY_VERSION="2.8.*" MIN_STABILITY="dev"
+      env: SYMFONY_VERSION="2.8.*" PHPUNIT_BRIDGE=true MIN_STABILITY="dev"
   allow_failures:
     - php: hhvm
-    - env: SYMFONY_VERSION="2.8.*" MIN_STABILITY="dev"
+    - env: SYMFONY_VERSION="2.8.*" PHPUNIT_BRIDGE=true MIN_STABILITY="dev"
   fast_finish: true
 
 install:
