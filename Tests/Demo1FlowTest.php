@@ -71,6 +71,8 @@ class Demo1FlowTest extends IntegrationTestCase {
 		$flow = $container->get('integrationTestBundle.form.flow.demo1');
 		$storage = $container->get('craue.form.flow.storage');
 
+		$container->leaveScope('request');
+
 		return $storage->get($flow->getCalledEventsSessionKey());
 	}
 
