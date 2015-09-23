@@ -24,10 +24,6 @@ abstract class IntegrationTestCase extends WebTestCase {
 	protected static function createKernel(array $options = array()) {
 		$configFile = isset($options['config']) ? $options['config'] : 'config.yml';
 
-		if (class_exists('Craue\FormFlowBundle\Tests\LocalAppKernel')) {
-			return new LocalAppKernel($configFile);
-		}
-
 		return new AppKernel($configFile);
 	}
 

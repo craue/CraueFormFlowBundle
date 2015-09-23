@@ -19,4 +19,10 @@
 			</exclude>
 		</whitelist>
 	</filter>
+	<!--
+	<php>
+		<env name="CACHE_DIR" value="/path/to/your/cache/" />
+		<env name="LOG_DIR" value="/path/to/your/log/" />
+	</php>
+	-->
 </phpunit>

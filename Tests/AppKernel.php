@@ -39,6 +39,22 @@ class AppKernel extends Kernel {
 		$loader->load($this->config);
 	}
 
+	public function getCacheDir() {
+		if (array_key_exists('CACHE_DIR', $_ENV)) {
+			return $_ENV['CACHE_DIR'] . DIRECTORY_SEPARATOR . $this->environment;
+		}
+
+		return parent::getCacheDir();
+	}
+
+	public function getLogDir() {
+		if (array_key_exists('LOG_DIR', $_ENV)) {
+			return $_ENV['LOG_DIR'] . DIRECTORY_SEPARATOR . $this->environment;
+		}
+
+		return parent::getLogDir();
+	}
+
 	public function serialize() {
 		return $this->config;
 	}
