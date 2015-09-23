@@ -2,8 +2,6 @@
 
 namespace Craue\FormFlowBundle\Tests;
 
-require_once __DIR__.'/bootstrap.php';
-
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
