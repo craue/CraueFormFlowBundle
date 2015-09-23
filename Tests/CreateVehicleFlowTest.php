@@ -3,7 +3,6 @@
 namespace Craue\FormFlowBundle\Tests;
 
 use Craue\FormFlowBundle\Tests\IntegrationTestCase;
-use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * @group integration
@@ -217,7 +216,7 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 
 		// invalid number of wheels -> step 1 again
 		$form = $crawler->selectButton('next')->form();
-		if (Kernel::VERSION_ID >= 20400) {
+		if (method_exists($form, 'disableValidation')) {
 			$form->disableValidation();
 			$crawler = $this->client->submit($form, array(
 				'createVehicle[numberOfWheels]' => 99,
@@ -244,7 +243,7 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 
 		// invalid engine -> step 2 again
 		$form = $crawler->selectButton('next')->form();
-		if (Kernel::VERSION_ID >= 20400) {
+		if (method_exists($form, 'disableValidation')) {
 			$form->disableValidation();
 			$crawler = $this->client->submit($form, array(
 				'createVehicle[engine]' => 'magic',

@@ -14,7 +14,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -538,10 +537,10 @@ abstract class FormFlow implements FormFlowInterface {
 
 			if (array_key_exists($stepNumber, $stepData)) {
 				$stepForm = $this->createFormForStep($stepNumber);
-				if (Kernel::VERSION_ID < 20300) {
-					$stepForm->bind($stepData[$stepNumber]);
-				} else {
+				if (method_exists($stepForm, 'submit')) {
 					$stepForm->submit($stepData[$stepNumber]);
+				} else {
+					$stepForm->bind($stepData[$stepNumber]); // for symfony/form < 2.3
 				}
 
 				if ($this->hasListeners(FormFlowEvents::POST_BIND_SAVED_DATA)) {
@@ -652,10 +651,10 @@ abstract class FormFlow implements FormFlowInterface {
 			self::TRANSITION_BACK,
 			self::TRANSITION_RESET,
 		))) {
-			if (Kernel::VERSION_ID < 20300) {
-				$form->bind($request);
-			} else {
+			if (method_exists($form, 'handleRequest')) {
 				$form->handleRequest($request);
+			} else {
+				$form->bind($request); // for symfony/form < 2.3
 			}
 
 			if ($this->hasListeners(FormFlowEvents::POST_BIND_REQUEST)) {
