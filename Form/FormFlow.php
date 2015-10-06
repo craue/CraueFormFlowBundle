@@ -723,14 +723,18 @@ abstract class FormFlow implements FormFlowInterface {
 			$options
 		);
 
-		// always add the generated step-based validation group (unless it's set to false explicitly)
+		// always add the generated step-based validation group (unless it's explicitly set to false or a closure)
 		if (!array_key_exists('validation_groups', $options)) {
 			$options['validation_groups'] = array($this->getValidationGroupPrefix() . $step);
-		} elseif ($options['validation_groups'] !== false) {
-			$options['validation_groups'] = array_merge(
-				array($this->getValidationGroupPrefix() . $step),
-				(array) $options['validation_groups']
-			);
+		} else {
+			$vg = $options['validation_groups'];
+
+			if ($vg !== false && !(is_object($vg) && is_a($vg, 'Closure'))) {
+				$options['validation_groups'] = array_merge(
+					array($this->getValidationGroupPrefix() . $step),
+					(array) $vg
+				);
+			}
 		}
 
 		$options['flow_instance'] = $this->getInstanceId();
