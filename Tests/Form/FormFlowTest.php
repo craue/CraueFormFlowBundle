@@ -9,6 +9,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -103,6 +104,29 @@ class FormFlowTest extends UnitTestCase {
 		));
 
 		$this->assertFalse($options['validation_groups']);
+	}
+
+	/**
+	 * Ensure that the "validation_groups" option can be set to a closure.
+	 */
+	public function testGetFormOptions_setValidationGroupsToClosure() {
+		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
+
+		$flow
+			->expects($this->once())
+			->method('loadStepsConfig')
+			->will($this->returnValue(array(
+				array(),
+			)))
+		;
+
+		$options = $flow->getFormOptions(1, array(
+			'validation_groups' => function(FormInterface $form) {
+				return array('custom_group');
+			},
+		));
+
+		$this->assertTrue(is_callable($options['validation_groups']));
 	}
 
 	/**

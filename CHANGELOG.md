@@ -21,6 +21,7 @@
 - [#142]: added support for the "redirect after submit" pattern
 - [#146]: handling of file uploads
 - [#175]+[#178]: form options for each step
+- [#196]: allow to use a closure for the `validation_groups` option
 
 [#98]: https://github.com/craue/CraueFormFlowBundle/issues/98
 [#101]: https://github.com/craue/CraueFormFlowBundle/issues/101
@@ -41,6 +42,7 @@
 [#175]: https://github.com/craue/CraueFormFlowBundle/issues/175
 [#178]: https://github.com/craue/CraueFormFlowBundle/issues/178
 [#180]: https://github.com/craue/CraueFormFlowBundle/issues/180
+[#196]: https://github.com/craue/CraueFormFlowBundle/issues/196
 
 ## 2.1.8 (2015-06-11)
 
