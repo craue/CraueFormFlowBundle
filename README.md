@@ -449,9 +449,21 @@ protected function loadStepsConfig() {
 
 ## Validation groups
 
-To validate the form data class a step-based validation group is passed to the form type.
-By default, if `getName()` of the flow returns `createVehicle`, such a group is named `flow_createVehicle_step1`
-for the first step.
+To validate the form data class bound to the flow, a step-based validation group is passed to the form type.
+By default, if the flow's `getName` method returns `createVehicle`, such a group is named `flow_createVehicle_step1`
+for the first step. You can customize this name by setting the flow's property `validationGroupPrefix` explicitly.
+The step number (1, 2, 3, etc.) will be appended by the flow.
+
+Compared to standalone forms, setting the `validation_groups` option in your form type's `setDefaultOptions`/`configureOptions`
+method won't have any effect in the context of a flow. The value is just ignored, i.e. will be overwritten by the flow.
+But there are other ways of defining custom validation groups:
+
+- override the flow's `getFormOptions` method,
+- use the `form_options` step option, or
+- use the flow's `setGenericFormOptions` method.
+
+The generated step-based validation group will be added by the flow, unless the `validation_groups` option is set to `false` or a closure.
+In this case, it will **not** be added by the flow, so ensure the step forms are validated as expected.
 
 ## Disabling revalidation of previous steps
 
