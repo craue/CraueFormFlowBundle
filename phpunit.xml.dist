@@ -16,7 +16,6 @@
 			<exclude>
 				<directory suffix=".php">Tests</directory>
 				<directory suffix=".php">vendor</directory>
-				<file>phpunit.php</file>
 			</exclude>
 		</whitelist>
 	</filter>
