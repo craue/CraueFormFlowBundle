@@ -365,6 +365,128 @@ public function createVehicleAction() {
 }
 ```
 
+## Approach C: Multi-entities
+
+### Parent form with data entities
+
+```php
+// /skywox/src/Skywox/AppBundle/Form/CreateVehicleForm.php
+namespace Skywox\AppBundle\Form;
+
+use Skywox\AppBundle\Form\Type\PositionsType;
+use Skywox\AppBundle\Form\Type\RecipientType;
+use Skywox\AppBundle\Form\Type\SenderType;
+use Skywox\AppBundle\Form\Type\ShipmentType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+
+class CreateVehicleForm extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        switch ($options['flow_step']) {
+            case 1:
+                $validValues = array(2, 4);
+                $builder->add('sender', new SenderType(), array(
+                    'data_class' => 'Skywox\AppBundle\Entity\Sender',
+                ));
+                break;
+            case 2:
+                $builder->add('recipient', new RecipientType(), array(
+                    'data_class' => 'Skywox\AppBundle\Entity\Recipient',
+                ));
+                break;
+            case 3:
+                $builder->add('compliance', 'choice', array(
+                    'choices' => array_combine(array(2, 4), array(2, 4)),
+//                    'data_class' => 'Skywox\AppBundle\Entity\Recipient',
+                ));
+                break;
+            case 4:
+                $builder->add('shipment', new ShipmentType(), array(
+                    'data_class' => 'Skywox\AppBundle\Entity\DeliveryOrder',
+                ));
+                break;
+            case 5:
+                $builder->add('positions', new PositionsType(), array(
+                    'data_class' => 'Skywox\AppBundle\Entity\DeliveryOrder',
+                ));
+                break;
+        }
+    }
+
+    public function getName()
+    {
+        return 'createVehicle';
+    }
+}
+```
+
+### Child form
+```php
+
+namespace Skywox\AppBundle\Form\Type;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
+class SenderType extends AbstractType
+{
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('formOfAddress', 'text')
+            ->add('company', 'text')
+            ->add('firstName', 'text')
+            ->add('familyName', 'text')
+            ->add('address', 'text')
+            ->add('customReg', 'text')
+            ->add('companyReg', 'text')
+            ->add('buildingNumber', 'text')
+            ->add('additionalInfo', 'text')
+            ->add('postCode', 'text')
+            ->add('city', 'text')
+            ->add('country', 'text')
+            ->add('email', 'text')
+            ->add('telephone', 'text')
+            ->add('fax', 'text')
+            ->add('mobile', 'text');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'sender';
+    }
+}
+
+```
+
+### Services
+
+```php
+// services.yml
+
+    skywox.form.create_vehicle:
+        class: Skywox\AppBundle\Form\CreateVehicleForm
+        tags:
+            - { name: form.type, alias: createVehicle }
+
+    skywox.form.flow.create_vehicle:
+        class: Skywox\AppBundle\Form\CreateVehicleFlow
+        parent: craue.form.flow
+        scope: request
+        calls:
+            - [ setFormType, [ "@skywox.form.create_vehicle" ] ]
+```
+
 # Explanations
 
 ## How the flow works
