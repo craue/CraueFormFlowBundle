@@ -44,11 +44,11 @@ public function registerBundles() {
 # Usage
 
 This section shows how to create a 3-step form flow for creating a vehicle.
-You have to choose between two approaches on how to setup your flow.
+You have to choose between two approaches on how to set up your flow.
 
 ## Approach A: One form type for the entire flow
 
-This approach makes it easy to turn an existing (usual) form into a form flow.
+This approach makes it easy to turn an existing (common) form into a form flow.
 
 ### Create a flow class
 
@@ -176,6 +176,7 @@ This approach makes it easy to reuse the form types to compose other forms.
 
 ```php
 // src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
+namespace MyCompany\MyBundle\Form;
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Form\FormFlowInterface;
 
@@ -211,6 +212,7 @@ class CreateVehicleFlow extends FormFlow {
 
 ```php
 // src/MyCompany/MyBundle/Form/CreateVehicleStep1Form.php
+namespace MyCompany\MyBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -233,13 +235,14 @@ class CreateVehicleStep1Form extends AbstractType {
 
 ```php
 // src/MyCompany/MyBundle/Form/CreateVehicleStep2Form.php
+namespace MyCompany\MyBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class CreateVehicleStep2Form extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
-		$builder->add('engine', 'form_type_vehicleEngine', array(
+		$builder->add('engine', 'form_type_vehicleEngine', array( // this produces an error: Could not load type "form_type_vehicleEngine"
 			'empty_value' => '',
 		));
 	}
@@ -332,37 +335,54 @@ Example with Bootstrap button classes:
 
 ```php
 // in src/MyCompany/MyBundle/Controller/VehicleController.php
-public function createVehicleAction() {
-	$formData = new Vehicle(); // Your form data class. Has to be an object, won't work properly with an array.
+namespace MyCompany\MyBundle\Controller;
 
-	$flow = $this->get('myCompany.form.flow.createVehicle'); // must match the flow's service id
-	$flow->bind($formData);
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Vehicle;
 
-	// form of the current step
-	$form = $flow->createForm();
-	if ($flow->isValid($form)) {
-		$flow->saveCurrentStepData($form);
-
-		if ($flow->nextStep()) {
-			// form for the next step
-			$form = $flow->createForm();
-		} else {
-			// flow finished
-			$em = $this->getDoctrine()->getManager();
-			$em->persist($formData);
-			$em->flush();
-
-			$flow->reset(); // remove step data from the session
-
-			return $this->redirect($this->generateUrl('home')); // redirect when done
+class VehicleController extends Controller
+{
+	public function createVehicleAction() {
+		$formData = new Vehicle(); // Your form data class. Has to be an object, won't work properly with an array.
+	
+		$flow = $this->get('myCompany.form.flow.createVehicle'); // must match the flow's service id
+		$flow->bind($formData);
+	
+		// form of the current step
+		$form = $flow->createForm();
+		if ($flow->isValid($form)) {
+			$flow->saveCurrentStepData($form);
+	
+			if ($flow->nextStep()) {
+				// form for the next step
+				$form = $flow->createForm();
+			} else {
+				// flow finished
+				$em = $this->getDoctrine()->getManager();
+				$em->persist($formData);
+				$em->flush();
+	
+				$flow->reset(); // remove step data from the session
+	
+				return $this->redirect($this->generateUrl('home')); // redirect when done
+			}
 		}
+	
+		return $this->render('MyCompanyMyBundle:Vehicle:createVehicle.html.twig', array(
+			'form' => $form->createView(),
+			'flow' => $flow,
+		));
 	}
-
-	return $this->render('MyCompanyMyBundle:Vehicle:createVehicle.html.twig', array(
-		'form' => $form->createView(),
-		'flow' => $flow,
-	));
 }
+```
+
+## Create a route
+
+```yaml
+# in src/MyCompany/MyBundle/Resources/config/routing.yml 
+vehicle:
+    path: /vehicle
+    defaults: { _controller: MyBundle:Vehicle:createVehicle }
 ```
 
 # Explanations
@@ -490,11 +510,25 @@ To set options common for the form type(s) of all steps you can use method `setG
 // in src/MyCompany/MyBundle/Controller/VehicleController.php
 public function createVehicleAction() {
 	// ...
-	$flow->setGenericFormOptions(array('action' => 'targetUrl'));
+	$flow->setGenericFormOptions(array('action' => 'targetUrl', 'foo' => $bar));
 	$flow->bind($formData);
 	$form = $flow->createForm();
 	// ...
 }
+```
+
+Don't forget to set default options in your form type
+```php
+// src/MyCompany/MyBundle/Form/CreateVehicleStep1Form.php
+// ...
+use Symfony\Component\OptionsResolver\OptionsResolver;
+// ...
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'foo' => null,
+        ));
+    }
 ```
 
 ## Passing step-based options to the form type
@@ -537,8 +571,8 @@ public function getFormOptions($step, array $options = array()) {
 ## Enabling dynamic step navigation
 
 Dynamic step navigation means that the step list rendered will contain links to go back/forth to a specific step
-(which has been done already) directly.
-To enable it you could extend the flow class mentioned in the example above as follows:
+(which has been submitted already) directly.
+To enable it, add this to your flow class:
 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
@@ -592,7 +626,7 @@ class CreateVehicleFlow extends FormFlow {
 ## Enabling redirect after submit
 
 This feature will allow performing a redirect after submitting a step to load the page containing the next step using a GET request.
-To enable it you could extend the flow class mentioned in the example above as follows:
+To enable it, add this to your flow class:
 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
