@@ -558,7 +558,7 @@ public function getFormOptions($step, array $options = array()) {
 
 Dynamic step navigation means that the step list rendered will contain links to go back/forth to a specific step
 (which has been submitted already) directly.
-To enable it you could extend the flow class mentioned in the example above as follows:
+To enable it, add this to your flow class:
 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
@@ -612,7 +612,7 @@ class CreateVehicleFlow extends FormFlow {
 ## Enabling redirect after submit
 
 This feature will allow performing a redirect after submitting a step to load the page containing the next step using a GET request.
-To enable it you could extend the flow class mentioned in the example above as follows:
+To enable it, add this to your flow class:
 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
