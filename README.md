@@ -44,11 +44,11 @@ public function registerBundles() {
 # Usage
 
 This section shows how to create a 3-step form flow for creating a vehicle.
-You have to choose between two approaches on how to setup your flow.
+You have to choose between two approaches on how to set up your flow.
 
 ## Approach A: One form type for the entire flow
 
-This approach makes it easy to turn an existing (usual) form into a form flow.
+This approach makes it easy to turn an existing (common) form into a form flow.
 
 ### Create a flow class
 
@@ -534,7 +534,7 @@ public function getFormOptions($step, array $options = array()) {
 
 Dynamic step navigation means that the step list rendered will contain links to go back/forth to a specific step
 (which has been done already) directly.
-To enable it you could extend the flow class mentioned in the example above as follows:
+To enable it, add this to your flow class:
 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
@@ -588,7 +588,7 @@ class CreateVehicleFlow extends FormFlow {
 ## Enabling redirect after submit
 
 This feature will allow performing a redirect after submitting a step to load the page containing the next step using a GET request.
-To enable it you could extend the flow class mentioned in the example above as follows:
+To enable it, add this to your flow class:
 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
