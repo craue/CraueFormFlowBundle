@@ -510,11 +510,25 @@ To set options common for the form type(s) of all steps you can use method `setG
 // in src/MyCompany/MyBundle/Controller/VehicleController.php
 public function createVehicleAction() {
 	// ...
-	$flow->setGenericFormOptions(array('action' => 'targetUrl'));
+	$flow->setGenericFormOptions(array('action' => 'targetUrl', 'foo' => $bar));
 	$flow->bind($formData);
 	$form = $flow->createForm();
 	// ...
 }
+```
+
+Don't forget to set default options in your form type
+```php
+// src/MyCompany/MyBundle/Form/CreateVehicleStep1Form.php
+// ...
+use Symfony\Component\OptionsResolver\OptionsResolver;
+// ...
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'foo' => null,
+        ));
+    }
 ```
 
 ## Passing step-based options to the form type
