@@ -242,7 +242,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 class CreateVehicleStep2Form extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
-		$builder->add('engine', 'form_type_vehicleEngine', array(
+		$builder->add('engine', 'form_type_vehicleEngine', array( // this produces an error: Could not load type "form_type_vehicleEngine"
 			'empty_value' => '',
 		));
 	}
@@ -379,7 +379,7 @@ class VehicleController extends Controller
 ## Create a route
 
 ```yaml
-// in src/MyCompany/MyBundle/Resources/config/routing.yml 
+# in src/MyCompany/MyBundle/Resources/config/routing.yml 
 vehicle:
     path: /vehicle
     defaults: { _controller: MyBundle:Vehicle:createVehicle }
