@@ -176,6 +176,7 @@ This approach makes it easy to reuse the form types to compose other forms.
 
 ```php
 // src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
+namespace MyCompany\MyBundle\Form;
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Form\FormFlowInterface;
 
@@ -211,6 +212,7 @@ class CreateVehicleFlow extends FormFlow {
 
 ```php
 // src/MyCompany/MyBundle/Form/CreateVehicleStep1Form.php
+namespace MyCompany\MyBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -233,6 +235,7 @@ class CreateVehicleStep1Form extends AbstractType {
 
 ```php
 // src/MyCompany/MyBundle/Form/CreateVehicleStep2Form.php
+namespace MyCompany\MyBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -332,37 +335,54 @@ Example with Bootstrap button classes:
 
 ```php
 // in src/MyCompany/MyBundle/Controller/VehicleController.php
-public function createVehicleAction() {
-	$formData = new Vehicle(); // Your form data class. Has to be an object, won't work properly with an array.
+namespace MyCompany\MyBundle\Controller;
 
-	$flow = $this->get('myCompany.form.flow.createVehicle'); // must match the flow's service id
-	$flow->bind($formData);
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Vehicle;
 
-	// form of the current step
-	$form = $flow->createForm();
-	if ($flow->isValid($form)) {
-		$flow->saveCurrentStepData($form);
-
-		if ($flow->nextStep()) {
-			// form for the next step
-			$form = $flow->createForm();
-		} else {
-			// flow finished
-			$em = $this->getDoctrine()->getManager();
-			$em->persist($formData);
-			$em->flush();
-
-			$flow->reset(); // remove step data from the session
-
-			return $this->redirect($this->generateUrl('home')); // redirect when done
+class VehicleController extends Controller
+{
+	public function createVehicleAction() {
+		$formData = new Vehicle(); // Your form data class. Has to be an object, won't work properly with an array.
+	
+		$flow = $this->get('myCompany.form.flow.createVehicle'); // must match the flow's service id
+		$flow->bind($formData);
+	
+		// form of the current step
+		$form = $flow->createForm();
+		if ($flow->isValid($form)) {
+			$flow->saveCurrentStepData($form);
+	
+			if ($flow->nextStep()) {
+				// form for the next step
+				$form = $flow->createForm();
+			} else {
+				// flow finished
+				$em = $this->getDoctrine()->getManager();
+				$em->persist($formData);
+				$em->flush();
+	
+				$flow->reset(); // remove step data from the session
+	
+				return $this->redirect($this->generateUrl('home')); // redirect when done
+			}
 		}
+	
+		return $this->render('MyCompanyMyBundle:Vehicle:createVehicle.html.twig', array(
+			'form' => $form->createView(),
+			'flow' => $flow,
+		));
 	}
-
-	return $this->render('MyCompanyMyBundle:Vehicle:createVehicle.html.twig', array(
-		'form' => $form->createView(),
-		'flow' => $flow,
-	));
 }
+```
+
+## Create a route
+
+```yaml
+// in src/MyCompany/MyBundle/Resources/config/routing.yml 
+vehicle:
+    path: /vehicle
+    defaults: { _controller: MyBundle:Vehicle:createVehicle }
 ```
 
 # Explanations
