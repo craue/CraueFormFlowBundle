@@ -552,6 +552,8 @@ abstract class FormFlow implements FormFlowInterface {
 			if (!$stepSkippedOld && $step->isSkipped()) {
 				return $this->refineCurrentStepNumber($refinedStepNumber);
 			}
+			
+			break;
 		}
 
 		return $refinedStepNumber;
