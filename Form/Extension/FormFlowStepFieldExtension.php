@@ -19,7 +19,9 @@ class FormFlowStepFieldExtension extends AbstractTypeExtension {
 	 * {@inheritDoc}
 	 */
 	public function getExtendedType() {
-		return 'hidden';
+		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+
+		return $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType' : 'hidden';
 	}
 
 	/**

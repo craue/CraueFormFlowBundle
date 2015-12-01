@@ -4,7 +4,6 @@ namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form;
 
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Form\FormFlowInterface;
-use Symfony\Component\Form\FormTypeInterface;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -14,18 +13,6 @@ use Symfony\Component\Form\FormTypeInterface;
 class CreateTopicFlow extends FormFlow {
 
 	protected $allowDynamicStepNavigation = true;
-
-	/**
-	 * @var FormTypeInterface
-	 */
-	protected $formType;
-
-	/**
-	 * @param FormTypeInterface $formType
-	 */
-	public function setFormType(FormTypeInterface $formType) {
-		$this->formType = $formType;
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -38,18 +25,21 @@ class CreateTopicFlow extends FormFlow {
 	 * {@inheritDoc}
 	 */
 	protected function loadStepsConfig() {
+		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+		$formType = $useFqcn ? 'Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\CreateTopicForm' : 'createTopic';
+
 		return array(
 			array(
 				'label' => 'basics',
-				'type' => $this->formType,
+				'type' => $formType,
 			),
 			array(
 				'label' => 'comment',
-				'type' => $this->formType,
+				'type' => $formType,
 			),
 			array(
 				'label' => 'bug_details',
-				'type' => $this->formType,
+				'type' => $formType,
 				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->isBugReport();
 				},

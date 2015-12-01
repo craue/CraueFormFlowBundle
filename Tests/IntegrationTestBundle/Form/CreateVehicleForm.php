@@ -16,10 +16,12 @@ class CreateVehicleForm extends AbstractType {
 	 * {@inheritDoc}
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options) {
+		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix'); // Symfony's Form component >=2.8
+
 		switch ($options['flow_step']) {
 			case 1:
 				$choices = array(2, 4);
-				$builder->add('numberOfWheels', 'choice', array(
+				$builder->add('numberOfWheels', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice', array(
 					'choices' => array_combine($choices, $choices),
 					'empty_value' => '',
 				));
@@ -30,7 +32,7 @@ class CreateVehicleForm extends AbstractType {
 					'gas',
 					'naturalGas',
 				);
-				$builder->add('engine', 'choice', array(
+				$builder->add('engine', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice', array(
 					'choices' => array_combine($choices, $choices),
 					'empty_value' => '',
 				));
@@ -42,6 +44,13 @@ class CreateVehicleForm extends AbstractType {
 	 * {@inheritDoc}
 	 */
 	public function getName() {
+		return $this->getBlockPrefix();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getBlockPrefix() {
 		return 'createVehicle';
 	}
 

@@ -19,6 +19,7 @@ class CreateTopicForm extends AbstractType {
 	 * {@inheritDoc}
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options) {
+		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix'); // Symfony's Form component >=2.8
 		$isBugReport = $options['isBugReport'];
 
 		switch ($options['flow_step']) {
@@ -28,19 +29,19 @@ class CreateTopicForm extends AbstractType {
 					'required' => false,
 				));
 				$choices = Topic::getValidCategories();
-				$builder->add('category', 'choice', array(
+				$builder->add('category', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice', array(
 					'choices' => array_combine($choices, $choices),
 					'empty_value' => '',
 				));
 				break;
 			case 2:
-				$builder->add('comment', 'textarea', array(
+				$builder->add('comment', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\TextareaType' : 'textarea', array(
 					'required' => false,
 				));
 				break;
 			case 3:
 				if ($isBugReport) {
-					$builder->add('details', 'textarea');
+					$builder->add('details', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\TextareaType' : 'textarea');
 				}
 				break;
 		}
@@ -67,6 +68,13 @@ class CreateTopicForm extends AbstractType {
 	 * {@inheritDoc}
 	 */
 	public function getName() {
+		return $this->getBlockPrefix();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getBlockPrefix() {
 		return 'createTopic';
 	}
 
