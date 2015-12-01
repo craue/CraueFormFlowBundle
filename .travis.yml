@@ -27,10 +27,9 @@ matrix:
     - php: 5.6
       env: SYMFONY_VERSION="2.6.*"
     - php: 5.6
-      env: SYMFONY_VERSION="2.8.*" PHPUNIT_BRIDGE=true MIN_STABILITY="dev"
+      env: SYMFONY_VERSION="2.8.*" PHPUNIT_BRIDGE=true
   allow_failures:
     - php: hhvm
-    - env: SYMFONY_VERSION="2.8.*" PHPUNIT_BRIDGE=true MIN_STABILITY="dev"
   fast_finish: true
 
 install:

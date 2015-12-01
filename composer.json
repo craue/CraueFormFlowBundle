@@ -27,7 +27,6 @@
 		"symfony/symfony": "^2.1.3"
 	},
 	"minimum-stability": "stable",
-	"prefer-stable": true,
 	"autoload": {
 		"psr-0": {
 			"Craue\\FormFlowBundle": ""
