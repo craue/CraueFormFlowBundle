@@ -4,9 +4,5 @@
 <div id="step-number">{{ flow.getCurrentStepNumber() }}</div>
 <div id="form-data">{{ formData | json_encode }}</div>
 <div id="step-list">{% include 'CraueFormFlowBundle:FormFlow:stepList.html.twig' %}</div>
-<form method="post" action="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" {{ form_enctype(form) }}>
-	{{ form_errors(form) }}
-	{{ form_rest(form) }}
-	{% include 'CraueFormFlowBundle:FormFlow:buttons.html.twig' %}
-</form>
+{% include 'IntegrationTestBundle::' ~ (hasFormStart() ? 'form.html.twig' : 'form_legacy.html.twig') with {'form': form, 'flow': flow} only %}
 {% endblock %}
