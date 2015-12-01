@@ -14,19 +14,19 @@ matrix:
   include:
     - php: 5.3.3
       env: USE_DEPS="lowest"
-    - php: 5.5
+    - php: 5.6
       env: SYMFONY_VERSION="2.1.*"
-    - php: 5.5
+    - php: 5.6
       env: SYMFONY_VERSION="2.2.*"
-    - php: 5.5
+    - php: 5.6
       env: SYMFONY_VERSION="2.3.*"
-    - php: 5.5
+    - php: 5.6
       env: SYMFONY_VERSION="2.4.*"
-    - php: 5.5
+    - php: 5.6
       env: SYMFONY_VERSION="2.5.*"
-    - php: 5.5
+    - php: 5.6
       env: SYMFONY_VERSION="2.6.*"
-    - php: 5.5
+    - php: 5.6
       env: SYMFONY_VERSION="2.8.*" PHPUNIT_BRIDGE=true MIN_STABILITY="dev"
   allow_failures:
     - php: hhvm
