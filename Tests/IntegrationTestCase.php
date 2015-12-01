@@ -37,11 +37,10 @@ abstract class IntegrationTestCase extends WebTestCase {
 	/**
 	 * @param string $route
 	 * @param array $parameters
-	 * @param boolean $absolute
 	 * @return string URL
 	 */
-	protected function url($route, array $parameters = array(), $absolute = false) {
-		return static::$kernel->getContainer()->get('router')->generate($route, $parameters, $absolute);
+	protected function url($route, array $parameters = array()) {
+		return static::$kernel->getContainer()->get('router')->generate($route, $parameters);
 	}
 
 	/**
