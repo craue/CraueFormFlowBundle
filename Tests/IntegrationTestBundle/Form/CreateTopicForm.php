@@ -29,11 +29,15 @@ class CreateTopicForm extends AbstractType {
 				$builder->add('description', null, array(
 					'required' => false,
 				));
+				$defaultChoiceOptions = array();
+				if ($useFqcn) {
+					$defaultChoiceOptions['choices_as_values'] = true;
+				}
 				$choices = Topic::getValidCategories();
-				$builder->add('category', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice', array(
+				$builder->add('category', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice', array_merge($defaultChoiceOptions, array(
 					'choices' => array_combine($choices, $choices),
 					$usePlaceholder ? 'placeholder' : 'empty_value' => '',
-				));
+				)));
 				break;
 			case 2:
 				$builder->add('comment', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\TextareaType' : 'textarea', array(

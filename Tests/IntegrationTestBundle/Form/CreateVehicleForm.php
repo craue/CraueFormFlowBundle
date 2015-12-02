@@ -19,13 +19,18 @@ class CreateVehicleForm extends AbstractType {
 		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix'); // Symfony's Form component >=2.8
 		$usePlaceholder = method_exists('Symfony\Component\Form\AbstractType', 'configureOptions'); // Symfony's Form component 2.6 deprecated the "empty_value" option, but there seems to be no way to detect that version, so stick to this >=2.7 check.
 
+		$defaultChoiceOptions = array();
+		if ($useFqcn) {
+			$defaultChoiceOptions['choices_as_values'] = true;
+		}
+
 		switch ($options['flow_step']) {
 			case 1:
 				$choices = array(2, 4);
-				$builder->add('numberOfWheels', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice', array(
+				$builder->add('numberOfWheels', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice', array_merge($defaultChoiceOptions, array(
 					'choices' => array_combine($choices, $choices),
 					$usePlaceholder ? 'placeholder' : 'empty_value' => '',
-				));
+				)));
 				break;
 			case 2:
 				$choices = array(
@@ -33,10 +38,10 @@ class CreateVehicleForm extends AbstractType {
 					'gas',
 					'naturalGas',
 				);
-				$builder->add('engine', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice', array(
+				$builder->add('engine', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice', array_merge($defaultChoiceOptions, array(
 					'choices' => array_combine($choices, $choices),
 					$usePlaceholder ? 'placeholder' : 'empty_value' => '',
-				));
+				)));
 				break;
 		}
 	}
