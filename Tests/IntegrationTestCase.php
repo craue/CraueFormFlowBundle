@@ -24,10 +24,6 @@ abstract class IntegrationTestCase extends WebTestCase {
 	protected static function createKernel(array $options = array()) {
 		$configFile = isset($options['config']) ? $options['config'] : 'config.yml';
 
-		if (class_exists('Craue\FormFlowBundle\Tests\LocalAppKernel')) {
-			return new LocalAppKernel($configFile);
-		}
-
 		return new AppKernel($configFile);
 	}
 
@@ -48,11 +44,10 @@ abstract class IntegrationTestCase extends WebTestCase {
 	/**
 	 * @param string $route
 	 * @param array $parameters
-	 * @param boolean $absolute
 	 * @return string URL
 	 */
-	protected function url($route, array $parameters = array(), $absolute = false) {
-		return static::$kernel->getContainer()->get('router')->generate($route, $parameters, $absolute);
+	protected function url($route, array $parameters = array()) {
+		return static::$kernel->getContainer()->get('router')->generate($route, $parameters);
 	}
 
 	/**

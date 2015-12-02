@@ -4,7 +4,6 @@ namespace Craue\FormFlowBundle\Form\Extension;
 
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -20,7 +19,9 @@ class FormFlowFormExtension extends AbstractTypeExtension {
 	 * {@inheritDoc}
 	 */
 	public function getExtendedType() {
-		return 'form';
+		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+
+		return $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form';
 	}
 
 	/**
@@ -34,10 +35,10 @@ class FormFlowFormExtension extends AbstractTypeExtension {
 			'flow_step_key',
 		);
 
-		if (Kernel::VERSION_ID < 20600) {
-			$resolver->setOptional($optionNames);
-		} else {
+		if (method_exists($resolver, 'setDefined')) {
 			$resolver->setDefined($optionNames);
+		} else {
+			$resolver->setOptional($optionNames); // for symfony/options-resolver < 2.6
 		}
 	}
 
@@ -62,7 +63,8 @@ class FormFlowFormExtension extends AbstractTypeExtension {
 		}
 
 		if (array_key_exists('flow_step', $options) && array_key_exists('flow_step_key', $options)) {
-			$builder->add($options['flow_step_key'], 'hidden', array(
+			$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+			$builder->add($options['flow_step_key'], $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType' : 'hidden', array(
 				'data' => $options['flow_step'],
 				'mapped' => false,
 				'flow_step_key' => $options['flow_step_key'],

@@ -45,11 +45,11 @@
 		</service>
 
 		<service id="craue.form.flow.form_extension" class="Craue\FormFlowBundle\Form\Extension\FormFlowFormExtension">
-			<tag name="form.type_extension" alias="form" />
+			<tag name="form.type_extension" alias="form" extended-type="Symfony\Component\Form\Extension\Core\Type\FormType" />
 		</service>
 
 		<service id="craue.form.flow.hidden_field_extension" class="Craue\FormFlowBundle\Form\Extension\FormFlowHiddenFieldExtension">
-			<tag name="form.type_extension" alias="hidden" />
+			<tag name="form.type_extension" alias="hidden" extended-type="Symfony\Component\Form\Extension\Core\Type\HiddenType" />
 		</service>
 
 		<service id="craue.form.flow.event_listener.previous_step_invalid" class="%craue.form.flow.event_listener.previous_step_invalid.class%">

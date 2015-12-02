@@ -14,21 +14,20 @@ matrix:
   include:
     - php: 5.3.3
       env: USE_DEPS="lowest"
-    - php: 5.5
+    - php: 5.6
       env: SYMFONY_VERSION="2.3.*"
-    - php: 5.5
+    - php: 5.6
       env: SYMFONY_VERSION="2.4.*"
-    - php: 5.5
+    - php: 5.6
       env: SYMFONY_VERSION="2.5.*"
-    - php: 5.5
+    - php: 5.6
       env: SYMFONY_VERSION="2.6.*"
-    - php: 5.5
-      env: SYMFONY_VERSION="2.8.*" PHPUNIT_BRIDGE=true MIN_STABILITY="dev"
-    - php: 5.5
+    - php: 5.6
+      env: SYMFONY_VERSION="2.8.*" PHPUNIT_BRIDGE=true
+    - php: 5.6
       env: SYMFONY_VERSION="dev-master" PHPUNIT_BRIDGE=true MIN_STABILITY="dev"
   allow_failures:
     - php: hhvm
-    - env: SYMFONY_VERSION="2.8.*" PHPUNIT_BRIDGE=true MIN_STABILITY="dev"
     - env: SYMFONY_VERSION="dev-master" PHPUNIT_BRIDGE=true MIN_STABILITY="dev"
   fast_finish: true
 
@@ -40,7 +39,7 @@ before_script:
   - mkdir -p build/logs
 
 script:
-  - phpunit --coverage-clover build/logs/clover.xml
+  - phpunit -v --coverage-clover build/logs/clover.xml
   - if [ "${TRAVIS_PHP_VERSION}" != "hhvm" ]; then php vendor/bin/coveralls -v; fi;
 
 notifications:
