@@ -13,9 +13,6 @@
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\CreateTopicFlow"
 				parent="craue.form.flow"
 				scope="request">
-			<call method="setFormType">
-				<argument type="service" id="integrationTestBundle.form.createTopic" />
-			</call>
 		</service>
 
 		<service id="integrationTestBundle.form.flow.createVehicle"

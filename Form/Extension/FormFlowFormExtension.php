@@ -18,7 +18,9 @@ class FormFlowFormExtension extends AbstractTypeExtension {
 	 * {@inheritDoc}
 	 */
 	public function getExtendedType() {
-		return 'form';
+		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+
+		return $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form';
 	}
 
 	/**
@@ -50,7 +52,8 @@ class FormFlowFormExtension extends AbstractTypeExtension {
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		if (array_key_exists('flow_step', $options) && array_key_exists('flow_step_key', $options)) {
-			$builder->add($options['flow_step_key'], 'hidden', array(
+			$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+			$builder->add($options['flow_step_key'], $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType' : 'hidden', array(
 				'data' => $options['flow_step'],
 				'mapped' => false,
 				'flow_step_key' => $options['flow_step_key'],

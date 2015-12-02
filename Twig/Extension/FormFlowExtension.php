@@ -24,11 +24,16 @@ class FormFlowExtension extends \Twig_Extension {
 	 * {@inheritDoc}
 	 */
 	public function getFilters() {
+		if (version_compare(\Twig_Environment::VERSION, '1.12', '<')) {
+			return array(
+				'craue_addDynamicStepNavigationParameter' => new \Twig_Filter_Method($this, 'addDynamicStepNavigationParameter'),
+				'craue_removeDynamicStepNavigationParameter' => new \Twig_Filter_Method($this, 'removeDynamicStepNavigationParameter'),
+			);
+		}
+
 		return array(
-			'craue_addDynamicStepNavigationParameter' =>
-					new \Twig_Filter_Method($this, 'addDynamicStepNavigationParameter'),
-			'craue_removeDynamicStepNavigationParameter' =>
-					new \Twig_Filter_Method($this, 'removeDynamicStepNavigationParameter'),
+			new \Twig_SimpleFilter('craue_addDynamicStepNavigationParameter', array($this, 'addDynamicStepNavigationParameter')),
+			new \Twig_SimpleFilter('craue_removeDynamicStepNavigationParameter', array($this, 'removeDynamicStepNavigationParameter')),
 		);
 	}
 
@@ -36,8 +41,14 @@ class FormFlowExtension extends \Twig_Extension {
 	 * {@inheritDoc}
 	 */
 	public function getFunctions() {
+		if (version_compare(\Twig_Environment::VERSION, '1.12', '<')) {
+			return array(
+				'craue_isStepLinkable' => new \Twig_Function_Method($this, 'isStepLinkable'),
+			);
+		}
+
 		return array(
-			'craue_isStepLinkable' => new \Twig_Function_Method($this, 'isStepLinkable'),
+			new \Twig_SimpleFunction('craue_isStepLinkable', array($this, 'isStepLinkable')),
 		);
 	}
 

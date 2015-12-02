@@ -1,0 +1,5 @@
+{{ form_start(form, {'action': path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params'))}) }}
+	{{ form_errors(form) }}
+	{{ form_rest(form) }}
+	{% include 'CraueFormFlowBundle:FormFlow:buttons.html.twig' %}
+{{ form_end(form) }}

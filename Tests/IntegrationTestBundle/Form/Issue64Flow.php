@@ -22,22 +22,25 @@ class Issue64Flow extends FormFlow {
 	 * {@inheritDoc}
 	 */
 	protected function loadStepsConfig() {
+		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+		$formType = $useFqcn ? 'Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\Issue64Form' : 'issue64';
+
 		return array(
 			array(
 				'label' => 'step1',
-				'type' => 'issue64',
+				'type' => $formType,
 			),
 			array(
 				'label' => 'step2',
-				'type' => 'issue64',
+				'type' => $formType,
 			),
 			array(
 				'label' => 'step3',
-				'type' => 'issue64',
+				'type' => $formType,
 			),
 			array(
 				'label' => 'step4',
-				'type' => 'issue64',
+				'type' => $formType,
 			),
 		);
 	}

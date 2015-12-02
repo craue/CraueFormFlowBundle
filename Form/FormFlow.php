@@ -685,7 +685,12 @@ abstract class FormFlow implements FormFlowInterface {
 		$formType = $this->getStep($stepNumber)->getType();
 		$options = $this->getFormOptions($stepNumber, $options);
 
-		return $this->formFactory->create($formType !== null ? $formType : 'form', $this->formData, $options);
+		if ($formType === null) {
+			$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+			$formType = $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form';
+		}
+
+		return $this->formFactory->create($formType, $this->formData, $options);
 	}
 
 	/**

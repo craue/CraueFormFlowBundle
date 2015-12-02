@@ -19,6 +19,8 @@ class CreateTopicForm extends AbstractType {
 	 * {@inheritDoc}
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options) {
+		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix'); // Symfony's Form component >=2.8
+		$usePlaceholder = method_exists('Symfony\Component\Form\AbstractType', 'configureOptions'); // Symfony's Form component 2.6 deprecated the "empty_value" option, but there seems to be no way to detect that version, so stick to this >=2.7 check.
 		$isBugReport = $options['isBugReport'];
 
 		switch ($options['flow_step']) {
@@ -27,20 +29,24 @@ class CreateTopicForm extends AbstractType {
 				$builder->add('description', null, array(
 					'required' => false,
 				));
+				$defaultChoiceOptions = array();
+				if ($useFqcn) {
+					$defaultChoiceOptions['choices_as_values'] = true;
+				}
 				$choices = Topic::getValidCategories();
-				$builder->add('category', 'choice', array(
+				$builder->add('category', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice', array_merge($defaultChoiceOptions, array(
 					'choices' => array_combine($choices, $choices),
-					'empty_value' => '',
-				));
+					$usePlaceholder ? 'placeholder' : 'empty_value' => '',
+				)));
 				break;
 			case 2:
-				$builder->add('comment', 'textarea', array(
+				$builder->add('comment', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\TextareaType' : 'textarea', array(
 					'required' => false,
 				));
 				break;
 			case 3:
 				if ($isBugReport) {
-					$builder->add('details', 'textarea');
+					$builder->add('details', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\TextareaType' : 'textarea');
 				}
 				break;
 		}
@@ -67,6 +73,13 @@ class CreateTopicForm extends AbstractType {
 	 * {@inheritDoc}
 	 */
 	public function getName() {
+		return $this->getBlockPrefix();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getBlockPrefix() {
 		return 'createTopic';
 	}
 
