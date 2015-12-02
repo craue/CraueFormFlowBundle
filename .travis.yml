@@ -5,6 +5,7 @@ php:
   - 5.4
   - 5.5
   - 5.6
+  - 7.0
   - hhvm
 
 env:
@@ -29,6 +30,7 @@ matrix:
     - php: 5.6
       env: SYMFONY_VERSION="2.8.*" PHPUNIT_BRIDGE=true
   allow_failures:
+    - php: 7.0
     - php: hhvm
   fast_finish: true
 
