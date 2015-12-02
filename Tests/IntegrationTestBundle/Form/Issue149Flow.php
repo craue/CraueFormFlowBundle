@@ -22,18 +22,21 @@ class Issue149Flow extends FormFlow {
 	 * {@inheritDoc}
 	 */
 	protected function loadStepsConfig() {
+		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+		$formType = $useFqcn ? 'Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\Issue149Form' : 'issue149';
+
 		return array(
 			array(
 				'label' => 'step1',
-				'form_type' => 'issue149',
+				'form_type' => $formType,
 			),
 			array(
 				'label' => 'step2',
-				'form_type' => 'issue149',
+				'form_type' => $formType,
 			),
 			array(
 				'label' => 'step3',
-				'form_type' => 'issue149',
+				'form_type' => $formType,
 			),
 		);
 	}

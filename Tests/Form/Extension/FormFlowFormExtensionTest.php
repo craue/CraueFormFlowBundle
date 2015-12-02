@@ -16,7 +16,8 @@ class FormFlowFormExtensionTest extends \PHPUnit_Framework_TestCase {
 	public function testGetExtendedType() {
 		$extension = new FormFlowFormExtension();
 
-		$this->assertSame('form', $extension->getExtendedType());
+		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+		$this->assertSame($useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form', $extension->getExtendedType());
 	}
 
 }

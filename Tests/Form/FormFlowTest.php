@@ -311,11 +311,12 @@ class FormFlowTest extends UnitTestCase {
 		$dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 		$factory = Forms::createFormFactoryBuilder()->getFormFactory();
 		$formBuilder = new FormBuilder(null, get_class(new \stdClass()), $dispatcher, $factory);
+		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
 
 		$form = $formBuilder
 			->setCompound(true)
 			->setDataMapper($this->getMock('Symfony\Component\Form\DataMapperInterface'))
-			->add('aField', 'text')
+			->add('aField', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text')
 			->setMethod($httpMethod)
 			->setRequestHandler(new HttpFoundationRequestHandler())
 			->getForm()

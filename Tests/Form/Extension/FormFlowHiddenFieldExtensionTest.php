@@ -16,7 +16,8 @@ class FormFlowHiddenFieldExtensionTest extends \PHPUnit_Framework_TestCase {
 	public function testGetExtendedType() {
 		$extension = new FormFlowHiddenFieldExtension();
 
-		$this->assertSame('hidden', $extension->getExtendedType());
+		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+		$this->assertSame($useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType' : 'hidden', $extension->getExtendedType());
 	}
 
 }

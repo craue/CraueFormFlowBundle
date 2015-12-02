@@ -28,6 +28,11 @@
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\Issue149Form">
 			<tag name="form.type" alias="issue149" />
 		</service>
+
+		<service id="integrationTestBundle.form.photoUpload"
+				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\PhotoUploadForm">
+			<tag name="form.type" alias="photoUpload" />
+		</service>
 	</services>
 
 </container>
