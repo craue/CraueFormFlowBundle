@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+
+set -euv
 
 export COMPOSER_NO_INTERACTION=1
 composer self-update
