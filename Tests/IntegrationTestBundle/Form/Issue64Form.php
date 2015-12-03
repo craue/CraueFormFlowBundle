@@ -2,7 +2,6 @@
 
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form;
 
-use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Issue64SubData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -22,7 +21,7 @@ class Issue64Form extends AbstractType {
 		switch ($options['flow_step']) {
 			case 1:
 				$subForm = $builder->create('sub', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form', array(
-					'data_class' => get_class(new Issue64SubData()),
+					'data_class' => 'Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Issue64SubData',
 				));
 				$subForm->add('prop1', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text', array(
 					'required' => true,
@@ -32,7 +31,7 @@ class Issue64Form extends AbstractType {
 			case 2:
 			case 3:
 				$subForm = $builder->create('sub', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form', array(
-					'data_class' => get_class(new Issue64SubData()),
+					'data_class' => 'Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Issue64SubData',
 				));
 				$subForm->add('prop2', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text', array(
 					'required' => true,
