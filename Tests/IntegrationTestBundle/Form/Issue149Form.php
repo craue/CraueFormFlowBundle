@@ -2,7 +2,6 @@
 
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form;
 
-use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Issue149SubData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -22,7 +21,7 @@ class Issue149Form extends AbstractType {
 		switch ($options['flow_step']) {
 			case 1:
 				$subForm = $builder->create('photo', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form', array(
-					'data_class' => get_class(new Issue149SubData()),
+					'data_class' => 'Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Issue149SubData',
 				));
 				$subForm->add('image', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\FileType' : 'file');
 				$subForm->add('title');

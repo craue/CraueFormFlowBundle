@@ -26,8 +26,8 @@
 		"doctrine/common": "~2.3",
 		"phpunit/phpunit": "~4.1",
 		"sensio/framework-extra-bundle": "~3.0",
-		"symfony/symfony": "^2.6.4|~3.0",
-		"symfony/phpunit-bridge": "~2.7"
+		"symfony/phpunit-bridge": "~2.7",
+		"symfony/symfony": "^2.6.4|~3.0"
 	},
 	"minimum-stability": "stable",
 	"autoload": {

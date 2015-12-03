@@ -311,7 +311,7 @@ class FormFlowTest extends UnitTestCase {
 
 		$dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 		$factory = Forms::createFormFactoryBuilder()->getFormFactory();
-		$formBuilder = new FormBuilder(null, get_class(new \stdClass()), $dispatcher, $factory);
+		$formBuilder = new FormBuilder(null, 'stdClass', $dispatcher, $factory);
 		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
 
 		$form = $formBuilder
