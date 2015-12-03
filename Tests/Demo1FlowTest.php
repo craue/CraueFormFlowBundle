@@ -62,13 +62,8 @@ class Demo1FlowTest extends IntegrationTestCase {
 
 	protected function getCalledEvents() {
 		$container = static::$kernel->getContainer();
-		$container->enterScope('request');
-		$container->set('request', $this->client->getRequest(), 'request');
-
 		$flow = $container->get('integrationTestBundle.form.flow.demo1');
 		$storage = $container->get('craue.form.flow.storage');
-
-		$container->leaveScope('request');
 
 		return $storage->get($flow->getCalledEventsSessionKey());
 	}

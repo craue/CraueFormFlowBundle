@@ -11,6 +11,7 @@ use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @group unit
@@ -342,13 +343,25 @@ class FormFlowTest extends UnitTestCase {
 		);
 	}
 
-	public function testSetGetRequest() {
+	public function testSetGetRequestStack() {
 		$flow = $this->getMockedFlow();
 
 		$request = Request::create('');
-		$flow->setRequest($request);
+		$requestStack = new RequestStack();
+		$requestStack->push($request);
+		$flow->setRequestStack($requestStack);
 
 		$this->assertSame($request, $flow->getRequest());
+	}
+
+	/**
+	 * @expectedException \RuntimeException
+	 * @expectedExceptionMessage The request is not available.
+	 */
+	public function testGetRequestStack_notAvailable() {
+		$flow = $this->getMockedFlow();
+		$flow->setRequestStack(new RequestStack());
+		$flow->getRequest();
 	}
 
 	public function testSetGetDataManager() {
@@ -493,14 +506,6 @@ class FormFlowTest extends UnitTestCase {
 		$flow->setDynamicStepNavigationStepParameter($dynamicStepNavigationStepParameter);
 
 		$this->assertEquals($dynamicStepNavigationStepParameter, $flow->getDynamicStepNavigationStepParameter());
-	}
-
-	/**
-	 * @expectedException \RuntimeException
-	 * @expectedExceptionMessage The request is not available.
-	 */
-	public function testGetRequest_notAvailable() {
-		$this->getMockedFlow()->getRequest();
 	}
 
 	/**

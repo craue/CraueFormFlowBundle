@@ -16,6 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -85,9 +86,9 @@ abstract class FormFlow implements FormFlowInterface {
 	protected $dynamicStepNavigationStepParameter = 'step';
 
 	/**
-	 * @var Request|null
+	 * @var RequestStack
 	 */
-	private $request = null;
+	private $requestStack;
 
 	/**
 	 * @var string|null Is only null if not yet initialized.
@@ -165,8 +166,8 @@ abstract class FormFlow implements FormFlowInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function setRequest(Request $request = null) {
-		$this->request = $request;
+	public function setRequestStack(RequestStack $requestStack) {
+		$this->requestStack = $requestStack;
 	}
 
 	/**
@@ -174,11 +175,13 @@ abstract class FormFlow implements FormFlowInterface {
 	 * @throws \RuntimeException If the request is not available.
 	 */
 	public function getRequest() {
-		if ($this->request === null) {
+		$currentRequest = $this->requestStack->getCurrentRequest();
+
+		if ($currentRequest === null) {
 			throw new \RuntimeException('The request is not available.');
 		}
 
-		return $this->request;
+		return $currentRequest;
 	}
 
 	/**

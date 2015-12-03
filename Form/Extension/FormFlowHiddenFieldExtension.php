@@ -29,16 +29,10 @@ class FormFlowHiddenFieldExtension extends AbstractTypeExtension {
 	 * {@inheritDoc}
 	 */
 	public function configureOptions(OptionsResolver $resolver) {
-		$optionNames = array(
+		$resolver->setDefined(array(
 			'flow_instance_key',
 			'flow_step_key',
-		);
-
-		if (method_exists($resolver, 'setDefined')) {
-			$resolver->setDefined($optionNames);
-		} else {
-			$resolver->setOptional($optionNames); // for symfony/options-resolver < 2.6
-		}
+		));
 	}
 
 	/**

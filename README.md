@@ -113,12 +113,12 @@ class CreateVehicleForm extends AbstractType {
 				$validValues = array(2, 4);
 				$builder->add('numberOfWheels', 'choice', array(
 					'choices' => array_combine($validValues, $validValues),
-					'empty_value' => '',
+					'placeholder' => '',
 				));
 				break;
 			case 2:
 				$builder->add('engine', 'form_type_vehicleEngine', array(
-					'empty_value' => '',
+					'placeholder' => '',
 				));
 				break;
 		}
@@ -143,8 +143,7 @@ XML
 
 	<service id="myCompany.form.flow.createVehicle"
 			class="MyCompany\MyBundle\Form\CreateVehicleFlow"
-			parent="craue.form.flow"
-			scope="request">
+			parent="craue.form.flow">
 		<call method="setFormType">
 			<argument type="service" id="myCompany.form.createVehicle" />
 		</call>
@@ -163,7 +162,6 @@ services:
     myCompany.form.flow.createVehicle:
         class: MyCompany\MyBundle\Form\CreateVehicleFlow
         parent: craue.form.flow
-        scope: request
         calls:
             - [ setFormType, [ "@myCompany.form.createVehicle" ] ]
 ```
@@ -220,7 +218,7 @@ class CreateVehicleStep1Form extends AbstractType {
 		$validValues = array(2, 4);
 		$builder->add('numberOfWheels', 'choice', array(
 			'choices' => array_combine($validValues, $validValues),
-			'empty_value' => '',
+			'placeholder' => '',
 		));
 	}
 
@@ -240,7 +238,7 @@ class CreateVehicleStep2Form extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$builder->add('engine', 'form_type_vehicleEngine', array(
-			'empty_value' => '',
+			'placeholder' => '',
 		));
 	}
 
@@ -258,8 +256,7 @@ XML
 <services>
 	<service id="myCompany.form.flow.createVehicle"
 			class="MyCompany\MyBundle\Form\CreateVehicleFlow"
-			parent="craue.form.flow"
-			scope="request">
+			parent="craue.form.flow">
 	</service>
 </services>
 ```
@@ -270,7 +267,6 @@ services:
     myCompany.form.flow.createVehicle:
         class: MyCompany\MyBundle\Form\CreateVehicleFlow
         parent: craue.form.flow
-        scope: request
 ```
 
 ## Create a form template
