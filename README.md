@@ -56,32 +56,25 @@ This approach makes it easy to turn an existing (common) form into a form flow.
 // src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Form\FormFlowInterface;
-use Symfony\Component\Form\FormTypeInterface;
 
 class CreateVehicleFlow extends FormFlow {
-
-	/**
-	 * @var FormTypeInterface
-	 */
-	protected $formType;
-
-	public function setFormType(FormTypeInterface $formType) {
-		$this->formType = $formType;
-	}
 
 	public function getName() {
 		return 'createVehicle';
 	}
 
 	protected function loadStepsConfig() {
+		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+		$formType = $useFqcn ? 'MyCompany\MyBundle\Form\CreateVehicleForm' : 'createVehicle';
+
 		return array(
 			array(
 				'label' => 'wheels',
-				'form_type' => $this->formType,
+				'form_type' => $formType,
 			),
 			array(
 				'label' => 'engine',
-				'form_type' => $this->formType,
+				'form_type' => $formType,
 				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
 				},
@@ -108,16 +101,19 @@ use Symfony\Component\Form\FormBuilderInterface;
 class CreateVehicleForm extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
+		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+
 		switch ($options['flow_step']) {
 			case 1:
 				$validValues = array(2, 4);
-				$builder->add('numberOfWheels', 'choice', array(
+				$builder->add('numberOfWheels', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice', array(
 					'choices' => array_combine($validValues, $validValues),
 					'placeholder' => '',
 				));
 				break;
 			case 2:
-				$builder->add('engine', 'form_type_vehicleEngine', array(
+				// This form type is not defined in the example.
+				$builder->add('engine', $useFqcn ? 'MyCompany\MyBundle\Form\Type\VehicleEngineType' : 'form_type_vehicleEngine', array(
 					'placeholder' => '',
 				));
 				break;
@@ -125,6 +121,10 @@ class CreateVehicleForm extends AbstractType {
 	}
 
 	public function getName() {
+		return $this->getBlockPrefix();
+	}
+
+	public function getBlockPrefix() {
 		return 'createVehicle';
 	}
 
@@ -144,9 +144,6 @@ XML
 	<service id="myCompany.form.flow.createVehicle"
 			class="MyCompany\MyBundle\Form\CreateVehicleFlow"
 			parent="craue.form.flow">
-		<call method="setFormType">
-			<argument type="service" id="myCompany.form.createVehicle" />
-		</call>
 	</service>
 </services>
 ```
@@ -162,8 +159,6 @@ services:
     myCompany.form.flow.createVehicle:
         class: MyCompany\MyBundle\Form\CreateVehicleFlow
         parent: craue.form.flow
-        calls:
-            - [ setFormType, [ "@myCompany.form.createVehicle" ] ]
 ```
 
 ## Approach B: One form type per step
@@ -184,14 +179,16 @@ class CreateVehicleFlow extends FormFlow {
 	}
 
 	protected function loadStepsConfig() {
+		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+
 		return array(
 			array(
 				'label' => 'wheels',
-				'form_type' => new CreateVehicleStep1Form(),
+				'form_type' => $useFqcn ? 'MyCompany\MyBundle\Form\CreateVehicleStep1Form' : new CreateVehicleStep1Form(),
 			),
 			array(
 				'label' => 'engine',
-				'form_type' => new CreateVehicleStep2Form(),
+				'form_type' => $useFqcn ? 'MyCompany\MyBundle\Form\CreateVehicleStep2Form' : new CreateVehicleStep2Form(),
 				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
 				},
@@ -215,14 +212,20 @@ use Symfony\Component\Form\FormBuilderInterface;
 class CreateVehicleStep1Form extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
+		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+
 		$validValues = array(2, 4);
-		$builder->add('numberOfWheels', 'choice', array(
+		$builder->add('numberOfWheels', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice', array(
 			'choices' => array_combine($validValues, $validValues),
 			'placeholder' => '',
 		));
 	}
 
 	public function getName() {
+		return $this->getBlockPrefix();
+	}
+
+	public function getBlockPrefix() {
 		return 'createVehicleStep1';
 	}
 
@@ -237,12 +240,18 @@ use Symfony\Component\Form\FormBuilderInterface;
 class CreateVehicleStep2Form extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
-		$builder->add('engine', 'form_type_vehicleEngine', array(
+		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
+
+		$builder->add('engine', $useFqcn ? 'MyCompany\MyBundle\Form\Type\VehicleEngineType' : 'form_type_vehicleEngine', array(
 			'placeholder' => '',
 		));
 	}
 
 	public function getName() {
+		return $this->getBlockPrefix();
+	}
+
+	public function getBlockPrefix() {
 		return 'createVehicleStep2';
 	}
 
@@ -389,7 +398,7 @@ Valid options per step are:
 	- By default, the labels will be translated using the `messages` domain when rendered in Twig.
 - `form_type` (`FormTypeInterface`|`string`|`null`)
 	- The form type used to build the form for that step.
-	- If using a string, it has to be the registered alias of the form type.
+	- This value is passed to Symfony's form factory, thus the same rules apply as for creating common forms. If using a string, it has to be either the FQCN or the registered alias of the form type, depending on the version of Symfony your project is built with.
 - `form_options` (`array`)
 	- Options passed to the form type of that step.
 - `skip` (`callable`|`boolean`)
@@ -405,10 +414,10 @@ Valid options per step are:
 protected function loadStepsConfig() {
 	return array(
 		array(
-			'form_type' => new CreateVehicleStep1Form(),
+			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
 		),
 		array(
-			'form_type' => new CreateVehicleStep2Form(),
+			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep2Form',
 			'skip' => true,
 		),
 		array(
@@ -422,11 +431,11 @@ protected function loadStepsConfig() {
 	return array(
 		1 => array(
 			'label' => 'wheels',
-			'form_type' => new CreateVehicleStep1Form(),
+			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
 		),
 		2 => array(
 			'label' => 'engine',
-			'form_type' => 'createVehicleStep2',
+			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep2Form',
 			'form_options' => array(
 				'validation_groups' => array('Default'),
 			),
@@ -502,7 +511,7 @@ protected function loadStepsConfig() {
 	return array(
 		array(
 			'label' => 'wheels',
-			'form_type' => 'createVehicleStep1',
+			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
 			'form_options' => array(
 				'validation_groups' => array('Default'),
 			),
