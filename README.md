@@ -41,6 +41,11 @@ public function registerBundles() {
 }
 ```
 
+# Note
+
+To keep the amount of code in this documentation at a minimum and focus on the essentials, the examples target Symfony >= 2.8,
+so if you use a lower version, some adjustments (especially to form types) may be required.
+
 # Usage
 
 This section shows how to create a 3-step form flow for creating a vehicle.
@@ -64,17 +69,14 @@ class CreateVehicleFlow extends FormFlow {
 	}
 
 	protected function loadStepsConfig() {
-		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
-		$formType = $useFqcn ? 'MyCompany\MyBundle\Form\CreateVehicleForm' : 'createVehicle';
-
 		return array(
 			array(
 				'label' => 'wheels',
-				'form_type' => $formType,
+				'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleForm',
 			),
 			array(
 				'label' => 'engine',
-				'form_type' => $formType,
+				'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleForm',
 				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
 				},
@@ -101,27 +103,21 @@ use Symfony\Component\Form\FormBuilderInterface;
 class CreateVehicleForm extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
-		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
-
 		switch ($options['flow_step']) {
 			case 1:
 				$validValues = array(2, 4);
-				$builder->add('numberOfWheels', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice', array(
+				$builder->add('numberOfWheels', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
 					'choices' => array_combine($validValues, $validValues),
 					'placeholder' => '',
 				));
 				break;
 			case 2:
 				// This form type is not defined in the example.
-				$builder->add('engine', $useFqcn ? 'MyCompany\MyBundle\Form\Type\VehicleEngineType' : 'form_type_vehicleEngine', array(
+				$builder->add('engine', 'MyCompany\MyBundle\Form\Type\VehicleEngineType', array(
 					'placeholder' => '',
 				));
 				break;
 		}
-	}
-
-	public function getName() {
-		return $this->getBlockPrefix();
 	}
 
 	public function getBlockPrefix() {
@@ -129,36 +125,6 @@ class CreateVehicleForm extends AbstractType {
 	}
 
 }
-```
-
-### Register your form type and flow as services
-
-XML
-```xml
-<services>
-	<service id="myCompany.form.createVehicle"
-			class="MyCompany\MyBundle\Form\CreateVehicleForm">
-		<tag name="form.type" alias="createVehicle" />
-	</service>
-
-	<service id="myCompany.form.flow.createVehicle"
-			class="MyCompany\MyBundle\Form\CreateVehicleFlow"
-			parent="craue.form.flow">
-	</service>
-</services>
-```
-
-YAML
-```yaml
-services:
-    myCompany.form.createVehicle:
-        class: MyCompany\MyBundle\Form\CreateVehicleForm
-        tags:
-            - { name: form.type, alias: createVehicle }
-    
-    myCompany.form.flow.createVehicle:
-        class: MyCompany\MyBundle\Form\CreateVehicleFlow
-        parent: craue.form.flow
 ```
 
 ## Approach B: One form type per step
@@ -179,16 +145,14 @@ class CreateVehicleFlow extends FormFlow {
 	}
 
 	protected function loadStepsConfig() {
-		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
-
 		return array(
 			array(
 				'label' => 'wheels',
-				'form_type' => $useFqcn ? 'MyCompany\MyBundle\Form\CreateVehicleStep1Form' : new CreateVehicleStep1Form(),
+				'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
 			),
 			array(
 				'label' => 'engine',
-				'form_type' => $useFqcn ? 'MyCompany\MyBundle\Form\CreateVehicleStep2Form' : new CreateVehicleStep2Form(),
+				'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep2Form',
 				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
 				},
@@ -212,17 +176,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 class CreateVehicleStep1Form extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
-		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
-
 		$validValues = array(2, 4);
-		$builder->add('numberOfWheels', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\ChoiceType' : 'choice', array(
+		$builder->add('numberOfWheels', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
 			'choices' => array_combine($validValues, $validValues),
 			'placeholder' => '',
 		));
-	}
-
-	public function getName() {
-		return $this->getBlockPrefix();
 	}
 
 	public function getBlockPrefix() {
@@ -240,15 +198,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 class CreateVehicleStep2Form extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
-		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
-
-		$builder->add('engine', $useFqcn ? 'MyCompany\MyBundle\Form\Type\VehicleEngineType' : 'form_type_vehicleEngine', array(
+		$builder->add('engine', 'MyCompany\MyBundle\Form\Type\VehicleEngineType', array(
 			'placeholder' => '',
 		));
-	}
-
-	public function getName() {
-		return $this->getBlockPrefix();
 	}
 
 	public function getBlockPrefix() {
@@ -258,7 +210,7 @@ class CreateVehicleStep2Form extends AbstractType {
 }
 ```
 
-### Register your flow as a service
+## Register your flow as a service
 
 XML
 ```xml
