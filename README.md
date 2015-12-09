@@ -464,8 +464,7 @@ In this case, it will **not** be added by the flow, so ensure the step forms are
 ## Disabling revalidation of previous steps
 
 Take a look at [#98](https://github.com/craue/CraueFormFlowBundle/issues/98) for an example on why it's useful to
-revalidate previous steps by default. But if you want (or need) to avoid revalidating previous steps, you could extend
-the flow class mentioned in the example above as follows:
+revalidate previous steps by default. But if you want (or need) to avoid revalidating previous steps, add this to your flow class:
 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
