@@ -41,14 +41,19 @@ public function registerBundles() {
 }
 ```
 
+# Note
+
+To keep the amount of code in this documentation at a minimum and focus on the essentials, the examples target Symfony >= 2.8,
+so if you use a lower version, some adjustments (especially to form types) may be required.
+
 # Usage
 
 This section shows how to create a 3-step form flow for creating a vehicle.
-You have to choose between two approaches on how to setup your flow.
+You have to choose between two approaches on how to set up your flow.
 
 ## Approach A: One form type for the entire flow
 
-This approach makes it easy to turn an existing (usual) form into a form flow.
+This approach makes it easy to turn an existing (common) form into a form flow.
 
 ### Create a flow class
 
@@ -56,18 +61,8 @@ This approach makes it easy to turn an existing (usual) form into a form flow.
 // src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Form\FormFlowInterface;
-use Symfony\Component\Form\FormTypeInterface;
 
 class CreateVehicleFlow extends FormFlow {
-
-	/**
-	 * @var FormTypeInterface
-	 */
-	protected $formType;
-
-	public function setFormType(FormTypeInterface $formType) {
-		$this->formType = $formType;
-	}
 
 	public function getName() {
 		return 'createVehicle';
@@ -77,11 +72,11 @@ class CreateVehicleFlow extends FormFlow {
 		return array(
 			array(
 				'label' => 'wheels',
-				'form_type' => $this->formType,
+				'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleForm',
 			),
 			array(
 				'label' => 'engine',
-				'form_type' => $this->formType,
+				'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleForm',
 				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
 				},
@@ -111,59 +106,25 @@ class CreateVehicleForm extends AbstractType {
 		switch ($options['flow_step']) {
 			case 1:
 				$validValues = array(2, 4);
-				$builder->add('numberOfWheels', 'choice', array(
+				$builder->add('numberOfWheels', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
 					'choices' => array_combine($validValues, $validValues),
 					'placeholder' => '',
 				));
 				break;
 			case 2:
-				$builder->add('engine', 'form_type_vehicleEngine', array(
+				// This form type is not defined in the example.
+				$builder->add('engine', 'MyCompany\MyBundle\Form\Type\VehicleEngineType', array(
 					'placeholder' => '',
 				));
 				break;
 		}
 	}
 
-	public function getName() {
+	public function getBlockPrefix() {
 		return 'createVehicle';
 	}
 
 }
-```
-
-### Register your form type and flow as services
-
-XML
-```xml
-<services>
-	<service id="myCompany.form.createVehicle"
-			class="MyCompany\MyBundle\Form\CreateVehicleForm">
-		<tag name="form.type" alias="createVehicle" />
-	</service>
-
-	<service id="myCompany.form.flow.createVehicle"
-			class="MyCompany\MyBundle\Form\CreateVehicleFlow"
-			parent="craue.form.flow">
-		<call method="setFormType">
-			<argument type="service" id="myCompany.form.createVehicle" />
-		</call>
-	</service>
-</services>
-```
-
-YAML
-```yaml
-services:
-    myCompany.form.createVehicle:
-        class: MyCompany\MyBundle\Form\CreateVehicleForm
-        tags:
-            - { name: form.type, alias: createVehicle }
-    
-    myCompany.form.flow.createVehicle:
-        class: MyCompany\MyBundle\Form\CreateVehicleFlow
-        parent: craue.form.flow
-        calls:
-            - [ setFormType, [ "@myCompany.form.createVehicle" ] ]
 ```
 
 ## Approach B: One form type per step
@@ -187,11 +148,11 @@ class CreateVehicleFlow extends FormFlow {
 		return array(
 			array(
 				'label' => 'wheels',
-				'form_type' => new CreateVehicleStep1Form(),
+				'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
 			),
 			array(
 				'label' => 'engine',
-				'form_type' => new CreateVehicleStep2Form(),
+				'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep2Form',
 				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
 				},
@@ -216,13 +177,13 @@ class CreateVehicleStep1Form extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$validValues = array(2, 4);
-		$builder->add('numberOfWheels', 'choice', array(
+		$builder->add('numberOfWheels', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
 			'choices' => array_combine($validValues, $validValues),
 			'placeholder' => '',
 		));
 	}
 
-	public function getName() {
+	public function getBlockPrefix() {
 		return 'createVehicleStep1';
 	}
 
@@ -237,19 +198,19 @@ use Symfony\Component\Form\FormBuilderInterface;
 class CreateVehicleStep2Form extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
-		$builder->add('engine', 'form_type_vehicleEngine', array(
+		$builder->add('engine', 'MyCompany\MyBundle\Form\Type\VehicleEngineType', array(
 			'placeholder' => '',
 		));
 	}
 
-	public function getName() {
+	public function getBlockPrefix() {
 		return 'createVehicleStep2';
 	}
 
 }
 ```
 
-### Register your flow as a service
+## Register your flow as a service
 
 XML
 ```xml
@@ -389,7 +350,7 @@ Valid options per step are:
 	- By default, the labels will be translated using the `messages` domain when rendered in Twig.
 - `form_type` (`FormTypeInterface`|`string`|`null`)
 	- The form type used to build the form for that step.
-	- If using a string, it has to be the registered alias of the form type.
+	- This value is passed to Symfony's form factory, thus the same rules apply as for creating common forms. If using a string, it has to be either the FQCN or the registered alias of the form type, depending on the version of Symfony your project is built with.
 - `form_options` (`array`)
 	- Options passed to the form type of that step.
 - `skip` (`callable`|`boolean`)
@@ -405,10 +366,10 @@ Valid options per step are:
 protected function loadStepsConfig() {
 	return array(
 		array(
-			'form_type' => new CreateVehicleStep1Form(),
+			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
 		),
 		array(
-			'form_type' => new CreateVehicleStep2Form(),
+			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep2Form',
 			'skip' => true,
 		),
 		array(
@@ -422,11 +383,11 @@ protected function loadStepsConfig() {
 	return array(
 		1 => array(
 			'label' => 'wheels',
-			'form_type' => new CreateVehicleStep1Form(),
+			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
 		),
 		2 => array(
 			'label' => 'engine',
-			'form_type' => 'createVehicleStep2',
+			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep2Form',
 			'form_options' => array(
 				'validation_groups' => array('Default'),
 			),
@@ -464,8 +425,7 @@ In this case, it will **not** be added by the flow, so ensure the step forms are
 ## Disabling revalidation of previous steps
 
 Take a look at [#98](https://github.com/craue/CraueFormFlowBundle/issues/98) for an example on why it's useful to
-revalidate previous steps by default. But if you want (or need) to avoid revalidating previous steps, you could extend
-the flow class mentioned in the example above as follows:
+revalidate previous steps by default. But if you want (or need) to avoid revalidating previous steps, add this to your flow class:
 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
@@ -503,7 +463,7 @@ protected function loadStepsConfig() {
 	return array(
 		array(
 			'label' => 'wheels',
-			'form_type' => 'createVehicleStep1',
+			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
 			'form_options' => array(
 				'validation_groups' => array('Default'),
 			),
@@ -534,7 +494,7 @@ public function getFormOptions($step, array $options = array()) {
 
 Dynamic step navigation means that the step list rendered will contain links to go back/forth to a specific step
 (which has been done already) directly.
-To enable it you could extend the flow class mentioned in the example above as follows:
+To enable it, add this to your flow class:
 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
@@ -588,7 +548,7 @@ class CreateVehicleFlow extends FormFlow {
 ## Enabling redirect after submit
 
 This feature will allow performing a redirect after submitting a step to load the page containing the next step using a GET request.
-To enable it you could extend the flow class mentioned in the example above as follows:
+To enable it, add this to your flow class:
 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
