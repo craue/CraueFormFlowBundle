@@ -21,6 +21,7 @@ class CreateTopicForm extends AbstractType {
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix'); // Symfony's Form component >=2.8
 		$isBugReport = $options['isBugReport'];
+		$setChoicesAsValuesOption = $useFqcn && method_exists('Symfony\Component\Form\AbstractType', 'getName'); // Symfony's Form component >=2.8 && <3.0
 
 		switch ($options['flow_step']) {
 			case 1:
@@ -29,7 +30,7 @@ class CreateTopicForm extends AbstractType {
 					'required' => false,
 				));
 				$defaultChoiceOptions = array();
-				if ($useFqcn) {
+				if ($setChoicesAsValuesOption) {
 					$defaultChoiceOptions['choices_as_values'] = true;
 				}
 				$choices = Topic::getValidCategories();
