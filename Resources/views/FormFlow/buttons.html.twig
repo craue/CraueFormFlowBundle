@@ -10,7 +10,7 @@
 	button_finish: craue_formflow_button_label_finish | default('button.finish'),
 	button_next: craue_formflow_button_label_next | default('button.next'),
 	button_back: craue_formflow_button_label_back | default('button.back'),
-	button_reset: craue_formflow_button_label_back | default('button.reset')
+	button_reset: craue_formflow_button_label_reset | default('button.reset')
 	} -%}
 	{%- set isLastStep = flow.getCurrentStepNumber() == flow.getLastStepNumber() -%}
 	{%- set craue_formflow_button_class_last = craue_formflow_button_class_last | default('craue_formflow_button_last') -%}
