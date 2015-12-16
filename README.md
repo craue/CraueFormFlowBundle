@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/craue/CraueFormFlowBundle.svg?branch=master)](https://travis-ci.org/craue/CraueFormFlowBundle)
 [![Coverage Status](https://coveralls.io/repos/craue/CraueFormFlowBundle/badge.svg?branch=master)](https://coveralls.io/r/craue/CraueFormFlowBundle?branch=master)
 
-CraueFormFlowBundle provides a facility for building and handling multi-step forms in your Symfony2 project.
+CraueFormFlowBundle provides a facility for building and handling multi-step forms in your Symfony project.
 
 Features:
 - navigation (next, back, start over)
