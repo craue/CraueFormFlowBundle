@@ -16,16 +16,15 @@
 	{%- set isLastStep = flow.getCurrentStepNumber() == flow.getLastStepNumber() -%}
 	{%- set craue_formflow_button_class_last = craue_formflow_button_class_last | default('craue_formflow_button_last') -%}
 	{%- set craue_formflow_button_class_last = isLastStep
-				? craue_formflow_button_class_finish | default(craue_formflow_button_class_last)
-				: craue_formflow_button_class_next | default(craue_formflow_button_class_last)
+			? craue_formflow_button_class_finish | default(craue_formflow_button_class_last)
+			: craue_formflow_button_class_next | default(craue_formflow_button_class_last)
 		-%}
 	<button type="submit" class="{{ craue_formflow_button_class_last }}">
 		{{- (isLastStep ? craue_label.button_finish : craue_label.button_next) | trans({}, 'CraueFormFlowBundle') -}}
 	</button>
 
 	{% if renderBackButton %}
-		<button type="submit" class="{{ craue_formflow_button_class_back | default('') }}"
-				name="{{ flow.getFormTransitionKey() }}" value="back" formnovalidate="formnovalidate">
+		<button type="submit" class="{{ craue_formflow_button_class_back | default('') }}" name="{{ flow.getFormTransitionKey() }}" value="back" formnovalidate="formnovalidate">
 			{{- craue_label.button_back | trans({}, 'CraueFormFlowBundle') -}}
 		</button>
 	{% endif %}
