@@ -29,8 +29,7 @@
 		</button>
 	{% endif %}
 
-	<button type="submit" class="{{ craue_formflow_button_class_reset | default('craue_formflow_button_first') }}"
-			name="{{ flow.getFormTransitionKey() }}" value="reset" formnovalidate="formnovalidate">
+	<button type="submit" class="{{ craue_formflow_button_class_reset | default('craue_formflow_button_first') }}" name="{{ flow.getFormTransitionKey() }}" value="reset" formnovalidate="formnovalidate">
 		{{- craue_label.button_reset | trans({}, 'CraueFormFlowBundle') -}}
 	</button>
 </div>
