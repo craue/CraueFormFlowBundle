@@ -9,7 +9,6 @@ if [ -n "${MIN_STABILITY:-}" ]; then
 	sed -i -e "s/\"minimum-stability\": \"stable\"/\"minimum-stability\": \"${MIN_STABILITY}\"/" composer.json
 fi
 
-composer require --no-update satooshi/php-coveralls:"~0.6@stable" guzzle/guzzle:">=3.0.4@stable"
 composer remove --no-update symfony/framework-bundle symfony/form
 
 if [ -n "${SYMFONY_VERSION:-}" ]; then
