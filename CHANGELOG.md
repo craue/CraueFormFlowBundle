@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.1.9 (2015-12-29)
+
+- [#205]: added conditional code updates to avoid most deprecation notices with Symfony 2.8
+- added forward compatibility for Twig 2.0
+- added support for PHP 7.0 and HHVM
+
+[#205]: https://github.com/craue/CraueFormFlowBundle/issues/205
+
 ## 2.1.8 (2015-06-11)
 
 - [#169]: simplified some code meant for avoiding deprecation notices
