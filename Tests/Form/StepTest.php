@@ -142,7 +142,7 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 	public function testSetGetType($type) {
 		$step = new Step();
 		$step->setType($type);
-		$this->assertEquals($type, $step->getType());
+		$this->assertSame($type, $step->getType());
 	}
 
 	public function dataSetGetType() {
