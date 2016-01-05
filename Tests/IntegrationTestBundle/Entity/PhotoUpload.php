@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
- * @copyright 2011-2015 Christian Raue
+ * @copyright 2011-2016 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class PhotoUpload {

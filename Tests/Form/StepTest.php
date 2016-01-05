@@ -10,7 +10,7 @@ use Craue\FormFlowBundle\Tests\UnitTestCase;
  * @group unit
  *
  * @author Christian Raue <christian.raue@gmail.com>
- * @copyright 2011-2015 Christian Raue
+ * @copyright 2011-2016 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class StepTest extends UnitTestCase {
@@ -150,7 +150,7 @@ class StepTest extends UnitTestCase {
 	public function testSetGetFormType($formType) {
 		$step = new Step();
 		$step->setFormType($formType);
-		$this->assertEquals($formType, $step->getFormType());
+		$this->assertSame($formType, $step->getFormType());
 	}
 
 	public function dataSetGetFormType() {
