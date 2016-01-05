@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Konstantin Myakshin <koc-dp@yandex.ru>
- * @copyright 2011-2015 Christian Raue
+ * @copyright 2011-2016 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class FormFlowFormExtension extends AbstractTypeExtension {
