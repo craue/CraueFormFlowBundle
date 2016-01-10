@@ -17,6 +17,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Craue\FormFlowBundle\Event\PostSaveCurrentStepDataEvent;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -663,6 +664,11 @@ abstract class FormFlow implements FormFlowInterface {
 		$stepData[$this->currentStepNumber] = $currentStepData;
 
 		$this->saveStepData($stepData);
+
+		if ($this->hasListeners(FormFlowEvents::POST_SAVE_CURRENT_STEP_DATA)) {
+			$event = new PostSaveCurrentStepDataEvent($this, $stepData, $this->currentStepNumber);
+			$this->eventDispatcher->dispatch(FormFlowEvents::POST_SAVE_CURRENT_STEP_DATA, $event);
+		}
 	}
 
 	/**

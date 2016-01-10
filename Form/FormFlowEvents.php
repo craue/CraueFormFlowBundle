@@ -23,4 +23,6 @@ class FormFlowEvents {
 
 	const POST_VALIDATE = 'flow.post_validate';
 
+	const POST_SAVE_CURRENT_STEP_DATA = 'flow.post_save_current_step_data';
+
 }
