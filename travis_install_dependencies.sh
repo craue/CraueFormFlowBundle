@@ -5,6 +5,10 @@ set -euv
 export COMPOSER_NO_INTERACTION=1
 composer self-update
 
+if [ "${TRAVIS_PHP_VERSION}" = "5.3.3" ]; then
+	composer config -g disable-tls true
+fi
+
 if [ -n "${MIN_STABILITY:-}" ]; then
 	sed -i -e "s/\"minimum-stability\": \"stable\"/\"minimum-stability\": \"${MIN_STABILITY}\"/" composer.json
 fi
