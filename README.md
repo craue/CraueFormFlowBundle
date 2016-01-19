@@ -64,10 +64,6 @@ use Craue\FormFlowBundle\Form\FormFlowInterface;
 
 class CreateVehicleFlow extends FormFlow {
 
-	public function getName() {
-		return 'createVehicle';
-	}
-
 	protected function loadStepsConfig() {
 		return array(
 			array(
@@ -139,10 +135,6 @@ use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Form\FormFlowInterface;
 
 class CreateVehicleFlow extends FormFlow {
-
-	public function getName() {
-		return 'createVehicle';
-	}
 
 	protected function loadStepsConfig() {
 		return array(

@@ -27,7 +27,7 @@ class FormFlowUtilTest extends UnitTestCase {
 	}
 
 	public function testAddRouteParameters() {
-		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
+		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
 
 		$flow
 			->expects($this->once())
@@ -49,7 +49,7 @@ class FormFlowUtilTest extends UnitTestCase {
 	}
 
 	public function testAddRouteParameters_explicitStepNumber() {
-		$flow = $this->getFlowWithMockedMethods(array('getName'));
+		$flow = $this->getMockedFlow();
 
 		$instanceId = 'xyz';
 		$flow->setInstanceId($instanceId);
@@ -60,7 +60,7 @@ class FormFlowUtilTest extends UnitTestCase {
 	}
 
 	public function testRemoveRouteParameters() {
-		$flow = $this->getFlowWithMockedMethods(array('getName'));
+		$flow = $this->getMockedFlow();
 
 		$actualParameters = $this->util->removeRouteParameters(array('key' => 'value', 'instance' => 'xyz', 'step' => 2), $flow);
 

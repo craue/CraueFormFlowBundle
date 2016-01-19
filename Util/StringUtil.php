@@ -59,4 +59,14 @@ abstract class StringUtil {
 		return preg_match(sprintf('/^[a-z0-9-]{%u}$/', $length), $input) === 1;
 	}
 
+	/**
+	 * @param string $fqcn FQCN
+	 * @return string|null flow name or null if not a FQCN
+	 */
+	public static function fqcnToFlowName($fqcn) {
+		if (preg_match('/([^\\\\]+?)(flow)?$/i', $fqcn, $matches)) {
+			return lcfirst(preg_replace('/([A-Z]+)([A-Z][a-z])/', '\\1\\2', $matches[1]));
+		}
+	}
+
 }

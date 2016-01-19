@@ -74,4 +74,25 @@ class StringUtilTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue(StringUtil::isRandomString(StringUtil::generateRandomString(1000), 1000));
 	}
 
+	/**
+	 * @dataProvider dataFqcnToFlowName
+	 */
+	public function testFqcnToFlowName($fqcn, $expectedFlowName) {
+		$this->assertSame($expectedFlowName, StringUtil::fqcnToFlowName($fqcn));
+	}
+
+	public function dataFqcnToFlowName() {
+		return array(
+			array(null, null),
+			array('', null),
+			array('Flow', 'flow'),
+			array('Demo1', 'demo1'),
+			array('Demo1Flow', 'demo1'),
+			array('CreateLocation', 'createLocation'),
+			array('CreateLocationFlow', 'createLocation'),
+			array('MyCompany\MyBundle\Form\CreateLocation', 'createLocation'),
+			array('MyCompany\MyBundle\Form\CreateLocationFlow', 'createLocation'),
+		);
+	}
+
 }
