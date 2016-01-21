@@ -17,13 +17,6 @@ class SkipFirstStepUsingClosureFlow extends FormFlow {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getName() {
-		return 'skipFirstStepUsingClosure';
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	protected function loadStepsConfig() {
 		return array(
 			array(

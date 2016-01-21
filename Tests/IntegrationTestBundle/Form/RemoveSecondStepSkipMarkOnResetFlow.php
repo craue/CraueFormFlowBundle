@@ -15,13 +15,6 @@ class RemoveSecondStepSkipMarkOnResetFlow extends FormFlow {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getName() {
-		return 'removeSecondStepSkipMarkOnReset';
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	protected function loadStepsConfig() {
 		return array(
 			array(

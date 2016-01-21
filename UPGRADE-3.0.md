@@ -156,6 +156,29 @@
 
 ## Flow
 
+- A default implementation for method `getName` has been added. If you just let it return the class name with the first
+  letter lower-cased and without the "Flow" suffix, you can remove it from your flow since the default implementation
+  will return the same value.
+
+	before:
+	```php
+	class CreateVehicleFlow extends FormFlow {
+
+		public function getName() {
+			return 'createVehicle';
+		}
+
+		// ...
+	}
+	```
+
+	after:
+	```php
+	class CreateVehicleFlow extends FormFlow {
+		// ...
+	}
+	```
+
 - The signature of method `setRequest` has changed to accept a `RequestStack` instance.
 
 	- `public function setRequest(Request $request = null)` to `public function setRequestStack(RequestStack $requestStack)`

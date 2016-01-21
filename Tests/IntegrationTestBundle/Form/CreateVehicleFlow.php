@@ -15,13 +15,6 @@ class CreateVehicleFlow extends FormFlow {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getName() {
-		return 'createVehicle';
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	protected function loadStepsConfig() {
 		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
 		$formType = $useFqcn ? 'Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\CreateVehicleForm' : 'createVehicle';

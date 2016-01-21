@@ -42,7 +42,7 @@ class FormFlowTest extends UnitTestCase {
 	}
 
 	public function testCreateStepsFromConfig_fixArrayIndexes() {
-		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
+		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
 
 		$flow
 			->expects($this->once())
@@ -90,7 +90,7 @@ class FormFlowTest extends UnitTestCase {
 	 * Ensure that the "validation_groups" option can be set to false to disable validation.
 	 */
 	public function testGetFormOptions_setValidationGroupsToFalse() {
-		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
+		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
 
 		$flow
 			->expects($this->once())
@@ -111,7 +111,7 @@ class FormFlowTest extends UnitTestCase {
 	 * Ensure that the "validation_groups" option can be set to a closure.
 	 */
 	public function testGetFormOptions_setValidationGroupsToClosure() {
-		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
+		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
 
 		$flow
 			->expects($this->once())
@@ -160,7 +160,7 @@ class FormFlowTest extends UnitTestCase {
 	 * Ensure that generic options are considered.
 	 */
 	public function testGetFormOptions_considerGenericOptions() {
-		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
+		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
 
 		$flow
 			->expects($this->once())
@@ -183,7 +183,7 @@ class FormFlowTest extends UnitTestCase {
 	 * Ensure that step specific options override generic options.
 	 */
 	public function testGetFormOptions_considerStepSpecificOptions() {
-		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
+		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
 
 		$flow
 			->expects($this->once())
@@ -210,7 +210,7 @@ class FormFlowTest extends UnitTestCase {
 	 * Ensure that options can be overridden directly.
 	 */
 	public function testGetFormOptions_considerDirectlyPassedOptions() {
-		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
+		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
 
 		$flow
 			->expects($this->once())
@@ -578,7 +578,7 @@ class FormFlowTest extends UnitTestCase {
 	public function testGetCurrentStepLabel() {
 		$label = 'step1';
 
-		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
+		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
 
 		$flow
 			->expects($this->once())

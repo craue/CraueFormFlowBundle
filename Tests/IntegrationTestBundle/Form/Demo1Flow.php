@@ -23,13 +23,6 @@ class Demo1Flow extends FormFlow implements EventSubscriberInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getName() {
-		return 'demo1';
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	public function setEventDispatcher(EventDispatcherInterface $dispatcher) {
 		parent::setEventDispatcher($dispatcher);
 		$dispatcher->addSubscriber($this);

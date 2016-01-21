@@ -220,6 +220,13 @@ abstract class FormFlow implements FormFlowInterface {
 		return $this->id;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getName() {
+		return StringUtil::fqcnToFlowName(get_class($this));
+	}
+
 	public function setInstanceKey($instanceKey) {
 		$this->instanceKey = $instanceKey;
 	}
