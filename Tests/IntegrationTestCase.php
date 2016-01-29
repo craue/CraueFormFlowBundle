@@ -35,10 +35,18 @@ abstract class IntegrationTestCase extends WebTestCase {
 	}
 
 	/**
+	 * @param string $id The service identifier.
+	 * @return object The associated service.
+	 */
+	protected function getService($id) {
+		return static::$kernel->getContainer()->get($id);
+	}
+
+	/**
 	 * @return \Twig_Environment
 	 */
 	protected function getTwig() {
-		return static::$kernel->getContainer()->get('twig');
+		return $this->getService('twig');
 	}
 
 	/**
@@ -47,7 +55,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 	 * @return string URL
 	 */
 	protected function url($route, array $parameters = array()) {
-		return static::$kernel->getContainer()->get('router')->generate($route, $parameters);
+		return $this->getService('router')->generate($route, $parameters);
 	}
 
 	/**
