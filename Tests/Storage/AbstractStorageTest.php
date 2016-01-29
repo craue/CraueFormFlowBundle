@@ -30,25 +30,41 @@ abstract class AbstractStorageTest extends \PHPUnit_Framework_TestCase {
 	 */
 	abstract protected function getStorageImplementation();
 
-	public function testSet() {
+	public function testSetGet() {
 		$this->storage->set('foo', 'bar');
-		$this->assertTrue($this->storage->has('foo'));
 		$this->assertSame('bar', $this->storage->get('foo'));
 	}
 
-	public function testGet() {
+	public function testSetGet_overwrite() {
+		$this->storage->set('foo', 'bar');
+		$this->storage->set('foo', 'blah');
+		$this->assertSame('blah', $this->storage->get('foo'));
+	}
+
+	public function testGet_empty() {
 		$this->assertNull($this->storage->get('foo'));
 	}
 
+	public function testGet_default() {
+		$this->assertSame('bar', $this->storage->get('foo', 'bar'));
+	}
+
 	public function testHas() {
+		$this->storage->set('foo', 'bar');
+		$this->assertTrue($this->storage->has('foo'));
+	}
+
+	public function testHas_empty() {
 		$this->assertFalse($this->storage->has('foo'));
 	}
 
 	public function testRemove() {
-		$this->assertNull($this->storage->remove('foo'));
-
 		$this->storage->set('foo', 'bar');
 		$this->assertSame('bar', $this->storage->remove('foo'));
+	}
+
+	public function testRemove_empty() {
+		$this->assertNull($this->storage->remove('foo'));
 	}
 
 }
