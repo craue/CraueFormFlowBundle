@@ -82,6 +82,7 @@ class CreateVehicleFlow extends FormFlow {
 			),
 		);
 	}
+
 }
 ```
 
