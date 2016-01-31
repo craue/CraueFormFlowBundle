@@ -65,12 +65,12 @@ abstract class AbstractStorageTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRemove() {
 		$this->storage->set('foo', 'bar');
-		$this->assertSame('bar', $this->storage->remove('foo'));
+		$this->storage->remove('foo');
 		$this->assertFalse($this->storage->has('foo'));
 	}
 
 	public function testRemove_empty() {
-		$this->assertNull($this->storage->remove('foo'));
+		$this->storage->remove('foo');
 		$this->assertFalse($this->storage->has('foo'));
 	}
 

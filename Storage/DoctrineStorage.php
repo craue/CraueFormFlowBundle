@@ -114,13 +114,9 @@ class DoctrineStorage implements StorageInterface {
 			return;
 		}
 
-		$removedValue = $this->get($key);
-
 		$this->conn->delete(self::TABLE, array(
 			$this->keyColumn => $this->generateKey($key),
 		));
-
-		return $removedValue;
 	}
 
 	/**

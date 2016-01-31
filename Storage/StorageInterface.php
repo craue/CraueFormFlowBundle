@@ -34,7 +34,6 @@ interface StorageInterface {
 	/**
 	 * Delete the stored data of the given key.
 	 * @param string $key
-	 * @return mixed The removed value.
 	 */
 	function remove($key);
 

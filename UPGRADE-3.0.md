@@ -213,6 +213,10 @@
 
 	- `type` to `formType`
 
+## Storage
+
+- The signature of method `remove` in `StorageInterface` has changed to not return the removed value anymore.
+
 ## Template
 
 - The Twig filters `craue_addDynamicStepNavigationParameter` and `craue_removeDynamicStepNavigationParameter` have been
