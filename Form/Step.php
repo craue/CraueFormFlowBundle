@@ -18,7 +18,7 @@ class Step implements StepInterface {
 	protected $number;
 
 	/**
-	 * @var string|null
+	 * @var string|callable|null
 	 */
 	protected $label = null;
 
@@ -92,22 +92,33 @@ class Step implements StepInterface {
 	}
 
 	/**
-	 * @param string|null $label
+	 * @param string|callable|null $label
 	 */
 	public function setLabel($label) {
-		if ($label === null || is_string($label)) {
+		if ($label === null || is_string($label) || is_callable($label)) {
 			$this->label = $label;
 
 			return;
 		}
 
-		throw new InvalidTypeException($label, array('null', 'string'));
+		throw new InvalidTypeException($label, array('null', 'string', 'callable'));
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function getLabel() {
+		if (is_callable($this->label)) {
+			$returnValue = call_user_func($this->label);
+
+			if ($returnValue === null || is_string($returnValue)) {
+				return $returnValue;
+			}
+
+			throw new \RuntimeException(sprintf('The label callable for step %d did not return a string or null value.',
+					$this->number));
+		}
+
 		return $this->label;
 	}
 

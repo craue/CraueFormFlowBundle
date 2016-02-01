@@ -33,6 +33,13 @@ class StepTest extends UnitTestCase {
 		$this->assertEquals('country', $step->getLabel());
 
 		$step = Step::createFromConfig(1, array(
+			'label' => function() {
+				return 'country';
+			},
+		));
+		$this->assertEquals('country', $step->getLabel());
+
+		$step = Step::createFromConfig(1, array(
 			'skip' => true,
 		));
 		$this->assertTrue($step->isSkipped());
@@ -125,6 +132,64 @@ class StepTest extends UnitTestCase {
 		return array(
 			array('label'),
 			array(null),
+		);
+	}
+
+	public function testSetGetLabel_callableReturnValueDependsOnFlowData() {
+		$flow = $this->getFlowWithMockedMethods(array('getFormData'));
+
+		$flow
+			->expects($this->at(0))
+			->method('getFormData')
+			->will($this->returnValue('special'))
+		;
+
+		$flow
+			->expects($this->at(1))
+			->method('getFormData')
+			->will($this->returnValue('default'))
+		;
+
+		$step = Step::createFromConfig(1, array(
+			'label' => function() use ($flow) {
+				return $flow->getFormData() === 'special' ? 'special label' : 'default label';
+			},
+		));
+
+		$this->assertSame('special label', $step->getLabel());
+		$this->assertSame('default label', $step->getLabel());
+	}
+
+	/**
+	 * @dataProvider dataSetGetLabel_validReturnValueFromCallable
+	 */
+	public function testSetGetLabel_validReturnValueFromCallable($returnValue) {
+		$step = $this->createStepWithLabelCallable(1, $returnValue);
+		$this->assertSame($returnValue, $step->getLabel());
+	}
+
+	public function dataSetGetLabel_validReturnValueFromCallable() {
+		return array(
+			array('label'),
+			array(null),
+		);
+	}
+
+	/**
+	 * @dataProvider dataSetGetLabel_invalidReturnValueFromCallable
+	 * @expectedException \RuntimeException
+	 * @expectedExceptionMessage The label callable for step 1 did not return a string or null value.
+	 */
+	public function testSetGetLabel_invalidReturnValueFromCallable($returnValue) {
+		$step = $this->createStepWithLabelCallable(1, $returnValue);
+		$step->getLabel();
+	}
+
+	public function dataSetGetLabel_invalidReturnValueFromCallable() {
+		return array(
+			array(true),
+			array(false),
+			array(0),
 		);
 	}
 
@@ -262,6 +327,14 @@ class StepTest extends UnitTestCase {
 			array(0),
 			array('true'),
 		);
+	}
+
+	protected function createStepWithLabelCallable($number, $returnValue) {
+		return Step::createFromConfig($number, array(
+			'label' => function() use ($returnValue) {
+				return $returnValue;
+			},
+		));
 	}
 
 	protected function createStepWithSkipCallable($number, $returnValue) {
