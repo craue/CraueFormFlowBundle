@@ -279,7 +279,6 @@ class TemplateRenderingTest extends IntegrationTestCase {
 		$flow->setDataManager(new DataManager(new SessionStorage(new Session(new MockArraySessionStorage()))));
 
 		$flow
-			->expects($this->any())
 			->method('getName')
 			->will($this->returnValue('renderingTest'))
 		;

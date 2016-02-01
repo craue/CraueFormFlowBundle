@@ -190,7 +190,6 @@ class DataManagerTest extends UnitTestCase {
 		$flow = $this->getFlowWithMockedMethods(array('getName'));
 
 		$flow
-			->expects($this->any())
 			->method('getName')
 			->will($this->returnValue($name))
 		;

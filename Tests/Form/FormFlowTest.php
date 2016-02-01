@@ -253,7 +253,6 @@ class FormFlowTest extends UnitTestCase {
 		}
 
 		$flow
-			->expects($this->any())
 			->method('getName')
 			->will($this->returnValue('createTopic'))
 		;
@@ -298,13 +297,11 @@ class FormFlowTest extends UnitTestCase {
 		$flow->setRevalidatePreviousSteps(false);
 
 		$flow
-			->expects($this->any())
 			->method('getName')
 			->will($this->returnValue('createTopic'))
 		;
 
 		$flow
-			->expects($this->any())
 			->method('getRequest')
 			->will($this->returnValue(Request::create('', $httpMethod, $parameters)))
 		;

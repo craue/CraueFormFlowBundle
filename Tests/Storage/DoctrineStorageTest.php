@@ -26,7 +26,6 @@ class DoctrineStorageTest extends AbstractStorageTest {
 		$generator = $this->getMock('Craue\FormFlowBundle\Storage\StorageKeyGeneratorInterface');
 
 		$generator
-			->expects($this->any())
 			->method('generate')
 			->will($this->returnArgument(0))
 		;
