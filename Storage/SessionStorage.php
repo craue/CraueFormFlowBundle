@@ -47,7 +47,7 @@ class SessionStorage implements StorageInterface {
 	 * {@inheritDoc}
 	 */
 	public function remove($key) {
-		return $this->session->remove($key);
+		$this->session->remove($key);
 	}
 
 }

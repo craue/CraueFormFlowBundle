@@ -28,7 +28,9 @@ class AppKernel extends Kernel {
 	public function registerBundles() {
 		return array(
 			new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+			new \Symfony\Bundle\SecurityBundle\SecurityBundle(),
 			new \Symfony\Bundle\TwigBundle\TwigBundle(),
+			new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
 			new \Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 			new \Craue\FormFlowBundle\CraueFormFlowBundle(),
 			new \Craue\FormFlowBundle\Tests\IntegrationTestBundle\IntegrationTestBundle(),
