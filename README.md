@@ -14,7 +14,7 @@ Features:
 - dynamic step navigation (optional)
 - redirect after submit (a.k.a. "Post/Redirect/Get", optional)
 
-A live demo showcasing these features is available at http://craue.de/sf2playground/en/CraueFormFlow/.
+A live demo showcasing these features is available at http://craue.de/symfony-playground/en/CraueFormFlow/.
 
 # Installation
 
