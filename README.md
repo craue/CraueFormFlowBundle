@@ -405,7 +405,7 @@ By default, if the flow's `getName` method returns `createVehicle`, such a group
 for the first step. You can customize this name by setting the flow's property `validationGroupPrefix` explicitly.
 The step number (1, 2, 3, etc.) will be appended by the flow.
 
-Compared to standalone forms, setting the `validation_groups` option in your form type's `setDefaultOptions`/`configureOptions`
+Compared to standalone forms, setting the `validation_groups` option in your form type's `configureOptions`
 method won't have any effect in the context of a flow. The value is just ignored, i.e. will be overwritten by the flow.
 But there are other ways of defining custom validation groups:
 
