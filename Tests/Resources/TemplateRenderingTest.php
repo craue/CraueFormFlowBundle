@@ -1,6 +1,6 @@
 <?php
 
-namespace Craue\FormFlowBundle\Tests\Form;
+namespace Craue\FormFlowBundle\Tests\Resources;
 
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Storage\DataManager;
