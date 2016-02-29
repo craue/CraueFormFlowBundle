@@ -14,7 +14,11 @@ use Symfony\Component\Yaml\Yaml;
  */
 class TranslationsTest extends \PHPUnit_Framework_TestCase {
 
-	const DEFAULT_LOCALE = 'en';
+	protected static $defaultLocale = 'en';
+
+	public function testTranslationFilesExist() {
+		$this->assertNotEmpty($this->getTranslationFilePaths(), 'No translation files found. Check the path pointing to them.');
+	}
 
 	/**
 	 * @dataProvider dataYamlTranslationFileIsValid
@@ -24,7 +28,7 @@ class TranslationsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dataYamlTranslationFileIsValid() {
-		return array_map(function ($filePath) {
+		return array_map(function($filePath) {
 			return (array) $filePath;
 		}, $this->getTranslationFilePaths());
 	}
@@ -46,21 +50,19 @@ class TranslationsTest extends \PHPUnit_Framework_TestCase {
 			$translations[$domain][$locale] = array_keys($catalogue->all($domain));
 		}
 
-		$this->assertNotEmpty($translations, 'No translations found. Check the path to translation files.');
-
 		foreach ($translations as $domain => $locales) {
 			foreach ($locales as $locale => $keys) {
-				if ($locale === self::DEFAULT_LOCALE) {
+				if ($locale === static::$defaultLocale) {
 					continue;
 				}
 
-				$this->assertEquals(array(), array_diff($keys, $translations[$domain][self::DEFAULT_LOCALE]),
-						sprintf('Translation "%s" contains message keys not available in translation "%s".', $locale, self::DEFAULT_LOCALE));
+				$this->assertEquals(array(), array_diff($keys, $translations[$domain][static::$defaultLocale]),
+						sprintf('The translation file for locale "%s" (domain "%s") contains message keys not available for locale "%s".', $locale, $domain, static::$defaultLocale));
 			}
 		}
 	}
 
-	private function getTranslationFilePaths() {
+	protected function getTranslationFilePaths() {
 		return glob(__DIR__ . '/../../Resources/translations/*.yml');
 	}
 
