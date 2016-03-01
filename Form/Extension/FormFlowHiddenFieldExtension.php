@@ -6,7 +6,6 @@ use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Konstantin Myakshin <koc-dp@yandex.ru>
@@ -33,14 +32,6 @@ class FormFlowHiddenFieldExtension extends AbstractTypeExtension {
 			'flow_instance_key',
 			'flow_step_key',
 		));
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	// TODO remove as soon as Symfony >= 2.7 is required
-	public function setDefaultOptions(OptionsResolverInterface $resolver) {
-		$this->configureOptions($resolver);
 	}
 
 	/**
