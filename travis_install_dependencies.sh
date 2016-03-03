@@ -7,6 +7,7 @@ composer self-update
 
 if [ "${TRAVIS_PHP_VERSION}" = '5.3.3' ]; then
 	composer config -g disable-tls true
+	composer config -g secure-http false
 fi
 
 if [ -n "${MIN_STABILITY:-}" ]; then
