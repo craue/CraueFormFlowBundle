@@ -27,6 +27,7 @@
 - [#215]: added a default `getName` implementation
 - [#217]: added DoctrineStorage to store data in a Doctrine-managed database
 - [#219]: allow a callable for each step label
+- [#226]: allow custom button labels
 
 [#98]: https://github.com/craue/CraueFormFlowBundle/issues/98
 [#101]: https://github.com/craue/CraueFormFlowBundle/issues/101
@@ -53,6 +54,7 @@
 [#217]: https://github.com/craue/CraueFormFlowBundle/issues/217
 [#219]: https://github.com/craue/CraueFormFlowBundle/issues/219
 [#222]: https://github.com/craue/CraueFormFlowBundle/issues/222
+[#226]: https://github.com/craue/CraueFormFlowBundle/issues/226
 
 ## 2.1.9 (2015-12-29)
 
