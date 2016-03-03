@@ -90,224 +90,86 @@ class TemplateRenderingTest extends IntegrationTestCase {
 		$this->assertContains('<button type="submit" class="craue_formflow_button_first" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
 	}
 
-	public function testCustomNextButtonClass() {
-		$flow = $this->getFlowStub(array(), array(
-			array(
-				'label' => 'step1',
-			),
-			array(
-				'label' => 'step2',
-			),
-		));
+	/**
+	 * @dataProvider dataCustomizedButton
+	 */
+	public function testCustomizedButton($numberOfSteps, $jumpToStep, array $parameters, $expectedHtml) {
+		$flow = $this->getFlowStub(array(), array_fill_keys(range(1, $numberOfSteps), array()));
 
-		$flow->nextStep();
+		do {
+			$flow->nextStep();
+		} while (--$jumpToStep > 0);
 
-		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
+		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array_merge($parameters, array(
 			'flow' => $flow,
-			'craue_formflow_button_class_next' => 'next',
-		));
+		)));
 
-		$this->assertContains('<button type="submit" class="next">next</button>', $renderedTemplate);
+		$this->assertContains($expectedHtml, $renderedTemplate);
 	}
 
-	public function testCustomFinishButtonClass() {
-		$flow = $this->getFlowStub(array(), array(
-			array(
-				'label' => 'step1',
+	public function dataCustomizedButton() {
+		return array(
+			'next button custom class' => array(
+				2, 1,
+				array('craue_formflow_button_class_next' => 'next'),
+				'<button type="submit" class="next">next</button>',
 			),
-		));
-
-		$flow->nextStep();
-
-		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
-			'flow' => $flow,
-			'craue_formflow_button_class_finish' => 'finish',
-		));
-
-		$this->assertContains('<button type="submit" class="finish">finish</button>', $renderedTemplate);
-	}
-
-	public function testCustomLastButtonClass() {
-		$flow = $this->getFlowStub(array(), array(
-			array(
-				'label' => 'step1',
+			'next button custom label' => array(
+				2, 1,
+				array('craue_formflow_button_label_next' => 'custom next'),
+				'<button type="submit" class="craue_formflow_button_last">custom next</button>',
 			),
-		));
-
-		$flow->nextStep();
-
-		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
-			'flow' => $flow,
-			'craue_formflow_button_class_last' => 'last',
-		));
-
-		$this->assertContains('<button type="submit" class="last">finish</button>', $renderedTemplate);
-
-		$flow = $this->getFlowStub(array(), array(
-			array(
-				'label' => 'step1',
+			'finish button custom class' => array(
+				1, 1,
+				array('craue_formflow_button_class_finish' => 'finish'),
+				'<button type="submit" class="finish">finish</button>',
 			),
-			array(
-				'label' => 'step2',
+			'finish button custom label' => array(
+				1, 1,
+				array('craue_formflow_button_label_finish' => 'custom finish'),
+				'<button type="submit" class="craue_formflow_button_last">custom finish</button>',
 			),
-		));
-
-		$flow->nextStep();
-
-		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
-			'flow' => $flow,
-			'craue_formflow_button_class_last' => 'last',
-		));
-
-		$this->assertContains('<button type="submit" class="last">next</button>', $renderedTemplate);
-	}
-
-	public function testCustomBackButtonClass() {
-		$flow = $this->getFlowStub(array(), array(
-			array(
-				'label' => 'step1',
+			'last button custom class (finish)' => array(
+				1, 1,
+				array('craue_formflow_button_class_last' => 'last'),
+				'<button type="submit" class="last">finish</button>',
 			),
-			array(
-				'label' => 'step2',
+			'last button custom label (finish)' => array(
+				1, 1,
+				array('craue_formflow_button_label_last' => 'custom last'),
+				'<button type="submit" class="craue_formflow_button_last">custom last</button>',
 			),
-		));
-
-		$flow->nextStep();
-		$flow->nextStep();
-
-		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
-			'flow' => $flow,
-			'craue_formflow_button_class_back' => 'back',
-		));
-
-		$this->assertContains('<button type="submit" class="back" name="flow_renderingTest_transition" value="back" formnovalidate="formnovalidate">back</button>', $renderedTemplate);
-	}
-
-	public function testCustomResetButtonClass() {
-		$flow = $this->getFlowStub(array(), array(
-			array(
-				'label' => 'step1',
+			'last button custom class (next)' => array(
+				2, 1,
+				array('craue_formflow_button_class_last' => 'last'),
+				'<button type="submit" class="last">next</button>',
 			),
-		));
-
-		$flow->nextStep();
-
-		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
-			'flow' => $flow,
-			'craue_formflow_button_class_reset' => 'reset',
-		));
-
-		$this->assertContains('<button type="submit" class="reset" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
-	}
-
-	public function testCustomNextButtonLabel() {
-		$flow = $this->getFlowStub(array(), array(
-			array(
-				'label' => 'step1',
+			'last button custom label (next)' => array(
+				2, 1,
+				array('craue_formflow_button_label_last' => 'custom last'),
+				'<button type="submit" class="craue_formflow_button_last">custom last</button>',
 			),
-			array(
-				'label' => 'step2',
+			'back button custom class' => array(
+				2, 2,
+				array('craue_formflow_button_class_back' => 'back'),
+				'<button type="submit" class="back" name="flow_renderingTest_transition" value="back" formnovalidate="formnovalidate">back</button>',
 			),
-		));
-
-		$flow->nextStep();
-
-		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
-			'flow' => $flow,
-			'craue_formflow_button_label_next' => 'custom next',
-		));
-
-		$this->assertContains('<button type="submit" class="craue_formflow_button_last">custom next</button>', $renderedTemplate);
-	}
-
-	public function testCustomFinishButtonLabel() {
-		$flow = $this->getFlowStub(array(), array(
-			array(
-				'label' => 'step1',
+			'back button custom label' => array(
+				2, 2,
+				array('craue_formflow_button_label_back' => 'custom back'),
+				'<button type="submit" class="" name="flow_renderingTest_transition" value="back" formnovalidate="formnovalidate">custom back</button>',
 			),
-		));
-
-		$flow->nextStep();
-
-		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
-			'flow' => $flow,
-			'craue_formflow_button_label_finish' => 'custom finish',
-		));
-
-		$this->assertContains('<button type="submit" class="craue_formflow_button_last">custom finish</button>', $renderedTemplate);
-	}
-
-	public function testCustomLastButtonLabel() {
-		$flow = $this->getFlowStub(array(), array(
-			array(
-				'label' => 'step1',
+			'reset button custom class' => array(
+				1, 1,
+				array('craue_formflow_button_class_reset' => 'reset'),
+				'<button type="submit" class="reset" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>',
 			),
-		));
-
-		$flow->nextStep();
-
-		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
-			'flow' => $flow,
-			'craue_formflow_button_label_last' => 'custom last',
-		));
-
-		$this->assertContains('<button type="submit" class="craue_formflow_button_last">custom last</button>', $renderedTemplate);
-
-		$flow = $this->getFlowStub(array(), array(
-			array(
-				'label' => 'step1',
+			'reset button custom label' => array(
+				1, 1,
+				array('craue_formflow_button_label_reset' => 'custom reset'),
+				'<button type="submit" class="craue_formflow_button_first" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">custom reset</button>',
 			),
-			array(
-				'label' => 'step2',
-			),
-		));
-
-		$flow->nextStep();
-
-		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
-			'flow' => $flow,
-			'craue_formflow_button_label_last' => 'custom last',
-		));
-
-		$this->assertContains('<button type="submit" class="craue_formflow_button_last">custom last</button>', $renderedTemplate);
-	}
-
-	public function testCustomBackButtonLabel() {
-		$flow = $this->getFlowStub(array(), array(
-			array(
-				'label' => 'step1',
-			),
-			array(
-				'label' => 'step2',
-			),
-		));
-
-		$flow->nextStep();
-		$flow->nextStep();
-
-		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
-			'flow' => $flow,
-			'craue_formflow_button_label_back' => 'custom back',
-		));
-
-		$this->assertContains('<button type="submit" class="" name="flow_renderingTest_transition" value="back" formnovalidate="formnovalidate">custom back</button>', $renderedTemplate);
-	}
-
-	public function testCustomResetButtonLabel() {
-		$flow = $this->getFlowStub(array(), array(
-			array(
-				'label' => 'step1',
-			),
-		));
-
-		$flow->nextStep();
-
-		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
-			'flow' => $flow,
-			'craue_formflow_button_label_reset' => 'custom reset',
-		));
-
-		$this->assertContains('<button type="submit" class="craue_formflow_button_first" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">custom reset</button>', $renderedTemplate);
+		);
 	}
 
 	public function testStepList() {
