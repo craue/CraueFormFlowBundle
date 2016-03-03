@@ -278,19 +278,20 @@ Example with Bootstrap button classes:
 	} %}
 ```
 
-In the same manner you can customize the labels on the buttons:
+In the same manner you can customize the button labels:
 
-- `craue_formflow_button_label_finish` is basically the form __submit__ button
-- `craue_formflow_button_label_next` is the label of the __next__ button 
-- `craue_formflow_button_label_back` is the label of the __back__ button
-- `craue_formflow_button_label_reset` is the label of the __reset__ button 
+- `craue_formflow_button_label_last` for either the __next__ or __finish__ button
+- `craue_formflow_button_label_finish` for the __finish__ button
+- `craue_formflow_button_label_next` for the __next__ button 
+- `craue_formflow_button_label_back` for the __back__ button
+- `craue_formflow_button_label_reset` for the __reset__ button 
 
 Example:
 
 ```twig
 {% include 'CraueFormFlowBundle:FormFlow:buttons.html.twig' with {
-		craue_formflow_button_label_finish: finish_label | default('Submit'),
-		craue_formflow_button_label_reset: "Reset the Form"
+		craue_formflow_button_label_finish: 'submit',
+		craue_formflow_button_label_reset: 'reset the flow',
 	} %}
 ```
 
