@@ -35,7 +35,7 @@ class FlowExpiredEventListener {
 		$messageId = 'craueFormFlow.flowExpired';
 		$messageParameters = array();
 
-		return new FormError($this->translator->trans($messageId, $messageParameters, 'validators'));
+		return new FormError($this->translator->trans($messageId, $messageParameters, 'validators'), $messageId, $messageParameters);
 	}
 
 }
