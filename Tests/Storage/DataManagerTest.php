@@ -70,14 +70,22 @@ class DataManagerTest extends UnitTestCase {
 		$this->assertSame($this->storage, $this->dataManager->getStorage());
 	}
 
-	public function testSaveLoadDrop() {
+	public function testSaveLoadDropExists() {
 		// create two flows
 		$createLocationFlow = $this->getFlow($this->createLocationFlowName, $this->createLocationFlowInstanceId);
 		$createVehicleFlow = $this->getFlow($this->createVehicleFlowName, $this->createVehicleFlowInstanceId);
 
+		// ensure there's no stored data for new flows
+		$this->assertFalse($this->dataManager->exists($createLocationFlow));
+		$this->assertFalse($this->dataManager->exists($createVehicleFlow));
+
 		// save their data
 		$this->dataManager->save($createLocationFlow, $this->createLocationFlowData);
 		$this->dataManager->save($createVehicleFlow, $this->createVehicleFlowData);
+
+		// ensure their data exists in the storage
+		$this->assertTrue($this->dataManager->exists($createLocationFlow));
+		$this->assertTrue($this->dataManager->exists($createVehicleFlow));
 
 		// ensure their data has been saved correctly
 		$this->assertEquals($this->createLocationFlowData, $this->dataManager->load($createLocationFlow));
@@ -85,6 +93,10 @@ class DataManagerTest extends UnitTestCase {
 
 		// drop data for one of them
 		$this->dataManager->drop($createLocationFlow);
+
+		// ensure only data of the correct flow exists in the storage
+		$this->assertFalse($this->dataManager->exists($createLocationFlow));
+		$this->assertTrue($this->dataManager->exists($createVehicleFlow));
 
 		// ensure only data of the correct flow has been dropped
 		$this->assertEquals(array(), $this->dataManager->load($createLocationFlow));

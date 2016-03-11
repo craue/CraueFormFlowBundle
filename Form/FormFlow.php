@@ -2,6 +2,7 @@
 
 namespace Craue\FormFlowBundle\Form;
 
+use Craue\FormFlowBundle\Event\FlowExpiredEvent;
 use Craue\FormFlowBundle\Event\GetStepsEvent;
 use Craue\FormFlowBundle\Event\PostBindFlowEvent;
 use Craue\FormFlowBundle\Event\PostBindRequestEvent;
@@ -155,6 +156,18 @@ abstract class FormFlow implements FormFlowInterface {
 	 * @var array
 	 */
 	private $genericFormOptions = array();
+
+	/**
+	 * Flow was determined to be expired.
+	 * @var boolean
+	 */
+	private $expired = false;
+
+	/**
+	 * Instance ID was a newly generated ID.
+	 * @var boolean
+	 */
+	private $newInstance = false;
 
 	/**
 	 * {@inheritDoc}
@@ -434,6 +447,7 @@ abstract class FormFlow implements FormFlowInterface {
 	public function reset() {
 		$this->dataManager->drop($this);
 		$this->currentStepNumber = $this->getFirstStepNumber();
+		$this->newInstance = true;
 
 		// re-evaluate to not keep steps marked as skipped when resetting
 		foreach ($this->getSteps() as $step) {
@@ -586,6 +600,11 @@ abstract class FormFlow implements FormFlowInterface {
 			$event = new PostBindFlowEvent($this, $this->formData);
 			$this->eventDispatcher->dispatch(FormFlowEvents::POST_BIND_FLOW, $event);
 		}
+
+		if ($this->newInstance) {
+			// initialize storage slot
+			$this->dataManager->save($this, array());
+		}
 	}
 
 	protected function determineInstanceId() {
@@ -603,6 +622,7 @@ abstract class FormFlow implements FormFlowInterface {
 		$instanceIdLength = 10;
 		if ($instanceId === null || !StringUtil::isRandomString($instanceId, $instanceIdLength)) {
 			$instanceId = StringUtil::generateRandomString($instanceIdLength);
+			$this->newInstance = true;
 		}
 
 		return $instanceId;
@@ -617,6 +637,17 @@ abstract class FormFlow implements FormFlowInterface {
 
 		if ($this->getRequestedTransition() === self::TRANSITION_RESET) {
 			$reset = true;
+		}
+
+		if (in_array($this->getRequest()->getMethod(), array('POST', 'PUT')) && !$this->dataManager->exists($this)) {
+			// flow is expired, drop posted data and reset
+			$this->getRequest()->request->replace();
+			$reset = true;
+			$this->expired = true;
+
+			// Regenerate instance ID so resubmits of the form will continue to give error. Otherwise, submitting
+			// the new form, then backing up to the old form won't give the error.
+			$this->setInstanceId($this->determineInstanceId());
 		}
 
 		if (!$reset) {
@@ -722,7 +753,14 @@ abstract class FormFlow implements FormFlowInterface {
 	 * {@inheritDoc}
 	 */
 	public function createForm() {
-		return $this->createFormForStep($this->currentStepNumber);
+		$form = $this->createFormForStep($this->currentStepNumber);
+
+		if ($this->expired && $this->hasListeners(FormFlowEvents::FLOW_EXPIRED)) {
+			$event = new FlowExpiredEvent($this, $form);
+			$this->eventDispatcher->dispatch(FormFlowEvents::FLOW_EXPIRED, $event);
+		}
+
+		return $form;
 	}
 
 	public function getFormOptions($step, array $options = array()) {

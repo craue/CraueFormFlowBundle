@@ -29,6 +29,13 @@ interface DataManagerInterface {
 	function save(FormFlowInterface $flow, array $data);
 
 	/**
+	 * Checks if data exists for a given flow.
+	 * @param FormFlowInterface $flow
+	 * @return boolean
+	 */
+	function exists(FormFlowInterface $flow);
+
+	/**
 	 * Loads data of the given flow.
 	 * @param FormFlowInterface $flow
 	 * @return array

@@ -106,6 +106,14 @@ class DataManager implements ExtendedDataManagerInterface {
 	/**
 	 * {@inheritDoc}
 	 */
+	public function exists(FormFlowInterface $flow) {
+		$savedFlows = $this->storage->get(DataManagerInterface::STORAGE_ROOT, array());
+		return isset($savedFlows[$flow->getName()][$flow->getInstanceId()][self::DATA_KEY]);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function drop(FormFlowInterface $flow) {
 		$savedFlows = $this->storage->get(DataManagerInterface::STORAGE_ROOT, array());
 
