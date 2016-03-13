@@ -50,9 +50,40 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 		$this->assertCurrentFormData('{"numberOfWheels":4,"engine":"gas"}', $crawler);
 
 		// finish flow
+		$expiredCrawler = $crawler;
 		$form = $crawler->selectButton('finish')->form();
 		$this->client->submit($form);
 		$this->assertJsonResponse('{"numberOfWheels":4,"engine":"gas"}');
+	}
+
+	public function testCreateVehicle_flowExpired() {
+		$crawler = $this->client->request('GET', $this->url('_FormFlow_createVehicle'));
+		$this->assertSame(200, $this->client->getResponse()->getStatusCode());
+		$this->assertCurrentStepNumber(1, $crawler);
+
+		// 2 wheels -> step 3
+		$form = $crawler->selectButton('next')->form();
+		$crawler = $this->client->submit($form, array(
+			'createVehicle[numberOfWheels]' => 2,
+		));
+		$this->assertCurrentStepNumber(3, $crawler);
+
+		// finish flow
+		$expiredCrawler = $crawler;
+		$form = $crawler->selectButton('finish')->form();
+		$this->client->submit($form);
+
+		// try resubmitting an expired form again and do it multiple times to ensure it's not re-initialized.
+		for ($i = 0; $i < 3; ++$i) {
+			$form = $expiredCrawler->selectButton('finish')->form();
+			$oldInstanceId = $form->get('flow_createVehicle_instance')->getValue();
+			$crawler = $this->client->submit($form);
+			$this->assertContainsFormError('This form has expired. Please submit it again.', $crawler);
+
+			// the instance id should be regenerated
+			$newForm = $crawler->selectButton('next')->form();
+			$this->assertNotEquals($oldInstanceId, $newForm->get('flow_createVehicle_instance')->getValue());
+		}
 	}
 
 	public function testCreateVehicle_invalidateStepData() {

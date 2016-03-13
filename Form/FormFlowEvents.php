@@ -17,6 +17,8 @@ class FormFlowEvents {
 
 	const POST_BIND_FLOW = 'flow.post_bind_flow';
 
+	const FLOW_EXPIRED  = 'flow.flow_expired';
+
 	const POST_BIND_REQUEST = 'flow.post_bind_request';
 
 	const PREVIOUS_STEP_INVALID = 'flow.previous_step_invalid';
