@@ -1,1 +1,2 @@
 craueFormFlow.previousStepInvalid: Le formulaire pour l'étape %stepNumber% est invalide. Veuillez retourner et essayez de le renvoyer.
+craueFormFlow.flowExpired: Ce formulaire a expiré. Veuillez essayer de le renvoyer.
