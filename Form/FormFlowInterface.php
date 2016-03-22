@@ -178,4 +178,9 @@ interface FormFlowInterface {
 	 */
 	function getStepCount();
 
+	/**
+	 * Toggles expiration on request
+	 * @param $expires
+	 */
+	function expiresOnRequest($expires);
 }
