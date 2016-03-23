@@ -108,7 +108,7 @@ class Step implements StepInterface {
 	 * {@inheritDoc}
 	 */
 	public function getLabel() {
-		if (is_callable($this->label)) {
+		if (!is_string($this->label) && is_callable($this->label)) {
 			$returnValue = call_user_func($this->label);
 
 			if ($returnValue === null || is_string($returnValue)) {

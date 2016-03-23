@@ -131,6 +131,7 @@ class StepTest extends UnitTestCase {
 	public function dataSetGetLabel() {
 		return array(
 			array('label'),
+			array('date'), // return the plain string although it's a PHP function name and thus callable, see https://github.com/craue/CraueFormFlowBundle/issues/236
 			array(null),
 		);
 	}
