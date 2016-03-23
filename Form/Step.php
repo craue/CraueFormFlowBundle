@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Form;
 
 use Craue\FormFlowBundle\Exception\InvalidTypeException;
+use Craue\FormFlowBundle\Exception\StepLabelCallableInvalidReturnValueException;
 use Symfony\Component\Form\FormTypeInterface;
 
 /**
@@ -18,7 +19,7 @@ class Step implements StepInterface {
 	protected $number;
 
 	/**
-	 * @var string|callable|null
+	 * @var string|StepLabel|null
 	 */
 	protected $label = null;
 
@@ -92,34 +93,34 @@ class Step implements StepInterface {
 	}
 
 	/**
-	 * @param string|callable|null $label
+	 * @param string|StepLabel|null $label
 	 */
 	public function setLabel($label) {
-		if ($label === null || is_string($label) || is_callable($label)) {
+		if (is_string($label)) {
+			$this->label = StepLabel::createStringLabel($label);
+
+			return;
+		}
+
+		if ($label === null || $label instanceof StepLabel) {
 			$this->label = $label;
 
 			return;
 		}
 
-		throw new InvalidTypeException($label, array('null', 'string', 'callable'));
+		throw new InvalidTypeException($label, array('null', 'string', 'Craue\FormFlowBundle\Form\StepLabel'));
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function getLabel() {
-		if (is_callable($this->label)) {
-			$returnValue = call_user_func($this->label);
-
-			if ($returnValue === null || is_string($returnValue)) {
-				return $returnValue;
-			}
-
+		try {
+			return $this->label !== null ? $this->label->getText() : null;
+		} catch (StepLabelCallableInvalidReturnValueException $e) {
 			throw new \RuntimeException(sprintf('The label callable for step %d did not return a string or null value.',
 					$this->number));
 		}
-
-		return $this->label;
 	}
 
 	/**
