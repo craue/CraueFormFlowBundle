@@ -355,9 +355,9 @@ The array returned by that method is used to create all steps of the flow.
 The first item will be the first step. You can, however, explicitly index the array for easier readability.
 
 Valid options per step are:
-- `label` (`string`|`callable`|`null`)
+- `label` (`string`|`StepLabel`|`null`)
 	- If you'd like to render an overview of all steps you have to set the `label` option for each step.
-	- If using a callable, it has to return a string value or `null`.
+	- If using a callable on a `StepLabel` instance, it has to return a string value or `null`.
 	- By default, the labels will be translated using the `messages` domain when rendered in Twig.
 - `form_type` (`FormTypeInterface`|`string`|`null`)
 	- The form type used to build the form for that step.
@@ -397,7 +397,7 @@ protected function loadStepsConfig() {
 			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
 		),
 		2 => array(
-			'label' => 'engine',
+			'label' => StepLabel::createCallableLabel(function() { return 'engine'; })
 			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep2Form',
 			'form_options' => array(
 				'validation_groups' => array('Default'),

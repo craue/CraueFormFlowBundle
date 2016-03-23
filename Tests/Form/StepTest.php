@@ -4,6 +4,7 @@ namespace Craue\FormFlowBundle\Tests\Form;
 
 use Craue\FormFlowBundle\Form\FormFlowInterface;
 use Craue\FormFlowBundle\Form\Step;
+use Craue\FormFlowBundle\Form\StepLabel;
 use Craue\FormFlowBundle\Tests\UnitTestCase;
 
 /**
@@ -33,9 +34,9 @@ class StepTest extends UnitTestCase {
 		$this->assertEquals('country', $step->getLabel());
 
 		$step = Step::createFromConfig(1, array(
-			'label' => function() {
+			'label' => StepLabel::createCallableLabel(function() {
 				return 'country';
-			},
+			}),
 		));
 		$this->assertEquals('country', $step->getLabel());
 
@@ -131,6 +132,7 @@ class StepTest extends UnitTestCase {
 	public function dataSetGetLabel() {
 		return array(
 			array('label'),
+			array('date'),
 			array(null),
 		);
 	}
@@ -151,9 +153,9 @@ class StepTest extends UnitTestCase {
 		;
 
 		$step = Step::createFromConfig(1, array(
-			'label' => function() use ($flow) {
+			'label' => StepLabel::createCallableLabel(function() use ($flow) {
 				return $flow->getFormData() === 'special' ? 'special label' : 'default label';
-			},
+			}),
 		));
 
 		$this->assertSame('special label', $step->getLabel());
@@ -206,6 +208,7 @@ class StepTest extends UnitTestCase {
 		return array(
 			array(true),
 			array(1.1),
+			array(function() { return 'label'; }),
 		);
 	}
 
@@ -331,9 +334,9 @@ class StepTest extends UnitTestCase {
 
 	protected function createStepWithLabelCallable($number, $returnValue) {
 		return Step::createFromConfig($number, array(
-			'label' => function() use ($returnValue) {
+			'label' => StepLabel::createCallableLabel(function() use ($returnValue) {
 				return $returnValue;
-			},
+			}),
 		));
 	}
 
