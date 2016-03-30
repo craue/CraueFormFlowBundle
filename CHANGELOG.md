@@ -26,7 +26,7 @@
 - [#196]: allow to use a closure for the `validation_groups` option
 - [#215]: added a default `getName` implementation
 - [#217]: added DoctrineStorage to store data in a Doctrine-managed database
-- [#219]: allow a callable for each step label
+- [#219]+[#238]: allow a callable for each step label
 - [#220]: added expired form detection
 - [#226]: allow custom button labels
 
@@ -57,6 +57,7 @@
 [#220]: https://github.com/craue/CraueFormFlowBundle/issues/220
 [#222]: https://github.com/craue/CraueFormFlowBundle/issues/222
 [#226]: https://github.com/craue/CraueFormFlowBundle/issues/226
+[#238]: https://github.com/craue/CraueFormFlowBundle/issues/238
 
 ## 2.1.9 (2015-12-29)
 
