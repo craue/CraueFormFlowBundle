@@ -569,13 +569,7 @@ abstract class FormFlow implements FormFlowInterface {
 	 */
 	protected function refineCurrentStepNumber($refinedStepNumber) {
 		foreach ($this->getSteps() as $step) {
-			$stepSkippedOld = $step->isSkipped();
-
 			$step->evaluateSkipping($refinedStepNumber, $this);
-
-			if (!$stepSkippedOld && $step->isSkipped()) {
-				return $this->refineCurrentStepNumber($refinedStepNumber);
-			}
 		}
 
 		return $refinedStepNumber;
