@@ -746,8 +746,8 @@ abstract class FormFlow implements FormFlowInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function createForm() {
-		$form = $this->createFormForStep($this->currentStepNumber);
+	public function createForm(array $options = array()) {
+		$form = $this->createFormForStep($this->currentStepNumber, array $options = array());
 
 		if ($this->expired && $this->hasListeners(FormFlowEvents::FLOW_EXPIRED)) {
 			$event = new FlowExpiredEvent($this, $form);
