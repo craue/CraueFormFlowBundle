@@ -56,6 +56,11 @@ abstract class FormFlow implements FormFlowInterface {
 	 */
 	protected $revalidatePreviousSteps = true;
 
+    /**
+     * @var bool If this is set to true then form data for the current step will be saved when transitioning backwards.
+     */
+    protected $persistOnBackTransition = false;
+
 	/**
 	 * @var boolean
 	 */
@@ -666,6 +671,19 @@ abstract class FormFlow implements FormFlowInterface {
 		}
 
 		$this->currentStepNumber = $requestedStepNumber;
+
+        if ($this->persistOnBackTransition  && $this->getRequestedTransition() === self::TRANSITION_BACK) {
+
+            /**
+             * If persistence on backwards transition is enabled and the current request transition is 'back' then
+             * persist the current step data to storage.
+             */
+            $this->nextStep();
+            $form = $this->createFormForStep($this->getCurrentStepNumber());
+            $form->setData($this->getFormData());
+            $this->saveCurrentStepData($form);
+            $this->previousStep();
+        }
 
 		if (!$this->allowDynamicStepNavigation && $this->getRequestedTransition() === self::TRANSITION_BACK) {
 			/*
