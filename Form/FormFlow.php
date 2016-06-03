@@ -717,7 +717,6 @@ abstract class FormFlow implements FormFlowInterface {
 	             	*/
 	            	$this->nextStep();
 	            	$form = $this->createFormForStep($this->getCurrentStepNumber());
-	            	$form->setData($this->getFormData());
 	            	$this->saveCurrentStepData($form);
 	            	$this->previousStep();
         	}
