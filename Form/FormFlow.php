@@ -57,7 +57,7 @@ abstract class FormFlow implements FormFlowInterface {
 	protected $revalidatePreviousSteps = true;
 
     	/**
-     	* @var bool If this is set to true then form data for the current step will be saved when transitioning backwards.
+     	* @var bool If this is set to true then step data for the current step will be saved when transitioning backwards.
      	*/
     	protected $persistOnBackTransition = false;
 
