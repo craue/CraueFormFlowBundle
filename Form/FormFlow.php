@@ -672,7 +672,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 		$this->currentStepNumber = $requestedStepNumber;
 
-        	if ($this->persistOnBackTransition  && $this->getRequestedTransition() === self::TRANSITION_BACK) {
+        	if ($this->persistOnBackTransition && $this->getRequestedTransition() === self::TRANSITION_BACK) {
 
 	            /**
 	             * If persistence on backwards transition is enabled and the current request transition is 'back' then
