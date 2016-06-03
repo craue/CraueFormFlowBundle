@@ -499,6 +499,32 @@ abstract class FormFlow implements FormFlowInterface {
 
 		return false; // should never be reached, but just in case
 	}
+	
+    	/**
+     	* {@inheritDoc}
+     	*/
+    	public function previousStep() {
+        	$currentStepNumber = $this->currentStepNumber - 1;
+
+        	foreach ($this->getSteps() as $step) {
+            		$step->evaluateSkipping($currentStepNumber, $this);
+        	}
+
+        	// There is no "before" step as the target step precedes the first step.
+        	if ($currentStepNumber < $this->getFirstStepNumber()) {
+            	return false;
+        	}
+
+        	$currentStepNumber = $this->applySkipping($currentStepNumber);
+
+        	if ($currentStepNumber <= $this->getStepCount()) {
+            	$this->currentStepNumber = $currentStepNumber;
+
+            	return true;
+        	}
+
+        	return false; // should never be reached, but just in case
+    	}	
 
 	/**
 	 * {@inheritDoc}
