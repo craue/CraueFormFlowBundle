@@ -352,6 +352,17 @@ abstract class FormFlow implements FormFlowInterface {
 		return $this->revalidatePreviousSteps;
 	}
 
+	public function setPersistOnBackTransition($persistOnBackTransition) {
+		$this->persistOnBackTransition = (boolean) $persistOnBackTransition;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isPersistOnBackTransition() {
+		return $this->persistOnBackTransition;
+	}
+
 	public function setAllowDynamicStepNavigation($allowDynamicStepNavigation) {
 		$this->allowDynamicStepNavigation = (boolean) $allowDynamicStepNavigation;
 	}
