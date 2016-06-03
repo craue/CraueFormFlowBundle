@@ -512,15 +512,15 @@ abstract class FormFlow implements FormFlowInterface {
 
         	// There is no "before" step as the target step precedes the first step.
         	if ($currentStepNumber < $this->getFirstStepNumber()) {
-            	return false;
+            		return false;
         	}
 
         	$currentStepNumber = $this->applySkipping($currentStepNumber);
 
         	if ($currentStepNumber <= $this->getStepCount()) {
-            	$this->currentStepNumber = $currentStepNumber;
+            		$this->currentStepNumber = $currentStepNumber;
 
-            	return true;
+            		return true;
         	}
 
         	return false; // should never be reached, but just in case
