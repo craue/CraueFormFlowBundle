@@ -163,6 +163,13 @@ abstract class FormFlow implements FormFlowInterface {
 	 */
 	private $expired = false;
 
+
+	/**
+	 * Flow was determined to be expired on post.
+	 * @var boolean
+	 */
+	private $expiresOnRequest = true;
+
 	/**
 	 * Instance ID was a newly generated ID.
 	 * @var boolean
@@ -633,7 +640,7 @@ abstract class FormFlow implements FormFlowInterface {
 			$reset = true;
 		}
 
-		if (in_array($this->getRequest()->getMethod(), array('POST', 'PUT')) && !$this->dataManager->exists($this)) {
+		if ($this->expiresOnRequest && (in_array($this->getRequest()->getMethod(), array('POST', 'PUT')) && !$this->dataManager->exists($this))) {
 			// flow is expired, drop posted data and reset
 			$this->getRequest()->request->replace();
 			$reset = true;
@@ -964,6 +971,14 @@ abstract class FormFlow implements FormFlowInterface {
 		}
 
 		return $steps;
+	}
+
+	/**
+	 * @param $expires
+	 */
+	public function expiresOnRequest($expires)
+	{
+		$this->expiresOnRequest = $expires;
 	}
 
 	/**
