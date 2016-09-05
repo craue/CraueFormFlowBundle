@@ -29,6 +29,7 @@
 - [#219]+[#238]: allow a callable for each step label
 - [#220]: added expired form detection
 - [#226]: allow custom button labels
+- [#254]: added Slovak translation
 
 [#98]: https://github.com/craue/CraueFormFlowBundle/issues/98
 [#101]: https://github.com/craue/CraueFormFlowBundle/issues/101
@@ -58,6 +59,7 @@
 [#222]: https://github.com/craue/CraueFormFlowBundle/issues/222
 [#226]: https://github.com/craue/CraueFormFlowBundle/issues/226
 [#238]: https://github.com/craue/CraueFormFlowBundle/issues/238
+[#254]: https://github.com/craue/CraueFormFlowBundle/issues/254
 
 ## 2.1.9 (2015-12-29)
 
