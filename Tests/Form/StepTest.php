@@ -225,7 +225,8 @@ class StepTest extends UnitTestCase {
 		return array(
 			array(null),
 			array('myFormType'),
-			array($this->getMock('Symfony\Component\Form\FormTypeInterface')),
+			// TODO replace by `$this->createMock('Symfony\Component\Form\FormTypeInterface')` as soon as PHPUnit >= 5.4 is required
+			array($this->getMockBuilder('Symfony\Component\Form\FormTypeInterface')->getMock()),
 		);
 	}
 
@@ -241,7 +242,8 @@ class StepTest extends UnitTestCase {
 	public function dataSetGetFormType_invalidArguments() {
 		return array(
 			array(123),
-			array($this->getMock('Symfony\Component\Form\Test\FormInterface')),
+			// TODO replace by `$this->createMock('Symfony\Component\Form\Test\FormInterface')` as soon as PHPUnit >= 5.4 is required
+			array($this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock()),
 		);
 	}
 

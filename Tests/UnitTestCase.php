@@ -63,7 +63,8 @@ abstract class UnitTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return \PHPUnit_Framework_MockObject_MockObject|FormFlowInterface
 	 */
 	protected function getMockedFlowInterface() {
-		return $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface');
+		// TODO replace by `$this->createMock('\Craue\FormFlowBundle\Form\FormFlowInterface')` as soon as PHPUnit >= 5.4 is required
+		return $this->getMockBuilder('\Craue\FormFlowBundle\Form\FormFlowInterface')->getMock();
 	}
 
 	/**
@@ -71,21 +72,23 @@ abstract class UnitTestCase extends \PHPUnit_Framework_TestCase {
 	 * @return PHPUnit_Framework_MockObject_MockObject|FormFlow
 	 */
 	protected function getFlowWithMockedMethods(array $methodNames) {
-		return $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', $methodNames);
+		return $this->getMockBuilder('\Craue\FormFlowBundle\Form\FormFlow')->setMethods($methodNames)->getMock();
 	}
 
 	/**
 	 * @return \PHPUnit_Framework_MockObject_MockObject|StepInterface
 	 */
 	protected function getMockedStepInterface() {
-		return $this->getMock('\Craue\FormFlowBundle\Form\StepInterface');
+		// TODO replace by `$this->createMock('\Craue\FormFlowBundle\Form\StepInterface')` as soon as PHPUnit >= 5.4 is required
+		return $this->getMockBuilder('\Craue\FormFlowBundle\Form\StepInterface')->getMock();
 	}
 
 	/**
 	 * @return \PHPUnit_Framework_MockObject_MockObject|DataManagerInterface
 	 */
 	protected function getMockedDataManagerInterface() {
-		return $this->getMock('\Craue\FormFlowBundle\Storage\DataManagerInterface');
+		// TODO replace by `$this->createMock('\Craue\FormFlowBundle\Storage\DataManagerInterface')` as soon as PHPUnit >= 5.4 is required
+		return $this->getMockBuilder('\Craue\FormFlowBundle\Storage\DataManagerInterface')->getMock();
 	}
 
 }

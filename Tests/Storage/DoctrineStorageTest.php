@@ -23,7 +23,8 @@ class DoctrineStorageTest extends AbstractStorageTest {
 			'memory' => true,
 		));
 
-		$generator = $this->getMock('Craue\FormFlowBundle\Storage\StorageKeyGeneratorInterface');
+		// TODO replace by `$this->createMock('Craue\FormFlowBundle\Storage\StorageKeyGeneratorInterface')` as soon as PHPUnit >= 5.4 is required
+		$generator = $this->getMockBuilder('Craue\FormFlowBundle\Storage\StorageKeyGeneratorInterface')->getMock();
 
 		$generator
 			->method('generate')

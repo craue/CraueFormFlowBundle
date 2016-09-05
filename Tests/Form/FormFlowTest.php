@@ -306,14 +306,16 @@ class FormFlowTest extends UnitTestCase {
 			->will($this->returnValue(Request::create('', $httpMethod, $parameters)))
 		;
 
-		$dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+		// TODO replace by `$this->createMock('Symfony\Component\EventDispatcher\EventDispatcherInterface')` as soon as PHPUnit >= 5.4 is required
+		$dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')->getMock();
 		$factory = Forms::createFormFactoryBuilder()->getFormFactory();
 		$formBuilder = new FormBuilder(null, 'stdClass', $dispatcher, $factory);
 		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
 
 		$form = $formBuilder
 			->setCompound(true)
-			->setDataMapper($this->getMock('Symfony\Component\Form\DataMapperInterface'))
+			// TODO replace by `$this->createMock('Symfony\Component\Form\DataMapperInterface')` as soon as PHPUnit >= 5.4 is required
+			->setDataMapper($this->getMockBuilder('Symfony\Component\Form\DataMapperInterface')->getMock())
 			->add('aField', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text')
 			->setMethod($httpMethod)
 			->setRequestHandler(new HttpFoundationRequestHandler())
