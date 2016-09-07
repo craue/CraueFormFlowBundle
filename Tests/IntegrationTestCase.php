@@ -93,12 +93,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 	 * @param Crawler $crawler
 	 */
 	protected function assertRenderedImageUrl($expectedSrcAttr, Crawler $crawler) {
-		$selector = '#rendered-image';
-		try {
-			$this->assertEquals($expectedSrcAttr, $crawler->filter($selector)->attr('src'));
-		} catch (\InvalidArgumentException $e) {
-			$this->fail(sprintf("No node found for selector '%s'. Content:\n%s", $selector, $this->client->getResponse()->getContent()));
-		}
+		$this->assertEquals($expectedSrcAttr, $this->getNodeAttribute('#rendered-image', 'src', $crawler));
 	}
 
 	/**
@@ -115,6 +110,19 @@ abstract class IntegrationTestCase extends WebTestCase {
 	protected function assertJsonResponse($expectedJson) {
 		$this->assertEquals('application/json', $this->client->getResponse()->headers->get('Content-Type') );
 		$this->assertEquals($expectedJson, $this->client->getResponse()->getContent());
+	}
+
+	/**
+	 * @param string $selector
+	 * @param string $attribute
+	 * @param Crawler $crawler
+	 */
+	private function getNodeAttribute($selector, $attribute, Crawler $crawler) {
+		try {
+			return $crawler->filter($selector)->attr($attribute);
+		} catch (\InvalidArgumentException $e) {
+			$this->fail(sprintf("No node found for selector '%s'. Content:\n%s", $selector, $this->client->getResponse()->getContent()));
+		}
 	}
 
 	/**
