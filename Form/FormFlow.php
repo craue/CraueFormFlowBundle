@@ -869,6 +869,10 @@ abstract class FormFlow implements FormFlowInterface {
 		))) {
 			$form->handleRequest($request);
 
+			if (!$form->isSubmitted()) {
+				return false;
+			}
+
 			if ($this->hasListeners(FormFlowEvents::POST_BIND_REQUEST)) {
 				$event = new PostBindRequestEvent($this, $form->getData(), $this->currentStepNumber);
 				$this->eventDispatcher->dispatch(FormFlowEvents::POST_BIND_REQUEST, $event);
