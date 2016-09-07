@@ -15,7 +15,8 @@ use Craue\FormFlowBundle\Form\Step;
 class StepTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCreateFromConfig() {
-		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface');
+		// TODO replace by `$this->createMock('\Craue\FormFlowBundle\Form\FormFlowInterface')` as soon as PHPUnit >= 5.4 is required
+		$flowStub = $this->getMockBuilder('\Craue\FormFlowBundle\Form\FormFlowInterface')->getMock();
 
 		$step = Step::createFromConfig(1, array());
 		$this->assertSame(1, $step->getNumber());
@@ -46,7 +47,8 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 		$step->evaluateSkipping(1, $flowStub);
 		$this->assertTrue($step->isSkipped());
 
-		$flowStubWithData = $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface');
+		// TODO replace by `$this->createMock('\Craue\FormFlowBundle\Form\FormFlowInterface')` as soon as PHPUnit >= 5.4 is required
+		$flowStubWithData = $this->getMockBuilder('\Craue\FormFlowBundle\Form\FormFlowInterface')->getMock();
 		$flowStubWithData
 			->expects($this->once())
 			->method('getFormData')
@@ -149,7 +151,8 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 		return array(
 			array(null),
 			array('myFormType'),
-			array($this->getMock('Symfony\Component\Form\FormTypeInterface')),
+			// TODO replace by `$this->createMock('Symfony\Component\Form\FormTypeInterface')` as soon as PHPUnit >= 5.4 is required
+			array($this->getMockBuilder('Symfony\Component\Form\FormTypeInterface')->getMock()),
 		);
 	}
 
@@ -165,7 +168,8 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 	public function dataSetGetType_invalidArguments() {
 		return array(
 			array(123),
-			array($this->getMock('Symfony\Component\Form\Test\FormInterface')),
+			// TODO replace by `$this->createMock('Symfony\Component\Form\Test\FormInterface')` as soon as PHPUnit >= 5.4 is required
+			array($this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock()),
 		);
 	}
 
@@ -174,7 +178,8 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testEvaluateSkipping_validReturnValueFromCallable($returnValue) {
 		$step = $this->createStepWithSkipCallable(1, $returnValue);
-		$step->evaluateSkipping(1, $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface'));
+		// TODO replace by `$this->createMock('\Craue\FormFlowBundle\Form\FormFlowInterface')` as soon as PHPUnit >= 5.4 is required
+		$step->evaluateSkipping(1, $this->getMockBuilder('\Craue\FormFlowBundle\Form\FormFlowInterface')->getMock());
 		$this->assertSame($returnValue, $step->isSkipped());
 	}
 
@@ -192,7 +197,8 @@ class StepTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testEvaluateSkipping_invalidReturnValueFromCallable($returnValue) {
 		$step = $this->createStepWithSkipCallable(1, $returnValue);
-		$step->evaluateSkipping(1, $this->getMock('\Craue\FormFlowBundle\Form\FormFlowInterface'));
+		// TODO replace by `$this->createMock('\Craue\FormFlowBundle\Form\FormFlowInterface')` as soon as PHPUnit >= 5.4 is required
+		$step->evaluateSkipping(1, $this->getMockBuilder('\Craue\FormFlowBundle\Form\FormFlowInterface')->getMock());
 	}
 
 	public function dataEvaluateSkipping_invalidReturnValueFromCallable() {

@@ -20,7 +20,7 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 	private $deprecatedMessage = 'Method Craue\FormFlowBundle\Form\FormFlow::%s is deprecated since version 2.0. Use method %s instead.';
 
 	public function testBcMethodDelegation_getCurrentStep() {
-		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'getCurrentStepNumber'));
+		$flowStub = $this->getMockBuilder('\Craue\FormFlowBundle\Form\FormFlow')->setMethods(array('getName', 'getCurrentStepNumber'))->getMock();
 
 		$flowStub
 			->expects($this->once())
@@ -32,7 +32,7 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 	}
 
 	public function testBcMethodDelegation_getCurrentStepDescription() {
-		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'getCurrentStepLabel'));
+		$flowStub = $this->getMockBuilder('\Craue\FormFlowBundle\Form\FormFlow')->setMethods(array('getName', 'getCurrentStepLabel'))->getMock();
 
 		$flowStub
 			->expects($this->once())
@@ -44,7 +44,7 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 	}
 
 	public function testBcMethodDelegation_getMaxSteps() {
-		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'getStepCount'));
+		$flowStub = $this->getMockBuilder('\Craue\FormFlowBundle\Form\FormFlow')->setMethods(array('getName', 'getStepCount'))->getMock();
 
 		$flowStub
 			->expects($this->once())
@@ -56,7 +56,7 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 	}
 
 	public function testBcMethodDelegation_getStepDescriptions() {
-		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'getStepLabels'));
+		$flowStub = $this->getMockBuilder('\Craue\FormFlowBundle\Form\FormFlow')->setMethods(array('getName', 'getStepLabels'))->getMock();
 
 		$flowStub
 			->expects($this->once())
@@ -68,7 +68,7 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 	}
 
 	public function testBcMethodDelegation_getFirstStep() {
-		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'getFirstStepNumber'));
+		$flowStub = $this->getMockBuilder('\Craue\FormFlowBundle\Form\FormFlow')->setMethods(array('getName', 'getFirstStepNumber'))->getMock();
 
 		$flowStub
 			->expects($this->once())
@@ -80,7 +80,7 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 	}
 
 	public function testBcMethodDelegation_getLastStep() {
-		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'getLastStepNumber'));
+		$flowStub = $this->getMockBuilder('\Craue\FormFlowBundle\Form\FormFlow')->setMethods(array('getName', 'getLastStepNumber'))->getMock();
 
 		$flowStub
 			->expects($this->once())
@@ -92,7 +92,7 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 	}
 
 	public function testBcMethodDelegation_hasSkipStep() {
-		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'isStepSkipped'));
+		$flowStub = $this->getMockBuilder('\Craue\FormFlowBundle\Form\FormFlow')->setMethods(array('getName', 'isStepSkipped'))->getMock();
 
 		$stepNumber = 1;
 

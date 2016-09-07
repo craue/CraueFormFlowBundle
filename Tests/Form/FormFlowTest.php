@@ -18,7 +18,8 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 
 	public function testStepListener() {
 		$steps = array(
-			$this->getMock('\Craue\FormFlowBundle\Form\StepInterface'),
+			// TODO replace by `$this->createMock('\Craue\FormFlowBundle\Form\StepInterface')` as soon as PHPUnit >= 5.4 is required
+			$this->getMockBuilder('\Craue\FormFlowBundle\Form\StepInterface')->getMock(),
 		);
 
 		$dispatcher = new EventDispatcher();
@@ -36,7 +37,7 @@ class FormFlowTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateStepsFromConfig_fixArrayIndexes() {
-		$flowStub = $this->getMock('\Craue\FormFlowBundle\Form\FormFlow', array('getName', 'loadStepsConfig'));
+		$flowStub = $this->getMockBuilder('\Craue\FormFlowBundle\Form\FormFlow')->setMethods(array('getName', 'loadStepsConfig'))->getMock();
 
 		$flowStub
 			->expects($this->once())
