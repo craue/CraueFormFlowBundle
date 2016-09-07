@@ -62,12 +62,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 	 * @param Crawler $crawler
 	 */
 	protected function assertCurrentStepNumber($expectedStepNumber, Crawler $crawler) {
-		$selector = '#step-number';
-		try {
-			$this->assertEquals($expectedStepNumber, $crawler->filter($selector)->text());
-		} catch (\InvalidArgumentException $e) {
-			$this->fail(sprintf("No node found for selector '%s'. Content:\n%s", $selector, $this->client->getResponse()->getContent()));
-		}
+		$this->assertEquals($expectedStepNumber, $this->getNodeText('#step-number', $crawler));
 	}
 
 	/**
@@ -75,12 +70,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 	 * @param Crawler $crawler
 	 */
 	protected function assertCurrentFormData($expectedJson, Crawler $crawler) {
-		$selector = '#form-data';
-		try {
-			$this->assertEquals($expectedJson, $crawler->filter($selector)->text());
-		} catch (\InvalidArgumentException $e) {
-			$this->fail(sprintf("No node found for selector '%s'. Content:\n%s", $selector, $this->client->getResponse()->getContent()));
-		}
+		$this->assertEquals($expectedJson, $this->getNodeText('#form-data', $crawler));
 	}
 
 	/**
@@ -88,12 +78,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 	 * @param Crawler $crawler
 	 */
 	protected function assertContainsFormError($expectedError, Crawler $crawler) {
-		$selector = 'form';
-		try {
-			$this->assertContains($expectedError, $crawler->filter($selector)->text());
-		} catch (\InvalidArgumentException $e) {
-			$this->fail(sprintf("No node found for selector '%s'. Content:\n%s", $selector, $this->client->getResponse()->getContent()));
-		}
+		$this->assertContains($expectedError, $this->getNodeText('form', $crawler));
 	}
 
 	/**
@@ -102,6 +87,18 @@ abstract class IntegrationTestCase extends WebTestCase {
 	protected function assertJsonResponse($expectedJson) {
 		$this->assertEquals('application/json', $this->client->getResponse()->headers->get('Content-Type') );
 		$this->assertEquals($expectedJson, $this->client->getResponse()->getContent());
+	}
+
+	/**
+	 * @param string $selector
+	 * @param Crawler $crawler
+	 */
+	private function getNodeText($selector, Crawler $crawler) {
+		try {
+			return $crawler->filter($selector)->text();
+		} catch (\InvalidArgumentException $e) {
+			$this->fail(sprintf("No node found for selector '%s'. Content:\n%s", $selector, $this->client->getResponse()->getContent()));
+		}
 	}
 
 }
