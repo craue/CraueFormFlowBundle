@@ -105,6 +105,14 @@ abstract class IntegrationTestCase extends WebTestCase {
 	}
 
 	/**
+	 * @param string $unexpectedError
+	 * @param Crawler $crawler
+	 */
+	protected function assertNotContainsFormError($unexpectedError, Crawler $crawler) {
+		$this->assertNotContains($unexpectedError, $this->getNodeText('form', $crawler));
+	}
+
+	/**
 	 * @param string $expectedJson
 	 */
 	protected function assertJsonResponse($expectedJson) {

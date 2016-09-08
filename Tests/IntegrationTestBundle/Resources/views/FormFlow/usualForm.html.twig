@@ -1,0 +1,11 @@
+{% extends 'IntegrationTestBundle::layout_flow.html.twig' %}
+
+{% block content %}
+	{{ parent() }}
+
+	{{ form_start(usualForm) }}
+		{{ form_errors(usualForm) }}
+		{{ form_rest(usualForm) }}
+		<button type="submit">submit usual form</button>
+	{{ form_end(usualForm) }}
+{% endblock %}
