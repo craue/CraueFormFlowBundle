@@ -623,9 +623,10 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	protected function bindFlow() {
+		$request = $this->getRequest();
 		$reset = false;
 
-		if (!$this->allowDynamicStepNavigation && !$this->allowRedirectAfterSubmit && $this->getRequest()->isMethod('GET')) {
+		if (!$this->allowDynamicStepNavigation && !$this->allowRedirectAfterSubmit && $request->isMethod('GET')) {
 			$reset = true;
 		}
 
@@ -633,9 +634,9 @@ abstract class FormFlow implements FormFlowInterface {
 			$reset = true;
 		}
 
-		if (in_array($this->getRequest()->getMethod(), array('POST', 'PUT')) && !$this->dataManager->exists($this)) {
+		if (in_array($request->getMethod(), array('POST', 'PUT')) && !$this->dataManager->exists($this)) {
 			// flow is expired, drop posted data and reset
-			$this->getRequest()->request->replace();
+			$request->request->replace();
 			$reset = true;
 			$this->expired = true;
 
