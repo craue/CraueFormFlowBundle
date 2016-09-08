@@ -114,7 +114,15 @@ class FormFlowController extends Controller {
 				'IntegrationTestBundle:FormFlow:photoUpload.html.twig');
 	}
 
-	protected function processFlow($formData, FormFlow $flow, $template = 'IntegrationTestBundle::layout_flow.html.twig') {
+	/**
+	 * @Route("/usualForm/", name="_FormFlow_usualForm")
+	 */
+	public function usualFormAction() {
+		return $this->processFlow(new Topic(), $this->get('integrationTestBundle.form.flow.createTopic'),
+				'IntegrationTestBundle:FormFlow:usualForm.html.twig', array('usualForm' => $this->createFormBuilder()->getForm()->createView()));
+	}
+
+	protected function processFlow($formData, FormFlow $flow, $template = 'IntegrationTestBundle::layout_flow.html.twig', array $templateParameters = array()) {
 		$flow->bind($formData);
 
 		$form = $submittedForm = $flow->createForm();
@@ -140,11 +148,11 @@ class FormFlowController extends Controller {
 			return $this->redirect($this->generateUrl($request->attributes->get('_route'), $params));
 		}
 
-		return $this->render($template, array(
+		return $this->render($template, array_merge($templateParameters, array(
 			'form' => $form->createView(),
 			'flow' => $flow,
 			'formData' => $formData,
-		));
+		)));
 	}
 
 }
