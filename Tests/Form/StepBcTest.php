@@ -8,6 +8,7 @@ use Craue\FormFlowBundle\Tests\UnitTestCase;
 /**
  * Tests for BC.
  *
+ * @collectDeprecationNotices
  * @group unit
  *
  * @author Christian Raue <christian.raue@gmail.com>
@@ -15,8 +16,6 @@ use Craue\FormFlowBundle\Tests\UnitTestCase;
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class StepBcTest extends UnitTestCase {
-
-	protected $collectDeprecationNotices = true;
 
 	public function testCreateFromConfig_bcOptionType() {
 		$step = Step::createFromConfig(1, array(

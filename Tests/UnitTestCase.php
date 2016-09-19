@@ -15,14 +15,27 @@ use Craue\FormFlowBundle\Storage\DataManagerInterface;
 abstract class UnitTestCase extends \PHPUnit_Framework_TestCase {
 
 	/**
-	 * @var boolean If deprecation notices triggered during tests will be collected.
+	 * @var boolean If deprecation notices triggered during a test will be collected.
 	 */
-	protected $collectDeprecationNotices = false;
+	private $collectDeprecationNotices = false;
 
 	/**
 	 * @var string[]
 	 */
 	private $deprecationNotices;
+
+	protected function checkRequirements() {
+		parent::checkRequirements();
+
+		$annotations = $this->getAnnotations();
+
+		foreach (array('class', 'method') as $level) {
+			if (isset($annotations[$level]['collectDeprecationNotices'])) {
+				$this->collectDeprecationNotices = true;
+				break;
+			}
+		}
+	}
 
 	protected function setUp() {
 		$this->deprecationNotices = array();
@@ -40,6 +53,7 @@ abstract class UnitTestCase extends \PHPUnit_Framework_TestCase {
 	protected function tearDown() {
 		if ($this->collectDeprecationNotices) {
 			restore_error_handler();
+			$this->collectDeprecationNotices = false;
 		}
 	}
 
