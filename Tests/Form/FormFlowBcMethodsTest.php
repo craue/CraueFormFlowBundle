@@ -7,6 +7,7 @@ use Craue\FormFlowBundle\Tests\UnitTestCase;
 /**
  * Tests for BC.
  *
+ * @collectDeprecationNotices
  * @group unit
  *
  * @author Christian Raue <christian.raue@gmail.com>
@@ -14,8 +15,6 @@ use Craue\FormFlowBundle\Tests\UnitTestCase;
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class FormFlowBcMethodsTest extends UnitTestCase {
-
-	protected $collectDeprecationNotices = true;
 
 	private $deprecatedMessage = 'Method Craue\FormFlowBundle\Form\FormFlow::%s is deprecated since version 2.0. Use method %s instead.';
 
