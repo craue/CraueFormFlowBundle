@@ -24,7 +24,7 @@ class Topic {
 
 	/**
 	 * @var string
-	 * @Assert\Choice(callback="getValidCategories", groups={"flow_createTopic_step1"})
+	 * @Assert\Choice(callback="getValidCategories", groups={"flow_createTopic_step1"}, strict=true)
 	 * @Assert\NotBlank(groups={"flow_createTopic_step1"})
 	 */
 	public $category;
