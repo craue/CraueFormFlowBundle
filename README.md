@@ -251,8 +251,8 @@ form according to the current step.
 {{ form_end(form) }}
 ```
 
-For the buttons to render correctly you need to tell Assetic to include a CSS file.
-So place this in your base template:
+Some CSS is needed to render the buttons correctly. The easiest way would be to let
+[Assetic](https://symfony.com/doc/current/assetic/asset_management.html) load the provided file in your base template:
 
 ```twig
 {% stylesheets '@CraueFormFlowBundle/Resources/assets/css/buttons.css' %}
