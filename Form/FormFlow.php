@@ -995,6 +995,64 @@ abstract class FormFlow implements FormFlowInterface {
 		return $this->eventDispatcher !== null && $this->eventDispatcher->hasListeners($eventName);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getStepsDone()
+	{
+		$steps = $this->getSteps();
+		$stepsDone = array();
+
+		foreach ($steps as $step)
+		{
+			$stepNumber = $step->getNumber();
+			if ($this->isStepDone($stepNumber))
+				$stepsDone[] = $step;
+		}
+
+		return $stepsDone;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getStepsRemaining()
+	{
+		$steps = $this->getSteps();
+		$stepsRemaining = array();
+
+		foreach ($steps as $step)
+		{
+			$stepNumber = $step->getNumber();
+			if (!$this->isStepDone($stepNumber))
+				$stepsRemaining[] = $step;
+		}
+
+		return $stepsRemaining;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getStepsDoneCount()
+	{
+		$stepsDone = $this->getStepsDone();
+
+		return count($stepsDone);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getStepsRemainingCount()
+	{
+		$stepsRemaining = $this->getStepsRemaining();
+
+		return count($stepsRemaining);
+	}
+
+        
+        
 	// methods for BC with third-party templates (e.g. MopaBootstrapBundle)
 
 	public function getCurrentStep() {

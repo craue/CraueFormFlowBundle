@@ -178,4 +178,33 @@ interface FormFlowInterface {
 	 */
 	function getStepCount();
 
+	/**
+	 * List steps for which there's data provided
+	 * 
+	 * @return array - done steps
+	 */
+	public function getStepsDone();
+
+	/**
+	 * List steps for which no data is provided yet
+	 * 
+	 * @return array - remaining steps
+	 */
+	public function getStepsRemaining();
+
+	/**
+	 * Count steps for which there's data provided
+	 * 
+	 * @return int - count of done steps
+	 */
+	public function getStepsDoneCount();
+
+	/**
+	 * Count steps for which no data is provided yet
+	 * 
+	 * @return int - count of remaining steps
+	 */
+	public function getStepsRemainingCount();
+   
+		
 }
