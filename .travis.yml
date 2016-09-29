@@ -14,7 +14,9 @@ env:
 matrix:
   include:
     - php: 5.3.3
-      env: USE_DEPS='lowest'
+      env: DEPS='lowest'
+    - php: 5.6
+      env: DEPS='unmodified' SYMFONY_DEPRECATIONS_HELPER='666'
     - php: 5.6
       env: SYMFONY_VERSION='2.1.*'
     - php: 5.6
