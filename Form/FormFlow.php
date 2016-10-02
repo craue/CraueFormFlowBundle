@@ -1000,10 +1000,9 @@ abstract class FormFlow implements FormFlowInterface {
 	 */
 	public function getStepsDone()
 	{
-		$steps = $this->getSteps();
 		$stepsDone = array();
 
-		foreach ($steps as $step)
+		foreach ($this->getSteps() as $step)
 		{
 			$stepNumber = $step->getNumber();
 			if ($this->isStepDone($stepNumber))
@@ -1018,10 +1017,9 @@ abstract class FormFlow implements FormFlowInterface {
 	 */
 	public function getStepsRemaining()
 	{
-		$steps = $this->getSteps();
 		$stepsRemaining = array();
 
-		foreach ($steps as $step)
+		foreach ($this->getSteps() as $step)
 		{
 			$stepNumber = $step->getNumber();
 			if (!$this->isStepDone($stepNumber))
@@ -1036,9 +1034,7 @@ abstract class FormFlow implements FormFlowInterface {
 	 */
 	public function getStepsDoneCount()
 	{
-		$stepsDone = $this->getStepsDone();
-
-		return count($stepsDone);
+		return count($this->getStepsDone());
 	}
 
 	/**
@@ -1046,12 +1042,8 @@ abstract class FormFlow implements FormFlowInterface {
 	 */
 	public function getStepsRemainingCount()
 	{
-		$stepsRemaining = $this->getStepsRemaining();
-
-		return count($stepsRemaining);
+		return count($this->getStepsRemaining());
 	}
-
-        
         
 	// methods for BC with third-party templates (e.g. MopaBootstrapBundle)
 
