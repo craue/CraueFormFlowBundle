@@ -156,6 +156,41 @@ class FormFlowTest extends UnitTestCase {
 		$this->assertEquals(array('flow_createTopic_step1'), $options['validation_groups']);
 	}
 
+	public function testGetStepsDoneRemaining() {
+		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig', 'retrieveStepData'));
+		
+		$flow
+			->method('retrieveStepData')
+			->will($this->returnValue(array()))
+		;
+		
+		$flow
+			->expects($this->once())
+			->method('loadStepsConfig')
+			->will($this->returnValue(array(
+				array(
+					'label' => 'step1',
+					'skip' => true,
+				),
+				array(
+					'label' => 'step2'
+				),
+				array(
+					'label' => 'step3'
+				),
+			)))
+		;
+		
+		$stepsDone = $flow->getStepsDone();
+		$stepsRemaining = $flow->getStepsRemaining();
+
+		$this->assertSame(1, current($stepsDone)->getNumber());
+		$this->assertSame(1, end($stepsDone)->getNumber());
+		
+		$this->assertSame(2, current($stepsRemaining)->getNumber());
+		$this->assertSame(3, end($stepsRemaining)->getNumber());
+	}
+	
 	/**
 	 * Ensure that generic options are considered.
 	 */
