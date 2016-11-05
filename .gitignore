@@ -6,6 +6,7 @@
 /composer.lock
 .DS_Store
 /git.bat
+/nbproject
 /phpunit-tests-run-with-coverage.bat
 /phpunit-tests-run.bat
 /phpunit.xml
