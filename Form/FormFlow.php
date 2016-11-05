@@ -1004,8 +1004,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 		foreach ($this->getSteps() as $step)
 		{
-			$stepNumber = $step->getNumber();
-			if ($this->isStepDone($stepNumber))
+			if ($this->isStepDone($step->getNumber()))
 				$stepsDone[] = $step;
 		}
 
@@ -1021,8 +1020,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 		foreach ($this->getSteps() as $step)
 		{
-			$stepNumber = $step->getNumber();
-			if (!$this->isStepDone($stepNumber))
+			if (!$this->isStepDone($step->getNumber()))
 				$stepsRemaining[] = $step;
 		}
 

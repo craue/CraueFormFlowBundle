@@ -190,11 +190,8 @@ class FormFlowTest extends UnitTestCase {
 		$this->assertSame(2, current($stepsRemaining)->getNumber());
 		$this->assertSame(3, end($stepsRemaining)->getNumber());
 		
-		$stepsDoneCount = $flow->getStepsDoneCount();
-		$stepsRemainingCount = $flow->getStepsRemainingCount();
-
-		$this->assertSame(1, $stepsDoneCount);
-		$this->assertSame(2, $stepsRemainingCount);
+		$this->assertSame(1, $flow->getStepsDoneCount());
+		$this->assertSame(2, $flow->getStepsRemainingCount());
 	}
 	
 	/**
