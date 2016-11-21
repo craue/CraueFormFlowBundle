@@ -179,22 +179,22 @@ interface FormFlowInterface {
 	function getStepCount();
 
 	/**
-	 * @return StepInterface[] Steps done
+	 * @return StepInterface[] Steps done.
 	 */
 	function getStepsDone();
 
 	/**
-	 * @return StepInterface[] Steps remaining
+	 * @return StepInterface[] Steps remaining.
 	 */
 	function getStepsRemaining();
 
 	/**
-	 * @return int - count of steps done
+	 * @return integer Count of steps done.
 	 */
 	function getStepsDoneCount();
 
 	/**
-	 * @return int - count of steps remaining
+	 * @return integer Count of steps remaining.
 	 */
 	function getStepsRemainingCount();
 }
