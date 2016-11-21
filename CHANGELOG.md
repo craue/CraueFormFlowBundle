@@ -30,6 +30,7 @@
 - [#220]: added expired form detection
 - [#226]: allow custom button labels
 - [#254]: added Slovak translation
+- [#262]: added getters for steps remaining and done
 
 [#98]: https://github.com/craue/CraueFormFlowBundle/issues/98
 [#101]: https://github.com/craue/CraueFormFlowBundle/issues/101
@@ -60,6 +61,7 @@
 [#226]: https://github.com/craue/CraueFormFlowBundle/issues/226
 [#238]: https://github.com/craue/CraueFormFlowBundle/issues/238
 [#254]: https://github.com/craue/CraueFormFlowBundle/issues/254
+[#262]: https://github.com/craue/CraueFormFlowBundle/issues/262
 
 ## [2.1.9] – 2015-12-29
 
