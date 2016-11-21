@@ -37,7 +37,7 @@ class SerializableFileTest extends \PHPUnit_Framework_TestCase {
 		$serializableFile = new SerializableFile(new UploadedFile($document, $originalName, $mimeType, $size, null, true));
 		$processedUploadedFile = $serializableFile->getAsFile();
 
-		$this->assertEquals(sys_get_temp_dir(), $processedUploadedFile->getPath());
+		$this->assertEquals(realpath(sys_get_temp_dir()), realpath($processedUploadedFile->getPath()));
 		$this->assertEquals($originalName, $processedUploadedFile->getClientOriginalName());
 		$this->assertEquals($mimeType, $processedUploadedFile->getClientMimeType());
 		$this->assertEquals('text/plain', $processedUploadedFile->getMimeType());
@@ -68,14 +68,14 @@ class SerializableFileTest extends \PHPUnit_Framework_TestCase {
 		$serializableFile = new SerializableFile(new UploadedFile(__FILE__, 'my.txt', null, null, null, true));
 		$processedUploadedFile = $serializableFile->getAsFile($this->tempFolder);
 
-		$this->assertEquals($this->tempFolder, $processedUploadedFile->getPath());
+		$this->assertEquals(realpath($this->tempFolder), realpath($processedUploadedFile->getPath()));
 	}
 
 	public function testSerialization_customTempDir_nonexistent() {
 		$serializableFile = new SerializableFile(new UploadedFile(__FILE__, 'my.txt', null, null, null, true));
 		$processedUploadedFile = $serializableFile->getAsFile('xyz:/');
 
-		$this->assertEquals(sys_get_temp_dir(), $processedUploadedFile->getPath());
+		$this->assertEquals(realpath(sys_get_temp_dir()), realpath($processedUploadedFile->getPath()));
 	}
 
 	/**
