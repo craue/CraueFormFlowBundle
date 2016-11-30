@@ -14,7 +14,8 @@ use Craue\FormFlowBundle\Util\StringUtil;
 class StringUtilTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGenerateRandomString() {
-		$this->assertRegExp('/^[a-z0-9-]{1000}$/', StringUtil::generateRandomString(1000));
+		$this->assertEquals(1000, strlen(StringUtil::generateRandomString(1000)));
+		$this->assertRegExp('/^[a-zA-Z0-9-_]{1000}$/', StringUtil::generateRandomString(1000));
 		$this->assertNotEquals(StringUtil::generateRandomString(10), StringUtil::generateRandomString(10));
 	}
 
@@ -34,7 +35,7 @@ class StringUtilTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsRandomString() {
-		$this->assertTrue(StringUtil::isRandomString('abcdefghijklmnopqrstuvwxyz0123456789-', 37));
+		$this->assertTrue(StringUtil::isRandomString('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_', 64));
 		$this->assertTrue(StringUtil::isRandomString('', 0));
 		$this->assertTrue(StringUtil::isRandomString('x', 1));
 
@@ -43,7 +44,8 @@ class StringUtilTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse(StringUtil::isRandomString(' ', 0));
 
 		// wrong content
-		$this->assertFalse(StringUtil::isRandomString('X', 1));
+		$this->assertFalse(StringUtil::isRandomString('ä', 1));
+		$this->assertFalse(StringUtil::isRandomString('=', 1));
 	}
 
 	/**

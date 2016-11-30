@@ -26,16 +26,7 @@ abstract class StringUtil {
 			throw new \InvalidArgumentException(sprintf('Length must be >= 0, "%s" given.', $length));
 		}
 
-		$chars = 'abcdefghijklmnopqrstuvwxyz0123456789-';
-		$maxCharsIndex = strlen($chars) - 1;
-
-		$result = '';
-
-		for ($i = $length; $i > 0; --$i) {
-			$result .= $chars[mt_rand(0, $maxCharsIndex)];
-		}
-
-		return $result;
+		return substr(rtrim(strtr(base64_encode(random_bytes($length)), '+/', '-_'), '='), 0, $length);
 	}
 
 	/**
@@ -56,7 +47,7 @@ abstract class StringUtil {
 			throw new \InvalidArgumentException(sprintf('Length must be >= 0, "%s" given.', $length));
 		}
 
-		return preg_match(sprintf('/^[a-z0-9-]{%u}$/', $length), $input) === 1;
+		return preg_match(sprintf('/^[a-zA-Z0-9-_]{%u}$/', $length), $input) === 1;
 	}
 
 	/**
