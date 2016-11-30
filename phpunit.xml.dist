@@ -25,4 +25,7 @@
 		<env name="LOG_DIR" value="/path/to/your/log/" />
 	</php>
 	-->
+	<listeners>
+		<listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
+	</listeners>
 </phpunit>

@@ -15,58 +15,6 @@ use Craue\FormFlowBundle\Storage\DataManagerInterface;
 abstract class UnitTestCase extends \PHPUnit_Framework_TestCase {
 
 	/**
-	 * @var boolean If deprecation notices triggered during a test will be collected.
-	 */
-	private $collectDeprecationNotices = false;
-
-	/**
-	 * @var string[]
-	 */
-	private $deprecationNotices;
-
-	protected function checkRequirements() {
-		parent::checkRequirements();
-
-		$annotations = $this->getAnnotations();
-
-		foreach (array('class', 'method') as $level) {
-			if (isset($annotations[$level]['collectDeprecationNotices'])) {
-				$this->collectDeprecationNotices = true;
-				break;
-			}
-		}
-	}
-
-	protected function setUp() {
-		$this->deprecationNotices = array();
-
-		if ($this->collectDeprecationNotices) {
-			$that = $this;
-			set_error_handler(function($errno, $errstr, $errfile, $errline) use ($that) {
-				if ($errno === E_USER_DEPRECATED) {
-					$that->addDeprecationNotice($errstr);
-				}
-			});
-		}
-	}
-
-	protected function tearDown() {
-		if ($this->collectDeprecationNotices) {
-			restore_error_handler();
-			$this->collectDeprecationNotices = false;
-		}
-	}
-
-	// needs to be public for PHP 5.3 compatibility
-	public function addDeprecationNotice($notice) {
-		$this->deprecationNotices[] = $notice;
-	}
-
-	protected function getDeprecationNotices() {
-		return $this->deprecationNotices;
-	}
-
-	/**
 	 * @return \PHPUnit_Framework_MockObject_MockObject|FormFlow
 	 */
 	protected function getMockedFlow() {

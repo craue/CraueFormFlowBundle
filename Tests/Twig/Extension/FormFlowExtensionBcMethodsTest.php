@@ -7,7 +7,7 @@ use Craue\FormFlowBundle\Tests\UnitTestCase;
 /**
  * Tests for BC.
  *
- * @collectDeprecationNotices
+ * @group legacy
  * @group unit
  *
  * @author Christian Raue <christian.raue@gmail.com>
@@ -16,8 +16,9 @@ use Craue\FormFlowBundle\Tests\UnitTestCase;
  */
 class FormFlowExtensionBcMethodsTest extends UnitTestCase {
 
-	private $deprecatedMessage = 'Twig filter %s is deprecated since version 3.0. Use filter %s instead.';
-
+	/**
+	 * @expectedDeprecation Twig filter craue_addDynamicStepNavigationParameter is deprecated since version 3.0. Use filter craue_addDynamicStepNavigationParameters instead.
+	 */
 	public function testBcMethodDelegation_addDynamicStepNavigationParameter() {
 		$extension = $this->getMockBuilder('\Craue\FormFlowBundle\Twig\Extension\FormFlowExtension')->setMethods(array('addDynamicStepNavigationParameters'))->getMock();
 
@@ -32,9 +33,11 @@ class FormFlowExtensionBcMethodsTest extends UnitTestCase {
 		;
 
 		$extension->addDynamicStepNavigationParameter($parameters, $flow, $stepNumber);
-		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'craue_addDynamicStepNavigationParameter', 'craue_addDynamicStepNavigationParameters')), $this->getDeprecationNotices());
 	}
 
+	/**
+	 * @expectedDeprecation Twig filter craue_removeDynamicStepNavigationParameter is deprecated since version 3.0. Use filter craue_removeDynamicStepNavigationParameters instead.
+	 */
 	public function testBcMethodDelegation_removeDynamicStepNavigationParameter() {
 		$extension = $this->getMockBuilder('\Craue\FormFlowBundle\Twig\Extension\FormFlowExtension')->setMethods(array('removeDynamicStepNavigationParameters'))->getMock();
 
@@ -48,7 +51,6 @@ class FormFlowExtensionBcMethodsTest extends UnitTestCase {
 		;
 
 		$extension->removeDynamicStepNavigationParameter($parameters, $flow);
-		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'craue_removeDynamicStepNavigationParameter', 'craue_removeDynamicStepNavigationParameters')), $this->getDeprecationNotices());
 	}
 
 }

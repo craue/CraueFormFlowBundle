@@ -7,7 +7,7 @@ use Craue\FormFlowBundle\Tests\UnitTestCase;
 /**
  * Tests for BC.
  *
- * @collectDeprecationNotices
+ * @group legacy
  * @group unit
  *
  * @author Christian Raue <christian.raue@gmail.com>
@@ -16,8 +16,9 @@ use Craue\FormFlowBundle\Tests\UnitTestCase;
  */
 class FormFlowBcMethodsTest extends UnitTestCase {
 
-	private $deprecatedMessage = 'Method Craue\FormFlowBundle\Form\FormFlow::%s is deprecated since version 2.0. Use method %s instead.';
-
+	/**
+	 * @expectedDeprecation Method Craue\FormFlowBundle\Form\FormFlow::getCurrentStep is deprecated since version 2.0. Use method getCurrentStepNumber instead.
+	 */
 	public function testBcMethodDelegation_getCurrentStep() {
 		$flow = $this->getFlowWithMockedMethods(array('getCurrentStepNumber'));
 
@@ -27,9 +28,11 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 		;
 
 		$flow->getCurrentStep();
-		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'getCurrentStep', 'getCurrentStepNumber')), $this->getDeprecationNotices());
 	}
 
+	/**
+	 * @expectedDeprecation Method Craue\FormFlowBundle\Form\FormFlow::getCurrentStepDescription is deprecated since version 2.0. Use method getCurrentStepLabel instead.
+	 */
 	public function testBcMethodDelegation_getCurrentStepDescription() {
 		$flow = $this->getFlowWithMockedMethods(array('getCurrentStepLabel'));
 
@@ -39,9 +42,11 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 		;
 
 		$flow->getCurrentStepDescription();
-		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'getCurrentStepDescription', 'getCurrentStepLabel')), $this->getDeprecationNotices());
 	}
 
+	/**
+	 * @expectedDeprecation Method Craue\FormFlowBundle\Form\FormFlow::getMaxSteps is deprecated since version 2.0. Use method getStepCount instead.
+	 */
 	public function testBcMethodDelegation_getMaxSteps() {
 		$flow = $this->getFlowWithMockedMethods(array('getStepCount'));
 
@@ -51,9 +56,11 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 		;
 
 		$flow->getMaxSteps();
-		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'getMaxSteps', 'getStepCount')), $this->getDeprecationNotices());
 	}
 
+	/**
+	 * @expectedDeprecation Method Craue\FormFlowBundle\Form\FormFlow::getStepDescriptions is deprecated since version 2.0. Use method getStepLabels instead.
+	 */
 	public function testBcMethodDelegation_getStepDescriptions() {
 		$flow = $this->getFlowWithMockedMethods(array('getStepLabels'));
 
@@ -63,9 +70,11 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 		;
 
 		$flow->getStepDescriptions();
-		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'getStepDescriptions', 'getStepLabels')), $this->getDeprecationNotices());
 	}
 
+	/**
+	 * @expectedDeprecation Method Craue\FormFlowBundle\Form\FormFlow::getFirstStep is deprecated since version 2.0. Use method getFirstStepNumber instead.
+	 */
 	public function testBcMethodDelegation_getFirstStep() {
 		$flow = $this->getFlowWithMockedMethods(array('getFirstStepNumber'));
 
@@ -75,9 +84,11 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 		;
 
 		$flow->getFirstStep();
-		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'getFirstStep', 'getFirstStepNumber')), $this->getDeprecationNotices());
 	}
 
+	/**
+	 * @expectedDeprecation Method Craue\FormFlowBundle\Form\FormFlow::getLastStep is deprecated since version 2.0. Use method getLastStepNumber instead.
+	 */
 	public function testBcMethodDelegation_getLastStep() {
 		$flow = $this->getFlowWithMockedMethods(array('getLastStepNumber'));
 
@@ -87,9 +98,11 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 		;
 
 		$flow->getLastStep();
-		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'getLastStep', 'getLastStepNumber')), $this->getDeprecationNotices());
 	}
 
+	/**
+	 * @expectedDeprecation Method Craue\FormFlowBundle\Form\FormFlow::hasSkipStep is deprecated since version 2.0. Use method isStepSkipped instead.
+	 */
 	public function testBcMethodDelegation_hasSkipStep() {
 		$flow = $this->getFlowWithMockedMethods(array('isStepSkipped'));
 
@@ -102,7 +115,6 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 		;
 
 		$flow->hasSkipStep($stepNumber);
-		$this->assertEquals(array(sprintf($this->deprecatedMessage, 'hasSkipStep', 'isStepSkipped')), $this->getDeprecationNotices());
 	}
 
 }
