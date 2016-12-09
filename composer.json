@@ -20,7 +20,8 @@
 		"symfony/form": "~2.7|~3.0",
 		"symfony/http-kernel": "~2.7|~3.0",
 		"symfony/translation": "~2.7|~3.0",
-		"symfony/yaml": "~2.7|~3.0"
+		"symfony/yaml": "~2.7|~3.0",
+		"paragonie/random_compat": "^1|^2"
 	},
 	"require-dev": {
 		"doctrine/doctrine-bundle": "~1.0",
