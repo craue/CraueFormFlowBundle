@@ -9,7 +9,7 @@ namespace Craue\FormFlowBundle\Tests\Form;
  * @group unit
  *
  * @author Christian Raue <christian.raue@gmail.com>
- * @copyright 2011-2016 Christian Raue
+ * @copyright 2011-2017 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class FormFlowBcMethodsTest extends \PHPUnit_Framework_TestCase {
