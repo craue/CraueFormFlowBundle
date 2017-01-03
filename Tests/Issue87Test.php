@@ -34,9 +34,6 @@ class Issue87Test extends IntegrationTestCase {
 		$crawler = $this->client->request('GET', $linkToStep2->getUri());
 		// make sure we actually arrived at step 2
 		$this->assertCurrentStepNumber(2, $crawler);
-
-// var_dump($this->client->getResponse()->getContent());
-// die;
 	}
 
 }

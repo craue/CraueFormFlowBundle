@@ -58,9 +58,6 @@ class Demo1FlowTest extends IntegrationTestCase {
 		$form = $crawler->selectButton('finish')->form();
 		$this->client->submit($form);
 		$this->assertJsonResponse('{}');
-
-// var_dump($this->client->getResponse()->getContent());
-// die;
 	}
 
 	protected function getCalledEvents() {
