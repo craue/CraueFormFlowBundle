@@ -233,7 +233,7 @@ form according to the current step.
 {# in src/MyCompany/MyBundle/Resources/views/Vehicle/createVehicle.html.twig #}
 <div>
 	Steps:
-	{% include 'CraueFormFlowBundle:FormFlow:stepList.html.twig' %}
+	{% include '@CraueFormFlow/FormFlow/stepList.html.twig' %}
 </div>
 {{ form_start(form) }}
 	{{ form_errors(form) }}
@@ -247,7 +247,7 @@ form according to the current step.
 
 	{{ form_rest(form) }}
 
-	{% include 'CraueFormFlowBundle:FormFlow:buttons.html.twig' %}
+	{% include '@CraueFormFlow/FormFlow/buttons.html.twig' %}
 {{ form_end(form) }}
 ```
 
@@ -271,7 +271,7 @@ You can easily customize the default button look by using these variables to add
 Example with Bootstrap button classes:
 
 ```twig
-{% include 'CraueFormFlowBundle:FormFlow:buttons.html.twig' with {
+{% include '@CraueFormFlow/FormFlow/buttons.html.twig' with {
 		craue_formflow_button_class_last: 'btn btn-primary',
 		craue_formflow_button_class_back: 'btn',
 		craue_formflow_button_class_reset: 'btn btn-warning',
@@ -289,7 +289,7 @@ In the same manner you can customize the button labels:
 Example:
 
 ```twig
-{% include 'CraueFormFlowBundle:FormFlow:buttons.html.twig' with {
+{% include '@CraueFormFlow/FormFlow/buttons.html.twig' with {
 		craue_formflow_button_label_finish: 'submit',
 		craue_formflow_button_label_reset: 'reset the flow',
 	} %}
@@ -325,7 +325,7 @@ public function createVehicleAction() {
 		}
 	}
 
-	return $this->render('MyCompanyMyBundle:Vehicle:createVehicle.html.twig', array(
+	return $this->render('@MyCompanyMy/Vehicle/createVehicle.html.twig', array(
 		'form' => $form->createView(),
 		'flow' => $flow,
 	));

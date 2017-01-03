@@ -1,9 +1,9 @@
-{% extends 'IntegrationTestBundle::layout.html.twig' %}
+{% extends '@IntegrationTest/layout.html.twig' %}
 
 {% block content %}
 <div id="step-number">{{ flow.getCurrentStepNumber() }}</div>
 <div id="form-data">{{ formData | json_encode }}</div>
-<div id="step-list">{% include 'CraueFormFlowBundle:FormFlow:stepList.html.twig' %}</div>
+<div id="step-list">{% include '@CraueFormFlow/FormFlow/stepList.html.twig' %}</div>
 {% set routeParams = app.request.query.all() | merge(app.request.attributes.get('_route_params')) %}
 {% if flow.isAllowDynamicStepNavigation() %}
 	{% set routeParams = routeParams | craue_removeDynamicStepNavigationParameters(flow) %}
@@ -11,6 +11,6 @@
 {{ form_start(form, {'action': path(app.request.attributes.get('_route'), routeParams)}) }}
 	{{ form_errors(form) }}
 	{{ form_rest(form) }}
-	{% include 'CraueFormFlowBundle:FormFlow:buttons.html.twig' %}
+	{% include '@CraueFormFlow/FormFlow/buttons.html.twig' %}
 {{ form_end(form) }}
 {% endblock %}

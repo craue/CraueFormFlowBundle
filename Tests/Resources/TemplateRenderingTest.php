@@ -18,8 +18,8 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
  */
 class TemplateRenderingTest extends IntegrationTestCase {
 
-	const BUTTONS_TEMPLATE = 'CraueFormFlowBundle:FormFlow:buttons.html.twig';
-	const STEP_LIST_TEMPLATE = 'CraueFormFlowBundle:FormFlow:stepList.html.twig';
+	const BUTTONS_TEMPLATE = '@CraueFormFlow/FormFlow/buttons.html.twig';
+	const STEP_LIST_TEMPLATE = '@CraueFormFlow/FormFlow/stepList.html.twig';
 
 	public function testButtons() {
 		$flow = $this->getFlowStub();
