@@ -52,17 +52,17 @@ abstract class FormFlow implements FormFlowInterface {
 	protected $transition;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $revalidatePreviousSteps = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $allowDynamicStepNavigation = false;
 
 	/**
-	 * @var boolean If file uploads should be handled by serializing them into the storage.
+	 * @var bool If file uploads should be handled by serializing them into the storage.
 	 */
 	protected $handleFileUploads = true;
 
@@ -72,7 +72,7 @@ abstract class FormFlow implements FormFlowInterface {
 	protected $handleFileUploadsTempDir = null;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $allowRedirectAfterSubmit = false;
 
@@ -159,13 +159,13 @@ abstract class FormFlow implements FormFlowInterface {
 
 	/**
 	 * Flow was determined to be expired.
-	 * @var boolean
+	 * @var bool
 	 */
 	private $expired = false;
 
 	/**
 	 * Instance ID was a newly generated ID.
-	 * @var boolean
+	 * @var bool
 	 */
 	private $newInstance = false;
 
@@ -337,7 +337,7 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	public function setRevalidatePreviousSteps($revalidatePreviousSteps) {
-		$this->revalidatePreviousSteps = (boolean) $revalidatePreviousSteps;
+		$this->revalidatePreviousSteps = (bool) $revalidatePreviousSteps;
 	}
 
 	/**
@@ -348,7 +348,7 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	public function setAllowDynamicStepNavigation($allowDynamicStepNavigation) {
-		$this->allowDynamicStepNavigation = (boolean) $allowDynamicStepNavigation;
+		$this->allowDynamicStepNavigation = (bool) $allowDynamicStepNavigation;
 	}
 
 	/**
@@ -359,7 +359,7 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	public function setHandleFileUploads($handleFileUploads) {
-		$this->handleFileUploads = (boolean) $handleFileUploads;
+		$this->handleFileUploads = (bool) $handleFileUploads;
 	}
 
 	/**
@@ -381,7 +381,7 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	public function setAllowRedirectAfterSubmit($allowRedirectAfterSubmit) {
-		$this->allowRedirectAfterSubmit = (boolean) $allowRedirectAfterSubmit;
+		$this->allowRedirectAfterSubmit = (bool) $allowRedirectAfterSubmit;
 	}
 
 	/**
@@ -918,7 +918,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 	/**
 	 * @param FormInterface $submittedForm
-	 * @return boolean If a redirection should be performed.
+	 * @return bool If a redirection should be performed.
 	 */
 	public function redirectAfterSubmit(FormInterface $submittedForm) {
 		if ($this->allowRedirectAfterSubmit && in_array($this->getRequest()->getMethod(), array('POST', 'PUT'))) {
@@ -989,7 +989,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 	/**
 	 * @param string $eventName
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function hasListeners($eventName) {
 		return $this->eventDispatcher !== null && $this->eventDispatcher->hasListeners($eventName);
