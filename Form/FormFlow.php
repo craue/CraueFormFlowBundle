@@ -127,7 +127,7 @@ abstract class FormFlow implements FormFlowInterface {
 	private $steps = null;
 
 	/**
-	 * @var integer|null Is only null if not yet initialized.
+	 * @var int|null Is only null if not yet initialized.
 	 */
 	private $stepCount = null;
 
@@ -142,7 +142,7 @@ abstract class FormFlow implements FormFlowInterface {
 	private $formData = null;
 
 	/**
-	 * @var integer|null Is only null if not yet initialized.
+	 * @var int|null Is only null if not yet initialized.
 	 */
 	private $currentStepNumber = null;
 
@@ -423,9 +423,9 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	/**
-	 * @param integer $stepNumber Assumed step to which skipped steps shall be applied to.
-	 * @param integer $direction Either 1 (to skip forwards) or -1 (to skip backwards).
-	 * @return integer Target step number with skipping applied.
+	 * @param int $stepNumber Assumed step to which skipped steps shall be applied to.
+	 * @param int $direction Either 1 (to skip forwards) or -1 (to skip backwards).
+	 * @return int Target step number with skipping applied.
 	 * @throws \InvalidArgumentException If the value of <code>$direction</code> is invalid.
 	 */
 	protected function applySkipping($stepNumber, $direction = 1) {
@@ -534,7 +534,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 	/**
 	 * Finds out which step is the current one.
-	 * @return integer
+	 * @return int
 	 */
 	protected function determineCurrentStepNumber() {
 		$requestedStepNumber = $this->getRequestedStepNumber();
@@ -564,8 +564,8 @@ abstract class FormFlow implements FormFlowInterface {
 
 	/**
 	 * Refines the current step number by evaluating and considering skipped steps.
-	 * @param integer $refinedStepNumber
-	 * @return integer
+	 * @param int $refinedStepNumber
+	 * @return int
 	 */
 	protected function refineCurrentStepNumber($refinedStepNumber) {
 		foreach ($this->getSteps() as $step) {
@@ -700,7 +700,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 	/**
 	 * Invalidates data for steps >= $fromStepNumber.
-	 * @param integer $fromStepNumber
+	 * @param int $fromStepNumber
 	 */
 	public function invalidateStepData($fromStepNumber) {
 		$stepData = $this->retrieveStepData();
@@ -794,7 +794,7 @@ abstract class FormFlow implements FormFlowInterface {
 	 */
 	public function getStep($stepNumber) {
 		if (!is_int($stepNumber)) {
-			throw new InvalidTypeException($stepNumber, 'integer');
+			throw new InvalidTypeException($stepNumber, 'int');
 		}
 
 		$steps = $this->getSteps();
@@ -937,7 +937,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 	/**
 	 * Creates the form for the given step number.
-	 * @param integer $stepNumber
+	 * @param int $stepNumber
 	 * @param array $options
 	 * @return FormInterface
 	 */
