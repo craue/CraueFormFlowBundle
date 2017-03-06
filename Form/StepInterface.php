@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormTypeInterface;
 interface StepInterface {
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	function getNumber();
 
@@ -32,12 +32,12 @@ interface StepInterface {
 	function getFormOptions();
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	function isSkipped();
 
 	/**
-	 * @param integer $estimatedCurrentStepNumber
+	 * @param int $estimatedCurrentStepNumber
 	 * @param FormFlowInterface $flow
 	 */
 	function evaluateSkipping($estimatedCurrentStepNumber, FormFlowInterface $flow);

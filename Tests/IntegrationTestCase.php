@@ -73,7 +73,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 	}
 
 	/**
-	 * @param integer|string $expectedStepNumber
+	 * @param int|string $expectedStepNumber
 	 * @param Crawler $crawler
 	 */
 	protected function assertCurrentStepNumber($expectedStepNumber, Crawler $crawler) {

@@ -14,7 +14,7 @@ use Symfony\Component\Form\FormTypeInterface;
 class Step implements StepInterface {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $number;
 
@@ -39,7 +39,7 @@ class Step implements StepInterface {
 	private $skipFunction = null;
 
 	/**
-	 * @var boolean|null Is only null if not yet evaluated.
+	 * @var bool|null Is only null if not yet evaluated.
 	 */
 	private $skipped = false;
 
@@ -73,7 +73,7 @@ class Step implements StepInterface {
 	}
 
 	/**
-	 * @param integer $number
+	 * @param int $number
 	 */
 	public function setNumber($number) {
 		if (is_int($number)) {
@@ -82,7 +82,7 @@ class Step implements StepInterface {
 			return;
 		}
 
-		throw new InvalidTypeException($number, 'integer');
+		throw new InvalidTypeException($number, 'int');
 	}
 
 	/**
@@ -165,7 +165,7 @@ class Step implements StepInterface {
 	}
 
 	/**
-	 * @param boolean|callable $skip
+	 * @param bool|callable $skip
 	 * @throws InvalidTypeException
 	 */
 	public function setSkip($skip) {
@@ -183,7 +183,7 @@ class Step implements StepInterface {
 			return;
 		}
 
-		throw new InvalidTypeException($skip, array('boolean', 'callable'));
+		throw new InvalidTypeException($skip, array('bool', 'callable'));
 	}
 
 	/**

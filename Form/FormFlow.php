@@ -52,17 +52,17 @@ abstract class FormFlow implements FormFlowInterface {
 	protected $transition;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $revalidatePreviousSteps = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $allowDynamicStepNavigation = false;
 
 	/**
-	 * @var boolean If file uploads should be handled by serializing them into the storage.
+	 * @var bool If file uploads should be handled by serializing them into the storage.
 	 */
 	protected $handleFileUploads = true;
 
@@ -72,7 +72,7 @@ abstract class FormFlow implements FormFlowInterface {
 	protected $handleFileUploadsTempDir = null;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $allowRedirectAfterSubmit = false;
 
@@ -127,7 +127,7 @@ abstract class FormFlow implements FormFlowInterface {
 	private $steps = null;
 
 	/**
-	 * @var integer|null Is only null if not yet initialized.
+	 * @var int|null Is only null if not yet initialized.
 	 */
 	private $stepCount = null;
 
@@ -142,7 +142,7 @@ abstract class FormFlow implements FormFlowInterface {
 	private $formData = null;
 
 	/**
-	 * @var integer|null Is only null if not yet initialized.
+	 * @var int|null Is only null if not yet initialized.
 	 */
 	private $currentStepNumber = null;
 
@@ -159,13 +159,13 @@ abstract class FormFlow implements FormFlowInterface {
 
 	/**
 	 * Flow was determined to be expired.
-	 * @var boolean
+	 * @var bool
 	 */
 	private $expired = false;
 
 	/**
 	 * Instance ID was a newly generated ID.
-	 * @var boolean
+	 * @var bool
 	 */
 	private $newInstance = false;
 
@@ -337,7 +337,7 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	public function setRevalidatePreviousSteps($revalidatePreviousSteps) {
-		$this->revalidatePreviousSteps = (boolean) $revalidatePreviousSteps;
+		$this->revalidatePreviousSteps = (bool) $revalidatePreviousSteps;
 	}
 
 	/**
@@ -348,7 +348,7 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	public function setAllowDynamicStepNavigation($allowDynamicStepNavigation) {
-		$this->allowDynamicStepNavigation = (boolean) $allowDynamicStepNavigation;
+		$this->allowDynamicStepNavigation = (bool) $allowDynamicStepNavigation;
 	}
 
 	/**
@@ -359,7 +359,7 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	public function setHandleFileUploads($handleFileUploads) {
-		$this->handleFileUploads = (boolean) $handleFileUploads;
+		$this->handleFileUploads = (bool) $handleFileUploads;
 	}
 
 	/**
@@ -381,7 +381,7 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	public function setAllowRedirectAfterSubmit($allowRedirectAfterSubmit) {
-		$this->allowRedirectAfterSubmit = (boolean) $allowRedirectAfterSubmit;
+		$this->allowRedirectAfterSubmit = (bool) $allowRedirectAfterSubmit;
 	}
 
 	/**
@@ -423,9 +423,9 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	/**
-	 * @param integer $stepNumber Assumed step to which skipped steps shall be applied to.
-	 * @param integer $direction Either 1 (to skip forwards) or -1 (to skip backwards).
-	 * @return integer Target step number with skipping applied.
+	 * @param int $stepNumber Assumed step to which skipped steps shall be applied to.
+	 * @param int $direction Either 1 (to skip forwards) or -1 (to skip backwards).
+	 * @return int Target step number with skipping applied.
 	 * @throws \InvalidArgumentException If the value of <code>$direction</code> is invalid.
 	 */
 	protected function applySkipping($stepNumber, $direction = 1) {
@@ -534,7 +534,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 	/**
 	 * Finds out which step is the current one.
-	 * @return integer
+	 * @return int
 	 */
 	protected function determineCurrentStepNumber() {
 		$requestedStepNumber = $this->getRequestedStepNumber();
@@ -564,8 +564,8 @@ abstract class FormFlow implements FormFlowInterface {
 
 	/**
 	 * Refines the current step number by evaluating and considering skipped steps.
-	 * @param integer $refinedStepNumber
-	 * @return integer
+	 * @param int $refinedStepNumber
+	 * @return int
 	 */
 	protected function refineCurrentStepNumber($refinedStepNumber) {
 		foreach ($this->getSteps() as $step) {
@@ -700,7 +700,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 	/**
 	 * Invalidates data for steps >= $fromStepNumber.
-	 * @param integer $fromStepNumber
+	 * @param int $fromStepNumber
 	 */
 	public function invalidateStepData($fromStepNumber) {
 		$stepData = $this->retrieveStepData();
@@ -794,7 +794,7 @@ abstract class FormFlow implements FormFlowInterface {
 	 */
 	public function getStep($stepNumber) {
 		if (!is_int($stepNumber)) {
-			throw new InvalidTypeException($stepNumber, 'integer');
+			throw new InvalidTypeException($stepNumber, 'int');
 		}
 
 		$steps = $this->getSteps();
@@ -918,7 +918,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 	/**
 	 * @param FormInterface $submittedForm
-	 * @return boolean If a redirection should be performed.
+	 * @return bool If a redirection should be performed.
 	 */
 	public function redirectAfterSubmit(FormInterface $submittedForm) {
 		if ($this->allowRedirectAfterSubmit && in_array($this->getRequest()->getMethod(), array('POST', 'PUT'))) {
@@ -937,7 +937,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 	/**
 	 * Creates the form for the given step number.
-	 * @param integer $stepNumber
+	 * @param int $stepNumber
 	 * @param array $options
 	 * @return FormInterface
 	 */
@@ -989,7 +989,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 	/**
 	 * @param string $eventName
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function hasListeners($eventName) {
 		return $this->eventDispatcher !== null && $this->eventDispatcher->hasListeners($eventName);

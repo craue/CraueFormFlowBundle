@@ -280,8 +280,8 @@ class FormFlowTest extends UnitTestCase {
 	 *
 	 * @param string $httpMethod The HTTP method.
 	 * @param array $parameters Parameters for the query/request.
-	 * @param boolean $dsnEnabled If dynamic step navigation is enabled.
-	 * @param integer $expectedStepNumber The expected step number being requested.
+	 * @param bool $dsnEnabled If dynamic step navigation is enabled.
+	 * @param int $expectedStepNumber The expected step number being requested.
 	 */
 	public function testGetRequestedStepNumber($httpMethod, $parameters, $dsnEnabled, $expectedStepNumber) {
 		$flow = $this->getFlowWithMockedMethods(array('getName', 'getRequest'));
@@ -327,7 +327,7 @@ class FormFlowTest extends UnitTestCase {
 	 *
 	 * @param string $httpMethod The HTTP method.
 	 * @param array $parameters Parameters for the query/request.
-	 * @param boolean $expectedValid If the form is expected to be valid.
+	 * @param bool $expectedValid If the form is expected to be valid.
 	 */
 	public function testIsValid($httpMethod, $parameters, $expectedValid) {
 		$flow = $this->getFlowWithMockedMethods(array('getName', 'getRequest'));

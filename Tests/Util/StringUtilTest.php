@@ -58,7 +58,7 @@ class StringUtilTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @expectedException \Craue\FormFlowBundle\Exception\InvalidTypeException
-	 * @expectedExceptionMessage Expected argument of type "integer", but "NULL" given.
+	 * @expectedExceptionMessage Expected argument of type "int", but "NULL" given.
 	 */
 	public function testIsRandomString_lengthNotInteger() {
 		StringUtil::isRandomString('', null);

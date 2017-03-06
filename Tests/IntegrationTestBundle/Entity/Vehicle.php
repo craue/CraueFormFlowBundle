@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Vehicle {
 
 	/**
-	 * @var integer
+	 * @var int
 	 * @Assert\NotBlank(groups={"flow_createVehicle_step1"})
 	 */
 	public $numberOfWheels;

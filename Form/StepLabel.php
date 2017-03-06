@@ -13,7 +13,7 @@ use Craue\FormFlowBundle\Exception\StepLabelCallableInvalidReturnValueException;
 class StepLabel {
 
 	/**
-	 * @var boolean If <code>$value</code> is callable.
+	 * @var bool If <code>$value</code> is callable.
 	 */
 	private $callable;
 
@@ -55,7 +55,7 @@ class StepLabel {
 
 	/**
 	 * @param string|callable|null $value
-	 * @param boolean $callable
+	 * @param bool $callable
 	 */
 	private function __construct($value, $callable = false) {
 		$this->setValue($value, $callable);
@@ -63,7 +63,7 @@ class StepLabel {
 
 	/**
 	 * @param string|callable|null $value
-	 * @param boolean $callable
+	 * @param bool $callable
 	 */
 	private function setValue($value, $callable = false) {
 		if ($callable) {

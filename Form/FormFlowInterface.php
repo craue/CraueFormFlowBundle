@@ -47,17 +47,17 @@ interface FormFlowInterface {
 	function setEventDispatcher(EventDispatcherInterface $eventDispatcher);
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	function isRevalidatePreviousSteps();
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	function isAllowDynamicStepNavigation();
 
 	/**
-	 * @return boolean If file uploads should be handled by serializing them into the storage.
+	 * @return bool If file uploads should be handled by serializing them into the storage.
 	 */
 	function isHandleFileUploads();
 
@@ -67,7 +67,7 @@ interface FormFlowInterface {
 	function getHandleFileUploadsTempDir();
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	function isAllowRedirectAfterSubmit();
 
@@ -99,20 +99,20 @@ interface FormFlowInterface {
 	function createForm();
 
 	/**
-	 * @param integer $stepNumber
-	 * @return boolean
+	 * @param int $stepNumber
+	 * @return bool
 	 */
 	function isStepDone($stepNumber);
 
 	/**
-	 * @param integer $stepNumber
-	 * @return boolean
+	 * @param int $stepNumber
+	 * @return bool
 	 */
 	function isStepSkipped($stepNumber);
 
 	/**
 	 * @param FormInterface $form
-	 * @return boolean Whether the form is valid.
+	 * @return bool Whether the form is valid.
 	 */
 	function isValid(FormInterface $form);
 
@@ -124,7 +124,7 @@ interface FormFlowInterface {
 
 	/**
 	 * Proceeds to the next step.
-	 * @return boolean Whether the next step can be prepared. If not, the flow is finished.
+	 * @return bool Whether the next step can be prepared. If not, the flow is finished.
 	 */
 	function nextStep();
 
@@ -134,17 +134,17 @@ interface FormFlowInterface {
 	function reset();
 
 	/**
-	 * @return integer First visible step, which may be greater than 1 if steps are skipped.
+	 * @return int First visible step, which may be greater than 1 if steps are skipped.
 	 */
 	function getFirstStepNumber();
 
 	/**
-	 * @return integer Last visible step, which may be less than <code>getStepCount()</code> if steps are skipped.
+	 * @return int Last visible step, which may be less than <code>getStepCount()</code> if steps are skipped.
 	 */
 	function getLastStepNumber();
 
 	/**
-	 * @return integer
+	 * @return int
 	 * @throws \RuntimeException If the current step is not yet known.
 	 */
 	function getCurrentStepNumber();
@@ -161,7 +161,7 @@ interface FormFlowInterface {
 	function getStepLabels();
 
 	/**
-	 * @param integer $stepNumber
+	 * @param int $stepNumber
 	 * @return StepInterface
 	 * @throws InvalidTypeException If <code>$stepNumber</code> is not an integer.
 	 * @throws \OutOfBoundsException If step <code>$stepNumber</code> doesn't exist.
@@ -174,7 +174,7 @@ interface FormFlowInterface {
 	function getSteps();
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	function getStepCount();
 
@@ -189,12 +189,12 @@ interface FormFlowInterface {
 	function getStepsRemaining();
 
 	/**
-	 * @return integer Count of steps done.
+	 * @return int Count of steps done.
 	 */
 	function getStepsDoneCount();
 
 	/**
-	 * @return integer Count of steps remaining.
+	 * @return int Count of steps remaining.
 	 */
 	function getStepsRemainingCount();
 }

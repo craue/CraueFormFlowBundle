@@ -14,12 +14,12 @@ abstract class StringUtil {
 	private function __construct() {}
 
 	/**
-	 * @param integer $length
+	 * @param int $length
 	 * @return string
 	 */
 	public static function generateRandomString($length) {
 		if (!is_int($length)) {
-			throw new InvalidTypeException($length, 'integer');
+			throw new InvalidTypeException($length, 'int');
 		}
 
 		if ($length < 0) {
@@ -31,8 +31,8 @@ abstract class StringUtil {
 
 	/**
 	 * @param string $input
-	 * @param integer $length
-	 * @return boolean
+	 * @param int $length
+	 * @return bool
 	 */
 	public static function isRandomString($input, $length) {
 		if (!is_string($input)) {
@@ -40,7 +40,7 @@ abstract class StringUtil {
 		}
 
 		if (!is_int($length)) {
-			throw new InvalidTypeException($length, 'integer');
+			throw new InvalidTypeException($length, 'int');
 		}
 
 		if ($length < 0) {
