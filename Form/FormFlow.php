@@ -690,7 +690,7 @@ abstract class FormFlow implements FormFlowInterface {
 		$currentStepData = $request->request->get($formName, array());
 
 		if ($this->handleFileUploads) {
-			$currentStepData = array_merge_recursive($currentStepData, $request->files->get($formName, array()));
+			$currentStepData = array_replace_recursive($currentStepData, $request->files->get($formName, array()));
 		}
 
 		$stepData[$this->currentStepNumber] = $currentStepData;
