@@ -48,6 +48,30 @@ class TemplateRenderingTest extends IntegrationTestCase {
 		$this->assertContains('<button type="submit" class="craue_formflow_button_first" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
 	}
 
+	public function testButtons_noResetButton() {
+		$flow = $this->getFlowStub();
+
+		// first step
+		$flow->nextStep();
+
+		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
+			'craue_formflow_button_render_reset' => false,
+			'flow' => $flow,
+		));
+		$this->assertContains('<div class="craue_formflow_buttons craue_formflow_button_count_1">', $renderedTemplate);
+		$this->assertNotContains('<button type="submit" class="craue_formflow_button_first" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
+
+		// second step
+		$flow->nextStep();
+
+		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
+			'craue_formflow_button_render_reset' => false,
+			'flow' => $flow,
+		));
+		$this->assertContains('<div class="craue_formflow_buttons craue_formflow_button_count_2">', $renderedTemplate);
+		$this->assertNotContains('<button type="submit" class="craue_formflow_button_first" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
+	}
+
 	public function testButtons_firstStepSkipped() {
 		$flow = $this->getFlowStub(array(), array(
 			array(
