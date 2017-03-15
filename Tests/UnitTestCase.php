@@ -31,7 +31,7 @@ abstract class UnitTestCase extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @param string[] $methodNames Names of methods to be mocked.
-	 * @return PHPUnit_Framework_MockObject_MockObject|FormFlow
+	 * @return \PHPUnit_Framework_MockObject_MockObject|FormFlow
 	 */
 	protected function getFlowWithMockedMethods(array $methodNames) {
 		return $this->getMockBuilder('\Craue\FormFlowBundle\Form\FormFlow')->setMethods($methodNames)->getMock();
