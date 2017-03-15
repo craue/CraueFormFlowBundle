@@ -196,7 +196,7 @@ class DataManagerTest extends UnitTestCase {
 	/**
 	 * @param string $name
 	 * @param string $instanceId
-	 * @return PHPUnit_Framework_MockObject_MockObject|FormFlow
+	 * @return \PHPUnit_Framework_MockObject_MockObject|FormFlow
 	 */
 	protected function getFlow($name, $instanceId) {
 		$flow = $this->getFlowWithMockedMethods(array('getName'));
