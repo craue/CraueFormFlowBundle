@@ -364,7 +364,7 @@ Valid options per step are:
 	- This value is passed to Symfony's form factory, thus the same rules apply as for creating common forms. If using a string, it has to be either the FQCN or the registered alias of the form type, depending on the version of Symfony your project is built with.
 - `form_options` (`array`)
 	- Options passed to the form type of that step.
-- `skip` (`callable`|`boolean`)
+- `skip` (`callable`|`bool`)
 	- Decides whether the step will be skipped.
 	- If using a callable...
 		- it will receive the estimated current step number and the flow as arguments;
