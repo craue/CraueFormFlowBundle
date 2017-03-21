@@ -29,7 +29,7 @@ class PreviousStepInvalidEventListener {
 	}
 
 	/**
-	 * @param integer $stepNumber
+	 * @param int $stepNumber
 	 * @return FormError
 	 */
 	protected function getPreviousStepInvalidFormError($stepNumber) {

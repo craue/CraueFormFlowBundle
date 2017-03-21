@@ -31,7 +31,7 @@ interface DataManagerInterface {
 	/**
 	 * Checks if data exists for a given flow.
 	 * @param FormFlowInterface $flow
-	 * @return boolean
+	 * @return bool
 	 */
 	function exists(FormFlowInterface $flow);
 

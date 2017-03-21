@@ -27,7 +27,7 @@ interface StorageInterface {
 	/**
 	 * Checks if data is stored for the given key.
 	 * @param string $key
-	 * @return boolean
+	 * @return bool
 	 */
 	function has($key);
 

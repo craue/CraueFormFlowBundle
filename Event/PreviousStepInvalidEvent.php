@@ -15,7 +15,7 @@ use Symfony\Component\Form\FormInterface;
 class PreviousStepInvalidEvent extends FormFlowEvent {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $invalidStepNumber;
 
@@ -27,7 +27,7 @@ class PreviousStepInvalidEvent extends FormFlowEvent {
 	/**
 	 * @param FormFlowInterface $flow
 	 * @param FormInterface $currentStepForm
-	 * @param integer $invalidStepNumber
+	 * @param int $invalidStepNumber
 	 */
 	public function __construct(FormFlowInterface $flow, FormInterface $currentStepForm, $invalidStepNumber) {
 		$this->flow = $flow;
@@ -43,7 +43,7 @@ class PreviousStepInvalidEvent extends FormFlowEvent {
 	}
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getInvalidStepNumber() {
 		return $this->invalidStepNumber;

@@ -66,7 +66,7 @@ class SerializableFile {
 
 	/**
 	 * @param mixed $file
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isSupported($file) {
 		return $file instanceof UploadedFile;

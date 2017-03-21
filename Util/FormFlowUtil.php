@@ -15,7 +15,7 @@ class FormFlowUtil {
 	 * Adds route parameters for dynamic step navigation.
 	 * @param array $parameters Current route parameters.
 	 * @param FormFlow $flow The flow involved.
-	 * @param integer|null $stepNumber Number of the step the link will be generated for. If <code>null</code>, the <code>$flow</code>'s current step number will be used.
+	 * @param int|null $stepNumber Number of the step the link will be generated for. If <code>null</code>, the <code>$flow</code>'s current step number will be used.
 	 * @return array Route parameters plus instance and step parameter.
 	 */
 	public function addRouteParameters(array $parameters, FormFlow $flow, $stepNumber = null) {

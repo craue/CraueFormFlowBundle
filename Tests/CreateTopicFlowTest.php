@@ -313,7 +313,7 @@ class CreateTopicFlowTest extends IntegrationTestCase {
 
 	/**
 	 * Processes through the flow up to the given step by filling out the forms with some valid data.
-	 * @param integer $stepNumber The targeted step number.
+	 * @param int $stepNumber The targeted step number.
 	 * @return Crawler
 	 */
 	private function proceedToStep($stepNumber) {
