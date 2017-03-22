@@ -55,3 +55,4 @@ sudo: false
 cache:
   directories:
     - $HOME/.composer/cache/files
+    - vendor
