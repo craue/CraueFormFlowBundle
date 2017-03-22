@@ -18,7 +18,7 @@ matrix:
     - php: 5.6
       env: DEPS='unmodified'
     - php: 5.6
-      env: SYMFONY_VERSION='2.7.*' SYMFONY__DB__DRIVER='pdo_sqlite'
+      env: SYMFONY_VERSION='2.7.*' PARAM_DB_DRIVER='pdo_sqlite'
     - php: 5.6
       env: SYMFONY_VERSION='2.8.*'
     - php: 5.6

@@ -2,7 +2,6 @@
 
 /*
  * Only set parameters if they aren't already defined. This allows using environment variables (e.g. set by Travis) and fallback values.
- * See http://symfony.com/doc/current/cookbook/configuration/external_parameters.html#environment-variables for details.
  */
 
 $defaultParameters = array(
@@ -17,8 +16,9 @@ $defaultParameters = array(
 	'db.path' => $container->getParameter('kernel.cache_dir') . '/sqlite.db',
 );
 
-foreach ($defaultParameters as $name => $value) {
+foreach ($defaultParameters as $name => $defaultValue) {
 	if (!$container->hasParameter($name)) {
-		$container->setParameter($name, $value);
+		$envValue = getenv(sprintf('PARAM_%s', strtoupper(strtr($name, '.', '_'))));
+		$container->setParameter($name, $envValue !== false ? $envValue : $defaultValue);
 	}
 }
