@@ -1,6 +1,7 @@
 <?php
 
 namespace Craue\FormFlowBundle\Tests\Form;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests for BC.
@@ -12,7 +13,7 @@ namespace Craue\FormFlowBundle\Tests\Form;
  * @copyright 2011-2017 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class FormFlowBcMethodsTest extends \PHPUnit_Framework_TestCase {
+class FormFlowBcMethodsTest extends TestCase {
 
 	/**
 	 * @expectedDeprecation Method Craue\FormFlowBundle\Form\FormFlow::getCurrentStep is deprecated since version 2.0. Use method getCurrentStepNumber instead.

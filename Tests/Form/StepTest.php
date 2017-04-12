@@ -4,6 +4,7 @@ namespace Craue\FormFlowBundle\Tests\Form;
 
 use Craue\FormFlowBundle\Form\FormFlowInterface;
 use Craue\FormFlowBundle\Form\Step;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group unit
@@ -12,7 +13,7 @@ use Craue\FormFlowBundle\Form\Step;
  * @copyright 2011-2017 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class StepTest extends \PHPUnit_Framework_TestCase {
+class StepTest extends TestCase {
 
 	public function testCreateFromConfig() {
 		// TODO replace by `$this->createMock('\Craue\FormFlowBundle\Form\FormFlowInterface')` as soon as PHPUnit >= 5.4 is required

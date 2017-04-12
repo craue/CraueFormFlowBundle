@@ -4,6 +4,7 @@ namespace Craue\FormFlowBundle\Tests\Form;
 
 use Craue\FormFlowBundle\Event\GetStepsEvent;
 use Craue\FormFlowBundle\Form\FormFlowEvents;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -14,7 +15,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  * @copyright 2011-2017 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class FormFlowTest extends \PHPUnit_Framework_TestCase {
+class FormFlowTest extends TestCase {
 
 	public function testStepListener() {
 		$steps = array(
