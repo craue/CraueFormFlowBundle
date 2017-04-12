@@ -284,7 +284,7 @@ In the same manner you can customize the button labels:
 - `craue_formflow_button_label_finish` for the __finish__ button
 - `craue_formflow_button_label_next` for the __next__ button 
 - `craue_formflow_button_label_back` for the __back__ button
-- `craue_formflow_button_label_reset` for the __reset__ button 
+- `craue_formflow_button_label_reset` for the __reset__ button
 
 Example:
 
@@ -294,6 +294,8 @@ Example:
 		craue_formflow_button_label_reset: 'reset the flow',
 	} %}
 ```
+
+You can also remove the reset button by setting `craue_formflow_button_render_reset` to `false`.
 
 ## Create an action
 
