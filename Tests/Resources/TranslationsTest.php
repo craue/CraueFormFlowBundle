@@ -25,7 +25,7 @@ class TranslationsTest extends TestCase {
 	 * @dataProvider dataYamlTranslationFileIsValid
 	 */
 	public function testYamlTranslationFileIsValid($filePath) {
-		Yaml::parse(file_get_contents($filePath));
+		$this->assertInternalType('array', Yaml::parse(file_get_contents($filePath)));
 	}
 
 	public function dataYamlTranslationFileIsValid() {
