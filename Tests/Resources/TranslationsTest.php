@@ -2,6 +2,7 @@
 
 namespace Craue\FormFlowBundle\Tests\Resources;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Symfony\Component\Yaml\Yaml;
 
@@ -12,7 +13,7 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright 2011-2017 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class TranslationsTest extends \PHPUnit_Framework_TestCase {
+class TranslationsTest extends TestCase {
 
 	protected static $defaultLocale = 'en';
 

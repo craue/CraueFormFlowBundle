@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests\Form\Extension;
 
 use Craue\FormFlowBundle\Form\Extension\FormFlowHiddenFieldExtension;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group unit
@@ -11,7 +12,7 @@ use Craue\FormFlowBundle\Form\Extension\FormFlowHiddenFieldExtension;
  * @copyright 2011-2017 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class FormFlowHiddenFieldExtensionTest extends \PHPUnit_Framework_TestCase {
+class FormFlowHiddenFieldExtensionTest extends TestCase {
 
 	public function testGetExtendedType() {
 		$extension = new FormFlowHiddenFieldExtension();

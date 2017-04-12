@@ -4,6 +4,7 @@ namespace Craue\FormFlowBundle\Tests\Storage;
 
 use Craue\FormFlowBundle\Storage\SerializableFile;
 use Craue\FormFlowBundle\Util\TempFileUtil;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -14,7 +15,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @copyright 2011-2017 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class SerializableFileTest extends \PHPUnit_Framework_TestCase {
+class SerializableFileTest extends TestCase {
 
 	const DOCUMENT = '/../Fixtures/some-text.txt';
 

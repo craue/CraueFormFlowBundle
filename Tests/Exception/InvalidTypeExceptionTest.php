@@ -3,13 +3,14 @@
 namespace Craue\FormFlowBundle\Tests\Exception;
 
 use Craue\FormFlowBundle\Exception\InvalidTypeException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
  * @copyright 2011-2017 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class InvalidTypeExceptionTest extends \PHPUnit_Framework_TestCase {
+class InvalidTypeExceptionTest extends TestCase {
 
 	/**
 	 * @dataProvider dataExceptionMessage

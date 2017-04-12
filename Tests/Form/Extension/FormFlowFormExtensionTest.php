@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests\Form\Extension;
 
 use Craue\FormFlowBundle\Form\Extension\FormFlowFormExtension;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group unit
@@ -11,7 +12,7 @@ use Craue\FormFlowBundle\Form\Extension\FormFlowFormExtension;
  * @copyright 2011-2017 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class FormFlowFormExtensionTest extends \PHPUnit_Framework_TestCase {
+class FormFlowFormExtensionTest extends TestCase {
 
 	public function testGetExtendedType() {
 		$extension = new FormFlowFormExtension();

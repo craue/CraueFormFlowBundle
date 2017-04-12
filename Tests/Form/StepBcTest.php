@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests\Form;
 
 use Craue\FormFlowBundle\Form\Step;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests for BC.
@@ -14,7 +15,7 @@ use Craue\FormFlowBundle\Form\Step;
  * @copyright 2011-2017 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class StepBcTest extends \PHPUnit_Framework_TestCase {
+class StepBcTest extends TestCase {
 
 	/**
 	 * @expectedDeprecation Step config option "type" is deprecated since version 3.0. Use "form_type" instead.

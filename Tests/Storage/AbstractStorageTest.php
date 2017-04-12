@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests\Storage;
 
 use Craue\FormFlowBundle\Storage\StorageInterface;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group unit
@@ -11,7 +12,7 @@ use Craue\FormFlowBundle\Storage\StorageInterface;
  * @copyright 2011-2017 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-abstract class AbstractStorageTest extends \PHPUnit_Framework_TestCase {
+abstract class AbstractStorageTest extends TestCase {
 
 	/**
 	 * @var StorageInterface

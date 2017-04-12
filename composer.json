@@ -25,9 +25,9 @@
 	},
 	"require-dev": {
 		"doctrine/doctrine-bundle": "~1.0",
-		"phpunit/phpunit": "~4.1|~5.0",
+		"phpunit/phpunit": "^4.8.35|~5.7|~6.0",
 		"sensio/framework-extra-bundle": "~3.0",
-		"symfony/phpunit-bridge": "~3.2",
+		"symfony/phpunit-bridge": "^3.2.5|~3.3@dev",
 		"symfony/symfony": "~2.7|~3.0"
 	},
 	"minimum-stability": "stable",

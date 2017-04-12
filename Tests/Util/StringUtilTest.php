@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests\Util;
 
 use Craue\FormFlowBundle\Util\StringUtil;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group unit
@@ -11,7 +12,7 @@ use Craue\FormFlowBundle\Util\StringUtil;
  * @copyright 2011-2017 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class StringUtilTest extends \PHPUnit_Framework_TestCase {
+class StringUtilTest extends TestCase {
 
 	public function testGenerateRandomString() {
 		$this->assertEquals(1000, strlen(StringUtil::generateRandomString(1000)));

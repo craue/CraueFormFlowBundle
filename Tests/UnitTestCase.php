@@ -6,13 +6,14 @@ use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Form\FormFlowInterface;
 use Craue\FormFlowBundle\Form\StepInterface;
 use Craue\FormFlowBundle\Storage\DataManagerInterface;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
  * @copyright 2011-2017 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-abstract class UnitTestCase extends \PHPUnit_Framework_TestCase {
+abstract class UnitTestCase extends TestCase {
 
 	/**
 	 * @return \PHPUnit_Framework_MockObject_MockObject|FormFlow

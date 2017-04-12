@@ -4,6 +4,7 @@ namespace Craue\FormFlowBundle\Tests\Storage;
 
 use Craue\FormFlowBundle\Storage\StorageKeyGeneratorInterface;
 use Craue\FormFlowBundle\Storage\UserSessionStorageKeyGenerator;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
@@ -21,7 +22,7 @@ use Symfony\Component\Security\Core\User\User;
  * @copyright 2011-2017 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class UserSessionStorageKeyGeneratorTest extends \PHPUnit_Framework_TestCase {
+class UserSessionStorageKeyGeneratorTest extends TestCase {
 
 	/**
 	 * @var StorageKeyGeneratorInterface
