@@ -158,12 +158,12 @@ class FormFlowTest extends UnitTestCase {
 
 	public function testGetStepsDoneRemaining() {
 		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig', 'retrieveStepData'));
-		
+
 		$flow
 			->method('retrieveStepData')
 			->will($this->returnValue(array()))
 		;
-		
+
 		$flow
 			->expects($this->once())
 			->method('loadStepsConfig')
@@ -180,20 +180,20 @@ class FormFlowTest extends UnitTestCase {
 				),
 			)))
 		;
-		
+
 		$stepsDone = $flow->getStepsDone();
 		$stepsRemaining = $flow->getStepsRemaining();
 
 		$this->assertSame(1, current($stepsDone)->getNumber());
 		$this->assertSame(1, end($stepsDone)->getNumber());
-		
+
 		$this->assertSame(2, current($stepsRemaining)->getNumber());
 		$this->assertSame(3, end($stepsRemaining)->getNumber());
-		
+
 		$this->assertSame(1, $flow->getStepsDoneCount());
 		$this->assertSame(2, $flow->getStepsRemainingCount());
 	}
-	
+
 	/**
 	 * Ensure that generic options are considered.
 	 */
