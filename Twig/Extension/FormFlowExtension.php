@@ -102,6 +102,25 @@ class FormFlowExtension extends \Twig_Extension {
 
 		return false;
 	}
+	
+    /**
+     * Checks if a step has an upcoming linkable step.
+     *
+     * @param FormFlow $flow The flow involved.
+     * @param integer  $stepNumber Number of the step being checked.
+     *
+     * @return boolean If the step has an upcoming linkable step.
+     */
+    public function hasUpcomingLinkableStep(FormFlow $flow, $stepNumber) {
+        $steps = $flow->getSteps();
+        rsort($steps);
+
+        foreach ($steps as $step) {
+            if ($this->isStepLinkable($flow, $step->getNumber()) && $step->getNumber() > $stepNumber) {
+                return true;
+            }
+        }
+    }	
 
 	// methods for BC with third-party templates (e.g. MopaBootstrapBundle)
 
