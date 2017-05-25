@@ -1,6 +1,7 @@
 /.buildpath
 /.project
 /.settings
+/nbproject
 /composer-install.bat
 /composer-update.bat
 /composer.lock

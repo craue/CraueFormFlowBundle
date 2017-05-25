@@ -32,6 +32,7 @@ in a shell.
 public function registerBundles() {
 	$bundles = array(
 		// ...
+		new Symfony\Bundle\AsseticBundle\AsseticBundle(),
 		new Craue\FormFlowBundle\CraueFormFlowBundle(),
 	);
 	// ...
