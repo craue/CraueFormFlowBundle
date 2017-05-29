@@ -260,7 +260,7 @@ Some CSS is needed to render the buttons correctly. The easiest way would be to 
 {% endstylesheets %}
 ```
 
-You can easily customize the default button look by using these variables to add one or more CSS classes to them:
+You can easily customize the default button look by using these variables to add one or more CSS classes to them (option not available in all versions):
 
 - `craue_formflow_button_class_last` will apply either to the __next__ or __finish__ button
 - `craue_formflow_button_class_finish` will specifically apply to the __finish__ button
