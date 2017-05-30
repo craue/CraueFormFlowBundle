@@ -975,9 +975,7 @@ abstract class FormFlow implements FormFlowInterface {
 	 * Defines the configuration for all steps of this flow.
 	 * @return array
 	 */
-	protected function loadStepsConfig() {
-		return array();
-	}
+	 abstract protected function loadStepsConfig();
 
 	protected function retrieveStepData() {
 		return $this->dataManager->load($this);
