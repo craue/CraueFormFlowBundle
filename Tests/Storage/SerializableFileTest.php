@@ -74,7 +74,7 @@ class SerializableFileTest extends TestCase {
 
 	public function testSerialization_customTempDir_nonexistent() {
 		$serializableFile = new SerializableFile(new UploadedFile(__FILE__, 'my.txt', null, null, null, true));
-		$processedUploadedFile = $serializableFile->getAsFile('xyz:/');
+		$processedUploadedFile = @$serializableFile->getAsFile('xyz:/');
 
 		$this->assertEquals(realpath(sys_get_temp_dir()), realpath($processedUploadedFile->getPath()));
 	}
