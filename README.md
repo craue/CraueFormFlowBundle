@@ -32,12 +32,13 @@ in a shell.
 
 ```php
 // in app/AppKernel.php
-public function registerBundles() {
-	$bundles = array(
-		// ...
-		new Craue\FormFlowBundle\CraueFormFlowBundle(),
-	);
-	// ...
+public function registerBundles()
+{
+    $bundles = array(
+        // ...
+        new Craue\FormFlowBundle\CraueFormFlowBundle(),
+    );
+    // ...
 }
 ```
 
@@ -62,26 +63,27 @@ This approach makes it easy to turn an existing (common) form into a form flow.
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Form\FormFlowInterface;
 
-class CreateVehicleFlow extends FormFlow {
-
-	protected function loadStepsConfig() {
-		return array(
-			array(
-				'label' => 'wheels',
-				'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleForm',
-			),
-			array(
-				'label' => 'engine',
-				'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleForm',
-				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
-					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
-				},
-			),
-			array(
-				'label' => 'confirmation',
-			),
-		);
-	}
+class CreateVehicleFlow extends FormFlow
+{
+    protected function loadStepsConfig()
+    {
+        return array(
+            array(
+                'label' => 'wheels',
+                'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleForm',
+            ),
+            array(
+                'label' => 'engine',
+                'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleForm',
+                'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+                    return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
+                },
+            ),
+            array(
+                'label' => 'confirmation',
+            ),
+        );
+    }
 
 }
 ```
@@ -97,30 +99,31 @@ according to the step to render.
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class CreateVehicleForm extends AbstractType {
+class CreateVehicleForm extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        switch ($options['flow_step']) {
+            case 1:
+                $validValues = array(2, 4);
+                $builder->add('numberOfWheels', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
+                    'choices' => array_combine($validValues, $validValues),
+                    'placeholder' => '',
+                ));
+                break;
+            case 2:
+                // This form type is not defined in the example.
+                $builder->add('engine', 'MyCompany\MyBundle\Form\Type\VehicleEngineType', array(
+                    'placeholder' => '',
+                ));
+                break;
+        }
+    }
 
-	public function buildForm(FormBuilderInterface $builder, array $options) {
-		switch ($options['flow_step']) {
-			case 1:
-				$validValues = array(2, 4);
-				$builder->add('numberOfWheels', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
-					'choices' => array_combine($validValues, $validValues),
-					'placeholder' => '',
-				));
-				break;
-			case 2:
-				// This form type is not defined in the example.
-				$builder->add('engine', 'MyCompany\MyBundle\Form\Type\VehicleEngineType', array(
-					'placeholder' => '',
-				));
-				break;
-		}
-	}
-
-	public function getBlockPrefix() {
-		return 'createVehicle';
-	}
-
+    public function getBlockPrefix()
+    {
+        return 'createVehicle';
+    }
 }
 ```
 
@@ -135,27 +138,27 @@ This approach makes it easy to reuse the form types to compose other forms.
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Form\FormFlowInterface;
 
-class CreateVehicleFlow extends FormFlow {
-
-	protected function loadStepsConfig() {
-		return array(
-			array(
-				'label' => 'wheels',
-				'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
-			),
-			array(
-				'label' => 'engine',
-				'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep2Form',
-				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
-					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
-				},
-			),
-			array(
-				'label' => 'confirmation',
-			),
-		);
-	}
-
+class CreateVehicleFlow extends FormFlow
+{
+    protected function loadStepsConfig()
+    {
+        return array(
+            array(
+                'label' => 'wheels',
+                'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
+            ),
+            array(
+                'label' => 'engine',
+                'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep2Form',
+                'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+                    return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
+                },
+            ),
+            array(
+                'label' => 'confirmation',
+            ),
+        );
+    }
 }
 ```
 
@@ -166,20 +169,21 @@ class CreateVehicleFlow extends FormFlow {
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class CreateVehicleStep1Form extends AbstractType {
+class CreateVehicleStep1Form extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $validValues = array(2, 4);
+        $builder->add('numberOfWheels', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
+            'choices' => array_combine($validValues, $validValues),
+            'placeholder' => '',
+        ));
+    }
 
-	public function buildForm(FormBuilderInterface $builder, array $options) {
-		$validValues = array(2, 4);
-		$builder->add('numberOfWheels', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
-			'choices' => array_combine($validValues, $validValues),
-			'placeholder' => '',
-		));
-	}
-
-	public function getBlockPrefix() {
-		return 'createVehicleStep1';
-	}
-
+    public function getBlockPrefix()
+    {
+        return 'createVehicleStep1';
+    }
 }
 ```
 
@@ -188,17 +192,19 @@ class CreateVehicleStep1Form extends AbstractType {
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class CreateVehicleStep2Form extends AbstractType {
+class CreateVehicleStep2Form extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('engine', 'MyCompany\MyBundle\Form\Type\VehicleEngineType', array(
+            'placeholder' => '',
+        ));
+    }
 
-	public function buildForm(FormBuilderInterface $builder, array $options) {
-		$builder->add('engine', 'MyCompany\MyBundle\Form\Type\VehicleEngineType', array(
-			'placeholder' => '',
-		));
-	}
-
-	public function getBlockPrefix() {
-		return 'createVehicleStep2';
-	}
+    public function getBlockPrefix()
+    {
+        return 'createVehicleStep2';
+    }
 
 }
 ```
@@ -208,10 +214,10 @@ class CreateVehicleStep2Form extends AbstractType {
 XML
 ```xml
 <services>
-	<service id="myCompany.form.flow.createVehicle"
-			class="MyCompany\MyBundle\Form\CreateVehicleFlow"
-			parent="craue.form.flow">
-	</service>
+    <service id="myCompany.form.flow.createVehicle"
+            class="MyCompany\MyBundle\Form\CreateVehicleFlow"
+            parent="craue.form.flow">
+    </service>
 </services>
 ```
 
@@ -232,22 +238,22 @@ form according to the current step.
 ```twig
 {# in src/MyCompany/MyBundle/Resources/views/Vehicle/createVehicle.html.twig #}
 <div>
-	Steps:
-	{% include '@CraueFormFlow/FormFlow/stepList.html.twig' %}
+    Steps:
+    {% include '@CraueFormFlow/FormFlow/stepList.html.twig' %}
 </div>
 {{ form_start(form) }}
-	{{ form_errors(form) }}
+    {{ form_errors(form) }}
 
-	{% if flow.getCurrentStepNumber() == 1 %}
-		<div>
-			When selecting four wheels you have to choose the engine in the next step.<br />
-			{{ form_row(form.numberOfWheels) }}
-		</div>
-	{% endif %}
+    {% if flow.getCurrentStepNumber() == 1 %}
+        <div>
+            When selecting four wheels you have to choose the engine in the next step.<br />
+            {{ form_row(form.numberOfWheels) }}
+        </div>
+    {% endif %}
 
-	{{ form_rest(form) }}
+    {{ form_rest(form) }}
 
-	{% include '@CraueFormFlow/FormFlow/buttons.html.twig' %}
+    {% include '@CraueFormFlow/FormFlow/buttons.html.twig' %}
 {{ form_end(form) }}
 ```
 
@@ -256,7 +262,7 @@ Some CSS is needed to render the buttons correctly. The easiest way would be to 
 
 ```twig
 {% stylesheets '@CraueFormFlowBundle/Resources/assets/css/buttons.css' %}
-	<link type="text/css" rel="stylesheet" href="{{ asset_url }}" />
+    <link type="text/css" rel="stylesheet" href="{{ asset_url }}" />
 {% endstylesheets %}
 ```
 
@@ -272,10 +278,10 @@ Example with Bootstrap button classes:
 
 ```twig
 {% include '@CraueFormFlow/FormFlow/buttons.html.twig' with {
-		craue_formflow_button_class_last: 'btn btn-primary',
-		craue_formflow_button_class_back: 'btn',
-		craue_formflow_button_class_reset: 'btn btn-warning',
-	} %}
+        craue_formflow_button_class_last: 'btn btn-primary',
+        craue_formflow_button_class_back: 'btn',
+        craue_formflow_button_class_reset: 'btn btn-warning',
+    } %}
 ```
 
 In the same manner you can customize the button labels:
@@ -290,9 +296,9 @@ Example:
 
 ```twig
 {% include '@CraueFormFlow/FormFlow/buttons.html.twig' with {
-		craue_formflow_button_label_finish: 'submit',
-		craue_formflow_button_label_reset: 'reset the flow',
-	} %}
+        craue_formflow_button_label_finish: 'submit',
+        craue_formflow_button_label_reset: 'reset the flow',
+    } %}
 ```
 
 You can also remove the reset button by setting `craue_formflow_button_render_reset` to `false`.
@@ -301,36 +307,37 @@ You can also remove the reset button by setting `craue_formflow_button_render_re
 
 ```php
 // in src/MyCompany/MyBundle/Controller/VehicleController.php
-public function createVehicleAction() {
-	$formData = new Vehicle(); // Your form data class. Has to be an object, won't work properly with an array.
+public function createVehicleAction()
+{
+    $formData = new Vehicle(); // Your form data class. Has to be an object, won't work properly with an array.
 
-	$flow = $this->get('myCompany.form.flow.createVehicle'); // must match the flow's service id
-	$flow->bind($formData);
+    $flow = $this->get('myCompany.form.flow.createVehicle'); // must match the flow's service id
+    $flow->bind($formData);
 
-	// form of the current step
-	$form = $flow->createForm();
-	if ($flow->isValid($form)) {
-		$flow->saveCurrentStepData($form);
+    // form of the current step
+    $form = $flow->createForm();
+    if ($flow->isValid($form)) {
+        $flow->saveCurrentStepData($form);
 
-		if ($flow->nextStep()) {
-			// form for the next step
-			$form = $flow->createForm();
-		} else {
-			// flow finished
-			$em = $this->getDoctrine()->getManager();
-			$em->persist($formData);
-			$em->flush();
+        if ($flow->nextStep()) {
+            // form for the next step
+            $form = $flow->createForm();
+        } else {
+            // flow finished
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($formData);
+            $em->flush();
 
-			$flow->reset(); // remove step data from the session
+            $flow->reset(); // remove step data from the session
 
-			return $this->redirect($this->generateUrl('home')); // redirect when done
-		}
-	}
+            return $this->redirect($this->generateUrl('home')); // redirect when done
+        }
+    }
 
-	return $this->render('@MyCompanyMy/Vehicle/createVehicle.html.twig', array(
-		'form' => $form->createView(),
-		'flow' => $flow,
-	));
+    return $this->render('@MyCompanyMy/Vehicle/createVehicle.html.twig', array(
+        'form' => $form->createView(),
+        'flow' => $flow,
+    ));
 }
 ```
 
@@ -358,60 +365,62 @@ The first item will be the first step. You can, however, explicitly index the ar
 
 Valid options per step are:
 - `label` (`string`|`StepLabel`|`null`)
-	- If you'd like to render an overview of all steps you have to set the `label` option for each step.
-	- If using a callable on a `StepLabel` instance, it has to return a string value or `null`.
-	- By default, the labels will be translated using the `messages` domain when rendered in Twig.
+    - If you'd like to render an overview of all steps you have to set the `label` option for each step.
+    - If using a callable on a `StepLabel` instance, it has to return a string value or `null`.
+    - By default, the labels will be translated using the `messages` domain when rendered in Twig.
 - `form_type` (`FormTypeInterface`|`string`|`null`)
-	- The form type used to build the form for that step.
-	- This value is passed to Symfony's form factory, thus the same rules apply as for creating common forms. If using a string, it has to be either the FQCN or the registered alias of the form type, depending on the version of Symfony your project is built with.
+    - The form type used to build the form for that step.
+    - This value is passed to Symfony's form factory, thus the same rules apply as for creating common forms. If using a string, it has to be either the FQCN or the registered alias of the form type, depending on the version of Symfony your project is built with.
 - `form_options` (`array`)
-	- Options passed to the form type of that step.
+    - Options passed to the form type of that step.
 - `skip` (`callable`|`bool`)
-	- Decides whether the step will be skipped.
-	- If using a callable...
-		- it will receive the estimated current step number and the flow as arguments;
-		- it has to return a boolean value;
-		- it might be called more than once until the actual current step number has been determined.
+    - Decides whether the step will be skipped.
+    - If using a callable...
+        - it will receive the estimated current step number and the flow as arguments;
+        - it has to return a boolean value;
+        - it might be called more than once until the actual current step number has been determined.
 
 ### Examples
 
 ```php
-protected function loadStepsConfig() {
-	return array(
-		array(
-			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
-		),
-		array(
-			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep2Form',
-			'skip' => true,
-		),
-		array(
-		),
-	);
+protected function loadStepsConfig()
+{
+    return array(
+        array(
+            'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
+        ),
+        array(
+            'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep2Form',
+            'skip' => true,
+        ),
+        array(
+        ),
+    );
 }
 ```
 
 ```php
-protected function loadStepsConfig() {
-	return array(
-		1 => array(
-			'label' => 'wheels',
-			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
-		),
-		2 => array(
-			'label' => StepLabel::createCallableLabel(function() { return 'engine'; })
-			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep2Form',
-			'form_options' => array(
-				'validation_groups' => array('Default'),
-			),
-			'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
-				return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
-			},
-		),
-		3 => array(
-			'label' => 'confirmation',
-		),
-	);
+protected function loadStepsConfig()
+{
+    return array(
+        1 => array(
+            'label' => 'wheels',
+            'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
+        ),
+        2 => array(
+            'label' => StepLabel::createCallableLabel(function() { return 'engine'; })
+            'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep2Form',
+            'form_options' => array(
+                'validation_groups' => array('Default'),
+            ),
+            'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
+                return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
+            },
+        ),
+        3 => array(
+            'label' => 'confirmation',
+        ),
+    );
 }
 ```
 
@@ -442,12 +451,11 @@ revalidate previous steps by default. But if you want (or need) to avoid revalid
 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
-class CreateVehicleFlow extends FormFlow {
+class CreateVehicleFlow extends FormFlow
+{
+    protected $revalidatePreviousSteps = false;
 
-	protected $revalidatePreviousSteps = false;
-
-	// ...
-
+    // ...
 }
 ```
 
@@ -457,12 +465,13 @@ To set options common for the form type(s) of all steps you can use method `setG
 
 ```php
 // in src/MyCompany/MyBundle/Controller/VehicleController.php
-public function createVehicleAction() {
-	// ...
-	$flow->setGenericFormOptions(array('action' => 'targetUrl'));
-	$flow->bind($formData);
-	$form = $flow->createForm();
-	// ...
+public function createVehicleAction()
+{
+    // ...
+    $flow->setGenericFormOptions(array('action' => 'targetUrl'));
+    $flow->bind($formData);
+    $form = $flow->createForm();
+    // ...
 }
 ```
 
@@ -472,16 +481,17 @@ To pass individual options to each step's form type you can use the step config 
 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
-protected function loadStepsConfig() {
-	return array(
-		array(
-			'label' => 'wheels',
-			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
-			'form_options' => array(
-				'validation_groups' => array('Default'),
-			),
-		),
-	);
+protected function loadStepsConfig()
+{
+    return array(
+        array(
+            'label' => 'wheels',
+            'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
+            'form_options' => array(
+                'validation_groups' => array('Default'),
+            ),
+        ),
+    );
 }
 ```
 
@@ -490,16 +500,17 @@ Alternatively, to set options based on previous steps (e.g. to render fields dep
 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
-public function getFormOptions($step, array $options = array()) {
-	$options = parent::getFormOptions($step, $options);
+public function getFormOptions($step, array $options = array())
+{
+    $options = parent::getFormOptions($step, $options);
 
-	$formData = $this->getFormData();
+    $formData = $this->getFormData();
 
-	if ($step === 2) {
-		$options['numberOfWheels'] = $formData->getNumberOfWheels();
-	}
+    if ($step === 2) {
+        $options['numberOfWheels'] = $formData->getNumberOfWheels();
+    }
 
-	return $options;
+    return $options;
 }
 ```
 
@@ -511,12 +522,11 @@ To enable it, add this to your flow class:
 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
-class CreateVehicleFlow extends FormFlow {
+class CreateVehicleFlow extends FormFlow
+{
+    protected $allowDynamicStepNavigation = true;
 
-	protected $allowDynamicStepNavigation = true;
-
-	// ...
-
+    // ...
 }
 ```
 
@@ -525,7 +535,7 @@ you should modify the action for the opening form tag in the template like this:
 
 ```twig
 {{ form_start(form, {'action': path(app.request.attributes.get('_route'),
-		app.request.query.all | craue_removeDynamicStepNavigationParameters(flow))}) }}
+        app.request.query.all | craue_removeDynamicStepNavigationParameters(flow))}) }}
 ```
 
 ## Handling of file uploads
@@ -535,12 +545,11 @@ This feature is enabled by default for convenience, but can be disabled in the f
 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
-class CreateVehicleFlow extends FormFlow {
+class CreateVehicleFlow extends FormFlow
+{
+    protected $handleFileUploads = false;
 
-	protected $handleFileUploads = false;
-
-	// ...
-
+    // ...
 }
 ```
 
@@ -549,12 +558,11 @@ You can set a custom one:
 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
-class CreateVehicleFlow extends FormFlow {
+class CreateVehicleFlow extends FormFlow
+{
+    protected $handleFileUploadsTempDir = '/path/for/flow/uploads';
 
-	protected $handleFileUploadsTempDir = '/path/for/flow/uploads';
-
-	// ...
-
+    // ...
 }
 ```
 
@@ -565,12 +573,11 @@ To enable it, add this to your flow class:
 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
-class CreateVehicleFlow extends FormFlow {
+class CreateVehicleFlow extends FormFlow
+{
+    protected $allowRedirectAfterSubmit = true;
 
-	protected $allowRedirectAfterSubmit = true;
-
-	// ...
-
+    // ...
 }
 ```
 
@@ -578,25 +585,26 @@ But you still have to perform the redirect yourself, so update your action like 
 
 ```php
 // in src/MyCompany/MyBundle/Controller/VehicleController.php
-public function createVehicleAction() {
-	// ...
-	$flow->bind($formData);
-	$form = $submittedForm = $flow->createForm();
-	if ($flow->isValid($submittedForm)) {
-		$flow->saveCurrentStepData($submittedForm);
-		// ...
-	}
+public function createVehicleAction()
+{
+    // ...
+    $flow->bind($formData);
+    $form = $submittedForm = $flow->createForm();
+    if ($flow->isValid($submittedForm)) {
+        $flow->saveCurrentStepData($submittedForm);
+        // ...
+    }
 
-	if ($flow->redirectAfterSubmit($submittedForm)) {
-		$request = $this->getRequest();
-		$params = $this->get('craue_formflow_util')->addRouteParameters(array_merge($request->query->all(),
-				$request->attributes->get('_route_params')), $flow);
+    if ($flow->redirectAfterSubmit($submittedForm)) {
+        $request = $this->getRequest();
+        $params = $this->get('craue_formflow_util')->addRouteParameters(array_merge($request->query->all(),
+                $request->attributes->get('_route_params')), $flow);
 
-		return $this->redirect($this->generateUrl($request->attributes->get('_route'), $params));
-	}
+        return $this->redirect($this->generateUrl($request->attributes->get('_route'), $params));
+    }
 
-	// ...
-	// return ...
+    // ...
+    // return ...
 }
 ```
 
@@ -616,49 +624,56 @@ use Craue\FormFlowBundle\Form\FormFlowEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class CreateVehicleFlow extends FormFlow implements EventSubscriberInterface {
+class CreateVehicleFlow extends FormFlow implements EventSubscriberInterface
+{
+    public function setEventDispatcher(EventDispatcherInterface $dispatcher)
+    {
+        parent::setEventDispatcher($dispatcher);
+        $dispatcher->addSubscriber($this);
+    }
 
-	public function setEventDispatcher(EventDispatcherInterface $dispatcher) {
-		parent::setEventDispatcher($dispatcher);
-		$dispatcher->addSubscriber($this);
-	}
+    public static function getSubscribedEvents()
+    {
+        return array(
+            FormFlowEvents::PRE_BIND => 'onPreBind',
+            FormFlowEvents::GET_STEPS => 'onGetSteps',
+            FormFlowEvents::POST_BIND_SAVED_DATA => 'onPostBindSavedData',
+            FormFlowEvents::POST_BIND_FLOW => 'onPostBindFlow',
+            FormFlowEvents::POST_BIND_REQUEST => 'onPostBindRequest',
+            FormFlowEvents::POST_VALIDATE => 'onPostValidate',
+        );
+    }
 
-	public static function getSubscribedEvents() {
-		return array(
-			FormFlowEvents::PRE_BIND => 'onPreBind',
-			FormFlowEvents::GET_STEPS => 'onGetSteps',
-			FormFlowEvents::POST_BIND_SAVED_DATA => 'onPostBindSavedData',
-			FormFlowEvents::POST_BIND_FLOW => 'onPostBindFlow',
-			FormFlowEvents::POST_BIND_REQUEST => 'onPostBindRequest',
-			FormFlowEvents::POST_VALIDATE => 'onPostValidate',
-		);
-	}
+    public function onPreBind(PreBindEvent $event)
+    {
+        // ...
+    }
 
-	public function onPreBind(PreBindEvent $event) {
-		// ...
-	}
+    public function onGetSteps(GetStepsEvent $event)
+    {
+        // ...
+    }
 
-	public function onGetSteps(GetStepsEvent $event) {
-		// ...
-	}
+    public function onPostBindSavedData(PostBindSavedDataEvent $event)
+    {
+        // ...
+    }
 
-	public function onPostBindSavedData(PostBindSavedDataEvent $event) {
-		// ...
-	}
+    public function onPostBindFlow(PostBindFlowEvent $event)
+    {
+        // ...
+    }
 
-	public function onPostBindFlow(PostBindFlowEvent $event) {
-		// ...
-	}
+    public function onPostBindRequest(PostBindRequestEvent $event)
+    {
+        // ...
+    }
 
-	public function onPostBindRequest(PostBindRequestEvent $event) {
-		// ...
-	}
+    public function onPostValidate(PostValidateEvent $event)
+    {
+        // ...
+    }
 
-	public function onPostValidate(PostValidateEvent $event) {
-		// ...
-	}
-
-	// ...
-
+    // ...
 }
 ```
