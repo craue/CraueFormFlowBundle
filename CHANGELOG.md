@@ -32,6 +32,7 @@
 - [#254]: added Slovak translation
 - [#262]: added getters for steps remaining and done
 - [#280]: added an option for removing the reset button
+- [#293]: added Hungarian translation
 
 [#98]: https://github.com/craue/CraueFormFlowBundle/issues/98
 [#101]: https://github.com/craue/CraueFormFlowBundle/issues/101
@@ -64,6 +65,7 @@
 [#254]: https://github.com/craue/CraueFormFlowBundle/issues/254
 [#262]: https://github.com/craue/CraueFormFlowBundle/issues/262
 [#280]: https://github.com/craue/CraueFormFlowBundle/issues/280
+[#293]: https://github.com/craue/CraueFormFlowBundle/issues/293
 
 ## [2.1.9] – 2015-12-29
 
