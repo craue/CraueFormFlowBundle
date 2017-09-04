@@ -1,21 +1,22 @@
 language: php
 
 php:
-  - 5.3
   - 5.4
   - 5.5
   - 5.6
   - 7.0
   - 7.1
+  - hhvm
 
 env:
   - SYMFONY_VERSION='2.7.*'
 
 matrix:
   include:
-    - php: hhvm
-      dist: trusty
+    - php: 5.3
+      dist: precise
     - php: 5.3.3
+      dist: precise
       env: DEPS='lowest'
     - php: 5.6
       env: DEPS='unmodified' SYMFONY_DEPRECATIONS_HELPER='666'
