@@ -1,6 +1,6 @@
 # Changelog
 
-## master
+## [3.0.0] – 2017-09-04
 
 - BC breaks (follow `UPGRADE-3.0.md` to upgrade):
   - [#101]: support for concurrent instances of the same flow
@@ -66,6 +66,7 @@
 [#262]: https://github.com/craue/CraueFormFlowBundle/issues/262
 [#280]: https://github.com/craue/CraueFormFlowBundle/issues/280
 [#293]: https://github.com/craue/CraueFormFlowBundle/issues/293
+[3.0.0]: https://github.com/craue/CraueFormFlowBundle/compare/2.1.9...3.0.0
 
 ## [2.1.9] – 2015-12-29
 
