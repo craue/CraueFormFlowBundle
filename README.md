@@ -23,7 +23,7 @@ A live demo showcasing these features is available at http://craue.de/symfony-pl
 Let Composer download and install the bundle by running
 
 ```sh
-php composer.phar require craue/formflow-bundle:~3.0@dev
+php composer.phar require craue/formflow-bundle:~3.0
 ```
 
 in a shell.

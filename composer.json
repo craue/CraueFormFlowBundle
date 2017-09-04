@@ -27,7 +27,7 @@
 		"doctrine/doctrine-bundle": "~1.0",
 		"phpunit/phpunit": "^4.8.35|~5.7|~6.0",
 		"sensio/framework-extra-bundle": "~3.0",
-		"symfony/phpunit-bridge": "^3.2.5|~3.3@dev",
+		"symfony/phpunit-bridge": "^3.2.5",
 		"symfony/symfony": "~2.7|~3.0"
 	},
 	"minimum-stability": "stable",
