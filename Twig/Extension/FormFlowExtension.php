@@ -2,6 +2,7 @@
 
 namespace Craue\FormFlowBundle\Twig\Extension;
 
+use Craue\FormFlowBundle\Form\FormFlowInterface;
 use Craue\FormFlowBundle\Util\FormFlowUtil;
 
 /**
