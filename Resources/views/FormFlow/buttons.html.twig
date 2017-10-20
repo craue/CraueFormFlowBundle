@@ -14,6 +14,11 @@
 			? craue_formflow_button_class_finish | default(craue_formflow_button_class_last)
 			: craue_formflow_button_class_next | default(craue_formflow_button_class_last)
 		-%}
+	{%- set craue_formflow_button_attr_last = craue_formflow_button_attr_last | default([]) -%}
+	{%- set craue_formflow_button_attr_last = isLastStep
+		? craue_formflow_button_attr_finish | default(craue_formflow_button_attr_last)
+		: craue_formflow_button_attr_next | default(craue_formflow_button_attr_last)
+	-%}
 	{%- set craue_buttons = [
 			{
 				label: craue_formflow_button_label_last | default(isLastStep ? craue_formflow_button_label_finish | default('button.finish') : craue_formflow_button_label_next | default('button.next')),
@@ -21,6 +26,7 @@
 				attr: {
 					class: craue_formflow_button_class_last,
 				},
+				custom_attr: craue_formflow_button_attr_last|default([]),
 			},
 			{
 				label: craue_formflow_button_label_back | default('button.back'),
@@ -31,6 +37,7 @@
 					value: 'back',
 					formnovalidate: 'formnovalidate',
 				},
+				custom_attr: craue_formflow_button_attr_back|default([]),
 			},
 			{
 				label: craue_formflow_button_label_reset | default('button.reset'),
@@ -41,11 +48,13 @@
 					value: 'reset',
 					formnovalidate: 'formnovalidate',
 				},
+				custom_attr: craue_formflow_button_attr_reset|default([]),
 			},
 		] -%}
 
 	{% for button in craue_buttons if button.render %}
-		<button type="submit"{% for key, value in button.attr %} {{ key }}="{{ value }}"{% endfor %}>
+		{% set button_attr = button.attr|merge(button.custom_attr) %}
+		<button type="submit"{% for key, value in button_attr %} {{ key }}="{{ value }}"{% endfor %}>
 			{{- button.label | trans({}, 'CraueFormFlowBundle') -}}
 		</button>
 	{% endfor %}
