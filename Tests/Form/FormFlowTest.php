@@ -88,9 +88,11 @@ class FormFlowTest extends UnitTestCase {
 	}
 
 	/**
-	 * Ensure that the "validation_groups" option can be set to false to disable validation.
+	 * Ensure that the "validation_groups" option can be set to specific valid values.
+	 *
+	 * @dataProvider dataGetFormOptions_setValidationGroups
 	 */
-	public function testGetFormOptions_setValidationGroupsToFalse() {
+	public function testGetFormOptions_setValidationGroups($validationGroups) {
 		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
 
 		$flow
@@ -100,58 +102,22 @@ class FormFlowTest extends UnitTestCase {
 				array(),
 			)))
 		;
-
-		$options = $flow->getFormOptions(1, array(
-			'validation_groups' => false,
-		));
-
-		$this->assertFalse($options['validation_groups']);
-	}
-
-	/**
-	 * Ensure that the "validation_groups" option can be set to a closure.
-	 */
-	public function testGetFormOptions_setValidationGroupsToClosure() {
-		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
-
-		$flow
-			->expects($this->once())
-			->method('loadStepsConfig')
-			->will($this->returnValue(array(
-				array(),
-			)))
-		;
-
-		$options = $flow->getFormOptions(1, array(
-			'validation_groups' => function(FormInterface $form) {
-				return array('custom_group');
-			},
-		));
-
-		$this->assertTrue(is_callable($options['validation_groups']));
-	}
-
-	/**
-	 * Ensure that the "validation_groups" option can be set to a GroupSequence.
-	 */
-	public function testGetFormOptions_setValidationGroupsToGroupSequence() {
-		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
-
-		$flow
-			->expects($this->once())
-			->method('loadStepsConfig')
-			->will($this->returnValue(array(
-				array(),
-			)))
-		;
-
-		$validationGroups = new GroupSequence(array('first', 'second'));
 
 		$options = $flow->getFormOptions(1, array(
 			'validation_groups' => $validationGroups,
 		));
 
 		$this->assertSame($validationGroups, $options['validation_groups']);
+	}
+
+	public function dataGetFormOptions_setValidationGroups() {
+		return array(
+			array(false),
+			array(function(FormInterface $form) {
+				return array('custom_group');
+			}),
+			array(new GroupSequence(array('first', 'second'))),
+		);
 	}
 
 	/**
