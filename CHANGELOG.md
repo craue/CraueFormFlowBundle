@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1] – 2017-11-08
+
+- [#301]: allow setting a `GroupSequence` for the `validation_groups` option
+
+[#301]: https://github.com/craue/CraueFormFlowBundle/issues/301
+[3.0.1]: https://github.com/craue/CraueFormFlowBundle/compare/3.0.0...3.0.1
+
 ## [3.0.0] – 2017-09-04
 
 - BC breaks (follow `UPGRADE-3.0.md` to upgrade):

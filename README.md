@@ -432,7 +432,7 @@ But there are other ways of defining custom validation groups:
 - use the `form_options` step option, or
 - use the flow's `setGenericFormOptions` method.
 
-The generated step-based validation group will be added by the flow, unless the `validation_groups` option is set to `false` or a closure.
+The generated step-based validation group will be added by the flow, unless the `validation_groups` option is set to `false`, a closure, or a GroupSequence.
 In this case, it will **not** be added by the flow, so ensure the step forms are validated as expected.
 
 ## Disabling revalidation of previous steps
