@@ -12,6 +12,7 @@ use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Validator\Constraints\GroupSequence;
 
 /**
  * @group unit
@@ -87,9 +88,11 @@ class FormFlowTest extends UnitTestCase {
 	}
 
 	/**
-	 * Ensure that the "validation_groups" option can be set to false to disable validation.
+	 * Ensure that the "validation_groups" option can be set to specific valid values.
+	 *
+	 * @dataProvider dataGetFormOptions_setValidationGroups
 	 */
-	public function testGetFormOptions_setValidationGroupsToFalse() {
+	public function testGetFormOptions_setValidationGroups($validationGroups) {
 		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
 
 		$flow
@@ -101,33 +104,20 @@ class FormFlowTest extends UnitTestCase {
 		;
 
 		$options = $flow->getFormOptions(1, array(
-			'validation_groups' => false,
+			'validation_groups' => $validationGroups,
 		));
 
-		$this->assertFalse($options['validation_groups']);
+		$this->assertSame($validationGroups, $options['validation_groups']);
 	}
 
-	/**
-	 * Ensure that the "validation_groups" option can be set to a closure.
-	 */
-	public function testGetFormOptions_setValidationGroupsToClosure() {
-		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
-
-		$flow
-			->expects($this->once())
-			->method('loadStepsConfig')
-			->will($this->returnValue(array(
-				array(),
-			)))
-		;
-
-		$options = $flow->getFormOptions(1, array(
-			'validation_groups' => function(FormInterface $form) {
+	public function dataGetFormOptions_setValidationGroups() {
+		return array(
+			array(false),
+			array(function(FormInterface $form) {
 				return array('custom_group');
-			},
-		));
-
-		$this->assertTrue(is_callable($options['validation_groups']));
+			}),
+			array(new GroupSequence(array('first', 'second'))),
+		);
 	}
 
 	/**

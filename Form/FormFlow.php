@@ -18,6 +18,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Validator\Constraints\GroupSequence;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -766,13 +767,13 @@ abstract class FormFlow implements FormFlowInterface {
 			$options
 		);
 
-		// add the generated step-based validation group, unless it's explicitly set to false or a closure
+		// add the generated step-based validation group, unless it's explicitly set to false, a closure, or a GroupSequence
 		if (!array_key_exists('validation_groups', $options)) {
 			$options['validation_groups'] = array($this->getValidationGroupPrefix() . $step);
 		} else {
 			$vg = $options['validation_groups'];
 
-			if ($vg !== false && !(is_object($vg) && is_a($vg, 'Closure'))) {
+			if ($vg !== false && !is_a($vg, 'Closure') && !$vg instanceof GroupSequence) {
 				$options['validation_groups'] = array_merge(
 					array($this->getValidationGroupPrefix() . $step),
 					(array) $vg
