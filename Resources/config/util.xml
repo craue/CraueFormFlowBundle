@@ -13,6 +13,6 @@
 	</parameters>
 
 	<services>
-		<service id="craue_formflow_util" class="%craue_formflow.util.class%" />
+		<service id="craue_formflow_util" class="%craue_formflow.util.class%" public="true" />
 	</services>
 </container>

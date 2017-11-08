@@ -23,7 +23,7 @@
 			<argument type="service" id="session" />
 		</service>
 
-		<service id="craue.form.flow.storage" alias="craue.form.flow.storage_default" />
+		<service id="craue.form.flow.storage" alias="craue.form.flow.storage_default" public="true" />
 
 		<service id="craue.form.flow.data_manager_default" class="Craue\FormFlowBundle\Storage\DataManager" public="false">
 			<argument type="service" id="craue.form.flow.storage" />
