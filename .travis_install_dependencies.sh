@@ -20,7 +20,7 @@ case "${DEPS:-}" in
 		;;
 	*)
 		if [ -n "${MIN_STABILITY:-}" ]; then
-			sed -i -e "s/\"minimum-stability\": \"stable\"/\"minimum-stability\": \"${MIN_STABILITY}\"/" composer.json
+			composer config minimum-stability "${MIN_STABILITY}"
 		fi
 
 		composer remove --no-update symfony/framework-bundle symfony/form
