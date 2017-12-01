@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.2] – 2017-12-01
+
+- added support for Symfony 4.*
+
+[3.0.2]: https://github.com/craue/CraueFormFlowBundle/compare/3.0.1...3.0.2
+
 ## [3.0.1] – 2017-11-08
 
 - [#301]: allow setting a `GroupSequence` for the `validation_groups` option
