@@ -14,7 +14,7 @@ case "${DEPS:-}" in
 		;;
 	*)
 		if [ -n "${MIN_STABILITY:-}" ]; then
-			sed -i -e "s/\"minimum-stability\": \"stable\"/\"minimum-stability\": \"${MIN_STABILITY}\"/" composer.json
+			composer config minimum-stability "${MIN_STABILITY}"
 		fi
 
 		if [ -n "${SYMFONY_VERSION:-}" ]; then
