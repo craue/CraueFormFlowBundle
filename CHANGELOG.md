@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.10] – 2017-12-07
+
+- [#306]: fixed method `applySkipping` to avoid OutOfBoundsException
+
+[#306]: https://github.com/craue/CraueFormFlowBundle/issues/306
+[2.1.10]: https://github.com/craue/CraueFormFlowBundle/compare/2.1.9...2.1.10
+
 ## [2.1.9] – 2015-12-29
 
 - [#205]: added conditional code updates to avoid most deprecation notices with Symfony 2.8
