@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.3] – 2017-12-07
+
+- [#306]: fixed method `applySkipping` to avoid OutOfBoundsException
+
+[#306]: https://github.com/craue/CraueFormFlowBundle/issues/306
+[3.0.3]: https://github.com/craue/CraueFormFlowBundle/compare/3.0.2...3.0.3
+
 ## [2.1.10] – 2017-12-07
 
 - [#306]: fixed method `applySkipping` to avoid OutOfBoundsException
