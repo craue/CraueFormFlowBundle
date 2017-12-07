@@ -45,6 +45,12 @@
 				parent="craue.form.flow">
 		</service>
 
+		<service id="integrationTestBundle.form.flow.issue303"
+				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\Issue303Flow"
+				public="true"
+				parent="craue.form.flow">
+		</service>
+
 		<service id="integrationTestBundle.form.flow.revalidatePreviousSteps"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\RevalidatePreviousStepsFlow"
 				public="true"

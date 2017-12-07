@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.10] – 2017-12-07
+
+- [#306]: fixed method `applySkipping` to avoid OutOfBoundsException
+
+[#306]: https://github.com/craue/CraueFormFlowBundle/issues/306
+[2.1.10]: https://github.com/craue/CraueFormFlowBundle/compare/2.1.9...2.1.10
+
 ## [3.0.2] – 2017-12-01
 
 - added support for Symfony 4.*

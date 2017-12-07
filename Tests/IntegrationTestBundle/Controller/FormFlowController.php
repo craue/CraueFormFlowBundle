@@ -75,6 +75,13 @@ class FormFlowController extends Controller {
 	}
 
 	/**
+	 * @Route("/issue303/", name="_FormFlow_issue303")
+	 */
+	public function issue303Action() {
+		return $this->processFlow(new \stdClass(), $this->get('integrationTestBundle.form.flow.issue303'));
+	}
+
+	/**
 	 * @Route("/revalidatePreviousSteps/enabled/", defaults={"enabled"=true}, name="_FormFlow_revalidatePreviousSteps_enabled")
 	 * @Route("/revalidatePreviousSteps/disabled/", defaults={"enabled"=false}, name="_FormFlow_revalidatePreviousSteps_disabled")
 	 */
