@@ -53,4 +53,40 @@ class FormFlowTest extends TestCase {
 		$this->assertSame(1, $flowStub->getStep(1)->getNumber());
 	}
 
+	/**
+	 * @dataProvider dataApplySkipping
+	 */
+	public function testApplySkipping($stepCount, array $stepsSkipped, $stepNumber, $direction, $expectedTargetStep) {
+		$flow = $this->getMockBuilder('\Craue\FormFlowBundle\Form\FormFlow')->setMethods(array('getName', 'loadStepsConfig'))->getMock();
+
+		$stepsConfig = array();
+
+		for ($stepNumber = 1; $stepNumber <= $stepCount; ++$stepNumber) {
+			$stepsConfig[] = array(
+				'skip' => in_array($stepNumber, $stepsSkipped, true),
+			);
+		}
+
+		$flow
+			->expects($this->once())
+			->method('loadStepsConfig')
+			->will($this->returnValue($stepsConfig))
+		;
+
+		$method = new \ReflectionMethod($flow, 'applySkipping');
+		$method->setAccessible(true);
+
+		$this->assertSame($expectedTargetStep, $method->invoke($flow, $stepNumber, $direction));
+	}
+
+	public function dataApplySkipping() {
+		return array(
+			array(2, array(2), 2, 1, 1),
+			array(2, array(1), 2, -1, 2),
+
+			array(2, array(1), 2, 1, 2),
+			array(2, array(2), 2, -1, 1),
+		);
+	}
+
 }
