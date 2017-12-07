@@ -289,12 +289,22 @@ abstract class FormFlow implements FormFlowInterface {
 	 */
 	protected function applySkipping($stepNumber, $direction = 1) {
 		if ($direction !== 1 && $direction !== -1) {
-			throw new \InvalidArgumentException(sprintf('Argument of either -1 or 1 expected, "%s" given.',
-					$direction));
+			throw new \InvalidArgumentException(sprintf('Argument of either -1 or 1 expected, "%s" given.', $direction));
 		}
 
-		while ($this->isStepSkipped($stepNumber)) {
+		$stepNumber = $this->ensureStepNumberRange($stepNumber);
+
+		if ($this->isStepSkipped($stepNumber)) {
 			$stepNumber += $direction;
+
+			// change direction if outer bounds are reached
+			if ($direction === 1 && $stepNumber > $this->getStepCount()) {
+				$direction = -1;
+			} elseif ($direction === -1 && $stepNumber < 1) {
+				$direction = 1;
+			}
+
+			return $this->applySkipping($stepNumber, $direction);
 		}
 
 		return $stepNumber;
@@ -400,9 +410,7 @@ abstract class FormFlow implements FormFlowInterface {
 			--$requestedStepNumber;
 		}
 
-		// ensure that the step number is within the range of defined steps to avoid a possible OutOfBoundsException
-		$requestedStepNumber = max(min($requestedStepNumber, $this->getStepCount()), 1);
-
+		$requestedStepNumber = $this->ensureStepNumberRange($requestedStepNumber);
 		$requestedStepNumber = $this->refineCurrentStepNumber($requestedStepNumber);
 
 		if ($this->getRequestedTransition() === self::TRANSITION_BACK) {
@@ -417,6 +425,15 @@ abstract class FormFlow implements FormFlowInterface {
 		}
 
 		return $requestedStepNumber;
+	}
+
+	/**
+	 * Ensures that the step number is within the range of defined steps to avoid a possible OutOfBoundsException.
+	 * @param int $stepNumber
+	 * @return int
+	 */
+	private function ensureStepNumberRange($stepNumber) {
+		return max(min($stepNumber, $this->getStepCount()), 1);
 	}
 
 	/**
