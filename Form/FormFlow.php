@@ -671,14 +671,19 @@ abstract class FormFlow implements FormFlowInterface {
     }
 
 	protected function bindFlow() {
-        if ($this->isNeedToResetFlow()) {
+
+        $reset = $this->isNeedToResetFlow();
+
+        if (!$reset) {
+            $this->applyDataFromSavedSteps();
+        }
+
+        $requestedStepNumber = $this->determineCurrentStepNumber();
+
+        if ($reset) {
             $this->reset();
             return;
         }
-
-        $this->applyDataFromSavedSteps();
-
-		$requestedStepNumber = $this->determineCurrentStepNumber();
 
 		// ensure that the requested step fits the current progress
 		if ($requestedStepNumber > $this->getFirstStepNumber()) {
