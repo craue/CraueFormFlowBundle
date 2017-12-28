@@ -640,39 +640,45 @@ abstract class FormFlow implements FormFlowInterface {
 		return $instanceId;
 	}
 
+    /**
+     * @return bool
+     */
+    protected function isNeedToResetFlow()
+    {
+        $request = $this->getRequest();
+        $reset = false;
+
+        if (!$this->allowDynamicStepNavigation && !$this->allowRedirectAfterSubmit && $request->isMethod('GET')) {
+            $reset = true;
+        }
+
+        if ($this->getRequestedTransition() === self::TRANSITION_RESET) {
+            $reset = true;
+        }
+
+        if (in_array($request->getMethod(), array('POST', 'PUT')) && $request->get($this->getFormStepKey()) !== null && !$this->dataManager->exists($this)) {
+            // flow is expired, drop posted data and reset
+            $request->request->replace();
+            $reset = true;
+            $this->expired = true;
+
+            // Regenerate instance ID so resubmits of the form will continue to give error. Otherwise, submitting
+            // the new form, then backing up to the old form won't give the error.
+            $this->setInstanceId($this->determineInstanceId());
+        }
+
+        return $reset;
+    }
+
 	protected function bindFlow() {
-		$request = $this->getRequest();
-		$reset = false;
+        if ($this->isNeedToResetFlow()) {
+            $this->reset();
+            return;
+        }
 
-		if (!$this->allowDynamicStepNavigation && !$this->allowRedirectAfterSubmit && $request->isMethod('GET')) {
-			$reset = true;
-		}
-
-		if ($this->getRequestedTransition() === self::TRANSITION_RESET) {
-			$reset = true;
-		}
-
-		if (in_array($request->getMethod(), array('POST', 'PUT')) && $request->get($this->getFormStepKey()) !== null && !$this->dataManager->exists($this)) {
-			// flow is expired, drop posted data and reset
-			$request->request->replace();
-			$reset = true;
-			$this->expired = true;
-
-			// Regenerate instance ID so resubmits of the form will continue to give error. Otherwise, submitting
-			// the new form, then backing up to the old form won't give the error.
-			$this->setInstanceId($this->determineInstanceId());
-		}
-
-		if (!$reset) {
-			$this->applyDataFromSavedSteps();
-		}
+        $this->applyDataFromSavedSteps();
 
 		$requestedStepNumber = $this->determineCurrentStepNumber();
-
-		if ($reset) {
-			$this->reset();
-			return;
-		}
 
 		// ensure that the requested step fits the current progress
 		if ($requestedStepNumber > $this->getFirstStepNumber()) {
