@@ -90,85 +90,85 @@ abstract class FormFlow implements FormFlowInterface {
 	/**
 	 * @var RequestStack
 	 */
-	private $requestStack;
+	protected $requestStack;
 
 	/**
 	 * @var string|null Is only null if not yet initialized.
 	 */
-	private $id = null;
+	protected $id = null;
 
 	/**
 	 * @var string|null Is only null if not yet initialized.
 	 */
-	private $instanceKey = null;
+	protected $instanceKey = null;
 
 	/**
 	 * @var string|null Is only null if not yet initialized.
 	 */
-	private $instanceId = null;
+	protected $instanceId = null;
 
 	/**
 	 * @var string|null Is only null if not yet initialized.
 	 */
-	private $formStepKey = null;
+	protected $formStepKey = null;
 
 	/**
 	 * @var string|null Is only null if not yet initialized.
 	 */
-	private $formTransitionKey = null;
+	protected $formTransitionKey = null;
 
 	/**
 	 * @var string|null Is only null if not yet initialized.
 	 */
-	private $validationGroupPrefix = null;
+	protected $validationGroupPrefix = null;
 
 	/**
 	 * @var StepInterface[]|null Is only null if not yet initialized.
 	 */
-	private $steps = null;
+	protected $steps = null;
 
 	/**
 	 * @var int|null Is only null if not yet initialized.
 	 */
-	private $stepCount = null;
+	protected $stepCount = null;
 
 	/**
 	 * @var string[]|null Is only null if not yet initialized.
 	 */
-	private $stepLabels = null;
+	protected $stepLabels = null;
 
 	/**
 	 * @var mixed|null Is only null if not yet initialized.
 	 */
-	private $formData = null;
+	protected $formData = null;
 
 	/**
 	 * @var int|null Is only null if not yet initialized.
 	 */
-	private $currentStepNumber = null;
+	protected $currentStepNumber = null;
 
 	/**
 	 * @var FormInterface[]
 	 */
-	private $stepForms = array();
+	protected $stepForms = array();
 
 	/**
 	 * Options applied to forms of all steps.
 	 * @var array
 	 */
-	private $genericFormOptions = array();
+	protected $genericFormOptions = array();
 
 	/**
 	 * Flow was determined to be expired.
 	 * @var bool
 	 */
-	private $expired = false;
+	protected $expired = false;
 
 	/**
 	 * Instance ID was a newly generated ID.
 	 * @var bool
 	 */
-	private $newInstance = false;
+	protected $newInstance = false;
 
 	/**
 	 * {@inheritDoc}
@@ -576,7 +576,7 @@ abstract class FormFlow implements FormFlowInterface {
 	 * @param int $stepNumber
 	 * @return int
 	 */
-	private function ensureStepNumberRange($stepNumber) {
+	protected function ensureStepNumberRange($stepNumber) {
 		return max(min($stepNumber, $this->getStepCount()), 1);
 	}
 
@@ -1093,5 +1093,13 @@ abstract class FormFlow implements FormFlowInterface {
 		@trigger_error('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method isStepSkipped instead.', E_USER_DEPRECATED);
 		return $this->isStepSkipped($stepNumber);
 	}
+
+	public function isNewInstance() {
+	    return $this->newInstance;
+    }
+
+    public function isExpired() {
+	    return $this->expired;
+    }
 
 }
