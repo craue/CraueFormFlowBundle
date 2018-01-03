@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
 	Author: Christian Raue <christian.raue@gmail.com>
-	Copyright: 2011-2017 Christian Raue
+	Copyright: 2011-2018 Christian Raue
 	License: http://opensource.org/licenses/mit-license.php MIT License
 -->
 <container xmlns="http://symfony.com/schema/dic/services"

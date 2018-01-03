@@ -12,7 +12,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  *
  * @author Toni Uebernickel <tuebernickel@gmail.com>
  * @author Christian Raue <christian.raue@gmail.com>
- * @copyright 2011-2017 Christian Raue
+ * @copyright 2011-2018 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class FormFlowTest extends TestCase {
