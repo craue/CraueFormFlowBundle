@@ -31,7 +31,10 @@
 	"autoload": {
 		"psr-0": {
 			"Craue\\FormFlowBundle": ""
-		}
+		},
+		"exclude-from-classmap": [
+			"/Tests/"
+		]
 	},
 	"target-dir": "Craue/FormFlowBundle"
 }
