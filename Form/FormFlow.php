@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints\GroupSequence;
  * @author Christian Raue <christian.raue@gmail.com>
  * @author Marcus Stöhr <dafish@soundtrack-board.de>
  * @author Toni Uebernickel <tuebernickel@gmail.com>
- * @copyright 2011-2017 Christian Raue
+ * @copyright 2011-2018 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 abstract class FormFlow implements FormFlowInterface {
@@ -1060,37 +1060,37 @@ abstract class FormFlow implements FormFlowInterface {
 	// methods for BC with third-party templates (e.g. MopaBootstrapBundle)
 
 	public function getCurrentStep() {
-		@trigger_error('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method getCurrentStepNumber instead.', E_USER_DEPRECATED);
+		@trigger_error('Method ' . __METHOD__ . ' is deprecated since CraueFormFlowBundle 2.0. Use method getCurrentStepNumber instead.', E_USER_DEPRECATED);
 		return $this->getCurrentStepNumber();
 	}
 
 	public function getCurrentStepDescription() {
-		@trigger_error('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method getCurrentStepLabel instead.', E_USER_DEPRECATED);
+		@trigger_error('Method ' . __METHOD__ . ' is deprecated since CraueFormFlowBundle 2.0. Use method getCurrentStepLabel instead.', E_USER_DEPRECATED);
 		return $this->getCurrentStepLabel();
 	}
 
 	public function getMaxSteps() {
-		@trigger_error('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method getStepCount instead.', E_USER_DEPRECATED);
+		@trigger_error('Method ' . __METHOD__ . ' is deprecated since CraueFormFlowBundle 2.0. Use method getStepCount instead.', E_USER_DEPRECATED);
 		return $this->getStepCount();
 	}
 
 	public function getStepDescriptions() {
-		@trigger_error('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method getStepLabels instead.', E_USER_DEPRECATED);
+		@trigger_error('Method ' . __METHOD__ . ' is deprecated since CraueFormFlowBundle 2.0. Use method getStepLabels instead.', E_USER_DEPRECATED);
 		return $this->getStepLabels();
 	}
 
 	public function getFirstStep() {
-		@trigger_error('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method getFirstStepNumber instead.', E_USER_DEPRECATED);
+		@trigger_error('Method ' . __METHOD__ . ' is deprecated since CraueFormFlowBundle 2.0. Use method getFirstStepNumber instead.', E_USER_DEPRECATED);
 		return $this->getFirstStepNumber();
 	}
 
 	public function getLastStep() {
-		@trigger_error('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method getLastStepNumber instead.', E_USER_DEPRECATED);
+		@trigger_error('Method ' . __METHOD__ . ' is deprecated since CraueFormFlowBundle 2.0. Use method getLastStepNumber instead.', E_USER_DEPRECATED);
 		return $this->getLastStepNumber();
 	}
 
 	public function hasSkipStep($stepNumber) {
-		@trigger_error('Method ' . __METHOD__ . ' is deprecated since version 2.0. Use method isStepSkipped instead.', E_USER_DEPRECATED);
+		@trigger_error('Method ' . __METHOD__ . ' is deprecated since CraueFormFlowBundle 2.0. Use method isStepSkipped instead.', E_USER_DEPRECATED);
 		return $this->isStepSkipped($stepNumber);
 	}
 

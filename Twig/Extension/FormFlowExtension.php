@@ -9,7 +9,7 @@ use Craue\FormFlowBundle\Util\FormFlowUtil;
  * Twig extension for form flows.
  *
  * @author Christian Raue <christian.raue@gmail.com>
- * @copyright 2011-2017 Christian Raue
+ * @copyright 2011-2018 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class FormFlowExtension extends \Twig_Extension {
@@ -106,12 +106,12 @@ class FormFlowExtension extends \Twig_Extension {
 	// methods for BC with third-party templates (e.g. MopaBootstrapBundle)
 
 	public function addDynamicStepNavigationParameter(array $parameters, FormFlow $flow, $stepNumber) {
-		@trigger_error('Twig filter craue_addDynamicStepNavigationParameter is deprecated since version 3.0. Use filter craue_addDynamicStepNavigationParameters instead.', E_USER_DEPRECATED);
+		@trigger_error('Twig filter craue_addDynamicStepNavigationParameter is deprecated since CraueFormFlowBundle 3.0. Use filter craue_addDynamicStepNavigationParameters instead.', E_USER_DEPRECATED);
 		return $this->addDynamicStepNavigationParameters($parameters, $flow, $stepNumber);
 	}
 
 	public function removeDynamicStepNavigationParameter(array $parameters, FormFlow $flow) {
-		@trigger_error('Twig filter craue_removeDynamicStepNavigationParameter is deprecated since version 3.0. Use filter craue_removeDynamicStepNavigationParameters instead.', E_USER_DEPRECATED);
+		@trigger_error('Twig filter craue_removeDynamicStepNavigationParameter is deprecated since CraueFormFlowBundle 3.0. Use filter craue_removeDynamicStepNavigationParameters instead.', E_USER_DEPRECATED);
 		return $this->removeDynamicStepNavigationParameters($parameters, $flow);
 	}
 

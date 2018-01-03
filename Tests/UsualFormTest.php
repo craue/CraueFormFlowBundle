@@ -9,7 +9,7 @@ use Craue\FormFlowBundle\Tests\IntegrationTestCase;
  * @see https://github.com/craue/CraueFormFlowBundle/issues/249
  *
  * @author Christian Raue <christian.raue@gmail.com>
- * @copyright 2011-2017 Christian Raue
+ * @copyright 2011-2018 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class UsualFormTest extends IntegrationTestCase {
