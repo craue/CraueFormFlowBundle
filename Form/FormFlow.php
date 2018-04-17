@@ -960,7 +960,7 @@ abstract class FormFlow implements FormFlowInterface {
 	 * @return FormInterface
 	 */
 	protected function createFormForStep($stepNumber, array $options = array()) {
-		$formType = $this->getStep($stepNumber)->getFormType();
+		$formType = get_class($this->getStep($stepNumber)->getFormType());
 		$options = $this->getFormOptions($stepNumber, $options);
 
 		if ($formType === null) {
