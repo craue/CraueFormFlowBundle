@@ -9,9 +9,9 @@ use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\PhotoUpload;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\RevalidatePreviousStepsData;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Topic;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Vehicle;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
