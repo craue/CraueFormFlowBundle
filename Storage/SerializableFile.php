@@ -27,7 +27,6 @@ class SerializableFile {
 
 	protected $clientOriginalName;
 	protected $clientMimeType;
-	protected $clientSize;
 
 	/**
 	 * @param mixed $file An object meant to be serialized.
@@ -43,7 +42,6 @@ class SerializableFile {
 
 		$this->clientOriginalName = $file->getClientOriginalName();
 		$this->clientMimeType = $file->getClientMimeType();
-		$this->clientSize = $file->getClientSize();
 	}
 
 	/**
@@ -61,7 +59,13 @@ class SerializableFile {
 
 		TempFileUtil::addTempFile($tempFile);
 
-		return new UploadedFile($tempFile, $this->clientOriginalName, $this->clientMimeType, $this->clientSize, null, true);
+		// avoid a deprecation notice regarding "passing a size as 4th argument to the constructor"
+		// TODO remove as soon as Symfony >= 4.1 is required
+		if (property_exists('Symfony\Component\HttpFoundation\File\UploadedFile', 'size')) {
+			return new UploadedFile($tempFile, $this->clientOriginalName, $this->clientMimeType, null, null, true);
+		}
+
+		return new UploadedFile($tempFile, $this->clientOriginalName, $this->clientMimeType, null, true);
 	}
 
 	/**

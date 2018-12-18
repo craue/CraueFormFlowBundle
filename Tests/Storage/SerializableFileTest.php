@@ -33,30 +33,27 @@ class SerializableFileTest extends TestCase {
 		$document = __DIR__ . self::DOCUMENT;
 		$originalName = basename($document);
 		$mimeType = 'application/octet-stream';
-		$size = strlen(file_get_contents($document));
 
-		$serializableFile = new SerializableFile(new UploadedFile($document, $originalName, $mimeType, $size, null, true));
+		$serializableFile = new SerializableFile($this->getNewUploadedFile($document, $originalName, $mimeType));
 		$processedUploadedFile = $serializableFile->getAsFile();
 
 		$this->assertEquals(realpath(sys_get_temp_dir()), realpath($processedUploadedFile->getPath()));
 		$this->assertEquals($originalName, $processedUploadedFile->getClientOriginalName());
 		$this->assertEquals($mimeType, $processedUploadedFile->getClientMimeType());
 		$this->assertEquals('text/plain', $processedUploadedFile->getMimeType());
-		$this->assertEquals($size, $processedUploadedFile->getClientSize());
-		$this->assertEquals($size, $processedUploadedFile->getSize());
+		$this->assertEquals(strlen(file_get_contents($document)), $processedUploadedFile->getSize());
 	}
 
 	public function testSerialization_minimalData() {
 		$document = __DIR__ . self::DOCUMENT;
 		$originalName = basename($document);
 
-		$serializableFile = new SerializableFile(new UploadedFile($document, $originalName, null, null, null, true));
+		$serializableFile = new SerializableFile($this->getNewUploadedFile($document, $originalName));
 		$processedUploadedFile = $serializableFile->getAsFile();
 
 		$this->assertEquals($originalName, $processedUploadedFile->getClientOriginalName());
 		$this->assertEquals('application/octet-stream', $processedUploadedFile->getClientMimeType());
 		$this->assertEquals('text/plain', $processedUploadedFile->getMimeType());
-		$this->assertEquals(0, $processedUploadedFile->getClientSize());
 		$this->assertEquals(strlen(file_get_contents($document)), $processedUploadedFile->getSize());
 	}
 
@@ -66,14 +63,14 @@ class SerializableFileTest extends TestCase {
 			mkdir($this->tempFolder);
 		}
 
-		$serializableFile = new SerializableFile(new UploadedFile(__FILE__, 'my.txt', null, null, null, true));
+		$serializableFile = new SerializableFile($this->getNewUploadedFile(__FILE__, 'my.txt'));
 		$processedUploadedFile = $serializableFile->getAsFile($this->tempFolder);
 
 		$this->assertEquals(realpath($this->tempFolder), realpath($processedUploadedFile->getPath()));
 	}
 
 	public function testSerialization_customTempDir_nonexistent() {
-		$serializableFile = new SerializableFile(new UploadedFile(__FILE__, 'my.txt', null, null, null, true));
+		$serializableFile = new SerializableFile($this->getNewUploadedFile(__FILE__, 'my.txt'));
 		$processedUploadedFile = @$serializableFile->getAsFile('xyz:/');
 
 		$this->assertEquals(realpath(sys_get_temp_dir()), realpath($processedUploadedFile->getPath()));
@@ -88,8 +85,24 @@ class SerializableFileTest extends TestCase {
 	}
 
 	public function testIsSupported() {
-		$this->assertTrue(SerializableFile::isSupported(new UploadedFile(__FILE__, basename(__FILE__))));
+		$this->assertTrue(SerializableFile::isSupported($this->getNewUploadedFile(__FILE__, basename(__FILE__))));
 		$this->assertFalse(SerializableFile::isSupported(new File(__FILE__)));
+	}
+
+	/**
+	 * @param string $document
+	 * @param string $originalName
+	 * @param string|null $mimeType
+	 * @return UploadedFile
+	 */
+	private function getNewUploadedFile($document, $originalName, $mimeType = null) {
+		// avoid a deprecation notice regarding "passing a size as 4th argument to the constructor"
+		// TODO remove as soon as Symfony >= 4.1 is required
+		if (property_exists('Symfony\Component\HttpFoundation\File\UploadedFile', 'size')) {
+			return new UploadedFile($document, $originalName, $mimeType, null, null, true);
+		}
+
+		return new UploadedFile($document, $originalName, $mimeType, null, true);
 	}
 
 }
