@@ -2,7 +2,7 @@
 	"name": "craue/formflow-bundle",
 	"type": "symfony-bundle",
 	"description": "Multi-step forms for your Symfony project.",
-	"keywords": ["form", "wizard", "step", "symfony2", "symfony3", "symfony4"],
+	"keywords": ["form", "wizard", "step", "symfony3", "symfony4"],
 	"homepage": "https://github.com/craue/CraueFormFlowBundle",
 	"license": "MIT",
 	"authors": [
@@ -16,19 +16,18 @@
 		}
 	],
 	"require": {
-		"php": "^5.3.9|~7.0",
-		"symfony/form": "~2.7|~3.0|~4.0",
-		"symfony/http-kernel": "~2.7|~3.0|~4.0",
-		"symfony/translation": "~2.7|~3.0|~4.0",
-		"symfony/yaml": "~2.7|~3.0|~4.0",
-		"paragonie/random_compat": "^1|^2"
+		"php": "~7.0",
+		"symfony/form": "~3.4|~4.1",
+		"symfony/http-kernel": "~3.4|~4.1",
+		"symfony/translation": "~3.4|~4.1",
+		"symfony/yaml": "~3.4|~4.1"
 	},
 	"require-dev": {
-		"doctrine/doctrine-bundle": "~1.0",
-		"phpunit/phpunit": "^4.8.35|~5.7|~6.0",
-		"sensio/framework-extra-bundle": "~3.0",
-		"symfony/phpunit-bridge": "^3.2.5|~4.0",
-		"symfony/symfony": "~2.7|~3.0|~4.0"
+		"doctrine/doctrine-bundle": "~1.10",
+		"phpunit/phpunit": "~6.5|~7.5",
+		"sensio/framework-extra-bundle": "~5.2",
+		"symfony/phpunit-bridge": "~3.4|~4.1",
+		"symfony/symfony": "~3.4|~4.1"
 	},
 	"minimum-stability": "stable",
 	"autoload": {
@@ -41,7 +40,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "3.0.x-dev"
+			"dev-master": "3.1.x-dev"
 		}
 	}
 }
