@@ -14,7 +14,7 @@ env:
 
 matrix:
   include:
-    - php: 5.3
+    - php: 5.4
       dist: precise
       env: DEPS='lowest' SYMFONY_DEPRECATIONS_HELPER='2'
     - php: 5.6
