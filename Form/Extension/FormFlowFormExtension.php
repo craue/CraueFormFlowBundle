@@ -23,6 +23,10 @@ class FormFlowFormExtension extends AbstractTypeExtension {
 		return $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form';
 	}
 
+	public static function getExtendedTypes() {
+		return array('Symfony\Component\Form\Extension\Core\Type\FormType');
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
