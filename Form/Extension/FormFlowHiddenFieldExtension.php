@@ -24,6 +24,10 @@ class FormFlowHiddenFieldExtension extends AbstractTypeExtension {
 		return $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType' : 'hidden';
 	}
 
+	public static function getExtendedTypes() {
+		return array('Symfony\Component\Form\Extension\Core\Type\HiddenType');
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
