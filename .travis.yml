@@ -4,6 +4,7 @@ php:
   - 7.0
   - 7.1
   - 7.2
+  - 7.3
 
 env:
   - SYMFONY_VERSION='3.4.*'
@@ -12,15 +13,15 @@ matrix:
   include:
     - php: 7.0
       env: DEPS='lowest'
-    - php: 7.2
+    - php: 7.3
       env: DEPS='unmodified' SYMFONY_DEPRECATIONS_HELPER='2'
-    - php: 7.2
+    - php: 7.3
       env: SYMFONY_VERSION='3.4.*' PARAM_DB_DRIVER='pdo_sqlite' SYMFONY_DEPRECATIONS_HELPER='8'
-    - php: 7.2
+    - php: 7.3
       env: SYMFONY_VERSION='4.1.*'
-    - php: 7.2
+    - php: 7.3
       env: SYMFONY_VERSION='4.2.*' SYMFONY_DEPRECATIONS_HELPER='2'
-    - php: 7.2
+    - php: 7.3
       env: SYMFONY_VERSION='4.3.*' MIN_STABILITY='dev'
   allow_failures:
     - env: SYMFONY_VERSION='4.3.*' MIN_STABILITY='dev'
@@ -31,7 +32,9 @@ install:
   - INI_FILE=~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - echo "memory_limit = -1" >> "${INI_FILE}"
   # disable Xdebug for better Composer performance
-  - mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini xdebug.ini
+  - XDEBUG_CONFIG_FILE="~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini"
+  - if [ -f "${XDEBUG_CONFIG_FILE}" ]; then CODE_COVERAGE_ON=1; fi;
+  - if [ -n "${CODE_COVERAGE_ON:-}" ]; then mv "${XDEBUG_CONFIG_FILE}" xdebug.ini; fi;
   # install dependencies using Composer
   - bash .travis_install_dependencies.sh
   # show installed dependencies
@@ -45,11 +48,11 @@ script:
   # validate composer.json
   - composer validate --strict --no-check-lock
   # enable Xdebug for code coverage analysis
-  - mv xdebug.ini ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
+  - if [ -n "${CODE_COVERAGE_ON:-}" ]; then mv xdebug.ini "${XDEBUG_CONFIG_FILE}"; fi;
   # run PHPUnit
   - vendor/bin/phpunit -v --coverage-clover build/logs/clover.xml
   # upload code coverage data
-  - travis_retry wget -q https://github.com/php-coveralls/php-coveralls/releases/download/v2.1.0/php-coveralls.phar && travis_retry php php-coveralls.phar -v
+  - if [ -n "${CODE_COVERAGE_ON:-}" ]; then travis_retry wget -q https://github.com/php-coveralls/php-coveralls/releases/download/v2.1.0/php-coveralls.phar && travis_retry php php-coveralls.phar -v; fi;
 
 notifications:
   email:
