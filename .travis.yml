@@ -32,9 +32,7 @@ install:
   - INI_FILE=~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - echo "memory_limit = -1" >> "${INI_FILE}"
   # disable Xdebug for better Composer performance
-  - XDEBUG_CONFIG_FILE="~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini"
-  - if [ -f "${XDEBUG_CONFIG_FILE}" ]; then USE_XDEBUG=1; fi;
-  - if [ -n "${USE_XDEBUG:-}" ]; then mv "${XDEBUG_CONFIG_FILE}" xdebug.ini; fi;
+  - if php -v | grep -q 'Xdebug'; then phpenv config-rm xdebug.ini; fi;
   # install dependencies using Composer
   - bash .travis_install_dependencies.sh
   # show installed dependencies
@@ -47,10 +45,8 @@ before_script:
 script:
   # validate composer.json
   - composer validate --strict --no-check-lock
-  # enable Xdebug for code coverage analysis
-  - if [ -n "${USE_XDEBUG:-}" ]; then mv xdebug.ini "${XDEBUG_CONFIG_FILE}"; fi;
   # run PHPUnit
-  - if [ -n "${USE_XDEBUG:-}" ]; then vendor/bin/phpunit -v --coverage-clover build/logs/clover.xml; else phpdbg -qrr vendor/phpunit/phpunit/phpunit -v --coverage-clover build/logs/clover.xml; fi;
+  - phpdbg -qrr vendor/phpunit/phpunit/phpunit -v --coverage-clover build/logs/clover.xml
   # upload code coverage data
   - travis_retry wget -q https://github.com/php-coveralls/php-coveralls/releases/download/v2.1.0/php-coveralls.phar && travis_retry php php-coveralls.phar -v
 
