@@ -138,6 +138,21 @@ class TemplateRenderingTest extends IntegrationTestCase {
 				array('craue_formflow_button_class_next' => 'next'),
 				'<button type="submit" class="next">next</button>',
 			),
+            'next button custom attr without class' => array(
+                2, 1,
+                array('craue_formflow_button_attr_next' => array('data-foo' => 'bar')),
+                '<button type="submit" class="craue_formflow_button_last" data-foo="bar">next</button>',
+            ),
+            'next button custom attr with class' => array(
+                2, 1,
+                array('craue_formflow_button_class_next' => 'next', 'craue_formflow_button_attr_next' => array('data-foo' => 'bar')),
+                '<button type="submit" class="next" data-foo="bar">next</button>',
+            ),
+            'next button two custom attr with class' => array(
+                2, 1,
+                array('craue_formflow_button_class_next' => 'next', 'craue_formflow_button_attr_next' => array('data-foo' => 'bar', 'data-bar' => 'foo')),
+                '<button type="submit" class="next" data-foo="bar" data-bar="foo">next</button>',
+            ),
 			'next button custom label' => array(
 				2, 1,
 				array('craue_formflow_button_label_next' => 'custom next'),
@@ -148,6 +163,16 @@ class TemplateRenderingTest extends IntegrationTestCase {
 				array('craue_formflow_button_class_finish' => 'finish'),
 				'<button type="submit" class="finish">finish</button>',
 			),
+            'finish button custom attr without class' => array(
+                1, 1,
+                array('craue_formflow_button_attr_finish' => array('data-foo' => 'bar')),
+                '<button type="submit" class="craue_formflow_button_last" data-foo="bar">finish</button>',
+            ),
+            'finish button custom attr with class' => array(
+                1, 1,
+                array('craue_formflow_button_class_finish' => 'finish', 'craue_formflow_button_attr_finish' => array('data-foo' => 'bar')),
+                '<button type="submit" class="finish" data-foo="bar">finish</button>',
+            ),
 			'finish button custom label' => array(
 				1, 1,
 				array('craue_formflow_button_label_finish' => 'custom finish'),
@@ -168,6 +193,16 @@ class TemplateRenderingTest extends IntegrationTestCase {
 				array('craue_formflow_button_class_last' => 'last'),
 				'<button type="submit" class="last">next</button>',
 			),
+            'last button custom attr without class (next)' => array(
+                2, 1,
+                array('craue_formflow_button_class_last' => 'last', 'craue_formflow_button_attr_last' => array('data-foo' => 'bar')),
+                '<button type="submit" class="last" data-foo="bar">next</button>',
+            ),
+            'last button custom attr with class (next)' => array(
+                2, 1,
+                array('craue_formflow_button_attr_last' => array('data-foo' => 'bar')),
+                '<button type="submit" class="craue_formflow_button_last" data-foo="bar">next</button>',
+            ),
 			'last button custom label (next)' => array(
 				2, 1,
 				array('craue_formflow_button_label_last' => 'custom last'),
@@ -178,6 +213,16 @@ class TemplateRenderingTest extends IntegrationTestCase {
 				array('craue_formflow_button_class_back' => 'back'),
 				'<button type="submit" class="back" name="flow_renderingTest_transition" value="back" formnovalidate="formnovalidate">back</button>',
 			),
+            'back button custom attr without class' => array(
+                2, 2,
+                array('craue_formflow_button_attr_back' => array('data-foo' => 'bar')),
+                '<button type="submit" class="" name="flow_renderingTest_transition" value="back" formnovalidate="formnovalidate" data-foo="bar">back</button>',
+            ),
+            'back button custom attr with class' => array(
+                2, 2,
+                array('craue_formflow_button_class_back' => 'back', 'craue_formflow_button_attr_back' => array('data-foo' => 'bar')),
+                '<button type="submit" class="back" name="flow_renderingTest_transition" value="back" formnovalidate="formnovalidate" data-foo="bar">back</button>',
+            ),
 			'back button custom label' => array(
 				2, 2,
 				array('craue_formflow_button_label_back' => 'custom back'),
@@ -188,6 +233,17 @@ class TemplateRenderingTest extends IntegrationTestCase {
 				array('craue_formflow_button_class_reset' => 'reset'),
 				'<button type="submit" class="reset" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>',
 			),
+            'reset button custom attr without class' => array(
+                1, 1,
+                array('craue_formflow_button_attr_reset' => array('data-foo' => 'bar')),
+                '<button type="submit" class="craue_formflow_button_first" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate" data-foo="bar">start over</button>',
+            ),
+            'reset button custom attr with class' => array(
+                1, 1,
+                array('craue_formflow_button_class_reset' => 'reset', 'craue_formflow_button_attr_reset' => array('data-foo' => 'bar')),
+                '<button type="submit" class="reset" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate" data-foo="bar">start over</button>',
+
+            ),
 			'reset button custom label' => array(
 				1, 1,
 				array('craue_formflow_button_label_reset' => 'custom reset'),

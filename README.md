@@ -295,6 +295,23 @@ Example:
 	} %}
 ```
 
+Always in the same way, you can add custom HTML attributes:
+
+- `craue_formflow_button_attr_last` for either the __next__ or __finish__ button
+- `craue_formflow_button_attr_finish` for the __finish__ button
+- `craue_formflow_button_attr_next` for the __next__ button 
+- `craue_formflow_button_attr_back` for the __back__ button
+- `craue_formflow_button_attr_reset` for the __reset__ button
+
+Example:
+
+```twig
+{% include '@CraueFormFlow/FormFlow/buttons.html.twig' with {
+		craue_formflow_button_attr_finish: {'data-foo': 'bar'},
+		craue_formflow_button_attr_reset: {'data-foo': 'bar', 'data-bar': 'foo'},
+} %}
+```
+
 You can also remove the reset button by setting `craue_formflow_button_render_reset` to `false`.
 
 ## Create an action
