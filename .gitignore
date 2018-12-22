@@ -1,16 +1,3 @@
-/.buildpath
-/.project
-/.settings
-/composer-install.bat
-/composer-update.bat
 /composer.lock
-.DS_Store
-/git.bat
-/nbproject
-/phpunit-tests-run-with-coverage.bat
-/phpunit-tests-run.bat
 /phpunit.xml
 /vendor
-/vendors-install.bat
-/vendors-update.bat
-/vendors-whatsnew.bat
