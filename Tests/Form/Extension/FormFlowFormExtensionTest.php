@@ -19,6 +19,7 @@ class FormFlowFormExtensionTest extends TestCase {
 		$extension = new FormFlowFormExtension();
 
 		$this->assertSame(FormType::class, $extension->getExtendedType());
+		$this->assertSame([FormType::class], FormFlowFormExtension::getExtendedTypes());
 	}
 
 }

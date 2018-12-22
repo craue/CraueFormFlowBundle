@@ -19,6 +19,7 @@ class FormFlowHiddenFieldExtensionTest extends TestCase {
 		$extension = new FormFlowHiddenFieldExtension();
 
 		$this->assertSame(HiddenType::class, $extension->getExtendedType());
+		$this->assertSame([HiddenType::class], FormFlowHiddenFieldExtension::getExtendedTypes());
 	}
 
 }
