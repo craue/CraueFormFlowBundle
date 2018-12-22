@@ -4,6 +4,7 @@ namespace Craue\FormFlowBundle\Tests\Form\Extension;
 
 use Craue\FormFlowBundle\Form\Extension\FormFlowHiddenFieldExtension;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 /**
  * @group unit
@@ -17,8 +18,7 @@ class FormFlowHiddenFieldExtensionTest extends TestCase {
 	public function testGetExtendedType() {
 		$extension = new FormFlowHiddenFieldExtension();
 
-		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
-		$this->assertSame($useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType' : 'hidden', $extension->getExtendedType());
+		$this->assertSame(HiddenType::class, $extension->getExtendedType());
 	}
 
 }

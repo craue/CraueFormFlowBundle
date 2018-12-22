@@ -21,7 +21,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected static function createKernel(array $options = array()) {
+	protected static function createKernel(array $options = []) {
 		$configFile = isset($options['config']) ? $options['config'] : 'config.yml';
 
 		return new AppKernel($configFile);
@@ -54,7 +54,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 	 * @param array $parameters
 	 * @return string URL
 	 */
-	protected function url($route, array $parameters = array()) {
+	protected function url($route, array $parameters = []) {
 		return $this->getService('router')->generate($route, $parameters);
 	}
 

@@ -15,7 +15,7 @@ use Craue\FormFlowBundle\Tests\UnitTestCase;
 class PostValidateEventTest extends UnitTestCase {
 
 	public function testEvent() {
-		$formData = array('blah' => '123');
+		$formData = ['blah' => '123'];
 
 		$event = new PostValidateEvent($this->getMockedFlowInterface(), $formData);
 

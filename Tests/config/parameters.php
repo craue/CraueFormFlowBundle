@@ -4,7 +4,7 @@
  * Only set parameters if they aren't already defined. This allows using environment variables (e.g. set by Travis) and fallback values.
  */
 
-$defaultParameters = array(
+$defaultParameters = [
 	'db.driver' => null,
 // 	'db.driver' => 'pdo_mysql',
 // 	'db.driver' => 'pdo_sqlite',
@@ -14,7 +14,7 @@ $defaultParameters = array(
 	'db.user' => 'travis',
 	'db.password' => null,
 	'db.path' => $container->getParameter('kernel.cache_dir') . '/sqlite.db',
-);
+];
 
 foreach ($defaultParameters as $name => $defaultValue) {
 	if (!$container->hasParameter($name)) {

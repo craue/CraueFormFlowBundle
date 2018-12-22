@@ -68,11 +68,11 @@ class StepLabel {
 	private function setValue($value, $callable = false) {
 		if ($callable) {
 			if (!is_callable($value)) {
-				throw new InvalidTypeException($value, array('callable'));
+				throw new InvalidTypeException($value, ['callable']);
 			}
 		} else {
 			if ($value !== null && !is_string($value)) {
-				throw new InvalidTypeException($value, array('null', 'string'));
+				throw new InvalidTypeException($value, ['null', 'string']);
 			}
 		}
 

@@ -21,9 +21,9 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 
 		// 2 wheels -> step 3
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'createVehicle[numberOfWheels]' => 2,
-		));
+		]);
 		$this->assertCurrentStepNumber(3, $crawler);
 		$this->assertCurrentFormData('{"numberOfWheels":2,"engine":null}', $crawler);
 
@@ -35,17 +35,17 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 
 		// 4 wheels -> step 2
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'createVehicle[numberOfWheels]' => 4,
-		));
+		]);
 		$this->assertCurrentStepNumber(2, $crawler);
 		$this->assertCurrentFormData('{"numberOfWheels":4,"engine":null}', $crawler);
 
 		// any engine -> step 3
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'createVehicle[engine]' => 'gas',
-		));
+		]);
 		$this->assertCurrentStepNumber(3, $crawler);
 		$this->assertCurrentFormData('{"numberOfWheels":4,"engine":"gas"}', $crawler);
 
@@ -62,9 +62,9 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 
 		// 2 wheels -> step 3
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'createVehicle[numberOfWheels]' => 2,
-		));
+		]);
 		$this->assertCurrentStepNumber(3, $crawler);
 
 		// finish flow
@@ -90,17 +90,17 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 
 		// 4 wheels -> step 2
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'createVehicle[numberOfWheels]' => 4,
-		));
+		]);
 		$this->assertCurrentStepNumber(2, $crawler);
 		$this->assertCurrentFormData('{"numberOfWheels":4,"engine":null}', $crawler);
 
 		// any engine -> step 3
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'createVehicle[engine]' => 'gas',
-		));
+		]);
 		$this->assertCurrentStepNumber(3, $crawler);
 		$this->assertCurrentFormData('{"numberOfWheels":4,"engine":"gas"}', $crawler);
 
@@ -118,9 +118,9 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 
 		// 2 wheels -> step 3
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'createVehicle[numberOfWheels]' => 2,
-		));
+		]);
 		$this->assertCurrentStepNumber(3, $crawler);
 		$this->assertCurrentFormData('{"numberOfWheels":2,"engine":null}', $crawler);
 
@@ -135,16 +135,16 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 
 		// 4 wheels -> step 2
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'createVehicle[numberOfWheels]' => 4,
-		));
+		]);
 		$this->assertCurrentStepNumber(2, $crawler);
 
 		// any engine -> step 3
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'createVehicle[engine]' => 'gas',
-		));
+		]);
 		$this->assertCurrentStepNumber(3, $crawler);
 
 		// reset
@@ -155,9 +155,9 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 
 		// 2 wheels -> step 3
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'createVehicle[numberOfWheels]' => 2,
-		));
+		]);
 		$this->assertCurrentStepNumber(3, $crawler);
 
 		// finish flow
@@ -171,9 +171,9 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 
 		// 2 wheels -> step 3
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'createVehicle[numberOfWheels]' => 2,
-		));
+		]);
 		$this->assertCurrentStepNumber(3, $crawler);
 
 		// reload -> step 3 again
@@ -186,9 +186,9 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 
 		// 2 wheels -> step 3
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'createVehicle[numberOfWheels]' => 2,
-		));
+		]);
 
 		// GET request -> step 1 with clean data
 		$crawler = $this->client->request('GET', $this->url('_FormFlow_createVehicle'));
@@ -201,19 +201,19 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 
 		// no number of wheels -> step 1 again
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'flow_createVehicle_step' => '3',
-		));
+		]);
 		$this->assertCurrentStepNumber(1, $crawler);
 		$this->assertContainsFormError('This value should not be blank.', $crawler);
 		$this->assertCurrentFormData('{"numberOfWheels":null,"engine":null}', $crawler);
 
 		// 4 wheels -> step 2
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'flow_createVehicle_step' => '3',
 			'createVehicle[numberOfWheels]' => 4,
-		));
+		]);
 		$this->assertCurrentStepNumber(2, $crawler);
 		$this->assertCurrentFormData('{"numberOfWheels":4,"engine":null}', $crawler);
 	}
@@ -223,9 +223,9 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 
 		// 2 wheels -> step 3
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'createVehicle[numberOfWheels]' => 2,
-		));
+		]);
 		$this->assertCurrentStepNumber(3, $crawler);
 		// step 2 must be marked as skipped
 		$this->assertContains('<li class="craue_formflow_skipped_step">engine</li>', $this->getHtml($crawler->filter('#step-list')));
@@ -244,25 +244,25 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 		// invalid number of wheels -> step 1 again
 		$form = $crawler->selectButton('next')->form();
 		$form->disableValidation();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'createVehicle[numberOfWheels]' => 99,
-		));
+		]);
 		$this->assertCurrentStepNumber(1, $crawler);
 		$this->assertContainsFormError('This value is not valid.', $crawler);
 
 		// 4 wheels -> step 2
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'createVehicle[numberOfWheels]' => 4,
-		));
+		]);
 		$this->assertCurrentStepNumber(2, $crawler);
 
 		// invalid engine -> step 2 again
 		$form = $crawler->selectButton('next')->form();
 		$form->disableValidation();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'createVehicle[engine]' => 'magic',
-		));
+		]);
 		$this->assertCurrentStepNumber(2, $crawler);
 		$this->assertContainsFormError('This value is not valid.', $crawler);
 	}

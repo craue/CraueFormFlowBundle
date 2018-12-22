@@ -30,35 +30,35 @@ class ConcurrentFlowsTest extends IntegrationTestCase {
 
 		// [A] bug report -> step 2
 		$formA = $crawlerA->selectButton('next')->form();
-		$crawlerA = $this->client->submit($formA, array(
+		$crawlerA = $this->client->submit($formA, [
 			'createTopic[title]' => 'error',
 			'createTopic[category]' => 'BUG_REPORT',
-		));
+		]);
 		$this->assertCurrentStepNumber(2, $crawlerA);
 		$this->assertCurrentFormData('{"title":"error","description":null,"category":"BUG_REPORT","comment":null,"details":null}', $crawlerA);
 
 		// [B] discussion -> step 2
 		$formB = $crawlerB->selectButton('next')->form();
-		$crawlerB = $this->client->submit($formB, array(
+		$crawlerB = $this->client->submit($formB, [
 			'createTopic[title]' => 'question',
 			'createTopic[category]' => 'DISCUSSION',
-		));
+		]);
 		$this->assertCurrentStepNumber(2, $crawlerB);
 		$this->assertCurrentFormData('{"title":"question","description":null,"category":"DISCUSSION","comment":null,"details":null}', $crawlerB);
 
 		// [A] comment -> step 3
 		$formA = $crawlerA->selectButton('next')->form();
-		$crawlerA = $this->client->submit($formA, array(
+		$crawlerA = $this->client->submit($formA, [
 			'createTopic[comment]' => 'my comment',
-		));
+		]);
 		$this->assertCurrentStepNumber(3, $crawlerA);
 		$this->assertCurrentFormData('{"title":"error","description":null,"category":"BUG_REPORT","comment":"my comment","details":null}', $crawlerA);
 
 		// [A] bug details -> step 4
 		$formA = $crawlerA->selectButton('next')->form();
-		$crawlerA = $this->client->submit($formA, array(
+		$crawlerA = $this->client->submit($formA, [
 			'createTopic[details]' => 'blah blah',
-		));
+		]);
 		$this->assertCurrentStepNumber(4, $crawlerA);
 		$this->assertCurrentFormData('{"title":"error","description":null,"category":"BUG_REPORT","comment":"my comment","details":"blah blah"}', $crawlerA);
 

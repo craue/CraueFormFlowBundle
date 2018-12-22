@@ -32,46 +32,46 @@ class Demo1Flow extends FormFlow implements EventSubscriberInterface {
 	 * {@inheritDoc}
 	 */
 	public static function getSubscribedEvents() {
-		return array(
+		return [
 			FormFlowEvents::PRE_BIND => 'onPreBind',
 			FormFlowEvents::GET_STEPS => 'onGetSteps',
 			FormFlowEvents::POST_BIND_SAVED_DATA => 'onPostBindSavedData',
 			FormFlowEvents::POST_BIND_FLOW => 'onPostBindFlow',
 			FormFlowEvents::POST_BIND_REQUEST => 'onPostBindRequest',
 			FormFlowEvents::POST_VALIDATE => 'onPostValidate',
-		);
+		];
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	protected function loadStepsConfig() {
-		return array(
-			array(
+		return [
+			[
 				'label' => 'step1',
 				'skip' => true,
-			),
-			array(
+			],
+			[
 				'label' => 'step2',
-			),
-			array(
+			],
+			[
 				'label' => 'step3',
-			),
-			array(
+			],
+			[
 				'label' => 'step4',
-			),
-			array(
+			],
+			[
 				'label' => 'step5',
 				'skip' => true,
-			),
-		);
+			],
+		];
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function bind($formData) {
-		$this->dataManager->getStorage()->set($this->getCalledEventsSessionKey(), array());
+		$this->dataManager->getStorage()->set($this->getCalledEventsSessionKey(), []);
 		parent::bind($formData);
 	}
 

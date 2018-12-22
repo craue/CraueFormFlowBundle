@@ -27,15 +27,15 @@ class FormFlowUtilTest extends UnitTestCase {
 	}
 
 	public function testAddRouteParameters() {
-		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
+		$flow = $this->getFlowWithMockedMethods(['loadStepsConfig']);
 
 		$flow
 			->expects($this->once())
 			->method('loadStepsConfig')
-			->will($this->returnValue(array(
-				array(),
-				array(),
-			)))
+			->will($this->returnValue([
+				[],
+				[],
+			]))
 		;
 
 		$instanceId = 'xyz';
@@ -43,9 +43,9 @@ class FormFlowUtilTest extends UnitTestCase {
 
 		$flow->nextStep();
 
-		$actualParameters = $this->util->addRouteParameters(array('key' => 'value'), $flow);
+		$actualParameters = $this->util->addRouteParameters(['key' => 'value'], $flow);
 
-		$this->assertEquals(array('key' => 'value', 'instance' => $instanceId, 'step' => 1), $actualParameters);
+		$this->assertEquals(['key' => 'value', 'instance' => $instanceId, 'step' => 1], $actualParameters);
 	}
 
 	public function testAddRouteParameters_explicitStepNumber() {
@@ -54,17 +54,17 @@ class FormFlowUtilTest extends UnitTestCase {
 		$instanceId = 'xyz';
 		$flow->setInstanceId($instanceId);
 
-		$actualParameters = $this->util->addRouteParameters(array('key' => 'value'), $flow, 5);
+		$actualParameters = $this->util->addRouteParameters(['key' => 'value'], $flow, 5);
 
-		$this->assertEquals(array('key' => 'value', 'instance' => $instanceId, 'step' => 5), $actualParameters);
+		$this->assertEquals(['key' => 'value', 'instance' => $instanceId, 'step' => 5], $actualParameters);
 	}
 
 	public function testRemoveRouteParameters() {
 		$flow = $this->getMockedFlow();
 
-		$actualParameters = $this->util->removeRouteParameters(array('key' => 'value', 'instance' => 'xyz', 'step' => 2), $flow);
+		$actualParameters = $this->util->removeRouteParameters(['key' => 'value', 'instance' => 'xyz', 'step' => 2], $flow);
 
-		$this->assertEquals(array('key' => 'value'), $actualParameters);
+		$this->assertEquals(['key' => 'value'], $actualParameters);
 	}
 
 }

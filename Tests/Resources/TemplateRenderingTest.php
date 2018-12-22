@@ -6,6 +6,7 @@ use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Storage\DataManager;
 use Craue\FormFlowBundle\Storage\SessionStorage;
 use Craue\FormFlowBundle\Tests\IntegrationTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
@@ -27,9 +28,9 @@ class TemplateRenderingTest extends IntegrationTestCase {
 		// first step
 		$flow->nextStep();
 
-		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
+		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, [
 			'flow' => $flow,
-		));
+		]);
 
 		$this->assertContains('<div class="craue_formflow_buttons craue_formflow_button_count_2">', $renderedTemplate);
 		$this->assertContains('<button type="submit" class="craue_formflow_button_last">next</button>', $renderedTemplate);
@@ -38,9 +39,9 @@ class TemplateRenderingTest extends IntegrationTestCase {
 		// next step
 		$flow->nextStep();
 
-		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
+		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, [
 			'flow' => $flow,
-		));
+		]);
 
 		$this->assertContains('<div class="craue_formflow_buttons craue_formflow_button_count_3">', $renderedTemplate);
 		$this->assertContains('<button type="submit" class="craue_formflow_button_last">finish</button>', $renderedTemplate);
@@ -54,41 +55,41 @@ class TemplateRenderingTest extends IntegrationTestCase {
 		// first step
 		$flow->nextStep();
 
-		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
+		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, [
 			'craue_formflow_button_render_reset' => false,
 			'flow' => $flow,
-		));
+		]);
 		$this->assertContains('<div class="craue_formflow_buttons craue_formflow_button_count_1">', $renderedTemplate);
 		$this->assertNotContains('<button type="submit" class="craue_formflow_button_first" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
 
 		// second step
 		$flow->nextStep();
 
-		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
+		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, [
 			'craue_formflow_button_render_reset' => false,
 			'flow' => $flow,
-		));
+		]);
 		$this->assertContains('<div class="craue_formflow_buttons craue_formflow_button_count_2">', $renderedTemplate);
 		$this->assertNotContains('<button type="submit" class="craue_formflow_button_first" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
 	}
 
 	public function testButtons_firstStepSkipped() {
-		$flow = $this->getFlowStub(array(), array(
-			array(
+		$flow = $this->getFlowStub([], [
+			[
 				'label' => 'step1',
 				'skip' => true,
-			),
-			array(
+			],
+			[
 				'label' => 'step2',
-			),
-		));
+			],
+		]);
 
 		// second step
 		$flow->nextStep();
 
-		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
+		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, [
 			'flow' => $flow,
-		));
+		]);
 
 		$this->assertContains('<div class="craue_formflow_buttons craue_formflow_button_count_2">', $renderedTemplate);
 		$this->assertContains('<button type="submit" class="craue_formflow_button_last">finish</button>', $renderedTemplate);
@@ -96,18 +97,18 @@ class TemplateRenderingTest extends IntegrationTestCase {
 	}
 
 	public function testButtons_onlyOneStep() {
-		$flow = $this->getFlowStub(array(), array(
-			array(
+		$flow = $this->getFlowStub([], [
+			[
 				'label' => 'step1',
-			),
-		));
+			],
+		]);
 
 		// first step
 		$flow->nextStep();
 
-		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array(
+		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, [
 			'flow' => $flow,
-		));
+		]);
 
 		$this->assertContains('<div class="craue_formflow_buttons craue_formflow_button_count_2">', $renderedTemplate);
 		$this->assertContains('<button type="submit" class="craue_formflow_button_last">finish</button>', $renderedTemplate);
@@ -118,82 +119,82 @@ class TemplateRenderingTest extends IntegrationTestCase {
 	 * @dataProvider dataCustomizedButton
 	 */
 	public function testCustomizedButton($numberOfSteps, $jumpToStep, array $parameters, $expectedHtml) {
-		$flow = $this->getFlowStub(array(), array_fill_keys(range(1, $numberOfSteps), array()));
+		$flow = $this->getFlowStub([], array_fill_keys(range(1, $numberOfSteps), []));
 
 		do {
 			$flow->nextStep();
 		} while (--$jumpToStep > 0);
 
-		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array_merge($parameters, array(
+		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, array_merge($parameters, [
 			'flow' => $flow,
-		)));
+		]));
 
 		$this->assertContains($expectedHtml, $renderedTemplate);
 	}
 
 	public function dataCustomizedButton() {
-		return array(
-			'next button custom class' => array(
+		return [
+			'next button custom class' => [
 				2, 1,
-				array('craue_formflow_button_class_next' => 'next'),
+				['craue_formflow_button_class_next' => 'next'],
 				'<button type="submit" class="next">next</button>',
-			),
-			'next button custom label' => array(
+			],
+			'next button custom label' => [
 				2, 1,
-				array('craue_formflow_button_label_next' => 'custom next'),
+				['craue_formflow_button_label_next' => 'custom next'],
 				'<button type="submit" class="craue_formflow_button_last">custom next</button>',
-			),
-			'finish button custom class' => array(
+			],
+			'finish button custom class' => [
 				1, 1,
-				array('craue_formflow_button_class_finish' => 'finish'),
+				['craue_formflow_button_class_finish' => 'finish'],
 				'<button type="submit" class="finish">finish</button>',
-			),
-			'finish button custom label' => array(
+			],
+			'finish button custom label' => [
 				1, 1,
-				array('craue_formflow_button_label_finish' => 'custom finish'),
+				['craue_formflow_button_label_finish' => 'custom finish'],
 				'<button type="submit" class="craue_formflow_button_last">custom finish</button>',
-			),
-			'last button custom class (finish)' => array(
+			],
+			'last button custom class (finish)' => [
 				1, 1,
-				array('craue_formflow_button_class_last' => 'last'),
+				['craue_formflow_button_class_last' => 'last'],
 				'<button type="submit" class="last">finish</button>',
-			),
-			'last button custom label (finish)' => array(
+			],
+			'last button custom label (finish)' => [
 				1, 1,
-				array('craue_formflow_button_label_last' => 'custom last'),
+				['craue_formflow_button_label_last' => 'custom last'],
 				'<button type="submit" class="craue_formflow_button_last">custom last</button>',
-			),
-			'last button custom class (next)' => array(
+			],
+			'last button custom class (next)' => [
 				2, 1,
-				array('craue_formflow_button_class_last' => 'last'),
+				['craue_formflow_button_class_last' => 'last'],
 				'<button type="submit" class="last">next</button>',
-			),
-			'last button custom label (next)' => array(
+			],
+			'last button custom label (next)' => [
 				2, 1,
-				array('craue_formflow_button_label_last' => 'custom last'),
+				['craue_formflow_button_label_last' => 'custom last'],
 				'<button type="submit" class="craue_formflow_button_last">custom last</button>',
-			),
-			'back button custom class' => array(
+			],
+			'back button custom class' => [
 				2, 2,
-				array('craue_formflow_button_class_back' => 'back'),
+				['craue_formflow_button_class_back' => 'back'],
 				'<button type="submit" class="back" name="flow_renderingTest_transition" value="back" formnovalidate="formnovalidate">back</button>',
-			),
-			'back button custom label' => array(
+			],
+			'back button custom label' => [
 				2, 2,
-				array('craue_formflow_button_label_back' => 'custom back'),
+				['craue_formflow_button_label_back' => 'custom back'],
 				'<button type="submit" class="" name="flow_renderingTest_transition" value="back" formnovalidate="formnovalidate">custom back</button>',
-			),
-			'reset button custom class' => array(
+			],
+			'reset button custom class' => [
 				1, 1,
-				array('craue_formflow_button_class_reset' => 'reset'),
+				['craue_formflow_button_class_reset' => 'reset'],
 				'<button type="submit" class="reset" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>',
-			),
-			'reset button custom label' => array(
+			],
+			'reset button custom label' => [
 				1, 1,
-				array('craue_formflow_button_label_reset' => 'custom reset'),
+				['craue_formflow_button_label_reset' => 'custom reset'],
 				'<button type="submit" class="craue_formflow_button_first" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">custom reset</button>',
-			),
-		);
+			],
+		];
 	}
 
 	public function testStepList() {
@@ -202,9 +203,9 @@ class TemplateRenderingTest extends IntegrationTestCase {
 		// first step
 		$flow->nextStep();
 
-		$renderedTemplate = $this->getTwig()->render(self::STEP_LIST_TEMPLATE, array(
+		$renderedTemplate = $this->getTwig()->render(self::STEP_LIST_TEMPLATE, [
 			'flow' => $flow,
-		));
+		]);
 
 		$this->assertContains('<ol class="craue_formflow_steplist">', $renderedTemplate);
 		$this->assertContains('<li class="craue_formflow_current_step">step1</li>', $renderedTemplate);
@@ -213,16 +214,16 @@ class TemplateRenderingTest extends IntegrationTestCase {
 		// next step
 		$flow->nextStep();
 
-		$renderedTemplate = $this->getTwig()->render(self::STEP_LIST_TEMPLATE, array(
+		$renderedTemplate = $this->getTwig()->render(self::STEP_LIST_TEMPLATE, [
 			'flow' => $flow,
-		));
+		]);
 
 		$this->assertContains('<li>step1</li>', $renderedTemplate);
 		$this->assertContains('<li class="craue_formflow_current_step">step2</li>', $renderedTemplate);
 	}
 
 	public function testStepList_stepDone() {
-		$flow = $this->getFlowStub(array('isStepDone'));
+		$flow = $this->getFlowStub(['isStepDone']);
 
 		// second step
 		$flow->nextStep();
@@ -234,30 +235,30 @@ class TemplateRenderingTest extends IntegrationTestCase {
 			->will($this->returnValue(true))
 		;
 
-		$renderedTemplate = $this->getTwig()->render(self::STEP_LIST_TEMPLATE, array(
+		$renderedTemplate = $this->getTwig()->render(self::STEP_LIST_TEMPLATE, [
 			'flow' => $flow,
-		));
+		]);
 
 		$this->assertContains('<li class="craue_formflow_done_step">step1</li>', $renderedTemplate);
 	}
 
 	public function testStepList_stepSkipped() {
-		$flow = $this->getFlowStub(array(), array(
-			array(
+		$flow = $this->getFlowStub([], [
+			[
 				'label' => 'step1',
 				'skip' => true,
-			),
-			array(
+			],
+			[
 				'label' => 'step2',
-			),
-		));
+			],
+		]);
 
 		// second step
 		$flow->nextStep();
 
-		$renderedTemplate = $this->getTwig()->render(self::STEP_LIST_TEMPLATE, array(
+		$renderedTemplate = $this->getTwig()->render(self::STEP_LIST_TEMPLATE, [
 			'flow' => $flow,
-		));
+		]);
 
 		$this->assertContains('<li class="craue_formflow_skipped_step">step1</li>', $renderedTemplate);
 		$this->assertContains('<li class="craue_formflow_current_step">step2</li>', $renderedTemplate);
@@ -266,11 +267,11 @@ class TemplateRenderingTest extends IntegrationTestCase {
 	/**
 	 * @param string[] $stubbedMethods names of additionally stubbed methods
 	 * @param array $stepsConfig steps config
-	 * @return \PHPUnit_Framework_MockObject_MockObject|FormFlow
+	 * @return MockObject|FormFlow
 	 */
-	protected function getFlowStub(array $stubbedMethods = array(), array $stepsConfig = null) {
-		/* @var $flow \PHPUnit_Framework_MockObject_MockObject|FormFlow */
-		$flow = $this->getMockBuilder('\Craue\FormFlowBundle\Form\FormFlow')->setMethods(array_merge(array('getName', 'loadStepsConfig'), $stubbedMethods))->getMock();
+	protected function getFlowStub(array $stubbedMethods = [], array $stepsConfig = null) {
+		/* @var $flow MockObject|FormFlow */
+		$flow = $this->getMockBuilder(FormFlow::class)->setMethods(array_merge(['getName', 'loadStepsConfig'], $stubbedMethods))->getMock();
 
 		$flow->setDataManager(new DataManager(new SessionStorage(new Session(new MockArraySessionStorage()))));
 
@@ -280,14 +281,14 @@ class TemplateRenderingTest extends IntegrationTestCase {
 		;
 
 		if ($stepsConfig === null) {
-			$stepsConfig = array(
-				1 => array(
+			$stepsConfig = [
+				1 => [
 					'label' => 'step1',
-				),
-				2 => array(
+				],
+				2 => [
 					'label' => 'step2',
-				),
-			);
+				],
+			];
 		}
 
 		$flow

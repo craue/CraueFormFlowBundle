@@ -37,13 +37,13 @@ class Issue303Test extends IntegrationTestCase {
 	}
 
 	public function dataIssue303() {
-		return array(
-			array(2, 'start over', 1),
-			array(1, 'back', 2),
+		return [
+			[2, 'start over', 1],
+			[1, 'back', 2],
 
-			array(1, 'start over', 2),
-			array(2, 'back', 1),
-		);
+			[1, 'start over', 2],
+			[2, 'back', 1],
+		];
 	}
 
 }

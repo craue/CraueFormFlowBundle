@@ -14,7 +14,7 @@ class Issue303Flow extends FormFlow {
 	private static $skips;
 
 	public static function resetSkips() {
-		self::$skips = array();
+		self::$skips = [];
 	}
 
 	public static function setSkip($stepNumber) {
@@ -32,14 +32,14 @@ class Issue303Flow extends FormFlow {
 	 * {@inheritDoc}
 	 */
 	protected function loadStepsConfig() {
-		$steps = array(
-			1 => array(
+		$steps = [
+			1 => [
 				'label' => 'step1',
-			),
-			2 => array(
+			],
+			2 => [
 				'label' => 'step2',
-			),
-		);
+			],
+		];
 
 		foreach (self::$skips as $stepNumber => $skip) {
 			$steps[$stepNumber]['skip'] = $skip;

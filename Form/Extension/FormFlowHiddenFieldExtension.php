@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Form\Extension;
 
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,23 +20,21 @@ class FormFlowHiddenFieldExtension extends AbstractTypeExtension {
 	 * {@inheritDoc}
 	 */
 	public function getExtendedType() {
-		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
-
-		return $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType' : 'hidden';
+		return HiddenType::class;
 	}
 
 	public static function getExtendedTypes() {
-		return array('Symfony\Component\Form\Extension\Core\Type\HiddenType');
+		return [HiddenType::class];
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function configureOptions(OptionsResolver $resolver) {
-		$resolver->setDefined(array(
+		$resolver->setDefined([
 			'flow_instance_key',
 			'flow_step_key',
-		));
+		]);
 	}
 
 	/**

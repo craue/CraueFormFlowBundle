@@ -9,6 +9,7 @@ use Craue\FormFlowBundle\Storage\ExtendedDataManagerInterface;
 use Craue\FormFlowBundle\Storage\SessionStorage;
 use Craue\FormFlowBundle\Storage\StorageInterface;
 use Craue\FormFlowBundle\Tests\UnitTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
@@ -33,30 +34,30 @@ class DataManagerTest extends UnitTestCase {
 
 	protected $createLocationFlowName = 'createLocation';
 	protected $createLocationFlowInstanceId = '26xz98wx38';
-	protected $createLocationFlowData = array(
+	protected $createLocationFlowData = [
 		// step 1
-		array(
+		[
 			'country' => 'US',
 			'_token' => '81jaZU6lQD_oCV-BmTZSxAN3rORRQgAVEu4iZbsACRE',
-		),
+		],
 		// step 2
-		array(
+		[
 			'region' => 'US-TX',
 			'_token' => 'ytCzDJAGrpo7ToVKqU89IOIQ0sDW2LDeve_5X0x6Sy0',
-		),
-	);
+		],
+	];
 
 	protected $createVehicleFlowName = 'createVehicle';
 	protected $createVehicleFlowInstanceId = '3a03y1o9at';
-	protected $createVehicleFlowData = array(
+	protected $createVehicleFlowData = [
 		// step 1
-		array(
-			'vehicle' => array(
+		[
+			'vehicle' => [
 				'numberOfWheels' => '2',
-			),
+			],
 			'_token' => 'sGcKUDmMmeaLedFQhoDt2ULi_39hErh4ZqZN1qZDCjc',
-		),
-	);
+		],
+	];
 
 	/**
 	 * {@inheritDoc}
@@ -99,7 +100,7 @@ class DataManagerTest extends UnitTestCase {
 		$this->assertTrue($this->dataManager->exists($createVehicleFlow));
 
 		// ensure only data of the correct flow has been dropped
-		$this->assertEquals(array(), $this->dataManager->load($createLocationFlow));
+		$this->assertEquals([], $this->dataManager->load($createLocationFlow));
 		$this->assertEquals($this->createVehicleFlowData, $this->dataManager->load($createVehicleFlow));
 	}
 
@@ -110,7 +111,7 @@ class DataManagerTest extends UnitTestCase {
 		// save its data
 		$this->dataManager->save($createLocationFlow, $this->createLocationFlowData);
 
-		$newData = array('blah' => 'blah');
+		$newData = ['blah' => 'blah'];
 
 		// save changed data
 		$this->dataManager->save($createLocationFlow, $newData);
@@ -124,7 +125,7 @@ class DataManagerTest extends UnitTestCase {
 	 */
 	public function testLoad_emptyStorage() {
 		$createLocationFlow = $this->getFlow($this->createLocationFlowName, $this->createLocationFlowInstanceId);
-		$this->assertEquals(array(), $this->dataManager->load($createLocationFlow));
+		$this->assertEquals([], $this->dataManager->load($createLocationFlow));
 	}
 
 	public function testListFlows() {
@@ -139,10 +140,10 @@ class DataManagerTest extends UnitTestCase {
 		$this->dataManager->save($createVehicleFlow, $this->createVehicleFlowData);
 
 		// get names of all flows
-		$expectedResult = array(
+		$expectedResult = [
 			$this->createLocationFlowName,
 			$this->createVehicleFlowName,
-		);
+		];
 		$this->assertEquals($expectedResult, $this->dataManager->listFlows());
 	}
 
@@ -150,7 +151,7 @@ class DataManagerTest extends UnitTestCase {
 	 * Ensure that even without any data an array is returned.
 	 */
 	public function testListFlows_emptyStorage() {
-		$this->assertEquals(array(), $this->dataManager->listFlows());
+		$this->assertEquals([], $this->dataManager->listFlows());
 	}
 
 	public function testListInstances() {
@@ -165,10 +166,10 @@ class DataManagerTest extends UnitTestCase {
 		$this->dataManager->save($createVehicleFlow, $this->createVehicleFlowData);
 
 		// get instances of one flow
-		$expectedResult = array(
+		$expectedResult = [
 			$this->createLocationFlowInstanceId,
 			'other-instance',
-		);
+		];
 		$this->assertEquals($expectedResult, $this->dataManager->listInstances($this->createLocationFlowName));
 	}
 
@@ -176,7 +177,7 @@ class DataManagerTest extends UnitTestCase {
 	 * Ensure that even without any data an array is returned.
 	 */
 	public function testListInstances_emptyStorage() {
-		$this->assertEquals(array(), $this->dataManager->listInstances('whatever'));
+		$this->assertEquals([], $this->dataManager->listInstances('whatever'));
 	}
 
 	public function testDropAll() {
@@ -196,10 +197,10 @@ class DataManagerTest extends UnitTestCase {
 	/**
 	 * @param string $name
 	 * @param string $instanceId
-	 * @return \PHPUnit_Framework_MockObject_MockObject|FormFlow
+	 * @return MockObject|FormFlow
 	 */
 	protected function getFlow($name, $instanceId) {
-		$flow = $this->getFlowWithMockedMethods(array('getName'));
+		$flow = $this->getFlowWithMockedMethods(['getName']);
 
 		$flow
 			->method('getName')

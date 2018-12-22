@@ -45,11 +45,11 @@ class Topic {
 	}
 
 	public static function getValidCategories() {
-		return array(
+		return [
 			'DISCUSSION',
 			'BUG_REPORT',
 			'SUPPORT_REQUEST',
-		);
+		];
 	}
 
 }

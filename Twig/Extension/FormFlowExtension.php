@@ -34,22 +34,22 @@ class FormFlowExtension extends \Twig_Extension {
 	 * {@inheritDoc}
 	 */
 	public function getFilters() {
-		return array(
-			new \Twig_SimpleFilter('craue_addDynamicStepNavigationParameters', array($this, 'addDynamicStepNavigationParameters')),
-			new \Twig_SimpleFilter('craue_removeDynamicStepNavigationParameters', array($this, 'removeDynamicStepNavigationParameters')),
+		return [
+			new \Twig_SimpleFilter('craue_addDynamicStepNavigationParameters', [$this, 'addDynamicStepNavigationParameters']),
+			new \Twig_SimpleFilter('craue_removeDynamicStepNavigationParameters', [$this, 'removeDynamicStepNavigationParameters']),
 			// methods for BC with third-party templates (e.g. MopaBootstrapBundle)
-			new \Twig_SimpleFilter('craue_addDynamicStepNavigationParameter', array($this, 'addDynamicStepNavigationParameter')),
-			new \Twig_SimpleFilter('craue_removeDynamicStepNavigationParameter', array($this, 'removeDynamicStepNavigationParameter')),
-		);
+			new \Twig_SimpleFilter('craue_addDynamicStepNavigationParameter', [$this, 'addDynamicStepNavigationParameter']),
+			new \Twig_SimpleFilter('craue_removeDynamicStepNavigationParameter', [$this, 'removeDynamicStepNavigationParameter']),
+		];
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function getFunctions() {
-		return array(
-			new \Twig_SimpleFunction('craue_isStepLinkable', array($this, 'isStepLinkable')),
-		);
+		return [
+			new \Twig_SimpleFunction('craue_isStepLinkable', [$this, 'isStepLinkable']),
+		];
 	}
 
 	/**

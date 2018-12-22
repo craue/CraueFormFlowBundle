@@ -22,25 +22,25 @@ class Issue64Test extends IntegrationTestCase {
 
 		// set prop1 -> step 2
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'issue64[sub][prop1]' => 'foo',
-		));
+		]);
 		$this->assertCurrentStepNumber(2, $crawler);
 		$this->assertCurrentFormData('{"sub":{"prop1":"foo","prop2":null}}', $crawler);
 
 		// set prop2 -> step 3
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'issue64[sub][prop2]' => 'bar',
-		));
+		]);
 		$this->assertCurrentStepNumber(3, $crawler);
 		$this->assertCurrentFormData('{"sub":{"prop1":"foo","prop2":"bar"}}', $crawler);
 
 		// set different prop2 -> step 4
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'issue64[sub][prop2]' => 'baz',
-		));
+		]);
 		$this->assertCurrentStepNumber(4, $crawler);
 		$this->assertCurrentFormData('{"sub":{"prop1":"foo","prop2":"baz"}}', $crawler);
 

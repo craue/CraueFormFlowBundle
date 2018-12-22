@@ -33,10 +33,10 @@ in a shell.
 ```php
 // in app/AppKernel.php
 public function registerBundles() {
-	$bundles = array(
+	$bundles = [
 		// ...
 		new Craue\FormFlowBundle\CraueFormFlowBundle(),
-	);
+	];
 	// ...
 }
 ```
@@ -61,26 +61,27 @@ This approach makes it easy to turn an existing (common) form into a form flow.
 // src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Form\FormFlowInterface;
+use MyCompany\MyBundle\Form\CreateVehicleForm;
 
 class CreateVehicleFlow extends FormFlow {
 
 	protected function loadStepsConfig() {
-		return array(
-			array(
+		return [
+			[
 				'label' => 'wheels',
-				'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleForm',
-			),
-			array(
+				'form_type' => CreateVehicleForm::class,
+			],
+			[
 				'label' => 'engine',
-				'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleForm',
+				'form_type' => CreateVehicleForm::class,
 				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
 				},
-			),
-			array(
+			],
+			[
 				'label' => 'confirmation',
-			),
-		);
+			],
+		];
 	}
 
 }
@@ -94,7 +95,9 @@ according to the step to render.
 
 ```php
 // src/MyCompany/MyBundle/Form/CreateVehicleForm.php
+use MyCompany\MyBundle\Form\Type\VehicleEngineType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class CreateVehicleForm extends AbstractType {
@@ -102,17 +105,17 @@ class CreateVehicleForm extends AbstractType {
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		switch ($options['flow_step']) {
 			case 1:
-				$validValues = array(2, 4);
-				$builder->add('numberOfWheels', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
+				$validValues = [2, 4];
+				$builder->add('numberOfWheels', ChoiceType::class, [
 					'choices' => array_combine($validValues, $validValues),
 					'placeholder' => '',
-				));
+				]);
 				break;
 			case 2:
 				// This form type is not defined in the example.
-				$builder->add('engine', 'MyCompany\MyBundle\Form\Type\VehicleEngineType', array(
+				$builder->add('engine', VehicleEngineType::class, [
 					'placeholder' => '',
-				));
+				]);
 				break;
 		}
 	}
@@ -134,26 +137,28 @@ This approach makes it easy to reuse the form types to compose other forms.
 // src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Form\FormFlowInterface;
+use MyCompany\MyBundle\Form\CreateVehicleStep1Form;
+use MyCompany\MyBundle\Form\CreateVehicleStep2Form;
 
 class CreateVehicleFlow extends FormFlow {
 
 	protected function loadStepsConfig() {
-		return array(
-			array(
+		return [
+			[
 				'label' => 'wheels',
-				'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
-			),
-			array(
+				'form_type' => CreateVehicleStep1Form::class,
+			],
+			[
 				'label' => 'engine',
-				'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep2Form',
+				'form_type' => CreateVehicleStep2Form::class,
 				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 					return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
 				},
-			),
-			array(
+			],
+			[
 				'label' => 'confirmation',
-			),
-		);
+			],
+		];
 	}
 
 }
@@ -164,16 +169,17 @@ class CreateVehicleFlow extends FormFlow {
 ```php
 // src/MyCompany/MyBundle/Form/CreateVehicleStep1Form.php
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class CreateVehicleStep1Form extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
-		$validValues = array(2, 4);
-		$builder->add('numberOfWheels', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
+		$validValues = [2, 4];
+		$builder->add('numberOfWheels', ChoiceType::class, [
 			'choices' => array_combine($validValues, $validValues),
 			'placeholder' => '',
-		));
+		]);
 	}
 
 	public function getBlockPrefix() {
@@ -185,15 +191,16 @@ class CreateVehicleStep1Form extends AbstractType {
 
 ```php
 // src/MyCompany/MyBundle/Form/CreateVehicleStep2Form.php
+use MyCompany\MyBundle\Form\Type\VehicleEngineType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class CreateVehicleStep2Form extends AbstractType {
 
 	public function buildForm(FormBuilderInterface $builder, array $options) {
-		$builder->add('engine', 'MyCompany\MyBundle\Form\Type\VehicleEngineType', array(
+		$builder->add('engine', VehicleEngineType::class, [
 			'placeholder' => '',
-		));
+		]);
 	}
 
 	public function getBlockPrefix() {
@@ -327,10 +334,10 @@ public function createVehicleAction() {
 		}
 	}
 
-	return $this->render('@MyCompanyMy/Vehicle/createVehicle.html.twig', array(
+	return $this->render('@MyCompanyMy/Vehicle/createVehicle.html.twig', [
 		'form' => $form->createView(),
 		'flow' => $flow,
-	));
+	]);
 }
 ```
 
@@ -377,41 +384,41 @@ Valid options per step are:
 
 ```php
 protected function loadStepsConfig() {
-	return array(
-		array(
-			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
-		),
-		array(
-			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep2Form',
+	return [
+		[
+			'form_type' => CreateVehicleStep1Form::class,
+		],
+		[
+			'form_type' => CreateVehicleStep2Form::class,
 			'skip' => true,
-		),
-		array(
-		),
-	);
+		],
+		[
+		],
+	];
 }
 ```
 
 ```php
 protected function loadStepsConfig() {
-	return array(
-		1 => array(
+	return [
+		1 =>[
 			'label' => 'wheels',
-			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
-		),
-		2 => array(
+			'form_type' => CreateVehicleStep1Form::class,
+		],
+		2 => [
 			'label' => StepLabel::createCallableLabel(function() { return 'engine'; })
-			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep2Form',
-			'form_options' => array(
-				'validation_groups' => array('Default'),
-			),
+			'form_type' => CreateVehicleStep2Form::class,
+			'form_options' => [
+				'validation_groups' => ['Default'],
+			],
 			'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 				return $estimatedCurrentStepNumber > 1 && !$flow->getFormData()->canHaveEngine();
 			},
-		),
-		3 => array(
+		],
+		3 => [
 			'label' => 'confirmation',
-		),
-	);
+		],
+	];
 }
 ```
 
@@ -459,7 +466,7 @@ To set options common for the form type(s) of all steps you can use method `setG
 // in src/MyCompany/MyBundle/Controller/VehicleController.php
 public function createVehicleAction() {
 	// ...
-	$flow->setGenericFormOptions(array('action' => 'targetUrl'));
+	$flow->setGenericFormOptions(['action' => 'targetUrl']);
 	$flow->bind($formData);
 	$form = $flow->createForm();
 	// ...
@@ -473,15 +480,15 @@ To pass individual options to each step's form type you can use the step config 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
 protected function loadStepsConfig() {
-	return array(
-		array(
+	return [
+		[
 			'label' => 'wheels',
-			'form_type' => 'MyCompany\MyBundle\Form\CreateVehicleStep1Form',
-			'form_options' => array(
-				'validation_groups' => array('Default'),
-			),
-		),
-	);
+			'form_type' => CreateVehicleStep1Form:class,
+			'form_options' => [
+				'validation_groups' => ['Default'],
+			],
+		],
+	];
 }
 ```
 
@@ -490,7 +497,7 @@ Alternatively, to set options based on previous steps (e.g. to render fields dep
 
 ```php
 // in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
-public function getFormOptions($step, array $options = array()) {
+public function getFormOptions($step, array $options = []) {
 	$options = parent::getFormOptions($step, $options);
 
 	$formData = $this->getFormData();
@@ -624,14 +631,14 @@ class CreateVehicleFlow extends FormFlow implements EventSubscriberInterface {
 	}
 
 	public static function getSubscribedEvents() {
-		return array(
+		return [
 			FormFlowEvents::PRE_BIND => 'onPreBind',
 			FormFlowEvents::GET_STEPS => 'onGetSteps',
 			FormFlowEvents::POST_BIND_SAVED_DATA => 'onPostBindSavedData',
 			FormFlowEvents::POST_BIND_FLOW => 'onPostBindFlow',
 			FormFlowEvents::POST_BIND_REQUEST => 'onPostBindRequest',
 			FormFlowEvents::POST_VALIDATE => 'onPostValidate',
-		);
+		];
 	}
 
 	public function onPreBind(PreBindEvent $event) {

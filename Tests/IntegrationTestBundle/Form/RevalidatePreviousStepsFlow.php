@@ -27,33 +27,33 @@ class RevalidatePreviousStepsFlow extends FormFlow implements EventSubscriberInt
 	 * {@inheritDoc}
 	 */
 	public static function getSubscribedEvents() {
-		return array(
+		return [
 			FormFlowEvents::PREVIOUS_STEP_INVALID => 'onPreviousStepInvalid',
-		);
+		];
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	protected function loadStepsConfig() {
-		return array(
-			array(
+		return [
+			[
 				'label' => 'step1',
-			),
-			array(
+			],
+			[
 				'label' => 'step2',
-			),
-			array(
+			],
+			[
 				'label' => 'step3',
-			),
-		);
+			],
+		];
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function bind($formData) {
-		$this->dataManager->getStorage()->set($this->getCalledEventsSessionKey(), array());
+		$this->dataManager->getStorage()->set($this->getCalledEventsSessionKey(), []);
 		parent::bind($formData);
 	}
 

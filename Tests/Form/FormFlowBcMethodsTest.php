@@ -20,7 +20,7 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 	 * @expectedDeprecation Method Craue\FormFlowBundle\Form\FormFlow::getCurrentStep is deprecated since CraueFormFlowBundle 2.0. Use method getCurrentStepNumber instead.
 	 */
 	public function testBcMethodDelegation_getCurrentStep() {
-		$flow = $this->getFlowWithMockedMethods(array('getCurrentStepNumber'));
+		$flow = $this->getFlowWithMockedMethods(['getCurrentStepNumber']);
 
 		$flow
 			->expects($this->once())
@@ -34,7 +34,7 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 	 * @expectedDeprecation Method Craue\FormFlowBundle\Form\FormFlow::getCurrentStepDescription is deprecated since CraueFormFlowBundle 2.0. Use method getCurrentStepLabel instead.
 	 */
 	public function testBcMethodDelegation_getCurrentStepDescription() {
-		$flow = $this->getFlowWithMockedMethods(array('getCurrentStepLabel'));
+		$flow = $this->getFlowWithMockedMethods(['getCurrentStepLabel']);
 
 		$flow
 			->expects($this->once())
@@ -48,7 +48,7 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 	 * @expectedDeprecation Method Craue\FormFlowBundle\Form\FormFlow::getMaxSteps is deprecated since CraueFormFlowBundle 2.0. Use method getStepCount instead.
 	 */
 	public function testBcMethodDelegation_getMaxSteps() {
-		$flow = $this->getFlowWithMockedMethods(array('getStepCount'));
+		$flow = $this->getFlowWithMockedMethods(['getStepCount']);
 
 		$flow
 			->expects($this->once())
@@ -62,7 +62,7 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 	 * @expectedDeprecation Method Craue\FormFlowBundle\Form\FormFlow::getStepDescriptions is deprecated since CraueFormFlowBundle 2.0. Use method getStepLabels instead.
 	 */
 	public function testBcMethodDelegation_getStepDescriptions() {
-		$flow = $this->getFlowWithMockedMethods(array('getStepLabels'));
+		$flow = $this->getFlowWithMockedMethods(['getStepLabels']);
 
 		$flow
 			->expects($this->once())
@@ -76,7 +76,7 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 	 * @expectedDeprecation Method Craue\FormFlowBundle\Form\FormFlow::getFirstStep is deprecated since CraueFormFlowBundle 2.0. Use method getFirstStepNumber instead.
 	 */
 	public function testBcMethodDelegation_getFirstStep() {
-		$flow = $this->getFlowWithMockedMethods(array('getFirstStepNumber'));
+		$flow = $this->getFlowWithMockedMethods(['getFirstStepNumber']);
 
 		$flow
 			->expects($this->once())
@@ -90,7 +90,7 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 	 * @expectedDeprecation Method Craue\FormFlowBundle\Form\FormFlow::getLastStep is deprecated since CraueFormFlowBundle 2.0. Use method getLastStepNumber instead.
 	 */
 	public function testBcMethodDelegation_getLastStep() {
-		$flow = $this->getFlowWithMockedMethods(array('getLastStepNumber'));
+		$flow = $this->getFlowWithMockedMethods(['getLastStepNumber']);
 
 		$flow
 			->expects($this->once())
@@ -104,7 +104,7 @@ class FormFlowBcMethodsTest extends UnitTestCase {
 	 * @expectedDeprecation Method Craue\FormFlowBundle\Form\FormFlow::hasSkipStep is deprecated since CraueFormFlowBundle 2.0. Use method isStepSkipped instead.
 	 */
 	public function testBcMethodDelegation_hasSkipStep() {
-		$flow = $this->getFlowWithMockedMethods(array('isStepSkipped'));
+		$flow = $this->getFlowWithMockedMethods(['isStepSkipped']);
 
 		$stepNumber = 1;
 

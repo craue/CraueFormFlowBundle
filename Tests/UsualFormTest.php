@@ -25,10 +25,10 @@ class UsualFormTest extends IntegrationTestCase {
 
 		// bug report -> step 2
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'createTopic[title]' => 'blah',
 			'createTopic[category]' => 'BUG_REPORT',
-		));
+		]);
 		$this->assertCurrentStepNumber(2, $crawler);
 		$this->assertCurrentFormData('{"title":"blah","description":null,"category":"BUG_REPORT","comment":null,"details":null}', $crawler);
 

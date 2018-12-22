@@ -7,6 +7,7 @@ use Craue\FormFlowBundle\Storage\UserSessionStorageKeyGenerator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
 use Symfony\Component\Security\Core\Authentication\Token\RememberMeToken;
@@ -48,7 +49,7 @@ class UserSessionStorageKeyGeneratorTest extends TestCase {
 	 * @dataProvider dataGenerate_mockedTokens
 	 */
 	public function testGenerate_mockedTokens($expectedKey, $username) {
-		$token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\AbstractToken')->setMethods(array('getUsername'))->getMockForAbstractClass();
+		$token = $this->getMockBuilder(AbstractToken::class)->setMethods(['getUsername'])->getMockForAbstractClass();
 
 		$token
 			->expects($this->once())
@@ -61,11 +62,11 @@ class UserSessionStorageKeyGeneratorTest extends TestCase {
 	}
 
 	public function dataGenerate_mockedTokens() {
-		return array(
-			array('session_12345_key', null),
-			array('session_12345_key', ''),
-			array('user_username_key', 'username'),
-		);
+		return [
+			['session_12345_key', null],
+			['session_12345_key', ''],
+			['user_username_key', 'username'],
+		];
 	}
 
 	/**
@@ -77,17 +78,17 @@ class UserSessionStorageKeyGeneratorTest extends TestCase {
 	}
 
 	public function dataGenerate_realTokens() {
-		return array(
-			array('session_12345_key', null),
-			array('session_12345_key', new AnonymousToken('secret', '')),
-			array('session_12345_key', new AnonymousToken('secret', 'username')),
-			array('session_12345_key', new PreAuthenticatedToken('', 'password', 'firewall')),
-			array('user_username_key', new PreAuthenticatedToken('username', 'password', 'firewall')),
-			array('user_username_key', new RememberMeToken(new User('username', 'password'), 'firewall', 'secret')),
-			array('session_12345_key', new UsernamePasswordToken('', 'password', 'firewall')),
-			array('user_username_key', new UsernamePasswordToken('username', 'password', 'firewall')),
-			array('user_username_key', new UsernamePasswordToken(new User('username', 'password'), 'password', 'firewall')),
-		);
+		return [
+			['session_12345_key', null],
+			['session_12345_key', new AnonymousToken('secret', '')],
+			['session_12345_key', new AnonymousToken('secret', 'username')],
+			['session_12345_key', new PreAuthenticatedToken('', 'password', 'firewall')],
+			['user_username_key', new PreAuthenticatedToken('username', 'password', 'firewall')],
+			['user_username_key', new RememberMeToken(new User('username', 'password'), 'firewall', 'secret')],
+			['session_12345_key', new UsernamePasswordToken('', 'password', 'firewall')],
+			['user_username_key', new UsernamePasswordToken('username', 'password', 'firewall')],
+			['user_username_key', new UsernamePasswordToken(new User('username', 'password'), 'password', 'firewall')],
+		];
 	}
 
 	/**

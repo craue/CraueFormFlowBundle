@@ -15,11 +15,11 @@ class OnlyOneStepFlow extends FormFlow {
 	 * {@inheritDoc}
 	 */
 	protected function loadStepsConfig() {
-		return array(
-			array(
+		return [
+			[
 				'label' => 'single step',
-			),
-		);
+			],
+		];
 	}
 
 }

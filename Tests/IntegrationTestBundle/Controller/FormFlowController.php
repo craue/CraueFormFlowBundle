@@ -126,10 +126,10 @@ class FormFlowController extends AbstractController {
 	 */
 	public function usualFormAction() {
 		return $this->processFlow(new Topic(), $this->get('integrationTestBundle.form.flow.createTopic'),
-				'@IntegrationTest/FormFlow/usualForm.html.twig', array('usualForm' => $this->createFormBuilder()->getForm()->createView()));
+				'@IntegrationTest/FormFlow/usualForm.html.twig', ['usualForm' => $this->createFormBuilder()->getForm()->createView()]);
 	}
 
-	protected function processFlow($formData, FormFlow $flow, $template = '@IntegrationTest/layout_flow.html.twig', array $templateParameters = array()) {
+	protected function processFlow($formData, FormFlow $flow, $template = '@IntegrationTest/layout_flow.html.twig', array $templateParameters = []) {
 		$flow->bind($formData);
 
 		$form = $submittedForm = $flow->createForm();
@@ -155,11 +155,11 @@ class FormFlowController extends AbstractController {
 			return $this->redirect($this->generateUrl($request->attributes->get('_route'), $params));
 		}
 
-		return $this->render($template, array_merge($templateParameters, array(
+		return $this->render($template, array_merge($templateParameters, [
 			'form' => $form->createView(),
 			'flow' => $flow,
 			'formData' => $formData,
-		)));
+		]));
 	}
 
 }

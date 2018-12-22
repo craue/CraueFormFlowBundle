@@ -21,9 +21,9 @@ class StepBcTest extends TestCase {
 	 * @expectedDeprecation Step config option "type" is deprecated since CraueFormFlowBundle 3.0. Use "form_type" instead.
 	 */
 	public function testCreateFromConfig_bcOptionType() {
-		$step = Step::createFromConfig(1, array(
+		$step = Step::createFromConfig(1, [
 			'type' => 'myFormType',
-		));
+		]);
 
 		$this->assertEquals('myFormType', $step->getFormType());
 	}

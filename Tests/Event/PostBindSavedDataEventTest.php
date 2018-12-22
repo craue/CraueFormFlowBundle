@@ -15,7 +15,7 @@ use Craue\FormFlowBundle\Tests\UnitTestCase;
 class PostBindSavedDataEventTest extends UnitTestCase {
 
 	public function testEvent() {
-		$formData = array('blah' => '123');
+		$formData = ['blah' => '123'];
 		$stepNumber = 2;
 
 		$event = new PostBindSavedDataEvent($this->getMockedFlowInterface(), $formData, $stepNumber);

@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests\Storage;
 
 use Craue\FormFlowBundle\Storage\DoctrineStorage;
+use Craue\FormFlowBundle\Storage\StorageKeyGeneratorInterface;
 use Doctrine\DBAL\DriverManager;
 
 /**
@@ -18,13 +19,12 @@ class DoctrineStorageTest extends AbstractStorageTest {
 	 * {@inheritDoc}
 	 */
 	protected function getStorageImplementation() {
-		$conn = DriverManager::getConnection(array(
+		$conn = DriverManager::getConnection([
 			'driver' => 'pdo_sqlite',
 			'memory' => true,
-		));
+		]);
 
-		// TODO replace by `$this->createMock('Craue\FormFlowBundle\Storage\StorageKeyGeneratorInterface')` as soon as PHPUnit >= 5.4 is required
-		$generator = $this->getMockBuilder('Craue\FormFlowBundle\Storage\StorageKeyGeneratorInterface')->getMock();
+		$generator = $this->createMock(StorageKeyGeneratorInterface::class);
 
 		$generator
 			->method('generate')
@@ -44,10 +44,10 @@ class DoctrineStorageTest extends AbstractStorageTest {
 	}
 
 	public function dataSetGet_stringsContainQuotes() {
-		return array(
-			array("f'oo", "b'ar"),
-			array('f"oo', 'b"ar'),
-		);
+		return [
+			["f'oo", "b'ar"],
+			['f"oo', 'b"ar'],
+		];
 	}
 
 }

@@ -16,7 +16,7 @@ class GetStepsEvent extends FormFlowEvent {
 	/**
 	 * @var StepInterface[]
 	 */
-	protected $steps = array();
+	protected $steps = [];
 
 	/**
 	 * @param StepInterface[] $steps

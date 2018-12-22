@@ -3,6 +3,8 @@
 namespace Craue\FormFlowBundle\Form\Extension;
 
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,48 +20,43 @@ class FormFlowFormExtension extends AbstractTypeExtension {
 	 * {@inheritDoc}
 	 */
 	public function getExtendedType() {
-		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
-
-		return $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form';
+		return FormType::class;
 	}
 
 	public static function getExtendedTypes() {
-		return array('Symfony\Component\Form\Extension\Core\Type\FormType');
+		return [FormType::class];
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function configureOptions(OptionsResolver $resolver) {
-		$resolver->setDefined(array(
+		$resolver->setDefined([
 			'flow_instance',
 			'flow_instance_key',
 			'flow_step',
 			'flow_step_key',
-		));
+		]);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options) {
-		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
-		$hiddenType = $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\HiddenType' : 'hidden';
-
 		if (array_key_exists('flow_instance', $options) && array_key_exists('flow_instance_key', $options)) {
-			$builder->add($options['flow_instance_key'], $hiddenType, array(
+			$builder->add($options['flow_instance_key'], HiddenType::class, [
 				'data' => $options['flow_instance'],
 				'mapped' => false,
 				'flow_instance_key' => $options['flow_instance_key'],
-			));
+			]);
 		}
 
 		if (array_key_exists('flow_step', $options) && array_key_exists('flow_step_key', $options)) {
-			$builder->add($options['flow_step_key'], $hiddenType, array(
+			$builder->add($options['flow_step_key'], HiddenType::class, [
 				'data' => $options['flow_step'],
 				'mapped' => false,
 				'flow_step_key' => $options['flow_step_key'],
-			));
+			]);
 		}
 	}
 

@@ -29,13 +29,13 @@ class IntegrationTestExtension extends Extension implements PrependExtensionInte
 		// avoid a deprecation notice regarding logout_on_user_change with Symfony 3.4
 		// TODO remove as soon as Symfony >= 4.0 is required
 		if (Kernel::MAJOR_VERSION === 3 && Kernel::MINOR_VERSION === 4) {
-			$container->prependExtensionConfig('security', array(
-				'firewalls' => array(
-					'dummy' => array(
+			$container->prependExtensionConfig('security', [
+				'firewalls' => [
+					'dummy' => [
 						'logout_on_user_change' => true,
-					),
-				),
-			));
+					],
+				],
+			]);
 		}
 	}
 

@@ -36,7 +36,7 @@ class RevalidatePreviousStepsFlowTest extends IntegrationTestCase {
 		$crawler = $this->client->submit($form);
 		$this->assertCurrentStepNumber(2, $crawler);
 		$this->assertContainsFormError('The form for step 1 is invalid. Please go back and try to submit it again.', $crawler);
-		$this->assertEquals(array('onPreviousStepInvalid #1'), $this->getCalledEvents());
+		$this->assertEquals(['onPreviousStepInvalid #1'], $this->getCalledEvents());
 
 		// back -> step 1
 		$form = $crawler->selectButton('back')->form();

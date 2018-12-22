@@ -22,11 +22,11 @@ class StepLabelTest extends UnitTestCase {
 	}
 
 	public function dataCreateStringLabel() {
-		return array(
-			array('label'),
-			array('date'),
-			array(null),
-		);
+		return [
+			['label'],
+			['date'],
+			[null],
+		];
 	}
 
 	/**
@@ -38,11 +38,11 @@ class StepLabelTest extends UnitTestCase {
 	}
 
 	public function dataCreateStringLabel_invalidArgument() {
-		return array(
-			array(true),
-			array(1.1),
-			array(function() { return 'country'; }),
-		);
+		return [
+			[true],
+			[1.1],
+			[function() { return 'country'; }],
+		];
 	}
 
 	/**
@@ -53,11 +53,11 @@ class StepLabelTest extends UnitTestCase {
 	}
 
 	public function dataCreateCallableLabel() {
-		return array(
-			array('Craue\FormFlowBundle\Tests\Form\StepLabelTest::_returnString', 'label'),
-			array('Craue\FormFlowBundle\Tests\Form\StepLabelTest::_returnNull', null),
-			array(function() { return 'label'; }, 'label'),
-		);
+		return [
+			[self::class . '::_returnString', 'label'],
+			[self::class . '::_returnNull', null],
+			[function() { return 'label'; }, 'label'],
+		];
 	}
 
 	/**
@@ -69,11 +69,11 @@ class StepLabelTest extends UnitTestCase {
 	}
 
 	public function dataCreateCallableLabel_invalidArgument() {
-		return array(
-			array('label'),
-			array('UnknownClass::unknownMethod'),
-			array(null),
-		);
+		return [
+			['label'],
+			['UnknownClass::unknownMethod'],
+			[null],
+		];
 	}
 
 	/**
@@ -85,10 +85,10 @@ class StepLabelTest extends UnitTestCase {
 	}
 
 	public function dataGetText_callableInvalidReturnValue() {
-		return array(
-			array('Craue\FormFlowBundle\Tests\Form\StepLabelTest::_returnOne'),
-			array(function() { return 1; }),
-		);
+		return [
+			[self::class . '::_returnOne'],
+			[function() { return 1; }],
+		];
 	}
 
 	public static function _returnString() {

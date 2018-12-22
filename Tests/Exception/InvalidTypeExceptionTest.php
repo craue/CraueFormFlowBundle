@@ -24,12 +24,12 @@ class InvalidTypeExceptionTest extends TestCase {
 	}
 
 	public function dataExceptionMessage() {
-		return array(
-			array('Expected argument of type "A", but "string" given.', 'test', 'A'),
-			array('Expected argument of either type "A" or "B", but "string" given.', 'test', array('A', 'B')),
-			array('Expected argument of either type "A", "B", or "C", but "string" given.', 'test', array('A', 'B', 'C')),
-			array('Expected argument of either type "A", "B", "C", or "D", but "string" given.', 'test', array('A', 'B', 'C', 'D')),
-		);
+		return [
+			['Expected argument of type "A", but "string" given.', 'test', 'A'],
+			['Expected argument of either type "A" or "B", but "string" given.', 'test', ['A', 'B']],
+			['Expected argument of either type "A", "B", or "C", but "string" given.', 'test', ['A', 'B', 'C']],
+			['Expected argument of either type "A", "B", "C", or "D", but "string" given.', 'test', ['A', 'B', 'C', 'D']],
+		];
 	}
 
 }

@@ -34,11 +34,11 @@ class SerializableFile {
 	 */
 	public function __construct($file) {
 		if (!self::isSupported($file)) {
-			throw new InvalidTypeException($file, 'Symfony\Component\HttpFoundation\File\UploadedFile');
+			throw new InvalidTypeException($file, UploadedFile::class);
 		}
 
 		$this->content = base64_encode(file_get_contents($file->getPathname()));
-		$this->type = 'Symfony\Component\HttpFoundation\File\UploadedFile';
+		$this->type = UploadedFile::class;
 
 		$this->clientOriginalName = $file->getClientOriginalName();
 		$this->clientMimeType = $file->getClientMimeType();
@@ -61,7 +61,7 @@ class SerializableFile {
 
 		// avoid a deprecation notice regarding "passing a size as 4th argument to the constructor"
 		// TODO remove as soon as Symfony >= 4.1 is required
-		if (property_exists('Symfony\Component\HttpFoundation\File\UploadedFile', 'size')) {
+		if (property_exists(UploadedFile::class, 'size')) {
 			return new UploadedFile($tempFile, $this->clientOriginalName, $this->clientMimeType, null, null, true);
 		}
 

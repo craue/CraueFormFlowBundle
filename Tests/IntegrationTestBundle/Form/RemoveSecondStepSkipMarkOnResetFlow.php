@@ -16,20 +16,20 @@ class RemoveSecondStepSkipMarkOnResetFlow extends FormFlow {
 	 * {@inheritDoc}
 	 */
 	protected function loadStepsConfig() {
-		return array(
-			array(
+		return [
+			[
 				'label' => 'step1',
-			),
-			array(
+			],
+			[
 				'label' => 'step2',
 				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 					return $estimatedCurrentStepNumber > 1;
 				},
-			),
-			array(
+			],
+			[
 				'label' => 'step3',
-			),
-		);
+			],
+		];
 	}
 
 }

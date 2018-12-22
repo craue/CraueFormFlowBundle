@@ -85,17 +85,17 @@ class StringUtilTest extends TestCase {
 	}
 
 	public function dataFqcnToFlowName() {
-		return array(
-			array(null, null),
-			array('', null),
-			array('Flow', 'flow'),
-			array('Demo1', 'demo1'),
-			array('Demo1Flow', 'demo1'),
-			array('CreateLocation', 'createLocation'),
-			array('CreateLocationFlow', 'createLocation'),
-			array('MyCompany\MyBundle\Form\CreateLocation', 'createLocation'),
-			array('MyCompany\MyBundle\Form\CreateLocationFlow', 'createLocation'),
-		);
+		return [
+			[null, null],
+			['', null],
+			['Flow', 'flow'],
+			['Demo1', 'demo1'],
+			['Demo1Flow', 'demo1'],
+			['CreateLocation', 'createLocation'],
+			['CreateLocationFlow', 'createLocation'],
+			['MyCompany\MyBundle\Form\CreateLocation', 'createLocation'],
+			['MyCompany\MyBundle\Form\CreateLocationFlow', 'createLocation'],
+		];
 	}
 
 }

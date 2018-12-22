@@ -14,6 +14,7 @@ use Craue\FormFlowBundle\Exception\InvalidTypeException;
 use Craue\FormFlowBundle\Storage\DataManagerInterface;
 use Craue\FormFlowBundle\Util\StringUtil;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -150,13 +151,13 @@ abstract class FormFlow implements FormFlowInterface {
 	/**
 	 * @var FormInterface[]
 	 */
-	private $stepForms = array();
+	private $stepForms = [];
 
 	/**
 	 * Options applied to forms of all steps.
 	 * @var array
 	 */
-	private $genericFormOptions = array();
+	private $genericFormOptions = [];
 
 	/**
 	 * Flow was determined to be expired.
@@ -615,7 +616,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 		if ($this->newInstance) {
 			// initialize storage slot
-			$this->dataManager->save($this, array());
+			$this->dataManager->save($this, []);
 		}
 	}
 
@@ -652,7 +653,7 @@ abstract class FormFlow implements FormFlowInterface {
 			$reset = true;
 		}
 
-		if (in_array($request->getMethod(), array('POST', 'PUT')) && $request->get($this->getFormStepKey()) !== null && !$this->dataManager->exists($this)) {
+		if (in_array($request->getMethod(), ['POST', 'PUT']) && $request->get($this->getFormStepKey()) !== null && !$this->dataManager->exists($this)) {
 			// flow is expired, drop posted data and reset
 			$request->request->replace();
 			$reset = true;
@@ -705,10 +706,10 @@ abstract class FormFlow implements FormFlowInterface {
 		$request = $this->getRequest();
 		$formName = $form->getName();
 
-		$currentStepData = $request->request->get($formName, array());
+		$currentStepData = $request->request->get($formName, []);
 
 		if ($this->handleFileUploads) {
-			$currentStepData = array_merge_recursive($currentStepData, $request->files->get($formName, array()));
+			$currentStepData = array_merge_recursive($currentStepData, $request->files->get($formName, []));
 		}
 
 		$stepData[$this->currentStepNumber] = $currentStepData;
@@ -736,9 +737,9 @@ abstract class FormFlow implements FormFlowInterface {
 	protected function applyDataFromSavedSteps() {
 		$stepData = $this->retrieveStepData();
 
-		$this->stepForms = array();
+		$this->stepForms = [];
 
-		$options = array();
+		$options = [];
 		if (!$this->revalidatePreviousSteps) {
 			$options['validation_groups'] = false; // disable validation
 		}
@@ -776,7 +777,7 @@ abstract class FormFlow implements FormFlowInterface {
 		return $form;
 	}
 
-	public function getFormOptions($step, array $options = array()) {
+	public function getFormOptions($step, array $options = []) {
 		// override options in a specific order
 		$options = array_merge(
 			$this->getGenericFormOptions(),
@@ -786,13 +787,13 @@ abstract class FormFlow implements FormFlowInterface {
 
 		// add the generated step-based validation group, unless it's explicitly set to false, a closure, or a GroupSequence
 		if (!array_key_exists('validation_groups', $options)) {
-			$options['validation_groups'] = array($this->getValidationGroupPrefix() . $step);
+			$options['validation_groups'] = [$this->getValidationGroupPrefix() . $step];
 		} else {
 			$vg = $options['validation_groups'];
 
 			if ($vg !== false && !is_a($vg, 'Closure') && !$vg instanceof GroupSequence) {
 				$options['validation_groups'] = array_merge(
-					array($this->getValidationGroupPrefix() . $step),
+					[$this->getValidationGroupPrefix() . $step],
 					(array) $vg
 				);
 			}
@@ -857,7 +858,7 @@ abstract class FormFlow implements FormFlowInterface {
 	 */
 	public function getStepLabels() {
 		if ($this->stepLabels === null) {
-			$stepLabels = array();
+			$stepLabels = [];
 
 			foreach ($this->getSteps() as $step) {
 				$stepLabels[] = $step->getLabel();
@@ -882,10 +883,10 @@ abstract class FormFlow implements FormFlowInterface {
 	public function isValid(FormInterface $form) {
 		$request = $this->getRequest();
 
-		if (in_array($request->getMethod(), array('POST', 'PUT')) && !in_array($this->getRequestedTransition(), array(
+		if (in_array($request->getMethod(), ['POST', 'PUT']) && !in_array($this->getRequestedTransition(), [
 			self::TRANSITION_BACK,
 			self::TRANSITION_RESET,
-		))) {
+		])) {
 			$form->handleRequest($request);
 
 			if (!$form->isSubmitted()) {
@@ -939,7 +940,7 @@ abstract class FormFlow implements FormFlowInterface {
 	 * @return bool If a redirection should be performed.
 	 */
 	public function redirectAfterSubmit(FormInterface $submittedForm) {
-		if ($this->allowRedirectAfterSubmit && in_array($this->getRequest()->getMethod(), array('POST', 'PUT'))) {
+		if ($this->allowRedirectAfterSubmit && in_array($this->getRequest()->getMethod(), ['POST', 'PUT'])) {
 			switch ($this->getRequestedTransition()) {
 				case self::TRANSITION_BACK:
 				case self::TRANSITION_RESET:
@@ -959,13 +960,12 @@ abstract class FormFlow implements FormFlowInterface {
 	 * @param array $options
 	 * @return FormInterface
 	 */
-	protected function createFormForStep($stepNumber, array $options = array()) {
+	protected function createFormForStep($stepNumber, array $options = []) {
 		$formType = $this->getStep($stepNumber)->getFormType();
 		$options = $this->getFormOptions($stepNumber, $options);
 
 		if ($formType === null) {
-			$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
-			$formType = $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form';
+			$formType = FormType::class;
 		}
 
 		return $this->formFactory->create($formType, $this->formData, $options);
@@ -977,7 +977,7 @@ abstract class FormFlow implements FormFlowInterface {
 	 * @return StepInterface[] Value with index 0 is step 1.
 	 */
 	public function createStepsFromConfig(array $stepsConfig) {
-		$steps = array();
+		$steps = [];
 
 		// fix array indexes not starting at 0
 		$stepsConfig = array_values($stepsConfig);
@@ -994,7 +994,7 @@ abstract class FormFlow implements FormFlowInterface {
 	 * @return array
 	 */
 	protected function loadStepsConfig() {
-		return array();
+		return [];
 	}
 
 	protected function retrieveStepData() {
@@ -1017,7 +1017,7 @@ abstract class FormFlow implements FormFlowInterface {
 	 * {@inheritDoc}
 	 */
 	public function getStepsDone() {
-		$stepsDone = array();
+		$stepsDone = [];
 
 		foreach ($this->getSteps() as $step) {
 			if ($this->isStepDone($step->getNumber())) {
@@ -1032,7 +1032,7 @@ abstract class FormFlow implements FormFlowInterface {
 	 * {@inheritDoc}
 	 */
 	public function getStepsRemaining() {
-		$stepsRemaining = array();
+		$stepsRemaining = [];
 
 		foreach ($this->getSteps() as $step) {
 			if (!$this->isStepDone($step->getNumber())) {

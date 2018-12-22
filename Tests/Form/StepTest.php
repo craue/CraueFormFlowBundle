@@ -6,6 +6,8 @@ use Craue\FormFlowBundle\Form\FormFlowInterface;
 use Craue\FormFlowBundle\Form\Step;
 use Craue\FormFlowBundle\Form\StepLabel;
 use Craue\FormFlowBundle\Tests\UnitTestCase;
+use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\Form\Test\FormInterface;
 
 /**
  * @group unit
@@ -19,39 +21,39 @@ class StepTest extends UnitTestCase {
 	public function testCreateFromConfig() {
 		$flow = $this->getMockedFlowInterface();
 
-		$step = Step::createFromConfig(1, array());
+		$step = Step::createFromConfig(1, []);
 		$this->assertSame(1, $step->getNumber());
 		$this->assertNull($step->getLabel());
 		$this->assertNull($step->getFormType());
 		$this->assertFalse($step->isSkipped());
-		$this->assertEquals(array(), $step->getFormOptions());
+		$this->assertEquals([], $step->getFormOptions());
 		$step->evaluateSkipping(1, $flow);
 		$this->assertFalse($step->isSkipped());
 
-		$step = Step::createFromConfig(1, array(
+		$step = Step::createFromConfig(1, [
 			'label' => 'country',
-		));
+		]);
 		$this->assertEquals('country', $step->getLabel());
 
-		$step = Step::createFromConfig(1, array(
+		$step = Step::createFromConfig(1, [
 			'label' => StepLabel::createCallableLabel(function() {
 				return 'country';
 			}),
-		));
+		]);
 		$this->assertEquals('country', $step->getLabel());
 
-		$step = Step::createFromConfig(1, array(
+		$step = Step::createFromConfig(1, [
 			'skip' => true,
-		));
+		]);
 		$this->assertTrue($step->isSkipped());
 		$step->evaluateSkipping(1, $flow);
 		$this->assertTrue($step->isSkipped());
 
-		$step = Step::createFromConfig(1, array(
+		$step = Step::createFromConfig(1, [
 			'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 				return true;
 			},
-		));
+		]);
 		$this->assertFalse($step->isSkipped());
 		$step->evaluateSkipping(1, $flow);
 		$this->assertTrue($step->isSkipped());
@@ -60,21 +62,21 @@ class StepTest extends UnitTestCase {
 		$flowWithData
 			->expects($this->once())
 			->method('getFormData')
-			->will($this->returnValue(array('blah' => true)))
+			->will($this->returnValue(['blah' => true]))
 		;
-		$step = Step::createFromConfig(1, array(
+		$step = Step::createFromConfig(1, [
 			'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 				$formData = $flow->getFormData();
 				return $estimatedCurrentStepNumber > 1 && $formData['blah'] === true;
 			},
-		));
+		]);
 		$step->evaluateSkipping(2, $flowWithData);
 		$this->assertTrue($step->isSkipped());
 
-		$form_options = array('foo' => 'bar');
-		$step = Step::createFromConfig(1, array(
+		$form_options = ['foo' => 'bar'];
+		$step = Step::createFromConfig(1,[
 			'form_options' => $form_options,
-		));
+		]);
 		$this->assertEquals($form_options, $step->getFormOptions());
 	}
 
@@ -83,9 +85,9 @@ class StepTest extends UnitTestCase {
 	 * @expectedExceptionMessage Invalid step config option "lable" given.
 	 */
 	public function testCreateFromConfig_invalidOptions() {
-		Step::createFromConfig(1, array(
+		Step::createFromConfig(1, [
 			'lable' => 'label for step1',
-		));
+		]);
 	}
 
 	/**
@@ -98,9 +100,9 @@ class StepTest extends UnitTestCase {
 	}
 
 	public function dataSetGetNumber() {
-		return array(
-			array(1),
-		);
+		return [
+			[1],
+		];
 	}
 
 	/**
@@ -113,11 +115,11 @@ class StepTest extends UnitTestCase {
 	}
 
 	public function dataSetGetNumber_invalidArguments() {
-		return array(
-			array(null),
-			array('1'),
-			array(1.1),
-		);
+		return [
+			[null],
+			['1'],
+			[1.1],
+		];
 	}
 
 	/**
@@ -130,15 +132,15 @@ class StepTest extends UnitTestCase {
 	}
 
 	public function dataSetGetLabel() {
-		return array(
-			array('label'),
-			array('date'),
-			array(null),
-		);
+		return [
+			['label'],
+			['date'],
+			[null],
+		];
 	}
 
 	public function testSetGetLabel_callableReturnValueDependsOnFlowData() {
-		$flow = $this->getFlowWithMockedMethods(array('getFormData'));
+		$flow = $this->getFlowWithMockedMethods(['getFormData']);
 
 		$flow
 			->expects($this->at(0))
@@ -152,11 +154,11 @@ class StepTest extends UnitTestCase {
 			->will($this->returnValue('default'))
 		;
 
-		$step = Step::createFromConfig(1, array(
+		$step = Step::createFromConfig(1, [
 			'label' => StepLabel::createCallableLabel(function() use ($flow) {
 				return $flow->getFormData() === 'special' ? 'special label' : 'default label';
 			}),
-		));
+		]);
 
 		$this->assertSame('special label', $step->getLabel());
 		$this->assertSame('default label', $step->getLabel());
@@ -171,10 +173,10 @@ class StepTest extends UnitTestCase {
 	}
 
 	public function dataSetGetLabel_validReturnValueFromCallable() {
-		return array(
-			array('label'),
-			array(null),
-		);
+		return [
+			['label'],
+			[null],
+		];
 	}
 
 	/**
@@ -188,11 +190,11 @@ class StepTest extends UnitTestCase {
 	}
 
 	public function dataSetGetLabel_invalidReturnValueFromCallable() {
-		return array(
-			array(true),
-			array(false),
-			array(0),
-		);
+		return [
+			[true],
+			[false],
+			[0],
+		];
 	}
 
 	/**
@@ -205,11 +207,11 @@ class StepTest extends UnitTestCase {
 	}
 
 	public function dataSetGetLabel_invalidArguments() {
-		return array(
-			array(true),
-			array(1.1),
-			array(function() { return 'label'; }),
-		);
+		return [
+			[true],
+			[1.1],
+			[function() { return 'label'; }],
+		];
 	}
 
 	/**
@@ -222,12 +224,11 @@ class StepTest extends UnitTestCase {
 	}
 
 	public function dataSetGetFormType() {
-		return array(
-			array(null),
-			array('myFormType'),
-			// TODO replace by `$this->createMock('Symfony\Component\Form\FormTypeInterface')` as soon as PHPUnit >= 5.4 is required
-			array($this->getMockBuilder('Symfony\Component\Form\FormTypeInterface')->getMock()),
-		);
+		return [
+			[null],
+			['myFormType'],
+			[$this->createMock(FormTypeInterface::class)],
+		];
 	}
 
 	/**
@@ -240,11 +241,10 @@ class StepTest extends UnitTestCase {
 	}
 
 	public function dataSetGetFormType_invalidArguments() {
-		return array(
-			array(123),
-			// TODO replace by `$this->createMock('Symfony\Component\Form\Test\FormInterface')` as soon as PHPUnit >= 5.4 is required
-			array($this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock()),
-		);
+		return [
+			[123],
+			[$this->createMock(FormInterface::class)],
+		];
 	}
 
 	/**
@@ -257,12 +257,12 @@ class StepTest extends UnitTestCase {
 	}
 
 	public function dataSetGetFormOptions() {
-		return array(
-			array(array()),
-			array(array(
-				'validation_groups' => array('Default'),
-			)),
-		);
+		return [
+			[[]],
+			[[
+				'validation_groups' => ['Default'],
+			]],
+		];
 	}
 
 	/**
@@ -275,13 +275,13 @@ class StepTest extends UnitTestCase {
 	}
 
 	public function dataSetGetFormOptions_invalidArguments() {
-		return array(
-			array(null),
-			array(true),
-			array(false),
-			array(123),
-			array(new \stdClass()),
-		);
+		return [
+			[null],
+			[true],
+			[false],
+			[123],
+			[new \stdClass()],
+		];
 	}
 
 	/**
@@ -294,10 +294,10 @@ class StepTest extends UnitTestCase {
 	}
 
 	public function dataSetSkip_invalidArguments() {
-		return array(
-			array(null),
-			array(1),
-		);
+		return [
+			[null],
+			[1],
+		];
 	}
 
 	/**
@@ -310,10 +310,10 @@ class StepTest extends UnitTestCase {
 	}
 
 	public function dataEvaluateSkipping_validReturnValueFromCallable() {
-		return array(
-			array(true),
-			array(false),
-		);
+		return [
+			[true],
+			[false],
+		];
 	}
 
 	/**
@@ -327,27 +327,27 @@ class StepTest extends UnitTestCase {
 	}
 
 	public function dataEvaluateSkipping_invalidReturnValueFromCallable() {
-		return array(
-			array(null),
-			array(0),
-			array('true'),
-		);
+		return [
+			[null],
+			[0],
+			['true'],
+		];
 	}
 
 	protected function createStepWithLabelCallable($number, $returnValue) {
-		return Step::createFromConfig($number, array(
+		return Step::createFromConfig($number, [
 			'label' => StepLabel::createCallableLabel(function() use ($returnValue) {
 				return $returnValue;
 			}),
-		));
+		]);
 	}
 
 	protected function createStepWithSkipCallable($number, $returnValue) {
-		return Step::createFromConfig($number, array(
+		return Step::createFromConfig($number, [
 			'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) use ($returnValue) {
 				return $returnValue;
 			},
-		));
+		]);
 	}
 
 }

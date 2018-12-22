@@ -18,17 +18,17 @@ class SkipFirstStepUsingClosureFlow extends FormFlow {
 	 * {@inheritDoc}
 	 */
 	protected function loadStepsConfig() {
-		return array(
-			array(
+		return [
+			[
 				'label' => 'step1',
 				'skip' => function($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 					return true;
 				},
-			),
-			array(
+			],
+			[
 				'label' => 'step2',
-			),
-		);
+			],
+		];
 	}
 
 }

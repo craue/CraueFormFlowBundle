@@ -98,7 +98,7 @@ class SerializableFileTest extends TestCase {
 	private function getNewUploadedFile($document, $originalName, $mimeType = null) {
 		// avoid a deprecation notice regarding "passing a size as 4th argument to the constructor"
 		// TODO remove as soon as Symfony >= 4.1 is required
-		if (property_exists('Symfony\Component\HttpFoundation\File\UploadedFile', 'size')) {
+		if (property_exists(UploadedFile::class, 'size')) {
 			return new UploadedFile($document, $originalName, $mimeType, null, null, true);
 		}
 

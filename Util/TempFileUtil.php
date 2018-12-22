@@ -11,7 +11,7 @@ namespace Craue\FormFlowBundle\Util;
  */
 abstract class TempFileUtil {
 
-	private static $tempFiles = array();
+	private static $tempFiles = [];
 
 	private function __construct() {}
 
@@ -32,7 +32,7 @@ abstract class TempFileUtil {
 			}
 		}
 
-		self::$tempFiles = array();
+		self::$tempFiles = [];
 	}
 
 }

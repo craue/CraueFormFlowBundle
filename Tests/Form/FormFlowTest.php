@@ -6,6 +6,9 @@ use Craue\FormFlowBundle\Event\GetStepsEvent;
 use Craue\FormFlowBundle\Form\FormFlowEvents;
 use Craue\FormFlowBundle\Tests\UnitTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\DataMapperInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\FormBuilder;
@@ -25,9 +28,9 @@ use Symfony\Component\Validator\Constraints\GroupSequence;
 class FormFlowTest extends UnitTestCase {
 
 	public function testStepListener() {
-		$steps = array(
+		$steps = [
 			$this->getMockedStepInterface(),
-		);
+		];
 
 		$dispatcher = new EventDispatcher();
 		$dispatcher->addListener(FormFlowEvents::GET_STEPS, function(GetStepsEvent $event) use ($steps) {
@@ -43,16 +46,16 @@ class FormFlowTest extends UnitTestCase {
 	}
 
 	public function testCreateStepsFromConfig_fixArrayIndexes() {
-		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
+		$flow = $this->getFlowWithMockedMethods(['loadStepsConfig']);
 
 		$flow
 			->expects($this->once())
 			->method('loadStepsConfig')
-			->will($this->returnValue(array(
-				2 => array(
+			->will($this->returnValue([
+				2 => [
 					'label' => 'step1',
-				),
-			)))
+				],
+			]))
 		;
 
 		$this->assertSame(1, $flow->getStep(1)->getNumber());
@@ -62,7 +65,7 @@ class FormFlowTest extends UnitTestCase {
 	 * Ensure that the generated step-based validation group is added.
 	 */
 	public function testGetFormOptions_addGeneratedValidationGroup() {
-		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
+		$flow = $this->getFlowWithMockedMethods(['getName', 'loadStepsConfig']);
 
 		$flow
 			->expects($this->once())
@@ -73,18 +76,18 @@ class FormFlowTest extends UnitTestCase {
 		$flow
 			->expects($this->once())
 			->method('loadStepsConfig')
-			->will($this->returnValue(array(
-				array(
-					'form_options' => array(
+			->will($this->returnValue([
+				[
+					'form_options' => [
 						'validation_groups' => 'Default',
-					)
-				),
-			)))
+					]
+				],
+			]))
 		;
 
 		$options = $flow->getFormOptions(1);
 
-		$this->assertEquals(array('flow_createTopic_step1', 'Default'), $options['validation_groups']);
+		$this->assertEquals(['flow_createTopic_step1', 'Default'], $options['validation_groups']);
 	}
 
 	/**
@@ -93,31 +96,31 @@ class FormFlowTest extends UnitTestCase {
 	 * @dataProvider dataGetFormOptions_setValidationGroups
 	 */
 	public function testGetFormOptions_setValidationGroups($validationGroups) {
-		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
+		$flow = $this->getFlowWithMockedMethods(['loadStepsConfig']);
 
 		$flow
 			->expects($this->once())
 			->method('loadStepsConfig')
-			->will($this->returnValue(array(
-				array(),
-			)))
+			->will($this->returnValue([
+				[],
+			]))
 		;
 
-		$options = $flow->getFormOptions(1, array(
+		$options = $flow->getFormOptions(1, [
 			'validation_groups' => $validationGroups,
-		));
+		]);
 
 		$this->assertSame($validationGroups, $options['validation_groups']);
 	}
 
 	public function dataGetFormOptions_setValidationGroups() {
-		return array(
-			array(false),
-			array(function(FormInterface $form) {
-				return array('custom_group');
-			}),
-			array(new GroupSequence(array('first', 'second'))),
-		);
+		return [
+			[false],
+			[function(FormInterface $form) {
+				return ['custom_group'];
+			}],
+			[new GroupSequence(['first', 'second'])],
+		];
 	}
 
 	/**
@@ -125,7 +128,7 @@ class FormFlowTest extends UnitTestCase {
 	 * other groups.
 	 */
 	public function testGetFormOptions_generatedValidationGroupIsArray() {
-		$flow = $this->getFlowWithMockedMethods(array('getName', 'loadStepsConfig'));
+		$flow = $this->getFlowWithMockedMethods(['getName', 'loadStepsConfig']);
 
 		$flow
 			->expects($this->once())
@@ -136,39 +139,39 @@ class FormFlowTest extends UnitTestCase {
 		$flow
 			->expects($this->once())
 			->method('loadStepsConfig')
-			->will($this->returnValue(array(
-				array(),
-			)))
+			->will($this->returnValue([
+				[],
+			]))
 		;
 
 		$options = $flow->getFormOptions(1);
 
-		$this->assertEquals(array('flow_createTopic_step1'), $options['validation_groups']);
+		$this->assertEquals(['flow_createTopic_step1'], $options['validation_groups']);
 	}
 
 	public function testGetStepsDoneRemaining() {
-		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig', 'retrieveStepData'));
+		$flow = $this->getFlowWithMockedMethods(['loadStepsConfig', 'retrieveStepData']);
 
 		$flow
 			->method('retrieveStepData')
-			->will($this->returnValue(array()))
+			->will($this->returnValue([]))
 		;
 
 		$flow
 			->expects($this->once())
 			->method('loadStepsConfig')
-			->will($this->returnValue(array(
-				array(
+			->will($this->returnValue([
+				[
 					'label' => 'step1',
 					'skip' => true,
-				),
-				array(
+				],
+				[
 					'label' => 'step2'
-				),
-				array(
+				],
+				[
 					'label' => 'step3'
-				),
-			)))
+				],
+			]))
 		;
 
 		$stepsDone = $flow->getStepsDone();
@@ -188,19 +191,19 @@ class FormFlowTest extends UnitTestCase {
 	 * Ensure that generic options are considered.
 	 */
 	public function testGetFormOptions_considerGenericOptions() {
-		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
+		$flow = $this->getFlowWithMockedMethods(['loadStepsConfig']);
 
 		$flow
 			->expects($this->once())
 			->method('loadStepsConfig')
-			->will($this->returnValue(array(
-				array(),
-			)))
+			->will($this->returnValue([
+				[],
+			]))
 		;
 
-		$flow->setGenericFormOptions(array(
+		$flow->setGenericFormOptions([
 			'action' => 'targetUrl',
-		));
+		]);
 
 		$options = $flow->getFormOptions(1);
 
@@ -211,23 +214,23 @@ class FormFlowTest extends UnitTestCase {
 	 * Ensure that step specific options override generic options.
 	 */
 	public function testGetFormOptions_considerStepSpecificOptions() {
-		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
+		$flow = $this->getFlowWithMockedMethods(['loadStepsConfig']);
 
 		$flow
 			->expects($this->once())
 			->method('loadStepsConfig')
-			->will($this->returnValue(array(
-				array(
-					'form_options' => array(
+			->will($this->returnValue([
+				[
+					'form_options' => [
 						'action' => 'specificTargetUrl',
-					)
-				),
-			)))
+					]
+				],
+			]))
 		;
 
-		$flow->setGenericFormOptions(array(
+		$flow->setGenericFormOptions([
 			'action' => 'targetUrl',
-		));
+		]);
 
 		$options = $flow->getFormOptions(1);
 
@@ -238,27 +241,27 @@ class FormFlowTest extends UnitTestCase {
 	 * Ensure that options can be overridden directly.
 	 */
 	public function testGetFormOptions_considerDirectlyPassedOptions() {
-		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
+		$flow = $this->getFlowWithMockedMethods(['loadStepsConfig']);
 
 		$flow
 			->expects($this->once())
 			->method('loadStepsConfig')
-			->will($this->returnValue(array(
-				array(
-					'form_options' => array(
+			->will($this->returnValue([
+				[
+					'form_options' => [
 						'action' => 'specificTargetUrl',
-					)
-				),
-			)))
+					]
+				],
+			]))
 		;
 
-		$flow->setGenericFormOptions(array(
+		$flow->setGenericFormOptions([
 			'action' => 'targetUrl',
-		));
+		]);
 
-		$options = $flow->getFormOptions(1, array(
+		$options = $flow->getFormOptions(1, [
 			'action' => 'finalTargetUrl',
-		));
+		]);
 
 		$this->assertEquals('finalTargetUrl', $options['action']);
 	}
@@ -274,7 +277,7 @@ class FormFlowTest extends UnitTestCase {
 	 * @param int $expectedStepNumber The expected step number being requested.
 	 */
 	public function testGetRequestedStepNumber($httpMethod, $parameters, $dsnEnabled, $expectedStepNumber) {
-		$flow = $this->getFlowWithMockedMethods(array('getName', 'getRequest'));
+		$flow = $this->getFlowWithMockedMethods(['getName', 'getRequest']);
 
 		if ($dsnEnabled) {
 			$flow->setAllowDynamicStepNavigation(true);
@@ -298,16 +301,16 @@ class FormFlowTest extends UnitTestCase {
 	}
 
 	public function dataGetRequestedStepNumber() {
-		return array(
-			array('GET', array(), false, 1),
-			array('GET', array(), true, 1),
-			array('GET', array('step' => 2), true, 2),
-			array('POST', array(), false, 1),
-			array('POST', array('flow_createTopic_step' => 2), false, 2),
-			array('PUT', array(), false, 1),
-			array('PUT', array('flow_createTopic_step' => 2), false, 2),
-			array('BLAH', array(), false, 1), // fallback on invalid method
-		);
+		return [
+			['GET', [], false, 1],
+			['GET', [], true, 1],
+			['GET', ['step' => 2], true, 2],
+			['POST', [], false, 1],
+			['POST', ['flow_createTopic_step' => 2], false, 2],
+			['PUT', [], false, 1],
+			['PUT', ['flow_createTopic_step' => 2], false, 2],
+			['BLAH', [], false, 1], // fallback on invalid method
+		];
 	}
 
 	/**
@@ -320,7 +323,7 @@ class FormFlowTest extends UnitTestCase {
 	 * @param bool $expectedValid If the form is expected to be valid.
 	 */
 	public function testIsValid($httpMethod, $parameters, $expectedValid) {
-		$flow = $this->getFlowWithMockedMethods(array('getName', 'getRequest'));
+		$flow = $this->getFlowWithMockedMethods(['getName', 'getRequest']);
 
 		$flow->setRevalidatePreviousSteps(false);
 
@@ -334,17 +337,14 @@ class FormFlowTest extends UnitTestCase {
 			->will($this->returnValue(Request::create('', $httpMethod, $parameters)))
 		;
 
-		// TODO replace by `$this->createMock('Symfony\Component\EventDispatcher\EventDispatcherInterface')` as soon as PHPUnit >= 5.4 is required
-		$dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')->getMock();
+		$dispatcher = $this->createMock(EventDispatcherInterface::class);
 		$factory = Forms::createFormFactoryBuilder()->getFormFactory();
 		$formBuilder = new FormBuilder(null, 'stdClass', $dispatcher, $factory);
-		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
 
 		$form = $formBuilder
 			->setCompound(true)
-			// TODO replace by `$this->createMock('Symfony\Component\Form\DataMapperInterface')` as soon as PHPUnit >= 5.4 is required
-			->setDataMapper($this->getMockBuilder('Symfony\Component\Form\DataMapperInterface')->getMock())
-			->add('aField', $useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\TextType' : 'text')
+			->setDataMapper($this->createMock(DataMapperInterface::class))
+			->add('aField', TextType::class)
 			->setMethod($httpMethod)
 			->setRequestHandler(new HttpFoundationRequestHandler())
 			->getForm()
@@ -354,20 +354,20 @@ class FormFlowTest extends UnitTestCase {
 	}
 
 	public function dataIsValid() {
-		$defaultData = array('aField' => '');
+		$defaultData = ['aField' => ''];
 
-		return array(
-			array('GET', array(), false),
-			array('GET', $defaultData, false),
-			array('POST', array(), false),
-			array('POST', $defaultData, true),
-			array('POST', array_merge($defaultData, array('flow_createTopic_transition' => 'back')), false),
-			array('POST', array_merge($defaultData, array('flow_createTopic_transition' => 'reset')), false),
-			array('PUT', array(), false),
-			array('PUT', $defaultData, true),
-			array('PUT', array_merge($defaultData, array('flow_createTopic_transition' => 'back')), false),
-			array('PUT', array_merge($defaultData, array('flow_createTopic_transition' => 'reset')), false),
-		);
+		return [
+			['GET', [], false],
+			['GET', $defaultData, false],
+			['POST', [], false],
+			['POST', $defaultData, true],
+			['POST', array_merge($defaultData, ['flow_createTopic_transition' => 'back']), false],
+			['POST', array_merge($defaultData, ['flow_createTopic_transition' => 'reset']), false],
+			['PUT', [], false],
+			['PUT', $defaultData, true],
+			['PUT', array_merge($defaultData, ['flow_createTopic_transition' => 'back']), false],
+			['PUT', array_merge($defaultData, ['flow_createTopic_transition' => 'reset']), false],
+		];
 	}
 
 	public function testSetGetRequestStack() {
@@ -499,11 +499,11 @@ class FormFlowTest extends UnitTestCase {
 	}
 
 	public function dataSetGetHandleFileUploadsTempDir() {
-		return array(
-			array(null, null),
-			array('1', 1),
-			array('/tmp', '/tmp'),
-		);
+		return [
+			[null, null],
+			['1', 1],
+			['/tmp', '/tmp'],
+		];
 	}
 
 	/**
@@ -555,14 +555,14 @@ class FormFlowTest extends UnitTestCase {
 	 * @dataProvider dataApplySkipping
 	 */
 	public function testApplySkipping($stepCount, array $stepsSkipped, $stepNumber, $direction, $expectedTargetStep) {
-		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
+		$flow = $this->getFlowWithMockedMethods(['loadStepsConfig']);
 
-		$stepsConfig = array();
+		$stepsConfig = [];
 
 		for ($stepNumber = 1; $stepNumber <= $stepCount; ++$stepNumber) {
-			$stepsConfig[] = array(
+			$stepsConfig[] = [
 				'skip' => in_array($stepNumber, $stepsSkipped, true),
-			);
+			];
 		}
 
 		$flow
@@ -578,13 +578,13 @@ class FormFlowTest extends UnitTestCase {
 	}
 
 	public function dataApplySkipping() {
-		return array(
-			array(2, array(2), 2, 1, 1),
-			array(2, array(1), 2, -1, 2),
+		return [
+			[2, [2], 2, 1, 1],
+			[2, [1], 2, -1, 2],
 
-			array(2, array(1), 2, 1, 2),
-			array(2, array(2), 2, -1, 1),
-		);
+			[2, [1], 2, 1, 2],
+			[2, [2], 2, -1, 1],
+		];
 	}
 
 	/**
@@ -601,11 +601,11 @@ class FormFlowTest extends UnitTestCase {
 	}
 
 	public function dataApplySkipping_invalidArguments() {
-		return array(
-			array(2),
-			array(-2),
-			array(null),
-		);
+		return [
+			[2],
+			[-2],
+			[null],
+		];
 	}
 
 	/**
@@ -617,10 +617,10 @@ class FormFlowTest extends UnitTestCase {
 	}
 
 	public function dataGetStep_invalidArguments() {
-		return array(
-			array('a'),
-			array(null),
-		);
+		return [
+			['a'],
+			[null],
+		];
 	}
 
 	/**
@@ -633,24 +633,24 @@ class FormFlowTest extends UnitTestCase {
 	}
 
 	public function dataGetStep_invalidStep() {
-		return array(
-			array(2),
-		);
+		return [
+			[2],
+		];
 	}
 
 	public function testGetCurrentStepLabel() {
 		$label = 'step1';
 
-		$flow = $this->getFlowWithMockedMethods(array('loadStepsConfig'));
+		$flow = $this->getFlowWithMockedMethods(['loadStepsConfig']);
 
 		$flow
 			->expects($this->once())
 			->method('loadStepsConfig')
-			->will($this->returnValue(array(
-				array(
+			->will($this->returnValue([
+				[
 					'label' => $label,
-				),
-			)))
+				],
+			]))
 		;
 
 		$flow->nextStep();
@@ -664,17 +664,17 @@ class FormFlowTest extends UnitTestCase {
 		$method = new \ReflectionMethod($flow, 'loadStepsConfig');
 		$method->setAccessible(true);
 
-		$this->assertEquals(array(), $method->invoke($flow));
+		$this->assertEquals([], $method->invoke($flow));
 	}
 
 	public function dataBooleanSetter() {
-		return array(
-			array(true, true),
-			array(false, false),
-			array(true, 1),
-			array(false, 0),
-			array(false, null),
-		);
+		return [
+			[true, true],
+			[false, false],
+			[true, 1],
+			[false, 0],
+			[false, null],
+		];
 	}
 
 }

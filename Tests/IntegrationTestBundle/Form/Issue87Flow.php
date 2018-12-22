@@ -17,17 +17,17 @@ class Issue87Flow extends FormFlow {
 	 * {@inheritDoc}
 	 */
 	protected function loadStepsConfig() {
-		return array(
-			array(
+		return [
+			[
 				'label' => 'step1',
-			),
-			array(
+			],
+			[
 				'label' => 'step2',
-			),
-			array(
+			],
+			[
 				'label' => 'step3',
-			),
-		);
+			],
+		];
 	}
 
 }

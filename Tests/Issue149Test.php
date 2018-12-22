@@ -25,9 +25,9 @@ class Issue149Test extends IntegrationTestCase {
 
 		// enter a title -> step 2
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, array(
+		$crawler = $this->client->submit($form, [
 			'issue149[photo][title]' => 'blue pixel',
-		));
+		]);
 		$this->assertCurrentStepNumber(2, $crawler);
 		$this->assertCurrentFormData('{"photo":{"image":null,"title":"blue pixel"}}', $crawler);
 

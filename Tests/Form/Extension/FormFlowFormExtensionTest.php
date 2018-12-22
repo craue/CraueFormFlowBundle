@@ -4,6 +4,7 @@ namespace Craue\FormFlowBundle\Tests\Form\Extension;
 
 use Craue\FormFlowBundle\Form\Extension\FormFlowFormExtension;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 /**
  * @group unit
@@ -17,8 +18,7 @@ class FormFlowFormExtensionTest extends TestCase {
 	public function testGetExtendedType() {
 		$extension = new FormFlowFormExtension();
 
-		$useFqcn = method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix');
-		$this->assertSame($useFqcn ? 'Symfony\Component\Form\Extension\Core\Type\FormType' : 'form', $extension->getExtendedType());
+		$this->assertSame(FormType::class, $extension->getExtendedType());
 	}
 
 }

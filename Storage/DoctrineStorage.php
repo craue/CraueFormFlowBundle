@@ -63,19 +63,19 @@ class DoctrineStorage implements StorageInterface {
 		}
 
 		if ($this->has($key)) {
-			$this->conn->update(self::TABLE, array(
+			$this->conn->update(self::TABLE, [
 				$this->valueColumn => serialize($value),
-			), array(
+			], [
 				$this->keyColumn => $this->generateKey($key),
-			));
+			]);
 
 			return;
 		}
 
-		$this->conn->insert(self::TABLE, array(
+		$this->conn->insert(self::TABLE, [
 			$this->keyColumn => $this->generateKey($key),
 			$this->valueColumn => serialize($value),
-		));
+		]);
 	}
 
 	/**
@@ -114,9 +114,9 @@ class DoctrineStorage implements StorageInterface {
 			return;
 		}
 
-		$this->conn->delete(self::TABLE, array(
+		$this->conn->delete(self::TABLE, [
 			$this->keyColumn => $this->generateKey($key),
-		));
+		]);
 	}
 
 	/**
@@ -140,11 +140,11 @@ class DoctrineStorage implements StorageInterface {
 	}
 
 	private function createTable() {
-		$table = new Table(self::TABLE, array(
+		$table = new Table(self::TABLE, [
 			new Column($this->keyColumn, Type::getType(Type::STRING)),
 			new Column($this->valueColumn, Type::getType(Type::TARRAY)),
-		));
-		$table->setPrimaryKey(array($this->keyColumn));
+		]);
+		$table->setPrimaryKey([$this->keyColumn]);
 		$this->schemaManager->createTable($table);
 	}
 

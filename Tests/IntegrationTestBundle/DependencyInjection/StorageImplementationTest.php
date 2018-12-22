@@ -2,6 +2,8 @@
 
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\DependencyInjection;
 
+use Craue\FormFlowBundle\Storage\DoctrineStorage;
+use Craue\FormFlowBundle\Storage\SessionStorage;
 use Craue\FormFlowBundle\Storage\StorageInterface;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\DependencyInjection\Compiler\DoctrineStorageCompilerPass;
 use Craue\FormFlowBundle\Tests\IntegrationTestCase;
@@ -24,7 +26,7 @@ class StorageImplementationTest extends IntegrationTestCase {
 	public function testUseCorrectStorageImplementation() {
 		$dbDriver = static::$kernel->getContainer()->getParameter('db.driver');
 		$storage = $this->getService('craue.form.flow.storage');
-		$expectedClass = $dbDriver !== null ? 'Craue\FormFlowBundle\Storage\DoctrineStorage' : 'Craue\FormFlowBundle\Storage\SessionStorage';
+		$expectedClass = $dbDriver !== null ? DoctrineStorage::class : SessionStorage::class;
 		$this->assertInstanceOf($expectedClass, $storage);
 	}
 

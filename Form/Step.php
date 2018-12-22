@@ -31,7 +31,7 @@ class Step implements StepInterface {
 	/**
 	 * @var array
 	 */
-	protected $formOptions = array();
+	protected $formOptions = [];
 
 	/**
 	 * @var callable|null
@@ -108,7 +108,7 @@ class Step implements StepInterface {
 			return;
 		}
 
-		throw new InvalidTypeException($label, array('null', 'string', 'Craue\FormFlowBundle\Form\StepLabel'));
+		throw new InvalidTypeException($label, ['null', 'string', StepLabel::class]);
 	}
 
 	/**
@@ -134,7 +134,7 @@ class Step implements StepInterface {
 			return;
 		}
 
-		throw new InvalidTypeException($formType, array('null', 'string', 'Symfony\Component\Form\FormTypeInterface'));
+		throw new InvalidTypeException($formType, ['null', 'string', FormTypeInterface::class]);
 	}
 
 	/**
@@ -183,7 +183,7 @@ class Step implements StepInterface {
 			return;
 		}
 
-		throw new InvalidTypeException($skip, array('bool', 'callable'));
+		throw new InvalidTypeException($skip, ['bool', 'callable']);
 	}
 
 	/**
@@ -191,7 +191,7 @@ class Step implements StepInterface {
 	 */
 	public function evaluateSkipping($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 		if ($this->skipFunction !== null) {
-			$returnValue = call_user_func_array($this->skipFunction, array($estimatedCurrentStepNumber, $flow));
+			$returnValue = call_user_func_array($this->skipFunction, [$estimatedCurrentStepNumber, $flow]);
 
 			if (!is_bool($returnValue)) {
 				throw new \RuntimeException(sprintf('The skip callable for step %d did not return a boolean value.',
