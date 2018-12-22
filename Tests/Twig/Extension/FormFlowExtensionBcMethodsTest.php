@@ -1,6 +1,6 @@
 <?php
 
-namespace Craue\FormFlowBundle\Tests\Form;
+namespace Craue\FormFlowBundle\Tests\Twig\Extension;
 
 use Craue\FormFlowBundle\Tests\UnitTestCase;
 use Craue\FormFlowBundle\Twig\Extension\FormFlowExtension;

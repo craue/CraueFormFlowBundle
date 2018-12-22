@@ -1,6 +1,6 @@
 <?php
 
-namespace Craue\FormFlowBundle\Tests\Flow;
+namespace Craue\FormFlowBundle\Tests;
 
 use Craue\FormFlowBundle\Tests\IntegrationTestCase;
 
