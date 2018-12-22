@@ -3,7 +3,6 @@
 namespace Craue\FormFlowBundle\Tests;
 
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\RevalidatePreviousStepsData;
-use Craue\FormFlowBundle\Tests\IntegrationTestCase;
 
 /**
  * @group integration

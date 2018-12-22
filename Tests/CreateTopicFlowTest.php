@@ -2,7 +2,6 @@
 
 namespace Craue\FormFlowBundle\Tests;
 
-use Craue\FormFlowBundle\Tests\IntegrationTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**

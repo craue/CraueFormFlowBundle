@@ -2,8 +2,6 @@
 
 namespace Craue\FormFlowBundle\Tests;
 
-use Craue\FormFlowBundle\Tests\IntegrationTestCase;
-
 /**
  * @group integration
  * @see https://github.com/craue/CraueFormFlowBundle/issues/149
