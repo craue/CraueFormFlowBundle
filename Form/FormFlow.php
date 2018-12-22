@@ -653,7 +653,7 @@ abstract class FormFlow implements FormFlowInterface {
 			$reset = true;
 		}
 
-		if (in_array($request->getMethod(), ['POST', 'PUT']) && $request->get($this->getFormStepKey()) !== null && !$this->dataManager->exists($this)) {
+		if (in_array($request->getMethod(), ['POST', 'PUT'], true) && $request->get($this->getFormStepKey()) !== null && !$this->dataManager->exists($this)) {
 			// flow is expired, drop posted data and reset
 			$request->request->replace();
 			$reset = true;
@@ -883,10 +883,10 @@ abstract class FormFlow implements FormFlowInterface {
 	public function isValid(FormInterface $form) {
 		$request = $this->getRequest();
 
-		if (in_array($request->getMethod(), ['POST', 'PUT']) && !in_array($this->getRequestedTransition(), [
+		if (in_array($request->getMethod(), ['POST', 'PUT'], true) && !in_array($this->getRequestedTransition(), [
 			self::TRANSITION_BACK,
 			self::TRANSITION_RESET,
-		])) {
+		], true)) {
 			$form->handleRequest($request);
 
 			if (!$form->isSubmitted()) {
@@ -940,7 +940,7 @@ abstract class FormFlow implements FormFlowInterface {
 	 * @return bool If a redirection should be performed.
 	 */
 	public function redirectAfterSubmit(FormInterface $submittedForm) {
-		if ($this->allowRedirectAfterSubmit && in_array($this->getRequest()->getMethod(), ['POST', 'PUT'])) {
+		if ($this->allowRedirectAfterSubmit && in_array($this->getRequest()->getMethod(), ['POST', 'PUT'], true)) {
 			switch ($this->getRequestedTransition()) {
 				case self::TRANSITION_BACK:
 				case self::TRANSITION_RESET:
