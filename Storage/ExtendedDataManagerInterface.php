@@ -19,7 +19,7 @@ interface ExtendedDataManagerInterface extends DataManagerInterface {
 
 	/**
 	 * Note: This method may be used for custom flow management.
-	 * @param $name Name of the flow.
+	 * @param string $name Name of the flow.
 	 * @return string[] Instances of flows with the given name.
 	 */
 	function listInstances($name);
