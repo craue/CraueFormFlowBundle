@@ -258,14 +258,22 @@ form according to the current step.
 {{ form_end(form) }}
 ```
 
-Some CSS is needed to render the buttons correctly. The easiest way would be to let
-[Assetic](https://symfony.com/doc/current/assetic/asset_management.html) load the provided file in your base template:
+### CSS
+
+Some CSS is needed to render the buttons correctly. Load the provided file in your base template:
 
 ```twig
-{% stylesheets '@CraueFormFlowBundle/Resources/assets/css/buttons.css' %}
-	<link type="text/css" rel="stylesheet" href="{{ asset_url }}" />
-{% endstylesheets %}
+<link type="text/css" rel="stylesheet" href="{{ asset('bundles/craueformflow/css/buttons.css') }}" />
 ```
+
+...and install the assets in your project:
+
+```sh
+# in a shell
+php bin/console assets:install --symlink web
+```
+
+### Buttons
 
 You can easily customize the default button look by using these variables to add one or more CSS classes to them:
 
