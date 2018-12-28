@@ -25,6 +25,7 @@ class TranslationsTest extends TestCase {
 	 * @dataProvider dataYamlTranslationFileIsValid
 	 */
 	public function testYamlTranslationFileIsValid($filePath) {
+		// TODO replace by `$this->assertIsArray(Yaml::parse(file_get_contents($filePath)));` as soon as PHPUnit >= 7.5 is required
 		$this->assertInternalType('array', Yaml::parse(file_get_contents($filePath)));
 	}
 

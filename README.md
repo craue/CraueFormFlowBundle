@@ -370,7 +370,7 @@ Valid options per step are:
 	- By default, the labels will be translated using the `messages` domain when rendered in Twig.
 - `form_type` (`FormTypeInterface`|`string`|`null`)
 	- The form type used to build the form for that step.
-	- This value is passed to Symfony's form factory, thus the same rules apply as for creating common forms. If using a string, it has to be either the FQCN or the registered alias of the form type, depending on the version of Symfony your project is built with.
+	- This value is passed to Symfony's form factory, thus the same rules apply as for creating common forms. If using a string, it has to be the FQCN of the form type.
 - `form_options` (`array`)
 	- Options passed to the form type of that step.
 - `skip` (`callable`|`bool`)

@@ -11,28 +11,27 @@
 	<services>
 		<service id="integrationTestBundle.form.createTopic"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\CreateTopicForm">
-			<tag name="form.type" alias="createTopic" />
+			<tag name="form.type" />
 		</service>
 
 		<service id="integrationTestBundle.form.createVehicle"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\CreateVehicleForm">
-			<tag name="form.type" alias="createVehicle" />
+			<tag name="form.type" />
 		</service>
 
 		<service id="integrationTestBundle.form.issue64"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\Issue64Form">
-			<tag name="form.type" alias="issue64" />
+			<tag name="form.type" />
 		</service>
 
 		<service id="integrationTestBundle.form.issue149"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\Issue149Form">
-			<tag name="form.type" alias="issue149" />
+			<tag name="form.type" />
 		</service>
 
 		<service id="integrationTestBundle.form.photoUpload"
 				class="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\PhotoUploadForm">
-			<tag name="form.type" alias="photoUpload" />
+			<tag name="form.type" />
 		</service>
 	</services>
-
 </container>

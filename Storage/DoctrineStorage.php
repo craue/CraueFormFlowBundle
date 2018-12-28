@@ -127,7 +127,7 @@ class DoctrineStorage implements StorageInterface {
 	private function getRawValueForKey($key) {
 		$qb = $this->conn->createQueryBuilder()
 			->select($this->valueColumn)
-			->from(self::TABLE, 't') // alias needed only for DBAL < 2.5
+			->from(self::TABLE)
 			->where($this->keyColumn . ' = :key')
 			->setParameter('key', $this->generateKey($key))
 		;
