@@ -4,10 +4,10 @@
 	Copyright: 2011-2019 Christian Raue
 	License: http://opensource.org/licenses/mit-license.php MIT License
 -->
-<container xmlns="http://symfony.com/schema/dic/services"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
+<container
+		xmlns="http://symfony.com/schema/dic/services"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 	<services>
 		<service id="Craue\FormFlowBundle\Tests\IntegrationTestBundle\Controller\FormFlowController">
 			<call method="setContainer">
@@ -16,5 +16,4 @@
 			<tag name="controller.service_arguments"/>
 		</service>
 	</services>
-
 </container>
