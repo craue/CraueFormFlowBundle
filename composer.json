@@ -25,7 +25,7 @@
 	"require-dev": {
 		"doctrine/common": "~2.7",
 		"doctrine/doctrine-bundle": "~1.10",
-		"phpunit/phpunit": "~6.5|~7.5",
+		"phpunit/phpunit": "^6.5.13|^7.5.1",
 		"symfony/phpunit-bridge": "~3.4|~4.1",
 		"symfony/symfony": "~3.4|~4.1"
 	},
