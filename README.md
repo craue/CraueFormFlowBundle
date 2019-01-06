@@ -23,7 +23,7 @@ A live demo showcasing these features is available at http://craue.de/symfony-pl
 Let Composer download and install the bundle by running
 
 ```sh
-php composer.phar require craue/formflow-bundle:~3.0
+php composer.phar require craue/formflow-bundle:~3.1
 ```
 
 in a shell.
@@ -40,11 +40,6 @@ public function registerBundles() {
 	// ...
 }
 ```
-
-# Note
-
-To keep the amount of code in this documentation at a minimum and focus on the essentials, the examples target Symfony >= 2.8,
-so if you use a lower version, some adjustments (especially to form types) may be required.
 
 # Usage
 

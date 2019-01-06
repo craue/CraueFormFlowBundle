@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.1.0] – 2019-01-06
+
+- [#331]: added Italian translation
+- removed attribute `clientSize` from `SerializableFile`
+- dropped support for Symfony 2.7, 2.8, 3.0, 3.1, 3.2, 3.3, 4.0
+- dropped support for PHP 5.3, 5.4, 5.5, 5.6
+- dropped support for HHVM
+
+[#331]: https://github.com/craue/CraueFormFlowBundle/issues/331
+[3.1.0]: https://github.com/craue/CraueFormFlowBundle/compare/3.0.3...3.1.0
+
 ## [3.0.3] – 2017-12-07
 
 - [#306]: fixed method `applySkipping` to avoid OutOfBoundsException
