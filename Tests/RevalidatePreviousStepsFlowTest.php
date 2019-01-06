@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests;
 
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\RevalidatePreviousStepsData;
+use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\RevalidatePreviousStepsFlow;
 
 /**
  * @group integration
@@ -64,7 +65,7 @@ class RevalidatePreviousStepsFlowTest extends IntegrationTestCase {
 
 	protected function getCalledEvents() {
 		$container = static::$kernel->getContainer();
-		$flow = $container->get('integrationTestBundle.form.flow.revalidatePreviousSteps');
+		$flow = $container->get(RevalidatePreviousStepsFlow::class);
 		$storage = $container->get('craue.form.flow.storage');
 
 		return $storage->get($flow->getCalledEventsSessionKey());

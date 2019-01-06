@@ -2,6 +2,8 @@
 
 namespace Craue\FormFlowBundle\Tests;
 
+use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\Demo1Flow;
+
 /**
  * @group integration
  *
@@ -60,7 +62,7 @@ class Demo1FlowTest extends IntegrationTestCase {
 
 	protected function getCalledEvents() {
 		$container = static::$kernel->getContainer();
-		$flow = $container->get('integrationTestBundle.form.flow.demo1');
+		$flow = $container->get(Demo1Flow::class);
 		$storage = $container->get('craue.form.flow.storage');
 
 		return $storage->get($flow->getCalledEventsSessionKey());
