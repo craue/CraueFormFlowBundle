@@ -13,24 +13,42 @@ use Symfony\Component\DomCrawler\Crawler;
  */
 abstract class IntegrationTestCase extends WebTestCase {
 
+	const ENV_FLOWS_WITH_AUTOCONFIGURATION = 'flows_with_autoconfiguration';
+	const ENV_FLOWS_WITH_PARENT_SERVICE = 'flows_with_parent_service';
+
 	/**
 	 * @var Client
 	 */
 	protected $client;
 
+	public function getEnvironmentConfigs() {
+		$testData = [];
+
+		foreach ([self::ENV_FLOWS_WITH_AUTOCONFIGURATION, self::ENV_FLOWS_WITH_PARENT_SERVICE] as $env) {
+			$testData[] = [$env, sprintf('config_%s.yml', $env)];
+		}
+
+		return $testData;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	protected static function createKernel(array $options = []) {
-		$configFile = isset($options['config']) ? $options['config'] : 'config.yml';
+		$environment = $options['environment'] ?? self::ENV_FLOWS_WITH_AUTOCONFIGURATION;
+		$configFile = $options['config'] ?? sprintf('config_%s.yml', $environment);
 
-		return new AppKernel($configFile);
+		return new AppKernel($environment, $configFile);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	protected function setUp() {
+		$this->setUpClient();
+	}
+
+	protected function setUpClient() {
 		$this->client = static::createClient();
 	}
 

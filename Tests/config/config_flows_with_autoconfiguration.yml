@@ -1,0 +1,3 @@
+imports:
+  - { resource: config.yml }
+  - { resource: '@IntegrationTestBundle/Resources/config/form_flow_with_autoconfiguration.xml' }
