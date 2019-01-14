@@ -23,7 +23,15 @@ class RevalidatePreviousStepsFlowTest extends IntegrationTestCase {
 		RevalidatePreviousStepsData::resetValidationCalls();
 	}
 
-	public function testRevalidatePreviousSteps_enabled() {
+	protected function setUpClient() {
+	}
+
+	/**
+	 * @dataProvider getEnvironmentConfigs
+	 */
+	public function testRevalidatePreviousSteps_enabled($environment, $config) {
+		static::$client = static::createClient(['environment' => $environment, 'config' => $config]);
+
 		$crawler = static::$client->request('GET', $this->url('_FormFlow_revalidatePreviousSteps_enabled'));
 		$this->assertSame(200, static::$client->getResponse()->getStatusCode());
 
@@ -49,7 +57,12 @@ class RevalidatePreviousStepsFlowTest extends IntegrationTestCase {
 		$this->assertContainsFormError('Take this!', $crawler);
 	}
 
-	public function testRevalidatePreviousSteps_disabled() {
+	/**
+	 * @dataProvider getEnvironmentConfigs
+	 */
+	public function testRevalidatePreviousSteps_disabled($environment, $config) {
+		static::$client = static::createClient(['environment' => $environment, 'config' => $config]);
+
 		$crawler = static::$client->request('GET', $this->url('_FormFlow_revalidatePreviousSteps_disabled'));
 		$this->assertSame(200, static::$client->getResponse()->getStatusCode());
 
