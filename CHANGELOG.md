@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.4] – 2019-01-23
+
+- [#331]: added Italian translation
+
+[#331]: https://github.com/craue/CraueFormFlowBundle/issues/331
+[3.0.4]: https://github.com/craue/CraueFormFlowBundle/compare/3.0.3...3.0.4
+
 ## [3.0.3] – 2017-12-07
 
 - [#306]: fixed method `applySkipping` to avoid OutOfBoundsException
