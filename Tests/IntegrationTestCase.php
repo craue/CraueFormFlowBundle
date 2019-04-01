@@ -5,6 +5,7 @@ namespace Craue\FormFlowBundle\Tests;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
+use Twig\Environment;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -43,7 +44,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 	}
 
 	/**
-	 * @return \Twig_Environment
+	 * @return Environment
 	 */
 	protected function getTwig() {
 		return $this->getService('twig');
