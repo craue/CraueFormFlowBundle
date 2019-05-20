@@ -12,15 +12,15 @@ namespace Craue\FormFlowBundle\Tests;
 class SkipFirstStepUsingClosureFlowTest extends IntegrationTestCase {
 
 	public function testSkipFirstStepUsingClosure() {
-		$crawler = $this->client->request('GET', $this->url('_FormFlow_skipFirstStepUsingClosure'));
-		$this->assertSame(200, $this->client->getResponse()->getStatusCode());
+		$crawler = static::$client->request('GET', $this->url('_FormFlow_skipFirstStepUsingClosure'));
+		$this->assertSame(200, static::$client->getResponse()->getStatusCode());
 		$this->assertCurrentStepNumber(2, $crawler);
 		// step 1 must be marked as skipped
 		$this->assertContains('<li class="craue_formflow_skipped_step">step1</li>', $this->getHtml($crawler->filter('#step-list')));
 
 		// reset
 		$form = $crawler->selectButton('start over')->form();
-		$crawler = $this->client->submit($form);
+		$crawler = static::$client->submit($form);
 		$this->assertCurrentStepNumber(2, $crawler);
 		// step 1 must be marked as skipped
 		$this->assertContains('<li class="craue_formflow_skipped_step">step1</li>', $this->getHtml($crawler->filter('#step-list')));

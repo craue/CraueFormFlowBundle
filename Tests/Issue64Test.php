@@ -13,14 +13,14 @@ namespace Craue\FormFlowBundle\Tests;
 class Issue64Test extends IntegrationTestCase {
 
 	public function testIssue64() {
-		$crawler = $this->client->request('GET', $this->url('_FormFlow_issue64'));
-		$this->assertSame(200, $this->client->getResponse()->getStatusCode());
+		$crawler = static::$client->request('GET', $this->url('_FormFlow_issue64'));
+		$this->assertSame(200, static::$client->getResponse()->getStatusCode());
 		$this->assertCurrentStepNumber(1, $crawler);
 		$this->assertCurrentFormData('{"sub":null}', $crawler);
 
 		// set prop1 -> step 2
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, [
+		$crawler = static::$client->submit($form, [
 			'issue64[sub][prop1]' => 'foo',
 		]);
 		$this->assertCurrentStepNumber(2, $crawler);
@@ -28,7 +28,7 @@ class Issue64Test extends IntegrationTestCase {
 
 		// set prop2 -> step 3
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, [
+		$crawler = static::$client->submit($form, [
 			'issue64[sub][prop2]' => 'bar',
 		]);
 		$this->assertCurrentStepNumber(3, $crawler);
@@ -36,7 +36,7 @@ class Issue64Test extends IntegrationTestCase {
 
 		// set different prop2 -> step 4
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form, [
+		$crawler = static::$client->submit($form, [
 			'issue64[sub][prop2]' => 'baz',
 		]);
 		$this->assertCurrentStepNumber(4, $crawler);
@@ -44,7 +44,7 @@ class Issue64Test extends IntegrationTestCase {
 
 		// finish flow
 		$form = $crawler->selectButton('finish')->form();
-		$this->client->submit($form);
+		static::$client->submit($form);
 		$this->assertJsonResponse('{"sub":{"prop1":"foo","prop2":"baz"}}');
 	}
 

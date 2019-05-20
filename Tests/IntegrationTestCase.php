@@ -15,9 +15,9 @@ use Twig\Environment;
 abstract class IntegrationTestCase extends WebTestCase {
 
 	/**
-	 * @var Client
+	 * @var Client|null
 	 */
-	protected $client;
+	protected static $client;
 
 	/**
 	 * {@inheritDoc}
@@ -32,7 +32,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 	 * {@inheritDoc}
 	 */
 	protected function setUp() {
-		$this->client = static::createClient();
+		static::$client = static::createClient();
 	}
 
 	/**
@@ -117,8 +117,8 @@ abstract class IntegrationTestCase extends WebTestCase {
 	 * @param string $expectedJson
 	 */
 	protected function assertJsonResponse($expectedJson) {
-		$this->assertEquals('application/json', $this->client->getResponse()->headers->get('Content-Type') );
-		$this->assertEquals($expectedJson, $this->client->getResponse()->getContent());
+		$this->assertEquals('application/json', static::$client->getResponse()->headers->get('Content-Type') );
+		$this->assertEquals($expectedJson, static::$client->getResponse()->getContent());
 	}
 
 	/**
@@ -130,7 +130,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 		try {
 			return $crawler->filter($selector)->attr($attribute);
 		} catch (\InvalidArgumentException $e) {
-			$this->fail(sprintf("No node found for selector '%s'. Content:\n%s", $selector, $this->client->getResponse()->getContent()));
+			$this->fail(sprintf("No node found for selector '%s'. Content:\n%s", $selector, static::$client->getResponse()->getContent()));
 		}
 	}
 
@@ -142,7 +142,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 		try {
 			return $crawler->filter($selector)->text();
 		} catch (\InvalidArgumentException $e) {
-			$this->fail(sprintf("No node found for selector '%s'. Content:\n%s", $selector, $this->client->getResponse()->getContent()));
+			$this->fail(sprintf("No node found for selector '%s'. Content:\n%s", $selector, static::$client->getResponse()->getContent()));
 		}
 	}
 

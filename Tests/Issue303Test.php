@@ -20,18 +20,18 @@ class Issue303Test extends IntegrationTestCase {
 	public function testIssue303($stepNumberToSkipInBetween, $buttonToPressInBetween, $expectedTargetStep) {
 		Issue303Flow::resetSkips();
 
-		$crawler = $this->client->request('GET', $this->url('_FormFlow_issue303'));
-		$this->assertSame(200, $this->client->getResponse()->getStatusCode());
+		$crawler = static::$client->request('GET', $this->url('_FormFlow_issue303'));
+		$this->assertSame(200, static::$client->getResponse()->getStatusCode());
 
 		// next -> step 2
 		$form = $crawler->selectButton('next')->form();
-		$crawler = $this->client->submit($form);
+		$crawler = static::$client->submit($form);
 
 		Issue303Flow::setSkip($stepNumberToSkipInBetween);
 
 		// press button -> target step
 		$form = $crawler->selectButton($buttonToPressInBetween)->form();
-		$crawler = $this->client->submit($form);
+		$crawler = static::$client->submit($form);
 		$this->assertCurrentStepNumber($expectedTargetStep, $crawler);
 	}
 

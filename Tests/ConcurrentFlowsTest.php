@@ -12,23 +12,23 @@ namespace Craue\FormFlowBundle\Tests;
 class ConcurrentFlowsTest extends IntegrationTestCase {
 
 	public function testCreateTopic_concurrentUsageOfTwoFlows() {
-		$this->client->followRedirects();
+		static::$client->followRedirects();
 
 		// [A] start flow
-		$crawlerA = $this->client->request('GET', $this->url('_FormFlow_createTopic'));
-		$this->assertSame(200, $this->client->getResponse()->getStatusCode());
+		$crawlerA = static::$client->request('GET', $this->url('_FormFlow_createTopic'));
+		$this->assertSame(200, static::$client->getResponse()->getStatusCode());
 		$this->assertCurrentStepNumber(1, $crawlerA);
 		$this->assertCurrentFormData('{"title":null,"description":null,"category":null,"comment":null,"details":null}', $crawlerA);
 
 		// [B] start flow
-		$crawlerB = $this->client->request('GET', $this->url('_FormFlow_createTopic'));
-		$this->assertSame(200, $this->client->getResponse()->getStatusCode());
+		$crawlerB = static::$client->request('GET', $this->url('_FormFlow_createTopic'));
+		$this->assertSame(200, static::$client->getResponse()->getStatusCode());
 		$this->assertCurrentStepNumber(1, $crawlerB);
 		$this->assertCurrentFormData('{"title":null,"description":null,"category":null,"comment":null,"details":null}', $crawlerB);
 
 		// [A] bug report -> step 2
 		$formA = $crawlerA->selectButton('next')->form();
-		$crawlerA = $this->client->submit($formA, [
+		$crawlerA = static::$client->submit($formA, [
 			'createTopic[title]' => 'error',
 			'createTopic[category]' => 'BUG_REPORT',
 		]);
@@ -37,7 +37,7 @@ class ConcurrentFlowsTest extends IntegrationTestCase {
 
 		// [B] discussion -> step 2
 		$formB = $crawlerB->selectButton('next')->form();
-		$crawlerB = $this->client->submit($formB, [
+		$crawlerB = static::$client->submit($formB, [
 			'createTopic[title]' => 'question',
 			'createTopic[category]' => 'DISCUSSION',
 		]);
@@ -46,7 +46,7 @@ class ConcurrentFlowsTest extends IntegrationTestCase {
 
 		// [A] comment -> step 3
 		$formA = $crawlerA->selectButton('next')->form();
-		$crawlerA = $this->client->submit($formA, [
+		$crawlerA = static::$client->submit($formA, [
 			'createTopic[comment]' => 'my comment',
 		]);
 		$this->assertCurrentStepNumber(3, $crawlerA);
@@ -54,7 +54,7 @@ class ConcurrentFlowsTest extends IntegrationTestCase {
 
 		// [A] bug details -> step 4
 		$formA = $crawlerA->selectButton('next')->form();
-		$crawlerA = $this->client->submit($formA, [
+		$crawlerA = static::$client->submit($formA, [
 			'createTopic[details]' => 'blah blah',
 		]);
 		$this->assertCurrentStepNumber(4, $crawlerA);
@@ -62,18 +62,18 @@ class ConcurrentFlowsTest extends IntegrationTestCase {
 
 		// [B] no comment -> step 4
 		$formB = $crawlerB->selectButton('next')->form();
-		$crawlerB = $this->client->submit($formB);
+		$crawlerB = static::$client->submit($formB);
 		$this->assertCurrentStepNumber(4, $crawlerB);
 		$this->assertCurrentFormData('{"title":"question","description":null,"category":"DISCUSSION","comment":null,"details":null}', $crawlerB);
 
 		// [A] finish flow
 		$formA = $crawlerA->selectButton('finish')->form();
-		$this->client->submit($formA);
+		static::$client->submit($formA);
 		$this->assertJsonResponse('{"title":"error","description":null,"category":"BUG_REPORT","comment":"my comment","details":"blah blah"}');
 
 		// [B] finish flow
 		$formB = $crawlerB->selectButton('finish')->form();
-		$this->client->submit($formB);
+		static::$client->submit($formB);
 		$this->assertJsonResponse('{"title":"question","description":null,"category":"DISCUSSION","comment":null,"details":null}');
 	}
 
