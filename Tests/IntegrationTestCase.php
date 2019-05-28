@@ -5,6 +5,7 @@ namespace Craue\FormFlowBundle\Tests;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
+use Twig\Environment;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -19,7 +20,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 	/**
 	 * @var Client
 	 */
-	protected $client;
+	protected static $client;
 
 	public function getEnvironmentConfigs() {
 		$testData = [];
@@ -49,7 +50,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 	}
 
 	protected function setUpClient() {
-		$this->client = static::createClient();
+		static::$client = static::createClient();
 	}
 
 	/**
@@ -61,7 +62,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 	}
 
 	/**
-	 * @return \Twig_Environment
+	 * @return Environment
 	 */
 	protected function getTwig() {
 		return $this->getService('twig');
@@ -134,8 +135,8 @@ abstract class IntegrationTestCase extends WebTestCase {
 	 * @param string $expectedJson
 	 */
 	protected function assertJsonResponse($expectedJson) {
-		$this->assertEquals('application/json', $this->client->getResponse()->headers->get('Content-Type') );
-		$this->assertEquals($expectedJson, $this->client->getResponse()->getContent());
+		$this->assertEquals('application/json', static::$client->getResponse()->headers->get('Content-Type') );
+		$this->assertEquals($expectedJson, static::$client->getResponse()->getContent());
 	}
 
 	/**
@@ -147,7 +148,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 		try {
 			return $crawler->filter($selector)->attr($attribute);
 		} catch (\InvalidArgumentException $e) {
-			$this->fail(sprintf("No node found for selector '%s'. Content:\n%s", $selector, $this->client->getResponse()->getContent()));
+			$this->fail(sprintf("No node found for selector '%s'. Content:\n%s", $selector, static::$client->getResponse()->getContent()));
 		}
 	}
 
@@ -159,7 +160,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 		try {
 			return $crawler->filter($selector)->text();
 		} catch (\InvalidArgumentException $e) {
-			$this->fail(sprintf("No node found for selector '%s'. Content:\n%s", $selector, $this->client->getResponse()->getContent()));
+			$this->fail(sprintf("No node found for selector '%s'. Content:\n%s", $selector, static::$client->getResponse()->getContent()));
 		}
 	}
 

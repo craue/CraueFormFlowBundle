@@ -4,6 +4,9 @@ namespace Craue\FormFlowBundle\Twig\Extension;
 
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Util\FormFlowUtil;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 /**
  * Twig extension for form flows.
@@ -12,7 +15,7 @@ use Craue\FormFlowBundle\Util\FormFlowUtil;
  * @copyright 2011-2019 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class FormFlowExtension extends \Twig_Extension {
+class FormFlowExtension extends AbstractExtension {
 
 	/**
 	 * @var FormFlowUtil
@@ -35,11 +38,11 @@ class FormFlowExtension extends \Twig_Extension {
 	 */
 	public function getFilters() {
 		return [
-			new \Twig_SimpleFilter('craue_addDynamicStepNavigationParameters', [$this, 'addDynamicStepNavigationParameters']),
-			new \Twig_SimpleFilter('craue_removeDynamicStepNavigationParameters', [$this, 'removeDynamicStepNavigationParameters']),
+			new TwigFilter('craue_addDynamicStepNavigationParameters', [$this, 'addDynamicStepNavigationParameters']),
+			new TwigFilter('craue_removeDynamicStepNavigationParameters', [$this, 'removeDynamicStepNavigationParameters']),
 			// methods for BC with third-party templates (e.g. MopaBootstrapBundle)
-			new \Twig_SimpleFilter('craue_addDynamicStepNavigationParameter', [$this, 'addDynamicStepNavigationParameter']),
-			new \Twig_SimpleFilter('craue_removeDynamicStepNavigationParameter', [$this, 'removeDynamicStepNavigationParameter']),
+			new TwigFilter('craue_addDynamicStepNavigationParameter', [$this, 'addDynamicStepNavigationParameter']),
+			new TwigFilter('craue_removeDynamicStepNavigationParameter', [$this, 'removeDynamicStepNavigationParameter']),
 		];
 	}
 
@@ -48,7 +51,7 @@ class FormFlowExtension extends \Twig_Extension {
 	 */
 	public function getFunctions() {
 		return [
-			new \Twig_SimpleFunction('craue_isStepLinkable', [$this, 'isStepLinkable']),
+			new TwigFunction('craue_isStepLinkable', [$this, 'isStepLinkable']),
 		];
 	}
 
