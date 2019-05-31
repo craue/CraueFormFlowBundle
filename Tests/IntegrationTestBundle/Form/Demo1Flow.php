@@ -88,26 +88,50 @@ class Demo1Flow extends FormFlow implements EventSubscriberInterface {
 	}
 
 	public function onPreBind(PreBindEvent $event) {
+		if ($event->getFlow() !== $this) {
+			return;
+		}
+
 		$this->logEventCall('onPreBind');
 	}
 
 	public function onGetSteps(GetStepsEvent $event) {
+		if ($event->getFlow() !== $this) {
+			return;
+		}
+
 		$this->logEventCall('onGetSteps');
 	}
 
 	public function onPostBindSavedData(PostBindSavedDataEvent $event) {
+		if ($event->getFlow() !== $this) {
+			return;
+		}
+
 		$this->logEventCall('onPostBindSavedData #' . $event->getStepNumber());
 	}
 
 	public function onPostBindFlow(PostBindFlowEvent $event) {
+		if ($event->getFlow() !== $this) {
+			return;
+		}
+
 		$this->logEventCall('onPostBindFlow #' . $event->getFlow()->getCurrentStepNumber());
 	}
 
 	public function onPostBindRequest(PostBindRequestEvent $event) {
+		if ($event->getFlow() !== $this) {
+			return;
+		}
+
 		$this->logEventCall('onPostBindRequest');
 	}
 
 	public function onPostValidate(PostValidateEvent $event) {
+		if ($event->getFlow() !== $this) {
+			return;
+		}
+
 		$this->logEventCall('onPostValidate');
 	}
 

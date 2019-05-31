@@ -70,6 +70,10 @@ class RevalidatePreviousStepsFlow extends FormFlow implements EventSubscriberInt
 	}
 
 	public function onPreviousStepInvalid(PreviousStepInvalidEvent $event) {
+		if ($event->getFlow() !== $this) {
+			return;
+		}
+
 		$this->logEventCall('onPreviousStepInvalid #' . $event->getInvalidStepNumber());
 	}
 
