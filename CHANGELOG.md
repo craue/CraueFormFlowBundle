@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.1.1] – 2019-05-31
+
+- code updates to avoid deprecation notices
+
+[3.1.1]: https://github.com/craue/CraueFormFlowBundle/compare/3.1.0...3.1.1
+
 ## [3.0.4] – 2019-01-23
 
 - [#331]: added Italian translation
