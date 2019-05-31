@@ -11,7 +11,14 @@ namespace Craue\FormFlowBundle\Tests;
  */
 class ConcurrentFlowsTest extends IntegrationTestCase {
 
-	public function testCreateTopic_concurrentUsageOfTwoFlows() {
+	protected function setUpClient() {
+	}
+
+	/**
+	 * @dataProvider getEnvironmentConfigs
+	 */
+	public function testCreateTopic_concurrentUsageOfTwoFlows($environment, $config) {
+		static::$client = static::createClient(['environment' => $environment, 'config' => $config]);
 		static::$client->followRedirects();
 
 		// [A] start flow

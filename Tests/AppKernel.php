@@ -8,21 +8,21 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class AppKernel extends Kernel {
 
-	private $config;
+	private $configFile;
 
-	public function __construct($config) {
-		parent::__construct('test', false);
+	public function __construct($environment, $configFile) {
+		parent::__construct($environment, false);
 
 		$fs = new Filesystem();
-		if (!$fs->isAbsolutePath($config)) {
-			$config = __DIR__.'/config/'.$config;
+		if (!$fs->isAbsolutePath($configFile)) {
+			$configFile = __DIR__ . '/config/' . $configFile;
 		}
 
-		if (!file_exists($config)) {
-			throw new \RuntimeException(sprintf('The config file "%s" does not exist.', $config));
+		if (!file_exists($configFile)) {
+			throw new \RuntimeException(sprintf('The config file "%s" does not exist.', $configFile));
 		}
 
-		$this->config = $config;
+		$this->configFile = $configFile;
 	}
 
 	public function registerBundles() {
@@ -37,7 +37,7 @@ class AppKernel extends Kernel {
 	}
 
 	public function registerContainerConfiguration(LoaderInterface $loader) {
-		$loader->load($this->config);
+		$loader->load($this->configFile);
 	}
 
 	public function getCacheDir() {
@@ -57,11 +57,12 @@ class AppKernel extends Kernel {
 	}
 
 	public function serialize() {
-		return $this->config;
+		return serialize([$this->environment, $this->configFile]);
 	}
 
-	public function unserialize($config) {
-		$this->__construct($config);
+	public function unserialize($data) {
+		list($environment, $configFile) = unserialize($data);
+		$this->__construct($environment, $configFile);
 	}
 
 }

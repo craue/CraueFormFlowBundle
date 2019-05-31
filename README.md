@@ -212,6 +212,26 @@ XML
 <services>
 	<service id="myCompany.form.flow.createVehicle"
 			class="MyCompany\MyBundle\Form\CreateVehicleFlow"
+			autoconfigure="true">
+	</service>
+</services>
+```
+
+YAML
+```yaml
+services:
+    myCompany.form.flow.createVehicle:
+        class: MyCompany\MyBundle\Form\CreateVehicleFlow
+        autoconfigure: true
+```
+
+When not using autoconfiguration, you may let your flow inherit the required dependencies from a parent service.
+
+XML
+```xml
+<services>
+	<service id="myCompany.form.flow.createVehicle"
+			class="MyCompany\MyBundle\Form\CreateVehicleFlow"
 			parent="craue.form.flow">
 	</service>
 </services>
@@ -628,8 +648,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class CreateVehicleFlow extends FormFlow implements EventSubscriberInterface {
 
+	/**
+	 * This method is only needed when _not_ using autoconfiguration. If it's there even with autoconfiguration enabled,
+	 * the `removeSubscriber` call ensures that subscribed events won't occur twice.
+	 * (You can remove the `removeSubscriber` call if you'll definitely never use autoconfiguration for that flow.)
+	 */
 	public function setEventDispatcher(EventDispatcherInterface $dispatcher) {
 		parent::setEventDispatcher($dispatcher);
+		$dispatcher->removeSubscriber($this);
 		$dispatcher->addSubscriber($this);
 	}
 
