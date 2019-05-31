@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Twig\Environment;
@@ -15,7 +16,7 @@ use Twig\Environment;
 abstract class IntegrationTestCase extends WebTestCase {
 
 	/**
-	 * @var Client|null
+	 * @var Client|KernelBrowser|null
 	 */
 	protected static $client;
 
