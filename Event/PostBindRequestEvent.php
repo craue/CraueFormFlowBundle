@@ -30,7 +30,7 @@ class PostBindRequestEvent extends FormFlowEvent {
 	 * @param int $stepNumber
 	 */
 	public function __construct(FormFlowInterface $flow, $formData, $stepNumber) {
-		$this->flow = $flow;
+		parent::__construct($flow);
 		$this->formData = $formData;
 		$this->stepNumber = $stepNumber;
 	}

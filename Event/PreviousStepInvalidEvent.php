@@ -30,7 +30,7 @@ class PreviousStepInvalidEvent extends FormFlowEvent {
 	 * @param int $invalidStepNumber
 	 */
 	public function __construct(FormFlowInterface $flow, FormInterface $currentStepForm, $invalidStepNumber) {
-		$this->flow = $flow;
+		parent::__construct($flow);
 		$this->currentStepForm = $currentStepForm;
 		$this->invalidStepNumber = $invalidStepNumber;
 	}

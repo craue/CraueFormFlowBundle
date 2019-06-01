@@ -136,7 +136,7 @@ class DoctrineStorage implements StorageInterface {
 	}
 
 	private function tableExists() {
-		return $this->schemaManager->tablesExist(self::TABLE);
+		return $this->schemaManager->tablesExist([self::TABLE]);
 	}
 
 	private function createTable() {

@@ -124,7 +124,7 @@ class Step implements StepInterface {
 	}
 
 	/**
-	 * @param FormTypeInterface|string|null $type
+	 * @param FormTypeInterface|string|null $formType
 	 * @throws InvalidTypeException
 	 */
 	public function setFormType($formType) {

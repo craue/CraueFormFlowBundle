@@ -1014,6 +1014,7 @@ abstract class FormFlow implements FormFlowInterface {
 	 */
 	private function dispatchEvent($event, $eventName) {
 		if (Kernel::VERSION_ID < 40300) {
+			// TODO remove as soon as Symfony >= 4.3 is required
 			$this->eventDispatcher->dispatch($eventName, $event);
 		} else {
 			$this->eventDispatcher->dispatch($event, $eventName);

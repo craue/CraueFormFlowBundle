@@ -24,7 +24,7 @@ class PostValidateEvent extends FormFlowEvent {
 	 * @param mixed $formData
 	 */
 	public function __construct(FormFlowInterface $flow, $formData) {
-		$this->flow = $flow;
+		parent::__construct($flow);
 		$this->formData = $formData;
 	}
 
