@@ -14,7 +14,7 @@ matrix:
     - php: 7.0
       env: DEPS='lowest'
     - php: 7.3
-      env: DEPS='unmodified'
+      env: DEPS='unmodified' WITH_STATIC_ANALYSIS='yes'
     - php: 7.3
       env: SYMFONY_VERSION='3.4.*' PARAM_DB_DRIVER='pdo_sqlite' SYMFONY_DEPRECATIONS_HELPER='9'
     - php: 7.3
@@ -46,7 +46,9 @@ before_script:
 
 script:
   # validate composer.json
-  - composer validate --strict --no-check-lock
+  - if [ -n "${WITH_STATIC_ANALYSIS:-}" ]; then composer validate --strict --no-check-lock; fi;
+  # run PHPStan
+  - if [ -n "${WITH_STATIC_ANALYSIS:-}" ]; then vendor/bin/phpstan analyse; fi;
   # run PHPUnit
   - phpdbg -qrr vendor/phpunit/phpunit/phpunit -v --coverage-clover build/logs/clover.xml
   # upload code coverage data
