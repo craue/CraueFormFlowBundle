@@ -1,24 +1,2 @@
-parameters:
-	level: 5
-	paths:
-		- %currentWorkingDirectory%
-	excludes_analyse:
-		- %currentWorkingDirectory%/Tests/*
-		- %currentWorkingDirectory%/vendor/*
-	ignoreErrors:
-		-
-			message: '#^Result of || is always true\.$#'
-			path: %currentWorkingDirectory%/Form/Step.php
-		# TODO remove as soon as Symfony >= 4.1 is required
-		-
-			message: '#^Call to function property_exists\(\) with .+ and .size. will always evaluate to false\.$#'
-			path: %currentWorkingDirectory%/Storage/SerializableFile.php
-		# TODO remove as soon as Symfony >= 4.1 is required
-		- '#^Parameter \#5 \$test of class Symfony\\Component\\HttpFoundation\\File\\UploadedFile constructor expects bool, null given\.$#'
-		# TODO remove as soon as Symfony >= 4.3 is required
-		-
-			message: '#^Method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\) invoked with 2 parameters, 1 required\.$#'
-			path: %currentWorkingDirectory%/Form/FormFlow.php
-		-
-			message: '#^Parameter \#1 \$event of method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\) expects object, string given\.$#'
-			path: %currentWorkingDirectory%/Form/FormFlow.php
+includes:
+	- %currentWorkingDirectory%/phpstan-config.neon
