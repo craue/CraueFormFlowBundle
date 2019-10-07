@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.1] – 2019-10-07
+
+- [#342]: fixed a Symfony Form deprecation
+
+[#342]: https://github.com/craue/CraueFormFlowBundle/issues/342
+[3.2.1]: https://github.com/craue/CraueFormFlowBundle/compare/3.2.0...3.2.1
+
 ## [3.2.0] – 2019-06-05
 
 - [#333]: added autoconfiguration support
