@@ -370,6 +370,71 @@ class FormFlowTest extends UnitTestCase {
 		];
 	}
 
+	/**
+	 * @dataProvider dataRedirectAfterSubmit
+	 *
+	 * @param bool $allowRedirectAfterSubmit
+	 * @param string $httpMethod The HTTP method.
+	 * @param array $parameters Parameters for the query/request.
+	 * @param bool $submitForm If the form is meant to be submitted.
+	 * @param bool $expectedResult If a redirection should be performed.
+	 */
+	public function testRedirectAfterSubmit($allowRedirectAfterSubmit, $httpMethod, $parameters, $submitForm, $expectedResult) {
+		$flow = $this->getFlowWithMockedMethods(['getName', 'getRequest']);
+
+		$flow->setAllowRedirectAfterSubmit($allowRedirectAfterSubmit);
+
+		$flow
+			->method('getName')
+			->will($this->returnValue('createTopic'))
+		;
+
+		$request = Request::create('', $httpMethod, $parameters);
+
+		$flow
+			->method('getRequest')
+			->will($this->returnValue($request))
+		;
+
+		$dispatcher = $this->createMock(EventDispatcherInterface::class);
+		$factory = Forms::createFormFactoryBuilder()->getFormFactory();
+		$formBuilder = new FormBuilder(null, 'stdClass', $dispatcher, $factory);
+
+		$form = $formBuilder
+			->setCompound(true)
+			->setDataMapper($this->createMock(DataMapperInterface::class))
+			->add('aField', TextType::class)
+			->setMethod($httpMethod)
+			->setRequestHandler(new HttpFoundationRequestHandler())
+			->getForm()
+		;
+
+		if ($submitForm) {
+			$form->handleRequest($request);
+		}
+
+		$this->assertSame($expectedResult, $flow->redirectAfterSubmit($form));
+	}
+
+	public function dataRedirectAfterSubmit() {
+		$defaultData = ['aField' => ''];
+
+		return [
+			[true, 'GET', $defaultData, true, false],
+
+			[false, 'POST', ['flow_createTopic_transition' => 'back'], false, false],
+			[true, 'POST', ['flow_createTopic_transition' => 'back'], false, true],
+			[true, 'POST', ['flow_createTopic_transition' => 'reset'], false, true],
+			[true, 'POST', [], true, false],
+
+			[true, 'POST', $defaultData, false, false],
+			[true, 'POST', $defaultData, true, true],
+
+			[true, 'PUT', $defaultData, false, false],
+			[true, 'PUT', $defaultData, true, true],
+		];
+	}
+
 	public function testSetGetRequestStack() {
 		$flow = $this->getMockedFlow();
 
