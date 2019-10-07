@@ -942,7 +942,7 @@ abstract class FormFlow implements FormFlowInterface {
 					return true;
 				default:
 					// redirect after submit only if there are no errors for the submitted form
-					return $submittedForm->isValid();
+					return $submittedForm->isSubmitted() && $submittedForm->isValid();
 			}
 		}
 
