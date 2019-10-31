@@ -13,8 +13,8 @@ class Issue64Data {
 
 	/**
 	 * @var Issue64SubData
-	 * @Assert\NotNull(groups={"flow_issue64_step1", "flow_issue64_step2"})
-	 * @Assert\Valid
+	 * @Assert\NotNull(groups={"flow_issue64_step1", "flow_issue64_step2", "flow_issue64_step3"})
+	 * @Assert\Valid(groups={"flow_issue64_step1", "flow_issue64_step2", "flow_issue64_step3"})
 	 */
 	public $sub;
 

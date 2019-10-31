@@ -13,7 +13,7 @@ class Issue149Data {
 
 	/**
 	 * @var Issue149SubData
-	 * @Assert\Valid
+	 * @Assert\Valid(groups={"flow_issue149_step1"})
 	 */
 	public $photo;
 
