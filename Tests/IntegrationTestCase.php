@@ -159,7 +159,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 	 */
 	private function getNodeText($selector, Crawler $crawler) {
 		try {
-			return $crawler->filter($selector)->text();
+			return $crawler->filter($selector)->text(null, true);
 		} catch (\InvalidArgumentException $e) {
 			$this->fail(sprintf("No node found for selector '%s'. Content:\n%s", $selector, static::$client->getResponse()->getContent()));
 		}
