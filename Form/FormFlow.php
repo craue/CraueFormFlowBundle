@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Validator\Constraints\GroupSequence;
+use Symfony\Component\Validator\Constraint;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -785,7 +786,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 		// add the generated step-based validation group, unless it's explicitly set to false, a closure, or a GroupSequence
 		if (!array_key_exists('validation_groups', $options)) {
-			$options['validation_groups'] = [$this->getValidationGroupPrefix() . $step];
+			$options['validation_groups'] = [Constraint::DEFAULT_GROUP, $this->getValidationGroupPrefix() . $step];
 		} else {
 			$vg = $options['validation_groups'];
 
