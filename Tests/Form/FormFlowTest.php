@@ -146,7 +146,7 @@ class FormFlowTest extends UnitTestCase {
 
 		$options = $flow->getFormOptions(1);
 
-		$this->assertEquals(['flow_createTopic_step1'], $options['validation_groups']);
+		$this->assertEquals(['Default', 'flow_createTopic_step1'], $options['validation_groups']);
 	}
 
 	public function testGetStepsDoneRemaining() {
