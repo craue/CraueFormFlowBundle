@@ -4,7 +4,7 @@ namespace Craue\FormFlowBundle\EventListener;
 
 use Craue\FormFlowBundle\Event\PreviousStepInvalidEvent;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Adds a validation error to the current step's form if revalidating previous steps failed.

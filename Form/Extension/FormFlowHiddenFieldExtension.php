@@ -23,7 +23,7 @@ class FormFlowHiddenFieldExtension extends AbstractTypeExtension {
 		return HiddenType::class;
 	}
 
-	public static function getExtendedTypes() {
+	public static function getExtendedTypes(): iterable {
 		return [HiddenType::class];
 	}
 
