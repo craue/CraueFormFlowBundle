@@ -2,6 +2,13 @@ parameters:
 	level: 5
 	paths:
 		- %currentWorkingDirectory%
+	autoload_files:
+		# TODO remove as soon as Symfony >= 4.2 is required
+		- %currentWorkingDirectory%/EventListener/FlowExpiredEventListener.php
+		- %currentWorkingDirectory%/EventListener/PreviousStepInvalidEventListener.php
+		# TODO remove as soon as Symfony >= 5.0 is required
+		- %currentWorkingDirectory%/Form/Extension/FormFlowFormExtension.php
+		- %currentWorkingDirectory%/Form/Extension/FormFlowHiddenFieldExtension.php
 	excludes_analyse:
 		- %currentWorkingDirectory%/Tests/*
 		- %currentWorkingDirectory%/vendor/*
@@ -15,10 +22,39 @@ parameters:
 			path: %currentWorkingDirectory%/Storage/SerializableFile.php
 		# TODO remove as soon as Symfony >= 4.1 is required
 		- '#^Parameter \#5 \$test of class Symfony\\Component\\HttpFoundation\\File\\UploadedFile constructor expects bool, null given\.$#'
-		# TODO remove as soon as Symfony >= 4.3 is required
+		# TODO remove as soon as Symfony >= 4.1 is required
 		-
-			message: '#^Method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\) invoked with 2 parameters, 1 required\.$#'
-			path: %currentWorkingDirectory%/Form/FormFlow.php
+			message: '#^Class Symfony\\Component\\HttpFoundation\\File\\UploadedFile constructor invoked with 6 parameters, 2-5 required\.$#'
+			path: %currentWorkingDirectory%/Storage/SerializableFile.php
+		# TODO remove as soon as Symfony >= 4.2 is required
+		-
+			message: '#^Property Craue\\FormFlowBundle\\EventListener\\Base(FlowExpired|PreviousStepInvalid)EventListener::\$translator has unknown class Symfony\\Component\\Translation\\TranslatorInterface as its type\.$#'
+			paths:
+				- %currentWorkingDirectory%/EventListener/FlowExpiredEventListener.php
+				- %currentWorkingDirectory%/EventListener/PreviousStepInvalidEventListener.php
+		# TODO remove as soon as Symfony >= 4.2 is required
+		-
+			message: '#^Parameter \$translator of method Craue\\FormFlowBundle\\EventListener\\(FlowExpired|PreviousStepInvalid)EventListener::setTranslator\(\) has invalid typehint type Symfony\\Component\\Translation\\TranslatorInterface\.$#'
+			paths:
+				- %currentWorkingDirectory%/EventListener/FlowExpiredEventListener.php
+				- %currentWorkingDirectory%/EventListener/PreviousStepInvalidEventListener.php
+		# TODO remove as soon as Symfony >= 4.2 is required
+		-
+			message: '#^Call to method trans\(\) on an unknown class Symfony\\Component\\Translation\\TranslatorInterface\.$#'
+			paths:
+				- %currentWorkingDirectory%/EventListener/FlowExpiredEventListener.php
+				- %currentWorkingDirectory%/EventListener/PreviousStepInvalidEventListener.php
+		# TODO remove as soon as Symfony >= 4.3 is required
 		-
 			message: '#^Parameter \#1 \$event of method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\) expects object, string given\.$#'
 			path: %currentWorkingDirectory%/Form/FormFlow.php
+		# TODO remove as soon as Symfony >= 4.3 is required
+		-
+			message: '#^Parameter \#2 \$eventName of method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\) expects string\|null, Craue\\FormFlowBundle\\Event\\FormFlowEvent given\.$#'
+			path: %currentWorkingDirectory%/Form/FormFlow.php
+		# TODO remove as soon as Symfony >= 5.0 is required
+		-
+			message: '#^Call to function method_exists\(\) with .+ and .+getExtendedTypes.+ will always evaluate to false\.$#'
+			paths:
+				- %currentWorkingDirectory%/Form/Extension/FormFlowFormExtension.php
+				- %currentWorkingDirectory%/Form/Extension/FormFlowHiddenFieldExtension.php

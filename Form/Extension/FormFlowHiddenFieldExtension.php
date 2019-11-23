@@ -9,12 +9,9 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @author Konstantin Myakshin <koc-dp@yandex.ru>
- * @author Christian Raue <christian.raue@gmail.com>
- * @copyright 2011-2019 Christian Raue
- * @license http://opensource.org/licenses/mit-license.php MIT License
+ * @internal
  */
-class FormFlowHiddenFieldExtension extends AbstractTypeExtension {
+abstract class BaseFormFlowHiddenFieldExtension extends AbstractTypeExtension {
 
 	/**
 	 * {@inheritDoc}
@@ -23,7 +20,7 @@ class FormFlowHiddenFieldExtension extends AbstractTypeExtension {
 		return HiddenType::class;
 	}
 
-	public static function getExtendedTypes() {
+	public static function _getExtendedTypes() {
 		return [HiddenType::class];
 	}
 
@@ -52,4 +49,31 @@ class FormFlowHiddenFieldExtension extends AbstractTypeExtension {
 		}
 	}
 
+}
+
+// TODO revert to one clean class definition as soon as Symfony >= 5.0 is required
+if (!method_exists(AbstractTypeExtension::class, 'getExtendedTypes')) {
+	/**
+	 * @author Konstantin Myakshin <koc-dp@yandex.ru>
+	 * @author Christian Raue <christian.raue@gmail.com>
+	 * @copyright 2011-2019 Christian Raue
+	 * @license http://opensource.org/licenses/mit-license.php MIT License
+	 */
+	class FormFlowHiddenFieldExtension extends BaseFormFlowHiddenFieldExtension {
+		public static function getExtendedTypes() {
+			return self::_getExtendedTypes();
+		}
+	}
+} else {
+	/**
+	 * @author Konstantin Myakshin <koc-dp@yandex.ru>
+	 * @author Christian Raue <christian.raue@gmail.com>
+	 * @copyright 2011-2019 Christian Raue
+	 * @license http://opensource.org/licenses/mit-license.php MIT License
+	 */
+	class FormFlowHiddenFieldExtension extends BaseFormFlowHiddenFieldExtension {
+		public static function getExtendedTypes() : iterable {
+			return self::_getExtendedTypes();
+		}
+	}
 }

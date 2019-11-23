@@ -3,8 +3,8 @@
 namespace Craue\FormFlowBundle\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Client;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\BrowserKit\AbstractBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 use Twig\Environment;
 
@@ -19,7 +19,8 @@ abstract class IntegrationTestCase extends WebTestCase {
 	const ENV_FLOWS_WITH_PARENT_SERVICE = 'flows_with_parent_service';
 
 	/**
-	 * @var Client|KernelBrowser|null
+	 * @var AbstractBrowser|Client|null
+	 * TODO remove Client type as soon as Symfony >= 4.3 is required
 	 */
 	protected static $client;
 
