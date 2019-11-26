@@ -34,7 +34,7 @@ abstract class BaseFlowExpiredEventListener {
 }
 
 // TODO revert to one clean class definition as soon as Symfony >= 4.2 is required
-if (interface_exists(TranslatorInterface::class)) {
+if (!interface_exists(LegacyTranslatorInterface::class)) {
 	/**
 	 * Adds a validation error to the current step's form if an expired flow is detected.
 	 *

@@ -28,6 +28,12 @@ parameters:
 			path: %currentWorkingDirectory%/Storage/SerializableFile.php
 		# TODO remove as soon as Symfony >= 4.2 is required
 		-
+			message: '#^Class Symfony\\Component\\Translation\\TranslatorInterface not found\.$#'
+			paths:
+				- %currentWorkingDirectory%/EventListener/FlowExpiredEventListener.php
+				- %currentWorkingDirectory%/EventListener/PreviousStepInvalidEventListener.php
+		# TODO remove as soon as Symfony >= 4.2 is required
+		-
 			message: '#^Property Craue\\FormFlowBundle\\EventListener\\Base(FlowExpired|PreviousStepInvalid)EventListener::\$translator has unknown class Symfony\\Component\\Translation\\TranslatorInterface as its type\.$#'
 			paths:
 				- %currentWorkingDirectory%/EventListener/FlowExpiredEventListener.php
