@@ -71,7 +71,7 @@ script:
   # run PHPUnit
   - phpdbg -qrr vendor/phpunit/phpunit/phpunit -v --coverage-clover build/logs/clover.xml
   # upload code coverage data
-  - travis_retry wget -q https://github.com/php-coveralls/php-coveralls/releases/download/v2.1.0/php-coveralls.phar && travis_retry php php-coveralls.phar -v
+  - if [ "${TRAVIS_REPO_SLUG}" = "craue/CraueFormFlowBundle" ]; then travis_retry wget -q https://github.com/php-coveralls/php-coveralls/releases/download/v2.2.0/php-coveralls.phar && travis_retry php php-coveralls.phar -v; fi;
 
 notifications:
   email:
