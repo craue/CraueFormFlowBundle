@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.0] – 2019-12-03
+
+- added support for Symfony 5.*
+- dropped support for Symfony 4.1
+
+[3.3.0]: https://github.com/craue/CraueFormFlowBundle/compare/3.2.1...3.3.0
+
 ## [3.2.1] – 2019-10-07
 
 - [#342]: fixed a Symfony Form deprecation
