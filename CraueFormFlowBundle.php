@@ -20,6 +20,7 @@ class CraueFormFlowBundle extends Bundle {
 		 * Removes all temporary files created while handling file uploads.
 		 * Use a shutdown function to clean up even in case of a fatal error.
 		 */
+		// TODO add void return type as soon as PHP >= 7.1 is required
 		register_shutdown_function(function() {
 			TempFileUtil::removeTempFiles();
 		});

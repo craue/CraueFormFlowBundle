@@ -57,7 +57,7 @@ class StepLabel {
 	 * @param string|callable|null $value
 	 * @param bool $callable
 	 */
-	private function __construct($value, $callable = false) {
+	private final function __construct($value, $callable = false) {
 		$this->setValue($value, $callable);
 	}
 

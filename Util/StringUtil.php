@@ -58,6 +58,8 @@ abstract class StringUtil {
 		if (preg_match('/([^\\\\]+?)(flow)?$/i', $fqcn, $matches)) {
 			return lcfirst(preg_replace('/([A-Z]+)([A-Z][a-z])/', '\\1\\2', $matches[1]));
 		}
+
+		return null;
 	}
 
 }
