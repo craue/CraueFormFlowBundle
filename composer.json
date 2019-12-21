@@ -1,6 +1,5 @@
 {
 	"name": "craue/formflow-bundle",
-	"type": "symfony-bundle",
 	"description": "Multi-step forms for your Symfony project.",
 	"keywords": ["form", "wizard", "step", "symfony"],
 	"homepage": "https://github.com/craue/CraueFormFlowBundle",
