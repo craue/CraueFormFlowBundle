@@ -12,7 +12,7 @@ use Craue\FormFlowBundle\Twig\Extension\FormFlowExtension;
  * @group unit
  *
  * @author Christian Raue <christian.raue@gmail.com>
- * @copyright 2011-2019 Christian Raue
+ * @copyright 2011-2020 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class FormFlowExtensionBcMethodsTest extends UnitTestCase {

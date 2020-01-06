@@ -11,7 +11,7 @@ if (Kernel::VERSION_ID < 40300) {
 	// TODO remove as soon as Symfony >= 4.3 is required
 	/**
 	 * @author Christian Raue <christian.raue@gmail.com>
-	 * @copyright 2011-2019 Christian Raue
+	 * @copyright 2011-2020 Christian Raue
 	 * @license http://opensource.org/licenses/mit-license.php MIT License
 	 */
 	abstract class FormFlowEvent extends LegacyEvent {
@@ -20,7 +20,7 @@ if (Kernel::VERSION_ID < 40300) {
 } else {
 	/**
 	 * @author Christian Raue <christian.raue@gmail.com>
-	 * @copyright 2011-2019 Christian Raue
+	 * @copyright 2011-2020 Christian Raue
 	 * @license http://opensource.org/licenses/mit-license.php MIT License
 	 */
 	abstract class FormFlowEvent extends Event {

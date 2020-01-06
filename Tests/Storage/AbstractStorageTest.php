@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
  * @group unit
  *
  * @author Christian Raue <christian.raue@gmail.com>
- * @copyright 2011-2019 Christian Raue
+ * @copyright 2011-2020 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 abstract class AbstractStorageTest extends TestCase {
