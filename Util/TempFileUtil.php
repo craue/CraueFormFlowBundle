@@ -28,7 +28,7 @@ abstract class TempFileUtil {
 	public static function removeTempFiles() {
 		foreach (self::$tempFiles as $tempFile) {
 			if (is_file($tempFile)) {
-				unlink($tempFile);
+				@unlink($tempFile);
 			}
 		}
 
