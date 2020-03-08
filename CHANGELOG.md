@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.3.1] – 2020-03-08
+
+- avoid warnings while cleaning up temporary files
+
+[3.3.1]: https://github.com/craue/CraueFormFlowBundle/compare/3.3.0...3.3.1
+
 ## [3.3.0] – 2019-12-03
 
 - added support for Symfony 5.*
