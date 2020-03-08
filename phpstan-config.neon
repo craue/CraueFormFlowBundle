@@ -12,9 +12,10 @@ parameters:
 	excludes_analyse:
 		- Tests/*
 		- vendor/*
+	treatPhpDocTypesAsCertain: false
 	ignoreErrors:
 		-
-			message: '#^Result of || is always true\.$#'
+			message: '#^Unsafe usage of new static\(\)\.$#'
 			path: Form/Step.php
 		# TODO remove as soon as PHP >= 7.1 is required
 		-
