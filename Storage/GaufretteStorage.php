@@ -55,6 +55,10 @@ class GaufretteStorage
         }
     }
 
+    public function hasFile(string $filesystem, string $fileName)
+    {
+        return $this->getFilesystem($filesystem)->has($fileName);
+    }
 
     /**
      * Get filesystem adapter from the property mapping.
@@ -68,7 +72,7 @@ class GaufretteStorage
 
     /**
      * Generates random name
-     * @todo May we can improve this by setting the extension on the random name
+     * TODO May we can improve this by setting the extension on the random name
      * @return string|string[]
      */
     private function generateRandomName()

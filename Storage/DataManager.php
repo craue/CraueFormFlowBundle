@@ -69,7 +69,10 @@ class DataManager implements ExtendedDataManagerInterface {
                     }
                 }else{
                     if (GaufretteFile::isSupported($value)) {
-                        $fileName = $this->gaufretteStorage->doUpload($flow->getGaufretteFilesystem(), $value);
+                        $fileName = $value->getClientOriginalName();
+                        if(!$this->gaufretteStorage->hasFile($flow->getGaufretteFilesystem(), $fileName)){
+                            $fileName = $this->gaufretteStorage->doUpload($flow->getGaufretteFilesystem(), $value);
+                        }
                         $value = new GaufretteFile($fileName, $value);
                     }
                 }
@@ -140,14 +143,6 @@ class DataManager implements ExtendedDataManagerInterface {
 		$savedFlows = $this->storage->get(DataManagerInterface::STORAGE_ROOT, []);
 
 		// remove data for only this flow instance
-        foreach($savedFlows[$flow->getName()][$flow->getInstanceId()] as $value) {
-            if ($flow->isHandleFileUploadsWithGaufrette()) {
-                if ($value instanceof GaufretteFile) {
-                    $fileName = $value->getFileName();
-                    $this->gaufretteStorage->doRemove($flow->getGaufretteFilesystem(), $fileName);
-                }
-            }
-        };
         unset($savedFlows[$flow->getName()][$flow->getInstanceId()]);
 
 		$this->storage->set(DataManagerInterface::STORAGE_ROOT, $savedFlows);

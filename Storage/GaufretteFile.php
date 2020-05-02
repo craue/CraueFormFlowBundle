@@ -21,7 +21,6 @@ class GaufretteFile
      */
     private $fileName;
 
-    private $clientOriginalName;
     private $clientMimeType;
 
     /**
@@ -37,8 +36,7 @@ class GaufretteFile
         //Filename of uploaded file with Gaufrette
         $this->fileName = $filename;
 
-        //Keep client original name and mime type
-        $this->clientOriginalName = $originalFile->getClientOriginalName();
+        //Keep client original mime type
         $this->clientMimeType = $originalFile->getClientMimeType();
     }
 
@@ -58,10 +56,10 @@ class GaufretteFile
         // avoid a deprecation notice regarding "passing a size as 4th argument to the constructor"
         // TODO remove as soon as Symfony >= 4.1 is required
         if (property_exists(UploadedFile::class, 'size')) {
-            return new UploadedFile($tempFile, $this->clientOriginalName, $this->clientMimeType, null, null, true);
+            return new UploadedFile($tempFile, $this->fileName, $this->clientMimeType, null, null, true);
         }
 
-        return new UploadedFile($tempFile, $this->clientOriginalName, $this->clientMimeType, null, true);
+        return new UploadedFile($tempFile, $this->fileName, $this->clientMimeType, null, true);
     }
 
     public function getFileName() {
