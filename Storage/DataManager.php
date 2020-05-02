@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Storage;
 
 use Craue\FormFlowBundle\Form\FormFlowInterface;
+use Gaufrette\File;
 
 /**
  * Manages data of flows and their steps.
@@ -115,8 +116,9 @@ class DataManager implements ExtendedDataManagerInterface {
                 }else{
                     if ($value instanceof GaufretteFile) {
                         $downloadedFile = $this->gaufretteStorage->doDownload($flow->getGaufretteFilesystem(), $value);
-                        $this->gaufretteStorage->doRemove($flow->getGaufretteFilesystem(), $value);
+                        $fileName = $value->getFileName();
                         $value = $value->getAsUploadedFile($downloadedFile);
+                        $this->gaufretteStorage->doRemove($flow->getGaufretteFilesystem(), $fileName);
                     }
                 }
 
