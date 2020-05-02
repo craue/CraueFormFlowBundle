@@ -66,6 +66,16 @@ interface FormFlowInterface {
 	 */
 	function getHandleFileUploadsTempDir();
 
+    /**
+     * @var bool If file uploads should be handled with Gaufrette
+     */
+    function isHandleFileUploadsWithGaufrette();
+
+    /**
+     * @return string|null Filesystem that Gaufrette will use
+     */
+    function getGaufretteFilesystem();
+
 	/**
 	 * @return bool
 	 */
