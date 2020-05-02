@@ -12,6 +12,7 @@
 	<parameters>
 		<parameter key="craue.form.flow.class">Craue\FormFlowBundle\Form\FormFlow</parameter>
 		<parameter key="craue.form.flow.storage.class">Craue\FormFlowBundle\Storage\SessionStorage</parameter>
+		<parameter key="craue.form.flow.gaufrette_storage.class">Craue\FormFlowBundle\Storage\GaufretteStorage</parameter>
 		<parameter key="craue.form.flow.event_listener.previous_step_invalid.class">Craue\FormFlowBundle\EventListener\PreviousStepInvalidEventListener</parameter>
 		<parameter key="craue.form.flow.event_listener.previous_step_invalid.event" type="constant">Craue\FormFlowBundle\Form\FormFlowEvents::PREVIOUS_STEP_INVALID</parameter>
 		<parameter key="craue.form.flow.event_listener.flow_expired.class">Craue\FormFlowBundle\EventListener\FlowExpiredEventListener</parameter>
@@ -25,8 +26,15 @@
 
 		<service id="craue.form.flow.storage" alias="craue.form.flow.storage_default" public="true" />
 
+		<service id="craue.form.flow.gaufrette_storage_default" class="%craue.form.flow.gaufrette_storage.class%" public="false">
+			<argument type="service" id="knp_gaufrette.filesystem_map" />
+		</service>
+
+		<service id="craue.form.flow.gaufrette_storage" alias="craue.form.flow.gaufrette_storage_default" public="true" />
+
 		<service id="craue.form.flow.data_manager_default" class="Craue\FormFlowBundle\Storage\DataManager" public="false">
 			<argument type="service" id="craue.form.flow.storage" />
+			<argument type="service" id="craue.form.flow.gaufrette_storage" />
 		</service>
 
 		<service id="craue.form.flow.data_manager" alias="craue.form.flow.data_manager_default" />
