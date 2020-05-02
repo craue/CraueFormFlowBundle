@@ -107,10 +107,19 @@ class DataManager implements ExtendedDataManagerInterface {
 		// handle file uploads
 		if ($flow->isHandleFileUploads()) {
 			$tempDir = $flow->getHandleFileUploadsTempDir();
-			array_walk_recursive($data, function(&$value, $key) use ($tempDir) {
-				if ($value instanceof SerializableFile) {
-					$value = $value->getAsFile($tempDir);
-				}
+			array_walk_recursive($data, function(&$value, $key) use ($flow, $tempDir) {
+                if(!$flow->isHandleFileUploadsWithGaufrette()){
+                    if ($value instanceof SerializableFile) {
+                        $value = $value->getAsFile($tempDir);
+                    }
+                }else{
+                    if ($value instanceof GaufretteFile) {
+                        $downloadedFile = $this->gaufretteStorage->doDownload($flow->getGaufretteFilesystem(), $value);
+                        $value = $value->getAsUploadedFile($downloadedFile);
+                        $this->gaufretteStorage->doRemove($flow->getGaufretteFilesystem(), $value);
+                    }
+                }
+
 			});
 		}
 

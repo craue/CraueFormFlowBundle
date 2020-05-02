@@ -28,7 +28,7 @@ class GaufretteStorage
     public function doUpload(string $filesystem, UploadedFile $file)
     {
         $filesystem = $this->getFilesystem($filesystem);
-        $randomName = $this->generateRandomName($file->getExtension());
+        $randomName = $this->generateRandomName();
 
         if ($filesystem->getAdapter() instanceof MetadataSupporter) {
             $filesystem->getAdapter()->setMetadata($randomName, ['contentType' => $file->getMimeType()]);
@@ -38,12 +38,18 @@ class GaufretteStorage
         return $randomName;
     }
 
-    public function doRemove(string $filesystem, string $name)
+    public function doDownload(string $filesystem, GaufretteFile $gaufretteFile)
+    {
+        $filesystem = $this->getFilesystem($filesystem);
+        return $filesystem->get($gaufretteFile->getFileName());
+    }
+
+    public function doRemove(string $filesystem, GaufretteFile $gaufretteFile)
     {
         $filesystem = $this->getFilesystem($filesystem);
 
         try {
-            return $filesystem->delete($name);
+            return $filesystem->delete($gaufretteFile->getFileName());
         } catch (FileNotFound $e) {
             return false;
         }
@@ -62,12 +68,11 @@ class GaufretteStorage
 
     /**
      * Generates random name
-     * @param string $extension
+     * @todo May we can improve this by setting the extension on the random name
      * @return string|string[]
      */
-    private function generateRandomName(string $extension)
+    private function generateRandomName()
     {
-        $name = str_replace('.', '', \uniqid('', true));
-        return sprintf('%s.%s', $name, $extension);
+        return str_replace('.', '', \uniqid('', true));
     }
 }
