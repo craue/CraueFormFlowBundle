@@ -68,7 +68,8 @@ class DataManager implements ExtendedDataManagerInterface {
                     }
                 }else{
                     if (GaufretteFile::isSupported($value)) {
-                        $value = new GaufretteFile($this->gaufretteStorage, $flow->getGaufretteFilesystem(), $value);
+                        $fileName = $this->gaufretteStorage->doUpload($flow->getGaufretteFilesystem(), $value);
+                        $value = new GaufretteFile($fileName, $value);
                     }
                 }
             });

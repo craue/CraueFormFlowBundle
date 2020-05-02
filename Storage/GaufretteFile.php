@@ -14,9 +14,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class GaufretteFile
 {
-
-    private $gaufretteStorage;
-
     /**
      * @var string Name of the file provided by Gaufrette on upload
      */
@@ -26,23 +23,21 @@ class GaufretteFile
     private $clientMimeType;
 
     /**
-     * @param GaufretteStorage $gaufretteStorage
-     * @param string $filesystem
-     * @param mixed $file An object meant to be serialized.
+     * @param string $filename
+     * @param $originalFile
      */
-    public function __construct(GaufretteStorage $gaufretteStorage, string $filesystem, $file)
+    public function __construct(string $filename, $originalFile)
     {
-        if (!self::isSupported($file)) {
-            throw new InvalidTypeException($file, UploadedFile::class);
+        if (!self::isSupported($originalFile)) {
+            throw new InvalidTypeException($originalFile, UploadedFile::class);
         }
 
-        //Upload file with Gaufrette
-        $this->gaufretteStorage = $gaufretteStorage;
-        $this->fileName = $this->gaufretteStorage->doUpload($filesystem, $file);
+        //Filename of uploaded file with Gaufrette
+        $this->fileName = $filename;
 
         //Keep client original name and mime type
-        $this->clientOriginalName = $file->getClientOriginalName();
-        $this->clientMimeType = $file->getClientMimeType();
+        $this->clientOriginalName = $originalFile->getClientOriginalName();
+        $this->clientMimeType = $originalFile->getClientMimeType();
     }
 
     /**
