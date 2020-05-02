@@ -34,11 +34,18 @@ class DataManager implements ExtendedDataManagerInterface {
 	 */
 	private $storage;
 
-	/**
-	 * @param StorageInterface $storage
-	 */
-	public function __construct(StorageInterface $storage) {
+    /**
+     * @var GaufretteStorage
+     */
+	private $gaufretteStorage;
+
+    /**
+     * @param StorageInterface $storage
+     * @param GaufretteStorage $gaufretteStorage
+     */
+	public function __construct(StorageInterface $storage, GaufretteStorage $gaufretteStorage) {
 		$this->storage = $storage;
+		$this->gaufretteStorage = $gaufretteStorage;
 	}
 
 	/**
@@ -54,11 +61,17 @@ class DataManager implements ExtendedDataManagerInterface {
 	public function save(FormFlowInterface $flow, array $data) {
 		// handle file uploads
 		if ($flow->isHandleFileUploads()) {
-			array_walk_recursive($data, function(&$value, $key) {
-				if (SerializableFile::isSupported($value)) {
-					$value = new SerializableFile($value);
-				}
-			});
+            array_walk_recursive($data, function(&$value, $key) use ($flow) {
+                if(!$flow->isHandleFileUploadsWithGaufrette()){
+                    if (SerializableFile::isSupported($value)) {
+                        $value = new SerializableFile($value);
+                    }
+                }else{
+                    if (GaufretteFile::isSupported($value)) {
+                        $value = new GaufretteFile($this->gaufretteStorage, $flow->getGaufretteFilesystem(), $value);
+                    }
+                }
+            });
 		}
 
 		// drop old data
