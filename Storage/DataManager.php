@@ -115,8 +115,8 @@ class DataManager implements ExtendedDataManagerInterface {
                 }else{
                     if ($value instanceof GaufretteFile) {
                         $downloadedFile = $this->gaufretteStorage->doDownload($flow->getGaufretteFilesystem(), $value);
-                        $value = $value->getAsUploadedFile($downloadedFile);
                         $this->gaufretteStorage->doRemove($flow->getGaufretteFilesystem(), $value);
+                        $value = $value->getAsUploadedFile($downloadedFile);
                     }
                 }
 
