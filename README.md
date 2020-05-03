@@ -588,6 +588,23 @@ class CreateVehicleFlow extends FormFlow {
 }
 ```
 
+File uploads can be handled by Gaufrette, a library that provides a filesystem abstraction layer.This can be very useful when yo dou a cluster deployment or you store sessions on Redis.
+Just define a Gaufrette filesystem and add this 2 lines:
+
+```php
+// in src/MyCompany/MyBundle/Form/CreateVehicleFlow.php
+class CreateVehicleFlow extends FormFlow {
+
+    protected $handleFileUploadsWithGaufrette = true;
+    protected $gaufretteFilesystem = 'tmp_uploads';
+
+	// ...
+
+}
+```
+More info here:  
+https://github.com/KnpLabs/KnpGaufretteBundle#configuring-the-filesystems
+
 ## Enabling redirect after submit
 
 This feature will allow performing a redirect after submitting a step to load the page containing the next step using a GET request.
