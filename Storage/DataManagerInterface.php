@@ -21,10 +21,10 @@ interface DataManagerInterface {
 	 */
 	function getStorage();
 
-    /**
-     * @return GaufretteStorage
-     */
-    function getGaufretteStorage();
+	/**
+	 * @return GaufretteStorage
+	 */
+	function getGaufretteStorage();
 
 	/**
 	 * Saves data of the given flow.
@@ -47,12 +47,12 @@ interface DataManagerInterface {
 	 */
 	function load(FormFlowInterface $flow);
 
-    /**
-     * Cleanups Gaufrette temp data of the given flow.
-     * @param FormFlowInterface $flow
-     * @return bool
-     */
-    function cleanup(FormFlowInterface $flow);
+	/**
+	 * Cleanups Gaufrette temp data of the given flow.
+	 * @param FormFlowInterface $flow
+	 * @return bool
+	 */
+	function cleanup(FormFlowInterface $flow);
 
 	/**
 	 * Drops data of the given flow.

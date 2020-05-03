@@ -73,12 +73,12 @@ abstract class FormFlow implements FormFlowInterface {
     /**
      * @var bool If file uploads should be handled with Gaufrette
      */
-    protected $handleFileUploadsWithGaufrette = false;
+	protected $handleFileUploadsWithGaufrette = false;
 
     /**
      * @var string Filesystem that Gaufrette will use
      */
-    protected $gaufretteFilesystem = null;
+	protected $gaufretteFilesystem = null;
 
 	/**
 	 * @var string|null Directory for storing temporary files while handling uploads. If <code>null</code>, the system's default will be used.
@@ -394,24 +394,19 @@ abstract class FormFlow implements FormFlowInterface {
 		return $this->handleFileUploadsTempDir;
 	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public function isHandleFileUploadsWithGaufrette() {
-        return $this->handleFileUploadsWithGaufrette;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isHandleFileUploadsWithGaufrette() {
+		return $this->handleFileUploadsWithGaufrette;
+	}
 
-    public function setGaufretteFilesystem($gaufretteFilesystem) {
-        $this->gaufretteFilesystem = $gaufretteFilesystem !== null ? (string) $gaufretteFilesystem : null;
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getGaufretteFilesystem() {
-        return $this->gaufretteFilesystem;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getGaufretteFilesystem() {
+		return $this->gaufretteFilesystem;
+	}
 
 	public function setAllowRedirectAfterSubmit($allowRedirectAfterSubmit) {
 		$this->allowRedirectAfterSubmit = (bool) $allowRedirectAfterSubmit;
@@ -488,9 +483,9 @@ abstract class FormFlow implements FormFlowInterface {
 	 * {@inheritDoc}
 	 */
 	public function reset() {
-        if(!empty($this->currentStepNumber) && $this->getCurrentStepNumber() >= $this->getLastStepNumber()){
-            $this->getDataManager()->cleanup($this);
-        }
+		if(!empty($this->currentStepNumber) && $this->getCurrentStepNumber() >= $this->getLastStepNumber()){
+			$this->getDataManager()->cleanup($this);
+		}
 
 		$this->dataManager->drop($this);
 		$this->currentStepNumber = $this->getFirstStepNumber();

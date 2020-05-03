@@ -35,15 +35,15 @@ class DataManager implements ExtendedDataManagerInterface {
 	 */
 	private $storage;
 
-    /**
-     * @var GaufretteStorage
-     */
+	/**
+	 * @var GaufretteStorage
+	 */
 	private $gaufretteStorage;
 
-    /**
-     * @param StorageInterface $storage
-     * @param GaufretteStorage $gaufretteStorage
-     */
+	/**
+	 * @param StorageInterface $storage
+	 * @param GaufretteStorage $gaufretteStorage
+	 */
 	public function __construct(StorageInterface $storage, GaufretteStorage $gaufretteStorage) {
 		$this->storage = $storage;
 		$this->gaufretteStorage = $gaufretteStorage;
@@ -56,12 +56,12 @@ class DataManager implements ExtendedDataManagerInterface {
 		return $this->storage;
 	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getGaufretteStorage() {
-        return $this->gaufretteStorage;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getGaufretteStorage() {
+		return $this->gaufretteStorage;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -69,21 +69,21 @@ class DataManager implements ExtendedDataManagerInterface {
 	public function save(FormFlowInterface $flow, array $data) {
 		// handle file uploads
 		if ($flow->isHandleFileUploads()) {
-            array_walk_recursive($data, function(&$value, $key) use ($flow) {
-                if(!$flow->isHandleFileUploadsWithGaufrette()){
-                    if (SerializableFile::isSupported($value)) {
-                        $value = new SerializableFile($value);
-                    }
-                }else{
-                    if (GaufretteFile::isSupported($value)) {
-                        $fileName = $value->getClientOriginalName();
-                        if(!$this->gaufretteStorage->hasFile($flow->getGaufretteFilesystem(), $fileName)){
-                            $fileName = $this->gaufretteStorage->doUpload($flow->getGaufretteFilesystem(), $value);
-                        }
-                        $value = new GaufretteFile($fileName, $value);
-                    }
-                }
-            });
+			array_walk_recursive($data, function(&$value, $key) use ($flow) {
+				if(!$flow->isHandleFileUploadsWithGaufrette()){
+					if (SerializableFile::isSupported($value)) {
+						$value = new SerializableFile($value);
+					}
+				}else{
+					if (GaufretteFile::isSupported($value)) {
+						$fileName = $value->getClientOriginalName();
+						if(!$this->gaufretteStorage->hasFile($flow->getGaufretteFilesystem(), $fileName)){
+							$fileName = $this->gaufretteStorage->doUpload($flow->getGaufretteFilesystem(), $value);
+						}
+						$value = new GaufretteFile($fileName, $value);
+					}
+				}
+			});
 		}
 
 		// drop old data
@@ -119,16 +119,16 @@ class DataManager implements ExtendedDataManagerInterface {
 		if ($flow->isHandleFileUploads()) {
 			$tempDir = $flow->getHandleFileUploadsTempDir();
 			array_walk_recursive($data, function(&$value, $key) use ($flow, $tempDir) {
-                if(!$flow->isHandleFileUploadsWithGaufrette()){
-                    if ($value instanceof SerializableFile) {
-                        $value = $value->getAsFile($tempDir);
-                    }
-                }else{
-                    if ($value instanceof GaufretteFile) {
-                        $downloadedFile = $this->gaufretteStorage->doDownload($flow->getGaufretteFilesystem(), $value);
-                        $value = $value->getAsUploadedFile($downloadedFile);
-                    }
-                }
+				if(!$flow->isHandleFileUploadsWithGaufrette()){
+					if ($value instanceof SerializableFile) {
+						$value = $value->getAsFile($tempDir);
+					}
+				}else{
+					if ($value instanceof GaufretteFile) {
+						$downloadedFile = $this->gaufretteStorage->doDownload($flow->getGaufretteFilesystem(), $value);
+						$value = $value->getAsUploadedFile($downloadedFile);
+					}
+				}
 			});
 		}
 
@@ -143,29 +143,29 @@ class DataManager implements ExtendedDataManagerInterface {
 		return isset($savedFlows[$flow->getName()][$flow->getInstanceId()][self::DATA_KEY]);
 	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public function cleanup(FormFlowInterface $flow) {
-        $data = [];
+	/**
+	 * {@inheritDoc}
+	 */
+	public function cleanup(FormFlowInterface $flow) {
+		$data = [];
 
-        // try to find data for the given flow
-        $savedFlows = $this->storage->get(DataManagerInterface::STORAGE_ROOT, []);
-        if (isset($savedFlows[$flow->getName()][$flow->getInstanceId()][self::DATA_KEY])) {
-            $data = $savedFlows[$flow->getName()][$flow->getInstanceId()][self::DATA_KEY];
-        }
+		// try to find data for the given flow
+		$savedFlows = $this->storage->get(DataManagerInterface::STORAGE_ROOT, []);
+		if (isset($savedFlows[$flow->getName()][$flow->getInstanceId()][self::DATA_KEY])) {
+			$data = $savedFlows[$flow->getName()][$flow->getInstanceId()][self::DATA_KEY];
+		}
 
-        // handle file uploads
-        if ($flow->isHandleFileUploads()) {
-            array_walk_recursive($data, function(&$value, $key) use ($flow) {
-                if($flow->isHandleFileUploadsWithGaufrette()){
-                    if ($value instanceof GaufretteFile) {
-                        $this->gaufretteStorage->doRemove($flow->getGaufretteFilesystem(), $value);
-                    }
-                }
-            });
-        }
-    }
+		// look for Gaufrette files to cleanup
+		if ($flow->isHandleFileUploads()) {
+			array_walk_recursive($data, function(&$value, $key) use ($flow) {
+				if($flow->isHandleFileUploadsWithGaufrette()){
+					if ($value instanceof GaufretteFile) {
+						$this->gaufretteStorage->doRemove($flow->getGaufretteFilesystem(), $value);
+					}
+				}
+			});
+		}
+	}
 
 	/**
 	 * {@inheritDoc}
