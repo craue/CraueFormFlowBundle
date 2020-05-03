@@ -143,6 +143,30 @@ class DataManager implements ExtendedDataManagerInterface {
 		return isset($savedFlows[$flow->getName()][$flow->getInstanceId()][self::DATA_KEY]);
 	}
 
+    /**
+     * {@inheritDoc}
+     */
+    public function cleanup(FormFlowInterface $flow) {
+        $data = [];
+
+        // try to find data for the given flow
+        $savedFlows = $this->storage->get(DataManagerInterface::STORAGE_ROOT, []);
+        if (isset($savedFlows[$flow->getName()][$flow->getInstanceId()][self::DATA_KEY])) {
+            $data = $savedFlows[$flow->getName()][$flow->getInstanceId()][self::DATA_KEY];
+        }
+
+        // handle file uploads
+        if ($flow->isHandleFileUploads()) {
+            array_walk_recursive($data, function(&$value, $key) use ($flow) {
+                if($flow->isHandleFileUploadsWithGaufrette()){
+                    if ($value instanceof GaufretteFile) {
+                        $this->gaufretteStorage->doRemove($flow->getGaufretteFilesystem(), $value);
+                    }
+                }
+            });
+        }
+    }
+
 	/**
 	 * {@inheritDoc}
 	 */

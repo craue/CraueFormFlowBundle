@@ -44,12 +44,12 @@ class GaufretteStorage
         return $filesystem->get($gaufretteFile->getFileName());
     }
 
-    public function doRemove(string $filesystem, string $fileName)
+    public function doRemove(string $filesystem, GaufretteFile $gaufretteFile)
     {
         $filesystem = $this->getFilesystem($filesystem);
 
         try {
-            return $filesystem->delete($fileName);
+            return $filesystem->delete($gaufretteFile->getFileName());
         } catch (FileNotFound $e) {
             return false;
         }

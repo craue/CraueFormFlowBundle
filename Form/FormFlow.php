@@ -488,6 +488,10 @@ abstract class FormFlow implements FormFlowInterface {
 	 * {@inheritDoc}
 	 */
 	public function reset() {
+        if(!empty($this->currentStepNumber) && $this->getCurrentStepNumber() >= $this->getLastStepNumber()){
+            $this->getDataManager()->cleanup($this);
+        }
+
 		$this->dataManager->drop($this);
 		$this->currentStepNumber = $this->getFirstStepNumber();
 		$this->newInstance = true;
