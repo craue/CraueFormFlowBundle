@@ -21,6 +21,11 @@ interface DataManagerInterface {
 	 */
 	function getStorage();
 
+    /**
+     * @return GaufretteStorage
+     */
+    function getGaufretteStorage();
+
 	/**
 	 * Saves data of the given flow.
 	 * @param FormFlowInterface $flow

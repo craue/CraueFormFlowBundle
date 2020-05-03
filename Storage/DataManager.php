@@ -56,6 +56,13 @@ class DataManager implements ExtendedDataManagerInterface {
 		return $this->storage;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getGaufretteStorage() {
+        return $this->gaufretteStorage;
+    }
+
 	/**
 	 * {@inheritDoc}
 	 */
