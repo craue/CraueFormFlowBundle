@@ -174,7 +174,7 @@ class DataManager implements ExtendedDataManagerInterface {
 		$savedFlows = $this->storage->get(DataManagerInterface::STORAGE_ROOT, []);
 
 		// remove data for only this flow instance
-        unset($savedFlows[$flow->getName()][$flow->getInstanceId()]);
+		unset($savedFlows[$flow->getName()][$flow->getInstanceId()]);
 
 		$this->storage->set(DataManagerInterface::STORAGE_ROOT, $savedFlows);
 	}
