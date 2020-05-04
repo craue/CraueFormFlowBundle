@@ -22,21 +22,11 @@ parameters:
 			message: '#^Parameter \#1 \$function of function register_shutdown_function expects callable\(\): void, Closure\(\): mixed given\.$#'
 			path: CraueFormFlowBundle.php
 		# TODO remove as soon as Symfony >= 4.1 is required
-		-
-			message: '#^Call to function property_exists\(\) with .+ and .size. will always evaluate to false\.$#'
-			path: Storage/SerializableFile.php
-		# TODO remove as soon as Symfony >= 4.1 is required
 		- '#^Parameter \#5 \$test of class Symfony\\Component\\HttpFoundation\\File\\UploadedFile constructor expects bool, null given\.$#'
 		# TODO remove as soon as Symfony >= 4.1 is required
 		-
 			message: '#^Class Symfony\\Component\\HttpFoundation\\File\\UploadedFile constructor invoked with 6 parameters, 2-5 required\.$#'
 			path: Storage/SerializableFile.php
-		# TODO remove as soon as Symfony >= 4.2 is required
-		-
-			message: '#^Class Symfony\\Component\\Translation\\TranslatorInterface not found\.$#'
-			paths:
-				- EventListener/FlowExpiredEventListener.php
-				- EventListener/PreviousStepInvalidEventListener.php
 		# TODO remove as soon as Symfony >= 4.2 is required
 		-
 			message: '#^Property Craue\\FormFlowBundle\\EventListener\\Base(FlowExpired|PreviousStepInvalid)EventListener::\$translator has unknown class Symfony\\Component\\Translation\\TranslatorInterface as its type\.$#'
