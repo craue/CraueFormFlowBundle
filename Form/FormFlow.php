@@ -11,6 +11,7 @@ use Craue\FormFlowBundle\Event\PostBindSavedDataEvent;
 use Craue\FormFlowBundle\Event\PostValidateEvent;
 use Craue\FormFlowBundle\Event\PreBindEvent;
 use Craue\FormFlowBundle\Event\PreviousStepInvalidEvent;
+use Craue\FormFlowBundle\Exception\AllStepsSkippedException;
 use Craue\FormFlowBundle\Exception\InvalidTypeException;
 use Craue\FormFlowBundle\Storage\DataManagerInterface;
 use Craue\FormFlowBundle\Util\StringUtil;
@@ -429,10 +430,11 @@ abstract class FormFlow implements FormFlowInterface {
 	/**
 	 * @param int $stepNumber Assumed step to which skipped steps shall be applied to.
 	 * @param int $direction Either 1 (to skip forwards) or -1 (to skip backwards).
+	 * @param int $boundsReached Internal counter to avoid endlessly bouncing back and forth.
 	 * @return int Target step number with skipping applied.
 	 * @throws \InvalidArgumentException If the value of <code>$direction</code> is invalid.
 	 */
-	protected function applySkipping($stepNumber, $direction = 1) {
+	protected function applySkipping($stepNumber, $direction = 1, $boundsReached = 0) {
 		if ($direction !== 1 && $direction !== -1) {
 			throw new \InvalidArgumentException(sprintf('Argument of either -1 or 1 expected, "%s" given.', $direction));
 		}
@@ -445,11 +447,17 @@ abstract class FormFlow implements FormFlowInterface {
 			// change direction if outer bounds are reached
 			if ($direction === 1 && $stepNumber > $this->getStepCount()) {
 				$direction = -1;
+				++$boundsReached;
 			} elseif ($direction === -1 && $stepNumber < 1) {
 				$direction = 1;
+				++$boundsReached;
 			}
 
-			return $this->applySkipping($stepNumber, $direction);
+			if ($boundsReached > 2) {
+				throw new AllStepsSkippedException();
+			}
+
+			return $this->applySkipping($stepNumber, $direction, $boundsReached);
 		}
 
 		return $stepNumber;

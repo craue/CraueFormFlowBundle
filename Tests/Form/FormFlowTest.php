@@ -674,6 +674,29 @@ class FormFlowTest extends UnitTestCase {
 	}
 
 	/**
+	 * @expectedException Craue\FormFlowBundle\Exception\AllStepsSkippedException
+	 * @expectedExceptionMessage All steps are marked as skipped. Please check the flow to make sure at least one step is not skipped.
+	 */
+	public function testApplySkipping_bouncing() {
+		$flow = $this->getFlowWithMockedMethods(['loadStepsConfig']);
+
+		$flow
+			->expects($this->once())
+			->method('loadStepsConfig')
+			->will($this->returnValue([
+				[
+					'skip' => true,
+				],
+			]))
+		;
+
+		$method = new \ReflectionMethod($flow, 'applySkipping');
+		$method->setAccessible(true);
+
+		$method->invoke($flow, 1);
+	}
+
+	/**
 	 * @dataProvider dataGetStep_invalidArguments
 	 * @expectedException \Craue\FormFlowBundle\Exception\InvalidTypeException
 	 */
