@@ -70,6 +70,16 @@ abstract class FormFlow implements FormFlowInterface {
 	 */
 	protected $handleFileUploads = true;
 
+    /**
+     * @var bool If file uploads should be handled with Gaufrette
+     */
+	protected $handleFileUploadsWithGaufrette = false;
+
+    /**
+     * @var string Filesystem that Gaufrette will use
+     */
+	protected $gaufretteFilesystem = null;
+
 	/**
 	 * @var string|null Directory for storing temporary files while handling uploads. If <code>null</code>, the system's default will be used.
 	 */
@@ -384,6 +394,20 @@ abstract class FormFlow implements FormFlowInterface {
 		return $this->handleFileUploadsTempDir;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isHandleFileUploadsWithGaufrette() {
+		return $this->handleFileUploadsWithGaufrette;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getGaufretteFilesystem() {
+		return $this->gaufretteFilesystem;
+	}
+
 	public function setAllowRedirectAfterSubmit($allowRedirectAfterSubmit) {
 		$this->allowRedirectAfterSubmit = (bool) $allowRedirectAfterSubmit;
 	}
@@ -459,6 +483,10 @@ abstract class FormFlow implements FormFlowInterface {
 	 * {@inheritDoc}
 	 */
 	public function reset() {
+		if(!empty($this->currentStepNumber) && $this->getCurrentStepNumber() >= $this->getLastStepNumber()){
+			$this->getDataManager()->cleanup($this);
+		}
+
 		$this->dataManager->drop($this);
 		$this->currentStepNumber = $this->getFirstStepNumber();
 		$this->newInstance = true;
