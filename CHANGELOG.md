@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.2] – 2020-05-07
+
+- [#355]: avoid infinite loop when all steps are skipped
+
+[#355]: https://github.com/craue/CraueFormFlowBundle/issues/355
+[3.3.2]: https://github.com/craue/CraueFormFlowBundle/compare/3.3.1...3.3.2
+
 ## [3.3.1] – 2020-03-08
 
 - avoid warnings while cleaning up temporary files
