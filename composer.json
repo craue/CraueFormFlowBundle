@@ -17,24 +17,24 @@
 	],
 	"require": {
 		"php": "~7.0",
-		"symfony/config": "~3.4|~4.2|~5.0",
-		"symfony/dependency-injection": "~3.4|~4.2|~5.0",
-		"symfony/event-dispatcher": "~3.4|~4.2|~5.0",
-		"symfony/form": "~3.4|~4.2|~5.0",
-		"symfony/http-foundation": "~3.4|~4.2|~5.0",
-		"symfony/http-kernel": "~3.4|~4.2|~5.0",
-		"symfony/options-resolver": "~3.4|~4.2|~5.0",
-		"symfony/security-core": "~3.4|~4.2|~5.0",
-		"symfony/translation": "~3.4|~4.2|~5.0",
-		"symfony/validator": "~3.4|~4.2|~5.0",
-		"symfony/yaml": "~3.4|~4.2|~5.0"
+		"symfony/config": "~3.4|~4.3|~5.0",
+		"symfony/dependency-injection": "~3.4|~4.3|~5.0",
+		"symfony/event-dispatcher": "~3.4|~4.3|~5.0",
+		"symfony/form": "~3.4|~4.3|~5.0",
+		"symfony/http-foundation": "~3.4|~4.3|~5.0",
+		"symfony/http-kernel": "~3.4|~4.3|~5.0",
+		"symfony/options-resolver": "~3.4|~4.3|~5.0",
+		"symfony/security-core": "~3.4|~4.3|~5.0",
+		"symfony/translation": "~3.4|~4.3|~5.0",
+		"symfony/validator": "~3.4|~4.3|~5.0",
+		"symfony/yaml": "~3.4|~4.3|~5.0"
 	},
 	"require-dev": {
 		"doctrine/common": "~2.7",
 		"doctrine/doctrine-bundle": "~1.10|~2.0",
 		"phpunit/phpunit": "^6.5.13|^7.5.1",
 		"symfony/phpunit-bridge": "~5.0",
-		"symfony/symfony": "~3.4|~4.2|~5.0"
+		"symfony/symfony": "~3.4|~4.3|~5.0"
 	},
 	"minimum-stability": "stable",
 	"autoload": {
@@ -47,7 +47,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "3.3.x-dev"
+			"dev-master": "3.4.x-dev"
 		}
 	},
 	"config": {
