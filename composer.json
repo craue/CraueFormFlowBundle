@@ -30,6 +30,7 @@
 		"symfony/yaml": "~3.4|~4.3|~5.0"
 	},
 	"require-dev": {
+		"craue/translations-tests": "^1.0",
 		"doctrine/common": "~2.7",
 		"doctrine/doctrine-bundle": "~1.10|~2.0",
 		"phpunit/phpunit": "^6.5.13|^7.5.1",
