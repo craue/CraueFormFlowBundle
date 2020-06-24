@@ -40,9 +40,12 @@ jobs:
       env: SYMFONY_VERSION='5.0.*'
     -
       php: 7.3
-      env: SYMFONY_VERSION='5.0.*' MIN_STABILITY='dev'
+      env: SYMFONY_VERSION='5.1.*'
+    -
+      php: 7.3
+      env: SYMFONY_VERSION='5.2.*' MIN_STABILITY='dev'
   allow_failures:
-    - env: SYMFONY_VERSION='5.0.*' MIN_STABILITY='dev'
+    - env: SYMFONY_VERSION='5.2.*' MIN_STABILITY='dev'
   fast_finish: true
 
 install:
