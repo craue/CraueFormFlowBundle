@@ -23,7 +23,7 @@ case "${DEPS:-}" in
 esac
 
 if [ -n "${WITH_STATIC_ANALYSIS:-}" ]; then
-	composer require --no-update --dev "phpstan/phpstan:^0.12"
+	composer require --no-update --dev "phpstan/phpstan:0.12.25"
 fi
 
 # TODO remove as soon as Symfony >= 4.2 is required
