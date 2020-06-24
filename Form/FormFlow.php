@@ -169,12 +169,6 @@ abstract class FormFlow implements FormFlowInterface {
 	private $expired = false;
 
 	/**
-	 * Instance ID was a newly generated ID.
-	 * @var bool
-	 */
-	private $newInstance = false;
-
-	/**
 	 * {@inheritDoc}
 	 */
 	public function setFormFactory(FormFactoryInterface $formFactory) {
@@ -469,7 +463,6 @@ abstract class FormFlow implements FormFlowInterface {
 	public function reset() {
 		$this->dataManager->drop($this);
 		$this->currentStepNumber = $this->getFirstStepNumber();
-		$this->newInstance = true;
 
 		// re-evaluate to not keep steps marked as skipped when resetting
 		foreach ($this->getSteps() as $step) {
@@ -622,7 +615,7 @@ abstract class FormFlow implements FormFlowInterface {
 			$this->dispatchEvent(new PostBindFlowEvent($this, $this->formData), FormFlowEvents::POST_BIND_FLOW);
 		}
 
-		if ($this->newInstance) {
+		if (!$this->dataManager->exists($this)) {
 			// initialize storage slot
 			$this->dataManager->save($this, []);
 		}
@@ -643,7 +636,6 @@ abstract class FormFlow implements FormFlowInterface {
 		$instanceIdLength = 10;
 		if ($instanceId === null || !StringUtil::isRandomString($instanceId, $instanceIdLength)) {
 			$instanceId = StringUtil::generateRandomString($instanceIdLength);
-			$this->newInstance = true;
 		}
 
 		return $instanceId;
