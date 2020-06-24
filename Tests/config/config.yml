@@ -2,6 +2,7 @@ imports:
   - { resource: '@CraueFormFlowBundle/Resources/config/form_flow.xml' }
   - { resource: '@IntegrationTestBundle/Resources/config/controller.xml' }
   - { resource: parameters.php }
+  - { resource: config_hacks.php }
 
 framework:
   csrf_protection: ~
