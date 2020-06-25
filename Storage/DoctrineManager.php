@@ -75,14 +75,6 @@ class DoctrineManager implements DataManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function getStorage()
-    {
-        return;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function save(FormFlowInterface $flow, array $data)
     {
         if (!$this->tableExists()) {
