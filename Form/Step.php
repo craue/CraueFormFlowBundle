@@ -191,7 +191,7 @@ class Step implements StepInterface {
 	 */
 	public function evaluateSkipping($estimatedCurrentStepNumber, FormFlowInterface $flow) {
 		if ($this->skipFunction !== null) {
-			$returnValue = call_user_func_array($this->skipFunction, [$estimatedCurrentStepNumber, $flow]);
+			$returnValue = ($this->skipFunction)(...[$estimatedCurrentStepNumber, $flow]);
 
 			if (!is_bool($returnValue)) {
 				throw new \RuntimeException(sprintf('The skip callable for step %d did not return a boolean value.',
