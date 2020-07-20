@@ -60,14 +60,19 @@ abstract class IntegrationTestCase extends WebTestCase {
 	 * @return object The associated service.
 	 */
 	protected function getService($id) {
-		return static::$kernel->getContainer()->get($id);
+		// TODO remove as soon as Symfony >= 4.3 is required
+		if (!property_exists($this, 'container')) {
+			return static::$kernel->getContainer()->get($id);
+		}
+
+		return self::$container->get($id);
 	}
 
 	/**
 	 * @return Environment
 	 */
 	protected function getTwig() {
-		return $this->getService('twig');
+		return $this->getService('twig.test');
 	}
 
 	/**

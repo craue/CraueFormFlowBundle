@@ -23,6 +23,7 @@ use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\RevalidatePreviousStep
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\SkipFirstStepUsingClosureFlow;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -167,11 +168,11 @@ class FormFlowController extends AbstractController {
 			return $this->redirect($this->generateUrl($request->attributes->get('_route'), $params));
 		}
 
-		return $this->render($template, array_merge($templateParameters, [
+		return new Response($this->get('twig.test')->render($template, array_merge($templateParameters, [
 			'form' => $form->createView(),
 			'flow' => $flow,
 			'formData' => $formData,
-		]));
+		])));
 	}
 
 }
