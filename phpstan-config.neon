@@ -59,3 +59,11 @@ parameters:
 		-
 			message: '#^Parameter \#2 \$eventName of method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\) expects string\|null, Craue\\FormFlowBundle\\Event\\FormFlowEvent given\.$#'
 			path: Form/FormFlow.php
+		# TODO remove as soon as Doctrine DBAL >= 3.0 is required
+		-
+			message: '#Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Result\|int\.#'
+			path: Storage/DoctrineStorage.php
+		# TODO remove as soon as Doctrine DBAL >= 3.0 is required
+		-
+			message: '#Access to undefined constant Doctrine\\DBAL\\Types\\Type::(STRING|TARRAY)\.#'
+			path: Storage/DoctrineStorage.php
