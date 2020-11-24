@@ -4,8 +4,14 @@ namespace Craue\FormFlowBundle\Event;
 
 use Craue\FormFlowBundle\Form\FormFlowInterface;
 
-trait FormFlowEventTrait
-{
+/**
+ * @internal
+ * @author Christian Raue <christian.raue@gmail.com>
+ * @copyright 2011-2020 Christian Raue
+ * @license http://opensource.org/licenses/mit-license.php MIT License
+ */
+trait FormFlowEventTrait {
+
     /**
      * @var FormFlowInterface
      */
@@ -14,16 +20,14 @@ trait FormFlowEventTrait
     /**
      * @param FormFlowInterface $flow
      */
-    public function __construct(FormFlowInterface $flow)
-    {
+    public function __construct(FormFlowInterface $flow) {
         $this->flow = $flow;
     }
 
     /**
      * @return FormFlowInterface
      */
-    public function getFlow()
-    {
+    public function getFlow() {
         return $this->flow;
     }
 }
