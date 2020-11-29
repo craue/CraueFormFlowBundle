@@ -22,7 +22,7 @@ class FormFlowUtilTest extends UnitTestCase {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function setUp() {
+	protected function setUp() : void {
 		$this->util = new FormFlowUtil();
 	}
 

@@ -47,7 +47,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function setUp() {
+	protected function setUp() : void {
 		$this->setUpClient();
 	}
 
@@ -127,7 +127,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 	 * @param Crawler $crawler
 	 */
 	protected function assertContainsFormError($expectedError, Crawler $crawler) {
-		$this->assertContains($expectedError, $this->getNodeText('form', $crawler));
+		$this->assertStringContainsString($expectedError, $this->getNodeText('form', $crawler));
 	}
 
 	/**
@@ -135,7 +135,7 @@ abstract class IntegrationTestCase extends WebTestCase {
 	 * @param Crawler $crawler
 	 */
 	protected function assertNotContainsFormError($unexpectedError, Crawler $crawler) {
-		$this->assertNotContains($unexpectedError, $this->getNodeText('form', $crawler));
+		$this->assertStringNotContainsString($unexpectedError, $this->getNodeText('form', $crawler));
 	}
 
 	/**

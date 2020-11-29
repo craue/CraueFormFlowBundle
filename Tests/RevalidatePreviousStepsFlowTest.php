@@ -17,7 +17,7 @@ class RevalidatePreviousStepsFlowTest extends IntegrationTestCase {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		RevalidatePreviousStepsData::resetValidationCalls();

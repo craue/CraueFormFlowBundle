@@ -226,14 +226,14 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 		]);
 		$this->assertCurrentStepNumber(3, $crawler);
 		// step 2 must be marked as skipped
-		$this->assertContains('<li class="craue_formflow_skipped_step">engine</li>', $this->getHtml($crawler->filter('#step-list')));
+		$this->assertStringContainsString('<li class="craue_formflow_skipped_step">engine</li>', $this->getHtml($crawler->filter('#step-list')));
 
 		// go back
 		$form = $crawler->selectButton('back')->form();
 		$crawler = static::$client->submit($form);
 		$this->assertCurrentStepNumber(1, $crawler);
 		// step 2 must not be marked as skipped
-		$this->assertContains('<li>engine</li>', $this->getHtml($crawler->filter('#step-list')));
+		$this->assertStringContainsString('<li>engine</li>', $this->getHtml($crawler->filter('#step-list')));
 	}
 
 	public function testCreateVehicle_submitInvalidValues() {

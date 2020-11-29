@@ -3,6 +3,8 @@
 namespace Craue\FormFlowBundle\Tests\Form;
 
 use Craue\FormFlowBundle\Event\GetStepsEvent;
+use Craue\FormFlowBundle\Exception\AllStepsSkippedException;
+use Craue\FormFlowBundle\Exception\InvalidTypeException;
 use Craue\FormFlowBundle\Form\FormFlowEvents;
 use Craue\FormFlowBundle\Tests\UnitTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -446,11 +448,10 @@ class FormFlowTest extends UnitTestCase {
 		$this->assertSame($request, $flow->getRequest());
 	}
 
-	/**
-	 * @expectedException \RuntimeException
-	 * @expectedExceptionMessage The request is not available.
-	 */
 	public function testGetRequestStack_notAvailable() {
+		$this->expectException(\RuntimeException::class);
+		$this->expectExceptionMessage('The request is not available.');
+
 		$flow = $this->getMockedFlow();
 		$flow->setRequestStack(new RequestStack());
 		$flow->getRequest();
@@ -600,19 +601,17 @@ class FormFlowTest extends UnitTestCase {
 		$this->assertEquals($dynamicStepNavigationStepParameter, $flow->getDynamicStepNavigationStepParameter());
 	}
 
-	/**
-	 * @expectedException \RuntimeException
-	 * @expectedExceptionMessage Form data has not been evaluated yet and thus cannot be accessed.
-	 */
 	public function testGetFormData_notAvailable() {
+		$this->expectException(\RuntimeException::class);
+		$this->expectExceptionMessage('Form data has not been evaluated yet and thus cannot be accessed.');
+
 		$this->getMockedFlow()->getFormData();
 	}
 
-	/**
-	 * @expectedException \RuntimeException
-	 * @expectedExceptionMessage The current step has not been determined yet and thus cannot be accessed.
-	 */
 	public function testGetCurrentStepNumber_notAvailable() {
+		$this->expectException(\RuntimeException::class);
+		$this->expectExceptionMessage('The current step has not been determined yet and thus cannot be accessed.');
+
 		$this->getMockedFlow()->getCurrentStepNumber();
 	}
 
@@ -654,9 +653,10 @@ class FormFlowTest extends UnitTestCase {
 
 	/**
 	 * @dataProvider dataApplySkipping_invalidArguments
-	 * @expectedException \InvalidArgumentException
 	 */
 	public function testApplySkipping_invalidArguments($direction) {
+		$this->expectException(\InvalidArgumentException::class);
+
 		$flow = $this->getMockedFlow();
 
 		$method = new \ReflectionMethod($flow, 'applySkipping');
@@ -673,11 +673,10 @@ class FormFlowTest extends UnitTestCase {
 		];
 	}
 
-	/**
-	 * @expectedException Craue\FormFlowBundle\Exception\AllStepsSkippedException
-	 * @expectedExceptionMessage All steps are marked as skipped. Please check the flow to make sure at least one step is not skipped.
-	 */
 	public function testApplySkipping_bouncing() {
+		$this->expectException(AllStepsSkippedException::class);
+		$this->expectExceptionMessage('All steps are marked as skipped. Please check the flow to make sure at least one step is not skipped.');
+
 		$flow = $this->getFlowWithMockedMethods(['loadStepsConfig']);
 
 		$flow
@@ -698,9 +697,10 @@ class FormFlowTest extends UnitTestCase {
 
 	/**
 	 * @dataProvider dataGetStep_invalidArguments
-	 * @expectedException \Craue\FormFlowBundle\Exception\InvalidTypeException
 	 */
 	public function testGetStep_invalidArguments($stepNumber) {
+		$this->expectException(InvalidTypeException::class);
+
 		$this->getMockedFlow()->getStep($stepNumber);
 	}
 
@@ -713,10 +713,11 @@ class FormFlowTest extends UnitTestCase {
 
 	/**
 	 * @dataProvider dataGetStep_invalidStep
-	 * @expectedException \OutOfBoundsException
-	 * @expectedExceptionMessage The step "2" does not exist.
 	 */
 	public function testGetStep_invalidStep($stepNumber) {
+		$this->expectException(\OutOfBoundsException::class);
+		$this->expectExceptionMessage('The step "2" does not exist.');
+
 		$this->getMockedFlow()->getStep($stepNumber);
 	}
 

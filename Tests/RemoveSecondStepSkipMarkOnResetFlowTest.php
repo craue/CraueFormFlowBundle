@@ -22,14 +22,14 @@ class RemoveSecondStepSkipMarkOnResetFlowTest extends IntegrationTestCase {
 		$crawler = static::$client->submit($form);
 		$this->assertCurrentStepNumber(3, $crawler);
 		// step 2 must be marked as skipped
-		$this->assertContains('<li class="craue_formflow_skipped_step">step2</li>', $this->getHtml($crawler->filter('#step-list')));
+		$this->assertStringContainsString('<li class="craue_formflow_skipped_step">step2</li>', $this->getHtml($crawler->filter('#step-list')));
 
 		// reset
 		$form = $crawler->selectButton('start over')->form();
 		$crawler = static::$client->submit($form);
 		$this->assertCurrentStepNumber(1, $crawler);
 		// step 2 must not be marked as skipped
-		$this->assertContains('<li>step2</li>', $this->getHtml($crawler->filter('#step-list')));
+		$this->assertStringContainsString('<li>step2</li>', $this->getHtml($crawler->filter('#step-list')));
 	}
 
 }

@@ -2,6 +2,7 @@
 
 namespace Craue\FormFlowBundle\Tests\Storage;
 
+use Craue\FormFlowBundle\Exception\InvalidTypeException;
 use Craue\FormFlowBundle\Storage\StorageKeyGeneratorInterface;
 use Craue\FormFlowBundle\Storage\UserSessionStorageKeyGenerator;
 use PHPUnit\Framework\TestCase;
@@ -38,7 +39,7 @@ class UserSessionStorageKeyGeneratorTest extends TestCase {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function setUp() {
+	protected function setUp() : void {
 		$session = new Session(new MockArraySessionStorage());
 		$session->setId('12345');
 		$this->tokenStorage = new TokenStorage();
@@ -91,19 +92,17 @@ class UserSessionStorageKeyGeneratorTest extends TestCase {
 		];
 	}
 
-	/**
-	 * @expectedException \Craue\FormFlowBundle\Exception\InvalidTypeException
-	 * @expectedExceptionMessage Expected argument of type "string", but "NULL" given.
-	 */
 	public function testGenerate_invalidArgument() {
+		$this->expectException(InvalidTypeException::class);
+		$this->expectExceptionMessage('Expected argument of type "string", but "NULL" given.');
+
 		$this->generator->generate(null);
 	}
 
-	/**
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionMessage Argument must not be empty.
-	 */
 	public function testGenerate_emptyArgument() {
+		$this->expectException(\InvalidArgumentException::class);
+		$this->expectExceptionMessage('Argument must not be empty.');
+
 		$this->generator->generate('');
 	}
 

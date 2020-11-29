@@ -2,6 +2,7 @@
 
 namespace Craue\FormFlowBundle\Tests\Util;
 
+use Craue\FormFlowBundle\Exception\InvalidTypeException;
 use Craue\FormFlowBundle\Util\StringUtil;
 use PHPUnit\Framework\TestCase;
 
@@ -20,18 +21,16 @@ class StringUtilTest extends TestCase {
 		$this->assertNotEquals(StringUtil::generateRandomString(10), StringUtil::generateRandomString(10));
 	}
 
-	/**
-	 * @expectedException \Craue\FormFlowBundle\Exception\InvalidTypeException
-	 */
 	public function testGenerateRandomString_lengthNotInteger() {
+		$this->expectException(InvalidTypeException::class);
+
 		StringUtil::generateRandomString(null);
 	}
 
-	/**
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionMessage Length must be >= 0, "-1" given.
-	 */
 	public function testGenerateRandomString_lengthNegative() {
+		$this->expectException(\InvalidArgumentException::class);
+		$this->expectExceptionMessage('Length must be >= 0, "-1" given.');
+
 		StringUtil::generateRandomString(-1);
 	}
 
@@ -49,27 +48,24 @@ class StringUtilTest extends TestCase {
 		$this->assertFalse(StringUtil::isRandomString('=', 1));
 	}
 
-	/**
-	 * @expectedException \Craue\FormFlowBundle\Exception\InvalidTypeException
-	 * @expectedExceptionMessage Expected argument of type "string", but "NULL" given.
-	 */
 	public function testIsRandomString_inputNotString() {
+		$this->expectException(InvalidTypeException::class);
+		$this->expectExceptionMessage('Expected argument of type "string", but "NULL" given.');
+
 		StringUtil::isRandomString(null, 0);
 	}
 
-	/**
-	 * @expectedException \Craue\FormFlowBundle\Exception\InvalidTypeException
-	 * @expectedExceptionMessage Expected argument of type "int", but "NULL" given.
-	 */
 	public function testIsRandomString_lengthNotInteger() {
+		$this->expectException(InvalidTypeException::class);
+		$this->expectExceptionMessage('Expected argument of type "int", but "NULL" given.');
+
 		StringUtil::isRandomString('', null);
 	}
 
-	/**
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionMessage Length must be >= 0, "-1" given.
-	 */
 	public function testIsRandomString_lengthNegative() {
+		$this->expectException(\InvalidArgumentException::class);
+		$this->expectExceptionMessage('Length must be >= 0, "-1" given.');
+
 		StringUtil::isRandomString('', -1);
 	}
 

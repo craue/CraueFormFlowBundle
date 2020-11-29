@@ -62,7 +62,7 @@ class DataManagerTest extends UnitTestCase {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function setUp() {
+	protected function setUp() : void {
 		$this->storage = new SessionStorage(new Session(new MockArraySessionStorage()));
 		$this->dataManager = new DataManager($this->storage);
 	}

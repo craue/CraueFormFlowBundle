@@ -22,7 +22,7 @@ abstract class AbstractStorageTest extends TestCase {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function setUp() {
+	protected function setUp() : void {
 		$this->storage = $this->getStorageImplementation();
 	}
 
