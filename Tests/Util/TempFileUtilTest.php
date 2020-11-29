@@ -27,7 +27,7 @@ class TempFileUtilTest extends TestCase {
 
 		TempFileUtil::removeTempFiles();
 		$this->assertCount(0, $this->getTempFiles());
-		$this->assertFileNotExists($tempFile);
+		$this->assertFileDoesNotExist($tempFile);
 	}
 
 	private function getTempFiles() {

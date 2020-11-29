@@ -1,7 +1,6 @@
 language: php
 
 php:
-  - 7.2
   - 7.3
   - 7.4
 
@@ -15,7 +14,7 @@ stages:
 jobs:
   include:
     - stage: smoke test 🕵️
-      php: 7.2
+      php: 7.3
       env: DEPS='lowest'
     -
       php: 8.0

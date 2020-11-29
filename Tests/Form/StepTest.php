@@ -144,15 +144,9 @@ class StepTest extends UnitTestCase {
 		$flow = $this->getFlowWithMockedMethods(['getFormData']);
 
 		$flow
-			->expects($this->at(0))
+			->expects($this->exactly(2))
 			->method('getFormData')
-			->will($this->returnValue('special'))
-		;
-
-		$flow
-			->expects($this->at(1))
-			->method('getFormData')
-			->will($this->returnValue('default'))
+			->willReturnOnConsecutiveCalls('special', 'default')
 		;
 
 		$step = Step::createFromConfig(1, [

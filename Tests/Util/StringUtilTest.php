@@ -17,7 +17,7 @@ class StringUtilTest extends TestCase {
 
 	public function testGenerateRandomString() {
 		$this->assertEquals(1000, strlen(StringUtil::generateRandomString(1000)));
-		$this->assertRegExp('/^[a-zA-Z0-9-_]{1000}$/', StringUtil::generateRandomString(1000));
+		$this->assertMatchesRegularExpression('/^[a-zA-Z0-9-_]{1000}$/', StringUtil::generateRandomString(1000));
 		$this->assertNotEquals(StringUtil::generateRandomString(10), StringUtil::generateRandomString(10));
 	}
 
