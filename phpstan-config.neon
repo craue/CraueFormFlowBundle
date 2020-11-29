@@ -17,10 +17,6 @@ parameters:
 		-
 			message: '#^Unsafe usage of new static\(\)\.$#'
 			path: Form/Step.php
-		# TODO remove as soon as PHP >= 7.1 is required
-		-
-			message: '#^Parameter \#1 \$function of function register_shutdown_function expects callable\(\): void, Closure\(\): mixed given\.$#'
-			path: CraueFormFlowBundle.php
 		# TODO remove as soon as Symfony >= 4.1 is required
 		- '#^Parameter \#5 \$test of class Symfony\\Component\\HttpFoundation\\File\\UploadedFile constructor expects bool, null given\.$#'
 		# TODO remove as soon as Symfony >= 4.1 is required
