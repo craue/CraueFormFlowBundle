@@ -57,9 +57,9 @@ parameters:
 			path: Form/FormFlow.php
 		# TODO remove as soon as Doctrine DBAL >= 3.0 is required
 		-
-			message: '#Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Result\|int\.#'
+			message: '#^Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Result\|int\.$#'
 			path: Storage/DoctrineStorage.php
 		# TODO remove as soon as Doctrine DBAL >= 3.0 is required
 		-
-			message: '#Access to undefined constant Doctrine\\DBAL\\Types\\Type::(STRING|TARRAY)\.#'
+			message: '#^Access to undefined constant Doctrine\\DBAL\\Types\\Type::(STRING|TARRAY)\.$#'
 			path: Storage/DoctrineStorage.php
