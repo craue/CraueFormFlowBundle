@@ -34,7 +34,7 @@
 		"doctrine/common": "~2.7|~3.0",
 		"doctrine/doctrine-bundle": "~1.10|~2.0",
 		"phpunit/phpunit": "^9.4",
-		"symfony/phpunit-bridge": "~5.1",
+		"symfony/phpunit-bridge": "^5.2",
 		"symfony/symfony": "~3.4.23|~4.4|~5.1"
 	},
 	"minimum-stability": "stable",
