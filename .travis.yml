@@ -5,7 +5,7 @@ php:
   - 7.4
 
 env:
-  - SYMFONY_VERSION='3.4.*' SYMFONY_DEPRECATIONS_HELPER='max[self]=0&max[direct]=0&max[indirect]=1'
+  - SYMFONY_VERSION='3.4.*'
 
 stages:
   - smoke test 🕵️
@@ -22,11 +22,11 @@ jobs:
 
     - stage: test
       php: 7.3
-      env: SYMFONY_VERSION='3.4.*' PARAM_DB_DRIVER='pdo_sqlite' SYMFONY_DEPRECATIONS_HELPER='max[self]=0&max[direct]=9&max[indirect]=1'
+      env: SYMFONY_VERSION='3.4.*' PARAM_DB_DRIVER='pdo_sqlite' SYMFONY_DEPRECATIONS_HELPER='max[direct]=9'
     # TODO remove as soon as Symfony >= 4.2 is required
     -
       php: 7.3
-      env: SYMFONY_VERSION='3.4.*' WITH_TRANSLATION_CONTRACTS='yes' SYMFONY_DEPRECATIONS_HELPER='max[self]=0&max[direct]=0&max[indirect]=1'
+      env: SYMFONY_VERSION='3.4.*' WITH_TRANSLATION_CONTRACTS='yes'
     -
       php: 7.3
       env: SYMFONY_VERSION='4.4.*'
@@ -35,7 +35,7 @@ jobs:
       env: SYMFONY_VERSION='5.1.*'
     -
       php: 7.3
-      env: SYMFONY_VERSION='5.2.*' WITH_STATIC_ANALYSIS='yes'
+      env: SYMFONY_VERSION='5.2.*' WITH_STATIC_ANALYSIS='yes' SYMFONY_DEPRECATIONS_HELPER='max[self]=3'
     -
       php: 7.3
       env: SYMFONY_VERSION='5.x' MIN_STABILITY='dev'
