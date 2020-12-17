@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.4.0] – 2020-12-17
+
+- [#359]: use DataManager to check if current flow exists
+- [#368]: fix opcache preloading
+- added DoctrineStorage support for Doctrine DBAL 3.0
+- added support for PHP 8.0
+- dropped support for PHP 7.0, 7.1, 7.2
+- dropped support for Symfony 4.2, 4.3, 5.0
+
+[#359]: https://github.com/craue/CraueFormFlowBundle/issues/359
+[#368]: https://github.com/craue/CraueFormFlowBundle/issues/368
+[3.4.0]: https://github.com/craue/CraueFormFlowBundle/compare/3.3.2...3.4.0
+
 ## [3.3.2] – 2020-05-07
 
 - [#355]: avoid infinite loop when all steps are skipped
