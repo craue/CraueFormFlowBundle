@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraints\GroupSequence;
@@ -764,6 +765,71 @@ class FormFlowTest extends UnitTestCase {
 			[false, 0],
 			[false, null],
 		];
+	}
+
+	/**
+	 * @dataProvider dataSaveCurrentStepData
+	 */
+	public function testSaveCurrentStepData(bool $useInputBag) {
+		$flow = $this->getFlowWithMockedMethods(['getRequest', 'getCurrentStepNumber', 'retrieveStepData', 'saveStepData']);
+
+		$formData = ['aField' => 'aValue'];
+
+		$request = Request::create('', 'POST', ['aForm' => $formData]);
+
+		if ($useInputBag) {
+			/*
+			 * This would cause a deprecation notice with Symfony >= 5.1 when calling `$request->request->get()` and
+			 *   a) passing a non-string value for the 2nd argument or
+			 *   b) retrieving a non-string value.
+			 */
+			$request->request = new InputBag($request->request->all());
+		}
+
+		$flow
+			->method('getRequest')
+			->will($this->returnValue($request))
+		;
+
+		$flow
+			->method('getCurrentStepNumber')
+			->will($this->returnValue(1))
+		;
+
+		$flow
+			->method('retrieveStepData')
+			->will($this->returnValue([]))
+		;
+
+		$flow
+			->method('saveStepData')
+			->with([1 => $formData])
+		;
+
+		$dispatcher = $this->createMock(EventDispatcherInterface::class);
+		$factory = Forms::createFormFactoryBuilder()->getFormFactory();
+		$formBuilder = new FormBuilder('aForm', null, $dispatcher, $factory);
+
+		$form = $formBuilder
+			->setCompound(true)
+			->setDataMapper($this->createMock(DataMapperInterface::class))
+			->add('aField', TextType::class)
+			->setMethod('POST')
+			->setRequestHandler(new HttpFoundationRequestHandler())
+			->getForm()
+		;
+
+		$this->assertTrue($flow->isValid($form));
+
+		$flow->saveCurrentStepData($form);
+	}
+
+	public function dataSaveCurrentStepData() {
+		yield [false];
+
+		if (class_exists(InputBag::class)) {
+			yield [true];
+		}
 	}
 
 }
