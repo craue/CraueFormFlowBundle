@@ -67,7 +67,7 @@ script:
   - phpdbg -qrr vendor/phpunit/phpunit/phpunit -v --coverage-clover build/logs/clover.xml
   # upload code coverage data
   - |
-    if [ "${TRAVIS_REPO_SLUG}" = "craue/CraueFormFlowBundle" ] && [[ "${TRAVIS_PHP_VERSION}" == "7."* ]]; then
+    if [ "${TRAVIS_REPO_SLUG}" = "craue/CraueFormFlowBundle" ]; then
       PHP_COVERALLS_VERSION=`curl --retry 5 -Is https://github.com/php-coveralls/php-coveralls/releases/latest | grep -i 'Location:' | sed 's/.*\/tag\/\(.*\)$/\1/' | tr -d "[:cntrl:]"`
       echo "using php-coveralls '${PHP_COVERALLS_VERSION}'"
       travis_retry wget -q "https://github.com/php-coveralls/php-coveralls/releases/download/${PHP_COVERALLS_VERSION}/php-coveralls.phar" -O php-coveralls.phar
