@@ -22,6 +22,7 @@ use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\RemoveSecondStepSkipMa
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\RevalidatePreviousStepsFlow;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\SkipFirstStepUsingClosureFlow;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -137,9 +138,9 @@ class FormFlowController extends AbstractController {
 	/**
 	 * @Route("/usualForm/", name="_FormFlow_usualForm")
 	 */
-	public function usualFormAction() {
+	public function usualFormAction(FormFactoryInterface $formFactory) {
 		return $this->processFlow(new Topic(), $this->get(CreateTopicFlow::class),
-				'@IntegrationTest/FormFlow/usualForm.html.twig', ['usualForm' => $this->createFormBuilder()->getForm()->createView()]);
+				'@IntegrationTest/FormFlow/usualForm.html.twig', ['usualForm' => $formFactory->create()->createView()]);
 	}
 
 	protected function processFlow($formData, FormFlow $flow, $template = '@IntegrationTest/layout_flow.html.twig', array $templateParameters = []) {

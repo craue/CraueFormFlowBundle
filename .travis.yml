@@ -35,7 +35,7 @@ jobs:
       env: SYMFONY_VERSION='5.1.*'
     -
       php: 7.3
-      env: SYMFONY_VERSION='5.2.*' WITH_STATIC_ANALYSIS='yes' SYMFONY_DEPRECATIONS_HELPER='max[self]=3'
+      env: SYMFONY_VERSION='5.2.*' WITH_STATIC_ANALYSIS='yes'
     -
       php: 7.3
       env: SYMFONY_VERSION='5.x' MIN_STABILITY='dev'
