@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.4.1] – 2021-03-31
+
+- [#386]: revert to clean class definitions for event listeners
+- avoid deprecation notices regarding `Symfony\Component\HttpFoundation\InputBag::get()` with Symfony >= 5.1
+
+[#386]: https://github.com/craue/CraueFormFlowBundle/issues/386
+[3.4.1]: https://github.com/craue/CraueFormFlowBundle/compare/3.4.0...3.4.1
+
 ## [3.4.0] – 2020-12-17
 
 - [#359]: use DataManager to check if current flow exists
