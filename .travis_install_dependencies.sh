@@ -31,4 +31,9 @@ if [ -n "${WITH_TRANSLATION_CONTRACTS:-}" ]; then
 	composer require --no-update --dev "symfony/translation-contracts:~1.1"
 fi
 
+# TODO remove as soon as Symfony >= 5.0 is required
+if [ -n "${WITH_CONTAO_POLYFILL_SYMFONY:-}" ]; then
+	composer require --no-update --dev "contao/polyfill-symfony"
+fi
+
 composer update ${COMPOSER_UPDATE_ARGS:-}
