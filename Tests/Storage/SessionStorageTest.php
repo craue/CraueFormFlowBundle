@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Tests\Storage;
 
 use Craue\FormFlowBundle\Storage\SessionStorage;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
@@ -19,7 +20,21 @@ class SessionStorageTest extends AbstractStorageTest {
 	 * {@inheritDoc}
 	 */
 	protected function getStorageImplementation() {
-		return new SessionStorage(new Session(new MockArraySessionStorage()));
+		$session = new Session(new MockArraySessionStorage());
+
+		// TODO remove as soon as Symfony >= 5.3 is required
+		if (!\method_exists(RequestStack::class, 'getSession')) {
+			return new SessionStorage($session);
+		}
+
+		$requestStackMock = $this->getMockBuilder(RequestStack::class)->onlyMethods(['getSession'])->getMock();
+
+		$requestStackMock
+			->method('getSession')
+			->willReturn($session)
+		;
+
+		return new SessionStorage($requestStackMock);
 	}
 
 }

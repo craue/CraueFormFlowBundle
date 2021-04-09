@@ -60,12 +60,11 @@ class Demo1FlowTest extends IntegrationTestCase {
 		$this->assertJsonResponse('{}');
 	}
 
-	protected function getCalledEvents() {
+	private function getCalledEvents() {
 		$container = static::$kernel->getContainer();
 		$flow = $container->get(Demo1Flow::class);
-		$storage = $container->get('craue.form.flow.storage');
 
-		return $storage->get($flow->getCalledEventsSessionKey());
+		return $flow->getLoggedEventCalls();
 	}
 
 }

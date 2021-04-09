@@ -20,7 +20,7 @@
 
 	<services>
 		<service id="craue.form.flow.storage_default" class="%craue.form.flow.storage.class%" public="false">
-			<argument type="service" id="session" />
+			<argument type="service" id="request_stack" />
 		</service>
 
 		<service id="craue.form.flow.storage" alias="craue.form.flow.storage_default" public="true" />

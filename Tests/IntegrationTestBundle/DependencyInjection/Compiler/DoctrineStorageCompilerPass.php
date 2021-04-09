@@ -7,6 +7,8 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Registration of services needed to use the {@link DoctrineStorage} implementation.
@@ -24,6 +26,11 @@ class DoctrineStorageCompilerPass implements CompilerPassInterface {
 		if ($container->getParameter('db.driver') !== null) {
 			$loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
 			$loader->load('doctrine_storage.xml');
+
+			// TODO remove as soon as Symfony >= 5.3 is required
+			if (!\method_exists(RequestStack::class, 'getSession')) {
+				$container->findDefinition('craue.form.flow.storageKeyGenerator')->replaceArgument(1, new Reference('session'));
+			}
 		}
 	}
 

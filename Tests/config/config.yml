@@ -10,8 +10,6 @@ framework:
   router:
     resource: '%kernel.project_dir%/Tests/config/routing.yml'
   secret: whatever
-  session:
-    storage_id: session.storage.mock_file
   test: ~
   translator:
     fallback: en

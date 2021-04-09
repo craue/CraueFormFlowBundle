@@ -6,7 +6,9 @@ use Craue\FormFlowBundle\Exception\InvalidTypeException;
 use Craue\FormFlowBundle\Storage\StorageKeyGeneratorInterface;
 use Craue\FormFlowBundle\Storage\UserSessionStorageKeyGenerator;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
@@ -15,6 +17,7 @@ use Symfony\Component\Security\Core\Authentication\Token\RememberMeToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\User\InMemoryUser;
 use Symfony\Component\Security\Core\User\User;
 
 /**
@@ -43,18 +46,37 @@ class UserSessionStorageKeyGeneratorTest extends TestCase {
 		$session = new Session(new MockArraySessionStorage());
 		$session->setId('12345');
 		$this->tokenStorage = new TokenStorage();
-		$this->generator = new UserSessionStorageKeyGenerator($this->tokenStorage, $session);
+		$this->generator = $this->createGenerator($session);
+	}
+
+	private function createGenerator(SessionInterface $session) : UserSessionStorageKeyGenerator {
+		// TODO remove as soon as Symfony >= 5.3 is required
+		if (!\method_exists(RequestStack::class, 'getSession')) {
+			return new UserSessionStorageKeyGenerator($this->tokenStorage, $session);
+		}
+
+		$requestStackMock = $this->getMockBuilder(RequestStack::class)->onlyMethods(['getSession'])->getMock();
+
+		$requestStackMock
+			->method('getSession')
+			->willReturn($session)
+		;
+
+		return new UserSessionStorageKeyGenerator($this->tokenStorage, $requestStackMock);
 	}
 
 	/**
 	 * @dataProvider dataGenerate_mockedTokens
 	 */
 	public function testGenerate_mockedTokens($expectedKey, $username) {
-		$token = $this->getMockBuilder(AbstractToken::class)->setMethods(['getUsername'])->getMockForAbstractClass();
+		// TODO just use 'getUserIdentifier' as soon as Symfony >= 5.3 is required
+		$methodName = \method_exists(AbstractToken::class, 'getUserIdentifier') ? 'getUserIdentifier' : 'getUsername';
+
+		$token = $this->getMockBuilder(AbstractToken::class)->onlyMethods([$methodName])->getMockForAbstractClass();
 
 		$token
 			->expects($this->once())
-			->method('getUsername')
+			->method($methodName)
 			->will($this->returnValue($username))
 		;
 
@@ -63,11 +85,13 @@ class UserSessionStorageKeyGeneratorTest extends TestCase {
 	}
 
 	public function dataGenerate_mockedTokens() {
-		return [
-			['session_12345_key', null],
-			['session_12345_key', ''],
-			['user_username_key', 'username'],
-		];
+		// TODO remove as soon as Symfony >= 5.3 is required
+		if (!\method_exists(AbstractToken::class, 'getUserIdentifier')) {
+			yield ['session_12345_key', null];
+		}
+
+		yield ['session_12345_key', ''];
+		yield ['user_username_key', 'username'];
 	}
 
 	/**
@@ -79,16 +103,19 @@ class UserSessionStorageKeyGeneratorTest extends TestCase {
 	}
 
 	public function dataGenerate_realTokens() {
+		// TODO just use `InMemoryUser` as soon as Symfony >= 5.3 is required
+		$userClass = \class_exists(InMemoryUser::class) ? InMemoryUser::class : User::class;
+
 		return [
 			['session_12345_key', null],
 			['session_12345_key', new AnonymousToken('secret', '')],
 			['session_12345_key', new AnonymousToken('secret', 'username')],
 			['session_12345_key', new PreAuthenticatedToken('', 'password', 'firewall')],
 			['user_username_key', new PreAuthenticatedToken('username', 'password', 'firewall')],
-			['user_username_key', new RememberMeToken(new User('username', 'password'), 'firewall', 'secret')],
+			['user_username_key', new RememberMeToken(new $userClass('username', 'password'), 'firewall', 'secret')],
 			['session_12345_key', new UsernamePasswordToken('', 'password', 'firewall')],
 			['user_username_key', new UsernamePasswordToken('username', 'password', 'firewall')],
-			['user_username_key', new UsernamePasswordToken(new User('username', 'password'), 'password', 'firewall')],
+			['user_username_key', new UsernamePasswordToken(new $userClass('username', 'password'), 'password', 'firewall')],
 		];
 	}
 

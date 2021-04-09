@@ -13,7 +13,7 @@
 			<call method="setContainer">
 				<argument type="service" id="service_container" />
 			</call>
-			<tag name="controller.service_arguments"/>
+			<tag name="controller.service_arguments" />
 		</service>
 	</services>
 </container>
