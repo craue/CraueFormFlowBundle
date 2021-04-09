@@ -33,6 +33,6 @@
 			<argument type="service" id="craue.form.flow.storageKeyGenerator" />
 		</service>
 
-		<service id="craue.form.flow.storage" alias="craue.form.flow.storage.doctrine" />
+		<service id="craue.form.flow.storage" alias="craue.form.flow.storage.doctrine" public="true" />
 	</services>
 </container>

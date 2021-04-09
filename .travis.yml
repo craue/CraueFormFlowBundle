@@ -22,7 +22,7 @@ jobs:
 
     - stage: test
       php: 7.3
-      env: SYMFONY_VERSION='3.4.*' PARAM_DB_DRIVER='pdo_sqlite' SYMFONY_DEPRECATIONS_HELPER='max[direct]=9'
+      env: SYMFONY_VERSION='3.4.*' PARAM_DB_DRIVER='pdo_sqlite'
     # TODO remove as soon as Symfony >= 4.2 is required
     -
       php: 7.3
