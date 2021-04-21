@@ -15,6 +15,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class RevalidatePreviousStepsFlow extends FormFlow implements EventSubscriberInterface {
 
+	use LogEventCallsTrait;
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -55,18 +57,9 @@ class RevalidatePreviousStepsFlow extends FormFlow implements EventSubscriberInt
 	 * {@inheritDoc}
 	 */
 	public function bind($formData) {
-		$this->dataManager->getStorage()->set($this->getCalledEventsSessionKey(), []);
+		$this->clearLoggedEventCalls();
+
 		parent::bind($formData);
-	}
-
-	public function getCalledEventsSessionKey() {
-		return $this->getId() . '_debug_events_called';
-	}
-
-	protected function logEventCall($name) {
-		$calledEvents = $this->dataManager->getStorage()->get($this->getCalledEventsSessionKey());
-		$calledEvents[] = $name;
-		$this->dataManager->getStorage()->set($this->getCalledEventsSessionKey(), $calledEvents);
 	}
 
 	public function onPreviousStepInvalid(PreviousStepInvalidEvent $event) {

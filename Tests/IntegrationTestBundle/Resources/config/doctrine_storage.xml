@@ -11,7 +11,7 @@
 	<services>
 		<service id="craue.form.flow.storageKeyGenerator" class="Craue\FormFlowBundle\Storage\UserSessionStorageKeyGenerator">
 			<argument type="service" id="security.token_storage" />
-			<argument type="service" id="session" />
+			<argument type="service" id="request_stack" />
 		</service>
 
 		<service id="integrationTestBundle.doctrineConnection" class="Doctrine\DBAL\Connection" public="false">
@@ -33,6 +33,6 @@
 			<argument type="service" id="craue.form.flow.storageKeyGenerator" />
 		</service>
 
-		<service id="craue.form.flow.storage" alias="craue.form.flow.storage.doctrine" />
+		<service id="craue.form.flow.storage" alias="craue.form.flow.storage.doctrine" public="true" />
 	</services>
 </container>

@@ -76,12 +76,11 @@ class RevalidatePreviousStepsFlowTest extends IntegrationTestCase {
 		$this->assertCurrentStepNumber(3, $crawler);
 	}
 
-	protected function getCalledEvents() {
+	private function getCalledEvents() {
 		$container = static::$kernel->getContainer();
 		$flow = $container->get(RevalidatePreviousStepsFlow::class);
-		$storage = $container->get('craue.form.flow.storage');
 
-		return $storage->get($flow->getCalledEventsSessionKey());
+		return $flow->getLoggedEventCalls();
 	}
 
 }

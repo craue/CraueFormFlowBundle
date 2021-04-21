@@ -3,6 +3,7 @@
 namespace Craue\FormFlowBundle\Storage;
 
 use Craue\FormFlowBundle\Exception\InvalidTypeException;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -17,19 +18,21 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
  */
 class UserSessionStorageKeyGenerator implements StorageKeyGeneratorInterface {
 
+	use SessionProviderTrait;
+
 	/**
 	 * @var TokenStorageInterface
 	 */
 	private $tokenStorage;
 
 	/**
-	 * @var SessionInterface
+	 * @param TokenStorageInterface $tokenStorage
+	 * @param RequestStack|SessionInterface $requestStackOrSession
+	 * @throws InvalidTypeException
 	 */
-	private $session;
-
-	public function __construct(TokenStorageInterface $tokenStorage, SessionInterface $session) {
+	public function __construct(TokenStorageInterface $tokenStorage, $requestStackOrSession) {
 		$this->tokenStorage = $tokenStorage;
-		$this->session = $session;
+		$this->setRequestStackOrSession($requestStackOrSession);
 	}
 
 	/**
@@ -47,18 +50,21 @@ class UserSessionStorageKeyGenerator implements StorageKeyGeneratorInterface {
 		$token = $this->tokenStorage->getToken();
 
 		if ($token instanceof TokenInterface && !$token instanceof AnonymousToken) {
-			$username = $token->getUsername();
-			if (!empty($username)) {
-				return sprintf('user_%s_%s', $username, $key);
+			// TODO just call `getUserIdentifier()` as soon as Symfony >= 5.3 is required
+			$userIdentifier = \method_exists($token, 'getUserIdentifier') ? $token->getUserIdentifier() : $token->getUsername();
+			if (!empty($userIdentifier)) {
+				return sprintf('user_%s_%s', $userIdentifier, $key);
 			}
 		}
 
 		// fallback to session id
-		if (!$this->session->isStarted()) {
-			$this->session->start();
+		$session = $this->getSession();
+
+		if (!$session->isStarted()) {
+			$session->start();
 		}
 
-		return sprintf('session_%s_%s', $this->session->getId(), $key);
+		return sprintf('session_%s_%s', $session->getId(), $key);
 	}
 
 }

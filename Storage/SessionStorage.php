@@ -2,6 +2,8 @@
 
 namespace Craue\FormFlowBundle\Storage;
 
+use Craue\FormFlowBundle\Exception\InvalidTypeException;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
@@ -13,41 +15,42 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  */
 class SessionStorage implements StorageInterface {
 
-	/**
-	 * @var SessionInterface
-	 */
-	protected $session;
+	use SessionProviderTrait;
 
-	public function __construct(SessionInterface $session) {
-		$this->session = $session;
+	/**
+	 * @param RequestStack|SessionInterface $requestStackOrSession
+	 * @throws InvalidTypeException
+	 */
+	public function __construct($requestStackOrSession) {
+		$this->setRequestStackOrSession($requestStackOrSession);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function set($key, $value) {
-		$this->session->set($key, $value);
+		$this->getSession()->set($key, $value);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function get($key, $default = null) {
-		return $this->session->get($key, $default);
+		return $this->getSession()->get($key, $default);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function has($key) {
-		return $this->session->has($key);
+		return $this->getSession()->has($key);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function remove($key) {
-		$this->session->remove($key);
+		$this->getSession()->remove($key);
 	}
 
 }
