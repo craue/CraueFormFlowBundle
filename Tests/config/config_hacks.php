@@ -31,3 +31,14 @@ $container->loadFromExtension('framework', [
 		'storage_id' => 'session.storage.mock_file',
 	],
 ]);
+
+// TODO put back into config.yml as soon as Symfony >= 5.3 is required, see https://github.com/symfony/symfony/pull/41247
+$container->loadFromExtension('security', Kernel::VERSION_ID >= 50300 ? [
+	'enable_authenticator_manager' => true,
+] : [
+	'firewalls' => [
+		'dummy' => [
+			'anonymous' => true,
+		],
+	],
+]);

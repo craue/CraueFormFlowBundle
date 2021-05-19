@@ -23,7 +23,6 @@ security:
   firewalls:
     dummy:
       pattern: .*
-      anonymous: ~
 
 twig:
   debug: '%kernel.debug%'
