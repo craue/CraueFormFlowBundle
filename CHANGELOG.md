@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.5.0] – 2021-05-31
+
+- [#387]: avoid several deprecation notices with Symfony >= 5.3
+- dropped support for Symfony 5.1
+
+[#387]: https://github.com/craue/CraueFormFlowBundle/issues/387
+[3.5.0]: https://github.com/craue/CraueFormFlowBundle/compare/3.4.1...3.5.0
+
 ## [3.4.1] – 2021-03-31
 
 - [#386]: revert to clean class definitions for event listeners
