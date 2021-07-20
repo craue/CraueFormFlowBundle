@@ -46,4 +46,36 @@ class PhotoUploadFlowTest extends IntegrationTestCase {
 		$this->assertRenderedImageUrl(sprintf('data:image/png;base64,%s', base64_encode(file_get_contents($image))), $crawler);
 	}
 
+	public function testPhotoInsideCollectionUpload() {
+		$image = __DIR__ . self::IMAGE;
+
+		$crawler = static::$client->request('GET', $this->url('_FormFlow_photoCollectionUpload'));
+		$this->assertSame(200, static::$client->getResponse()->getStatusCode());
+		$this->assertCurrentStepNumber(1, $crawler);
+		$this->assertCurrentFormData('{"photos":{},"comment":null}', $crawler);
+
+		// upload the photo
+		$form = $crawler->selectButton('next')->form();
+		$form['photoCollectionUpload[photos][0][photo]']->upload($image);
+		$form['photoCollectionUpload[photos][0][comment]']->setValue("a beautiful image");
+
+
+		// allow the temporary file created by the DomCrawler to be removed after the test
+		$fileFieldValue = $form['photoCollectionUpload[photos][0][photo]']->getValue();
+		TempFileUtil::addTempFile($fileFieldValue['tmp_name']);
+
+		// submit the form -> step 2
+		$crawler = static::$client->submit($form);
+		$this->assertCurrentStepNumber(2, $crawler);
+		$this->assertCurrentFormData('{"photos":{},"comment":null}', $crawler);
+
+		// comment -> step 3
+		$form = $crawler->selectButton('next')->form();
+		$crawler = static::$client->submit($form, [
+			'photoCollectionUpload[comment]' => 'blah',
+		]);
+		$this->assertCurrentStepNumber(3, $crawler);
+		$this->assertCurrentFormData('{"photos":{},"comment":"blah"}', $crawler);
+		$this->assertRenderedImageCollectionCount(1, $crawler);
+	}
 }

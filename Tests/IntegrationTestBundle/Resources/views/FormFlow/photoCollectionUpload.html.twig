@@ -1,0 +1,9 @@
+{% extends '@IntegrationTest/layout_flow.html.twig' %}
+
+{% block content %}
+	{{ parent() }}
+
+	{% if flow.getCurrentStepNumber() == 3 %}
+		<span id="rendered-images-count">{{ formData.photos | length }}</span>
+	{% endif %}
+{% endblock %}
