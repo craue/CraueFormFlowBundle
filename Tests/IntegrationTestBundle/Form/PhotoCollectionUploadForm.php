@@ -24,9 +24,9 @@ class PhotoCollectionUploadForm extends AbstractType {
 		switch ($options['flow_step']) {
 			case 1:
 				$builder->add('photos', CollectionType::class, [
-				    'entry_type' => PhotoCompleteUploadForm::class,
-                    'allow_add' => true,
-                ]);
+					'entry_type' => PhotoCompleteUploadForm::class,
+					'allow_add' => true,
+				]);
 				break;
 			case 2:
 				$builder->add('comment', null, [

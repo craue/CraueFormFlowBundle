@@ -137,13 +137,13 @@ class FormFlowController extends AbstractController {
 				'@IntegrationTest/FormFlow/photoUpload.html.twig');
 	}
 
-    /**
-     * @Route("/photoCollectionUpload/", name="_FormFlow_photoCollectionUpload")
-     */
-    public function photoCollectionUploadAction() {
-        return $this->processFlow(new PhotoCollection(), $this->get(PhotoCollectionUploadFlow::class),
-            '@IntegrationTest/FormFlow/photoCollectionUpload.html.twig');
-    }
+	/**
+	 * @Route("/photoCollectionUpload/", name="_FormFlow_photoCollectionUpload")
+	 */
+	public function photoCollectionUploadAction() {
+		return $this->processFlow(new PhotoCollection(), $this->get(PhotoCollectionUploadFlow::class),
+			'@IntegrationTest/FormFlow/photoCollectionUpload.html.twig');
+	}
 
 	/**
 	 * @Route("/usualForm/", name="_FormFlow_usualForm")

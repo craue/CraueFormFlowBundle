@@ -17,10 +17,10 @@ class PhotoCompleteUploadForm extends AbstractType {
 	 * {@inheritDoc}
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('photo', FileType::class);
-        $builder->add('comment', null, [
-            'required' => false,
-        ]);
+		$builder->add('photo', FileType::class);
+		$builder->add('comment', null, [
+			'required' => false,
+		]);
 	}
 
 	/**
