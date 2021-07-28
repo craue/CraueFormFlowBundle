@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.1] – 2021-07-28
+
+- [#389]: fix file upload in collections
+
+[#389]: https://github.com/craue/CraueFormFlowBundle/issues/389
+[3.5.1]: https://github.com/craue/CraueFormFlowBundle/compare/3.5.0...3.5.1
+
 ## [3.5.0] – 2021-05-31
 
 - [#387]: avoid several deprecation notices with Symfony >= 5.3
