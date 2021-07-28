@@ -9,9 +9,11 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @copyright 2011-2021 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-class PhotoCollection
-{
+class PhotoCollection {
 
+	/**
+	 * @var ArrayCollection
+	 */
 	public $photos;
 
 	/**
@@ -19,12 +21,8 @@ class PhotoCollection
 	 */
 	public $comment;
 
-	/**
-	 * PhotoCollection constructor.
-	 */
-	public function __construct()
-	{
-		$this->photos = new ArrayCollection([["photo" => null, "comment" => null]]);
+	public function __construct() {
+		$this->photos = new ArrayCollection([['photo' => null, 'comment' => null]]);
 	}
 
 }

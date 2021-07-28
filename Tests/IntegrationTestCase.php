@@ -122,13 +122,13 @@ abstract class IntegrationTestCase extends WebTestCase {
 		$this->assertEquals($expectedSrcAttr, $this->getNodeAttribute('#rendered-image', 'src', $crawler));
 	}
 
-    /**
-     * @param string $expectedSrcAttr
-     * @param Crawler $crawler
-     */
-    protected function assertRenderedImageCollectionCount($expectedCount, Crawler $crawler) {
-        $this->assertEquals($expectedCount, $this->getNodeText("#rendered-images-count",  $crawler));
-    }
+	/**
+	 * @param int $expectedCount
+	 * @param Crawler $crawler
+	 */
+	protected function assertRenderedImageCollectionCount($expectedCount, Crawler $crawler) {
+		$this->assertEquals($expectedCount, $this->getNodeText('#rendered-images-count', $crawler));
+	}
 
 	/**
 	 * @param string $expectedError

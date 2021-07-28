@@ -142,7 +142,7 @@ class FormFlowController extends AbstractController {
 	 */
 	public function photoCollectionUploadAction() {
 		return $this->processFlow(new PhotoCollection(), $this->get(PhotoCollectionUploadFlow::class),
-			'@IntegrationTest/FormFlow/photoCollectionUpload.html.twig');
+				'@IntegrationTest/FormFlow/photoCollectionUpload.html.twig');
 	}
 
 	/**

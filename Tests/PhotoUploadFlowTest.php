@@ -57,8 +57,7 @@ class PhotoUploadFlowTest extends IntegrationTestCase {
 		// upload the photo
 		$form = $crawler->selectButton('next')->form();
 		$form['photoCollectionUpload[photos][0][photo]']->upload($image);
-		$form['photoCollectionUpload[photos][0][comment]']->setValue("a beautiful image");
-
+		$form['photoCollectionUpload[photos][0][comment]']->setValue('a beautiful image');
 
 		// allow the temporary file created by the DomCrawler to be removed after the test
 		$fileFieldValue = $form['photoCollectionUpload[photos][0][photo]']->getValue();
@@ -78,4 +77,5 @@ class PhotoUploadFlowTest extends IntegrationTestCase {
 		$this->assertCurrentFormData('{"photos":{},"comment":"blah"}', $crawler);
 		$this->assertRenderedImageCollectionCount(1, $crawler);
 	}
+
 }
