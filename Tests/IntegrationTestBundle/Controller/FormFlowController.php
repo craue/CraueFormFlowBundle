@@ -5,6 +5,7 @@ namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Controller;
 use Craue\FormFlowBundle\Form\FormFlow;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Issue149Data;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Issue64Data;
+use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\PhotoCollection;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\PhotoUpload;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\RevalidatePreviousStepsData;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity\Topic;
@@ -17,6 +18,7 @@ use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\Issue87Flow;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\Issue149Flow;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\Issue303Flow;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\OnlyOneStepFlow;
+use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\PhotoCollectionUploadFlow;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\PhotoUploadFlow;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\RemoveSecondStepSkipMarkOnResetFlow;
 use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\RevalidatePreviousStepsFlow;
@@ -133,6 +135,14 @@ class FormFlowController extends AbstractController {
 	public function photoUploadAction() {
 		return $this->processFlow(new PhotoUpload(), $this->get(PhotoUploadFlow::class),
 				'@IntegrationTest/FormFlow/photoUpload.html.twig');
+	}
+
+	/**
+	 * @Route("/photoCollectionUpload/", name="_FormFlow_photoCollectionUpload")
+	 */
+	public function photoCollectionUploadAction() {
+		return $this->processFlow(new PhotoCollection(), $this->get(PhotoCollectionUploadFlow::class),
+				'@IntegrationTest/FormFlow/photoCollectionUpload.html.twig');
 	}
 
 	/**
