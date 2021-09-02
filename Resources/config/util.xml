@@ -14,5 +14,8 @@
 
 	<services>
 		<service id="craue_formflow_util" class="%craue_formflow.util.class%" public="true" />
+
+		<!-- autowiring alias -->
+		<service id="Craue\FormFlowBundle\Util\FormFlowUtil" alias="craue_formflow_util" public="false" />
 	</services>
 </container>
