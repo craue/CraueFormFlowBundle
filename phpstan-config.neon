@@ -58,10 +58,10 @@ parameters:
 			paths:
 				- EventListener/FlowExpiredEventListener.php
 				- EventListener/PreviousStepInvalidEventListener.php
-		# TODO remove as soon as Symfony >= 5.3 is required
+		# TODO remove as soon as Symfony >= 5.1 is required
 		-
-			message: '#^Call to an undefined method Symfony\\Component\\HttpFoundation\\RequestStack::getSession\(\)\.$#'
-			path: Storage/SessionProviderTrait.php
+			message: '#^Parameter \#2 \$default of method Symfony\\Component\\HttpFoundation\\InputBag::get\(\) expects bool\|float\|int\|string\|null, array given\.$#'
+			path: Form/FormFlow.php
 		# TODO remove as soon as Doctrine DBAL >= 3.0 is required
 		-
 			message: '#^Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Result\|int\.$#'

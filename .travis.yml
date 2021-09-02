@@ -33,14 +33,11 @@ jobs:
       env: SYMFONY_VERSION='4.4.*'
     -
       php: 7.3
-      env: SYMFONY_VERSION='5.2.*' WITH_STATIC_ANALYSIS='yes'
+      env: SYMFONY_VERSION='5.3.*' WITH_STATIC_ANALYSIS='yes'
     # TODO remove as soon as Symfony >= 5.0 is required
     -
       php: 7.3
-      env: SYMFONY_VERSION='5.2.*' WITH_CONTAO_POLYFILL_SYMFONY='yes'
-    -
-      php: 7.3
-      env: SYMFONY_VERSION='5.3'
+      env: SYMFONY_VERSION='5.3.*' WITH_CONTAO_POLYFILL_SYMFONY='yes'
     -
       php: 7.3
       env: SYMFONY_VERSION='5.4.*' MIN_STABILITY='dev'
