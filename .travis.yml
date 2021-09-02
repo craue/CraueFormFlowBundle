@@ -41,6 +41,9 @@ jobs:
     -
       php: 7.3
       env: SYMFONY_VERSION='5.4.*' MIN_STABILITY='dev'
+    -
+      php: 8.0
+      env: SYMFONY_VERSION='5.4.*' MIN_STABILITY='dev'
   allow_failures:
     - env: SYMFONY_VERSION='5.4.*' MIN_STABILITY='dev'
   fast_finish: true

@@ -30,7 +30,7 @@ class RevalidatePreviousStepsFlow extends FormFlow implements EventSubscriberInt
 	/**
 	 * {@inheritDoc}
 	 */
-	public static function getSubscribedEvents() {
+	public static function getSubscribedEvents() : array {
 		return [
 			FormFlowEvents::PREVIOUS_STEP_INVALID => 'onPreviousStepInvalid',
 		];

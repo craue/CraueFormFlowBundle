@@ -25,7 +25,7 @@ class AppKernel extends Kernel {
 		$this->configFile = $configFile;
 	}
 
-	public function registerBundles() {
+	public function registerBundles() : iterable {
 		return [
 			new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
 			new \Symfony\Bundle\SecurityBundle\SecurityBundle(),
@@ -40,7 +40,7 @@ class AppKernel extends Kernel {
 		$loader->load($this->configFile);
 	}
 
-	public function getCacheDir() {
+	public function getCacheDir() : string {
 		if (array_key_exists('CACHE_DIR', $_ENV)) {
 			return $_ENV['CACHE_DIR'] . DIRECTORY_SEPARATOR . $this->environment;
 		}
@@ -48,7 +48,7 @@ class AppKernel extends Kernel {
 		return parent::getCacheDir();
 	}
 
-	public function getLogDir() {
+	public function getLogDir() : string {
 		if (array_key_exists('LOG_DIR', $_ENV)) {
 			return $_ENV['LOG_DIR'] . DIRECTORY_SEPARATOR . $this->environment;
 		}

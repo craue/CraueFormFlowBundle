@@ -45,7 +45,7 @@ class Issue64Form extends AbstractType {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getBlockPrefix() {
+	public function getBlockPrefix() : string {
 		return 'issue64';
 	}
 

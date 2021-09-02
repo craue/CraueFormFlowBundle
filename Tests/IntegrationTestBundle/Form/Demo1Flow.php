@@ -35,7 +35,7 @@ class Demo1Flow extends FormFlow implements EventSubscriberInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public static function getSubscribedEvents() {
+	public static function getSubscribedEvents() : array {
 		return [
 			FormFlowEvents::PRE_BIND => 'onPreBind',
 			FormFlowEvents::GET_STEPS => 'onGetSteps',

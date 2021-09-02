@@ -36,7 +36,7 @@ class FormFlowExtension extends AbstractExtension {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getFilters() {
+	public function getFilters() : array {
 		return [
 			new TwigFilter('craue_addDynamicStepNavigationParameters', [$this, 'addDynamicStepNavigationParameters']),
 			new TwigFilter('craue_removeDynamicStepNavigationParameters', [$this, 'removeDynamicStepNavigationParameters']),
@@ -49,7 +49,7 @@ class FormFlowExtension extends AbstractExtension {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getFunctions() {
+	public function getFunctions() : array {
 		return [
 			new TwigFunction('craue_isStepLinkable', [$this, 'isStepLinkable']),
 		];

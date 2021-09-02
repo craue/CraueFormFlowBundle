@@ -32,7 +32,7 @@ class PhotoUploadForm extends AbstractType {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getBlockPrefix() {
+	public function getBlockPrefix() : string {
 		return 'photoUpload';
 	}
 
