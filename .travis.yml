@@ -1,4 +1,5 @@
 language: php
+dist: bionic # https://docs.travis-ci.com/user/reference/overview/#which-one-do-i-use
 
 php:
   - 7.3
