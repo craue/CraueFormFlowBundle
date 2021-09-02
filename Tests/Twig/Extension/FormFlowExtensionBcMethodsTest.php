@@ -21,7 +21,7 @@ class FormFlowExtensionBcMethodsTest extends UnitTestCase {
 	 * @expectedDeprecation Twig filter craue_addDynamicStepNavigationParameter is deprecated since CraueFormFlowBundle 3.0. Use filter craue_addDynamicStepNavigationParameters instead.
 	 */
 	public function testBcMethodDelegation_addDynamicStepNavigationParameter() {
-		$extension = $this->getMockBuilder(FormFlowExtension::class)->setMethods(['addDynamicStepNavigationParameters'])->getMock();
+		$extension = $this->getMockBuilder(FormFlowExtension::class)->onlyMethods(['addDynamicStepNavigationParameters'])->getMock();
 
 		$parameters = ['foo' => 'bar'];
 		$flow = $this->getMockedFlow();
@@ -40,7 +40,7 @@ class FormFlowExtensionBcMethodsTest extends UnitTestCase {
 	 * @expectedDeprecation Twig filter craue_removeDynamicStepNavigationParameter is deprecated since CraueFormFlowBundle 3.0. Use filter craue_removeDynamicStepNavigationParameters instead.
 	 */
 	public function testBcMethodDelegation_removeDynamicStepNavigationParameter() {
-		$extension = $this->getMockBuilder(FormFlowExtension::class)->setMethods(['removeDynamicStepNavigationParameters'])->getMock();
+		$extension = $this->getMockBuilder(FormFlowExtension::class)->onlyMethods(['removeDynamicStepNavigationParameters'])->getMock();
 
 		$parameters = ['foo' => 'bar'];
 		$flow = $this->getMockedFlow();

@@ -35,7 +35,7 @@ abstract class UnitTestCase extends TestCase {
 	 * @return MockObject|FormFlow
 	 */
 	protected function getFlowWithMockedMethods(array $methodNames) {
-		return $this->getMockBuilder(FormFlow::class)->setMethods($methodNames)->getMock();
+		return $this->getMockBuilder(FormFlow::class)->onlyMethods($methodNames)->getMock();
 	}
 
 	/**
