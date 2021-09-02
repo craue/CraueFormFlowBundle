@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
@@ -102,21 +103,36 @@ class UserSessionStorageKeyGeneratorTest extends TestCase {
 		$this->assertSame($expectedKey, $this->generator->generate('key'));
 	}
 
-	public function dataGenerate_realTokens() {
+	public function dataGenerate_realTokens() : iterable {
 		// TODO just use `InMemoryUser` as soon as Symfony >= 5.3 is required
 		$userClass = \class_exists(InMemoryUser::class) ? InMemoryUser::class : User::class;
 
-		return [
-			['session_12345_key', null],
-			['session_12345_key', new AnonymousToken('secret', '')],
-			['session_12345_key', new AnonymousToken('secret', 'username')],
-			['session_12345_key', new PreAuthenticatedToken('', 'password', 'firewall')],
-			['user_username_key', new PreAuthenticatedToken('username', 'password', 'firewall')],
-			['user_username_key', new RememberMeToken(new $userClass('username', 'password'), 'firewall', 'secret')],
-			['session_12345_key', new UsernamePasswordToken('', 'password', 'firewall')],
-			['user_username_key', new UsernamePasswordToken('username', 'password', 'firewall')],
-			['user_username_key', new UsernamePasswordToken(new $userClass('username', 'password'), 'password', 'firewall')],
-		];
+		yield ['session_12345_key', null];
+
+		if (Kernel::VERSION_ID < 50400) {
+			// TODO remove as soon as Symfony >= 5.4 is required
+			yield ['session_12345_key', new AnonymousToken('secret', '')];
+			yield ['session_12345_key', new AnonymousToken('secret', 'username')];
+		}
+
+		if (Kernel::VERSION_ID < 50400) {
+			// TODO remove as soon as Symfony >= 5.4 is required
+			yield ['session_12345_key', new PreAuthenticatedToken('', 'password', 'firewall')];
+			yield ['user_username_key', new PreAuthenticatedToken('username', 'password', 'firewall')];
+		} else {
+			yield ['user_username_key', new PreAuthenticatedToken(new $userClass('username', 'password'), 'firewall')];
+		}
+
+		yield ['user_username_key', new RememberMeToken(new $userClass('username', 'password'), 'firewall', 'secret')];
+
+		if (Kernel::VERSION_ID < 50400) {
+			// TODO remove as soon as Symfony >= 5.4 is required
+			yield ['session_12345_key', new UsernamePasswordToken('', 'password', 'firewall')];
+			yield ['user_username_key', new UsernamePasswordToken('username', 'password', 'firewall')];
+			yield ['user_username_key', new UsernamePasswordToken(new $userClass('username', 'password'), 'password', 'firewall')];
+		} else {
+			yield ['user_username_key', new UsernamePasswordToken(new $userClass('username', 'password'), 'firewall')];
+		}
 	}
 
 	public function testGenerate_invalidArgument() {
