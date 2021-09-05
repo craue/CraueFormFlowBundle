@@ -5,6 +5,9 @@ set -euv
 export COMPOSER_NO_INTERACTION=1
 composer self-update
 
+# install Symfony Flex
+composer require --no-progress --no-scripts --no-plugins symfony/flex
+
 case "${DEPS:-}" in
 	'lowest')
 		COMPOSER_UPDATE_ARGS='--prefer-lowest'
@@ -18,7 +21,7 @@ case "${DEPS:-}" in
 		fi
 
 		if [ -n "${SYMFONY_VERSION:-}" ]; then
-			composer require --no-update --dev symfony/symfony:"${SYMFONY_VERSION}"
+			composer config extra.symfony.require "${SYMFONY_VERSION}"
 		fi
 esac
 
@@ -36,4 +39,7 @@ if [ -n "${WITH_CONTAO_POLYFILL_SYMFONY:-}" ]; then
 	composer require --no-update --dev "contao/polyfill-symfony"
 fi
 
-composer update ${COMPOSER_UPDATE_ARGS:-}
+composer update ${COMPOSER_UPDATE_ARGS:-} --with-all-dependencies
+
+# revert changes applied by Flex recipes
+git reset --hard && git clean -df
