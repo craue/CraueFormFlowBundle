@@ -62,6 +62,8 @@ install:
 before_script:
   # create folder for code coverage data
   - mkdir -p build/logs
+  # install PCOV extension for quick code coverage analysis
+  - pecl install pcov
 
 script:
   # validate composer.json
@@ -69,7 +71,7 @@ script:
   # run PHPStan
   - if [ -n "${WITH_STATIC_ANALYSIS:-}" ]; then vendor/bin/phpstan analyse; fi;
   # run PHPUnit
-  - phpdbg -qrr vendor/phpunit/phpunit/phpunit -v --coverage-clover build/logs/clover.xml
+  - php vendor/phpunit/phpunit/phpunit -v --coverage-clover build/logs/clover.xml
   # upload code coverage data
   - |
     if [ "${TRAVIS_REPO_SLUG}" = "craue/CraueFormFlowBundle" ]; then
