@@ -67,9 +67,10 @@ class TemplateRenderingTest extends IntegrationTestCase {
 
 		$renderedTemplate = $this->getTwig()->render(self::BUTTONS_TEMPLATE, [
 			'craue_formflow_button_render_reset' => false,
+			'craue_formflow_wrapper_class' => 'foo-wrap',
 			'flow' => $flow,
 		]);
-		$this->assertStringContainsString('<div class="craue_formflow_buttons craue_formflow_button_count_2">', $renderedTemplate);
+		$this->assertStringContainsString('<div class="craue_formflow_buttons craue_formflow_button_count_2 foo-wrap">', $renderedTemplate);
 		$this->assertStringNotContainsString('<button type="submit" class="craue_formflow_button_first" name="flow_renderingTest_transition" value="reset" formnovalidate="formnovalidate">start over</button>', $renderedTemplate);
 	}
 
