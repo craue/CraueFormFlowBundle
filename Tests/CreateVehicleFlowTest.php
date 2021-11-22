@@ -2,6 +2,8 @@
 
 namespace Craue\FormFlowBundle\Tests;
 
+use Symfony\Component\HttpKernel\Kernel;
+
 /**
  * @group integration
  *
@@ -246,7 +248,7 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 			'createVehicle[numberOfWheels]' => 99,
 		]);
 		$this->assertCurrentStepNumber(1, $crawler);
-		$this->assertContainsFormError('This value is not valid.', $crawler);
+		$this->assertContainsFormError(Kernel::VERSION_ID < 60000 ? 'This value is not valid.' : 'The selected choice is invalid.', $crawler); // TODO cleanup as soon as Symfony >= 6.0 is required
 
 		// 4 wheels -> step 2
 		$form = $crawler->selectButton('next')->form();
@@ -262,7 +264,7 @@ class CreateVehicleFlowTest extends IntegrationTestCase {
 			'createVehicle[engine]' => 'magic',
 		]);
 		$this->assertCurrentStepNumber(2, $crawler);
-		$this->assertContainsFormError('This value is not valid.', $crawler);
+		$this->assertContainsFormError(Kernel::VERSION_ID < 60000 ? 'This value is not valid.' : 'The selected choice is invalid.', $crawler); // TODO cleanup as soon as Symfony >= 6.0 is required
 	}
 
 }
