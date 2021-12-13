@@ -523,7 +523,7 @@ abstract class FormFlow implements FormFlowInterface {
 
 	public function getRequestedTransition() {
 		if (empty($this->transition)) {
-			$this->transition = strtolower($this->getRequest()->request->get($this->getFormTransitionKey()));
+			$this->transition = strtolower($this->getRequest()->request->get($this->getFormTransitionKey(), ''));
 		}
 
 		return $this->transition;
