@@ -1,13 +1,6 @@
 language: php
 dist: bionic # https://docs.travis-ci.com/user/reference/overview/#which-one-do-i-use
 
-php:
-  - 7.3
-  - 7.4
-
-env:
-  - SYMFONY_VERSION='3.4.*'
-
 stages:
   - smoke test 🕵️
   - test
@@ -18,10 +11,13 @@ jobs:
       php: 7.3
       env: DEPS='lowest'
     -
-      php: 8.0
+      php: 8.1.0
       env: DEPS='unmodified'
 
     - stage: test
+      php: 7.3
+      env: SYMFONY_VERSION='3.4.*'
+    -
       php: 7.3
       env: SYMFONY_VERSION='3.4.*' PARAM_DB_DRIVER='pdo_sqlite'
     # TODO remove as soon as Symfony >= 4.2 is required
@@ -32,24 +28,23 @@ jobs:
       php: 7.3
       env: SYMFONY_VERSION='4.4.*'
     -
-      php: 7.3
+      php: 7.4
       env: SYMFONY_VERSION='5.3.*' WITH_STATIC_ANALYSIS='yes'
     # TODO remove as soon as Symfony >= 5.0 is required
     -
-      php: 7.3
+      php: 7.4
       env: SYMFONY_VERSION='5.3.*' WITH_CONTAO_POLYFILL_SYMFONY='yes'
     -
-      php: 7.3
-      env: SYMFONY_VERSION='5.4.*' MIN_STABILITY='dev'
+      php: 8.0
+      env: SYMFONY_VERSION='5.4.*'
     -
       php: 8.0
-      env: SYMFONY_VERSION='5.4.*' MIN_STABILITY='dev'
+      env: SYMFONY_VERSION='6.0.*'
     -
-      php: 8.0
-      env: SYMFONY_VERSION='6.0.*' MIN_STABILITY='dev'
+      php: 8.1.0
+      env: SYMFONY_VERSION='6.1.*' MIN_STABILITY='dev'
   allow_failures:
-    - env: SYMFONY_VERSION='5.4.*' MIN_STABILITY='dev'
-    - env: SYMFONY_VERSION='6.0.*' MIN_STABILITY='dev'
+    - env: SYMFONY_VERSION='6.1.*' MIN_STABILITY='dev'
   fast_finish: true
 
 install:
