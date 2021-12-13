@@ -82,7 +82,6 @@ class StringUtilTest extends TestCase {
 
 	public function dataFqcnToFlowName() {
 		return [
-			[null, null],
 			['', null],
 			['Flow', 'flow'],
 			['Demo1', 'demo1'],
@@ -92,6 +91,13 @@ class StringUtilTest extends TestCase {
 			['MyCompany\MyBundle\Form\CreateLocation', 'createLocation'],
 			['MyCompany\MyBundle\Form\CreateLocationFlow', 'createLocation'],
 		];
+	}
+
+	public function testFqcnToFlowName_inputNotString() {
+		$this->expectException(InvalidTypeException::class);
+		$this->expectExceptionMessage('Expected argument of type "string", but "NULL" given.');
+
+		StringUtil::fqcnToFlowName(null);
 	}
 
 }
