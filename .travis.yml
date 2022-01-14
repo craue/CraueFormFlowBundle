@@ -16,17 +16,10 @@ jobs:
 
     - stage: test
       php: 7.3
-      env: SYMFONY_VERSION='3.4.*'
-    -
-      php: 7.3
-      env: SYMFONY_VERSION='3.4.*' PARAM_DB_DRIVER='pdo_sqlite'
-    # TODO remove as soon as Symfony >= 4.2 is required
-    -
-      php: 7.3
-      env: SYMFONY_VERSION='3.4.*' WITH_TRANSLATION_CONTRACTS='yes'
-    -
-      php: 7.3
       env: SYMFONY_VERSION='4.4.*'
+    -
+      php: 7.3
+      env: SYMFONY_VERSION='4.4.*' PARAM_DB_DRIVER='pdo_sqlite'
     -
       php: 7.4
       env: SYMFONY_VERSION='5.3.*' WITH_STATIC_ANALYSIS='yes'

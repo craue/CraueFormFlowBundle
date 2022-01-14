@@ -59,12 +59,6 @@ class SerializableFile {
 
 		TempFileUtil::addTempFile($tempFile);
 
-		// avoid a deprecation notice regarding "passing a size as 4th argument to the constructor"
-		// TODO remove as soon as Symfony >= 4.1 is required
-		if (property_exists(UploadedFile::class, 'size')) {
-			return new UploadedFile($tempFile, $this->clientOriginalName, $this->clientMimeType, null, null, true);
-		}
-
 		return new UploadedFile($tempFile, $this->clientOriginalName, $this->clientMimeType, null, true);
 	}
 
