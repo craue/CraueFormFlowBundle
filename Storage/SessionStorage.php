@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  * Stores data in the session.
  *
  * @author Toni Uebernickel <tuebernickel@gmail.com>
- * @copyright 2011-2021 Christian Raue
+ * @copyright 2011-2022 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class SessionStorage implements StorageInterface {

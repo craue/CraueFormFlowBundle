@@ -7,7 +7,7 @@ namespace Craue\FormFlowBundle\Tests;
  * @see https://github.com/craue/CraueFormFlowBundle/issues/249
  *
  * @author Christian Raue <christian.raue@gmail.com>
- * @copyright 2011-2021 Christian Raue
+ * @copyright 2011-2022 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class UsualFormTest extends IntegrationTestCase {

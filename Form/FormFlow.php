@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints\GroupSequence;
  * @author Christian Raue <christian.raue@gmail.com>
  * @author Marcus Stöhr <dafish@soundtrack-board.de>
  * @author Toni Uebernickel <tuebernickel@gmail.com>
- * @copyright 2011-2021 Christian Raue
+ * @copyright 2011-2022 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 abstract class FormFlow implements FormFlowInterface {

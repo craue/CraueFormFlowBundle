@@ -64,7 +64,7 @@ if (!method_exists(AbstractTypeExtension::class, 'getExtendedTypes')) {
 	/**
 	 * @author Konstantin Myakshin <koc-dp@yandex.ru>
 	 * @author Christian Raue <christian.raue@gmail.com>
-	 * @copyright 2011-2021 Christian Raue
+	 * @copyright 2011-2022 Christian Raue
 	 * @license http://opensource.org/licenses/mit-license.php MIT License
 	 */
 	class FormFlowFormExtension extends BaseFormFlowFormExtension {
@@ -76,7 +76,7 @@ if (!method_exists(AbstractTypeExtension::class, 'getExtendedTypes')) {
 	/**
 	 * @author Konstantin Myakshin <koc-dp@yandex.ru>
 	 * @author Christian Raue <christian.raue@gmail.com>
-	 * @copyright 2011-2021 Christian Raue
+	 * @copyright 2011-2022 Christian Raue
 	 * @license http://opensource.org/licenses/mit-license.php MIT License
 	 */
 	class FormFlowFormExtension extends BaseFormFlowFormExtension {
