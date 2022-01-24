@@ -191,7 +191,7 @@ class FormFlowController extends AbstractController {
 			$params = $this->formFlowUtil->addRouteParameters(array_merge($request->query->all(),
 					$request->attributes->get('_route_params')), $flow);
 
-			return $this->redirect($this->generateUrl($request->attributes->get('_route'), $params));
+			return $this->redirectToRoute($request->attributes->get('_route'), $params);
 		}
 
 		return new Response($this->twig->render($template, array_merge($templateParameters, [

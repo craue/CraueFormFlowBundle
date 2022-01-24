@@ -365,7 +365,7 @@ public function createVehicleAction() {
 
 			$flow->reset(); // remove step data from the session
 
-			return $this->redirect($this->generateUrl('home')); // redirect when done
+			return $this->redirectToRoute('home'); // redirect when done
 		}
 	}
 
@@ -634,7 +634,7 @@ public function createVehicleAction() {
 		$params = $this->get('craue_formflow_util')->addRouteParameters(array_merge($request->query->all(),
 				$request->attributes->get('_route_params')), $flow);
 
-		return $this->redirect($this->generateUrl($request->attributes->get('_route'), $params));
+		return $this->redirectToRoute($request->attributes->get('_route'), $params);
 	}
 
 	// ...
