@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.6.0] – 2022-01-24
+
+- [#393]: added support for Symfony 6
+- dropped support for Symfony 3.4, 5.1, 5.2
+
+[#393]: https://github.com/craue/CraueFormFlowBundle/issues/393
+[3.6.0]: https://github.com/craue/CraueFormFlowBundle/compare/3.5.1...3.6.0
+
 ## [3.5.1] – 2021-07-28
 
 - [#389]: fix file upload in collections
