@@ -9,9 +9,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @internal
+ * @author Konstantin Myakshin <koc-dp@yandex.ru>
+ * @author Christian Raue <christian.raue@gmail.com>
+ * @copyright 2011-2022 Christian Raue
+ * @license http://opensource.org/licenses/mit-license.php MIT License
  */
-abstract class BaseFormFlowFormExtension extends AbstractTypeExtension {
+class FormFlowFormExtension extends AbstractTypeExtension {
 
 	/**
 	 * {@inheritDoc}
@@ -20,7 +23,7 @@ abstract class BaseFormFlowFormExtension extends AbstractTypeExtension {
 		return FormType::class;
 	}
 
-	public static function _getExtendedTypes() {
+	public static function getExtendedTypes() : iterable {
 		return [FormType::class];
 	}
 
@@ -57,31 +60,4 @@ abstract class BaseFormFlowFormExtension extends AbstractTypeExtension {
 		}
 	}
 
-}
-
-// TODO revert to one clean class definition as soon as Symfony >= 5.0 is required
-if (!method_exists(AbstractTypeExtension::class, 'getExtendedTypes')) {
-	/**
-	 * @author Konstantin Myakshin <koc-dp@yandex.ru>
-	 * @author Christian Raue <christian.raue@gmail.com>
-	 * @copyright 2011-2022 Christian Raue
-	 * @license http://opensource.org/licenses/mit-license.php MIT License
-	 */
-	class FormFlowFormExtension extends BaseFormFlowFormExtension {
-		public static function getExtendedTypes() {
-			return self::_getExtendedTypes();
-		}
-	}
-} else {
-	/**
-	 * @author Konstantin Myakshin <koc-dp@yandex.ru>
-	 * @author Christian Raue <christian.raue@gmail.com>
-	 * @copyright 2011-2022 Christian Raue
-	 * @license http://opensource.org/licenses/mit-license.php MIT License
-	 */
-	class FormFlowFormExtension extends BaseFormFlowFormExtension {
-		public static function getExtendedTypes() : iterable {
-			return self::_getExtendedTypes();
-		}
-	}
 }
