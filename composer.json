@@ -60,6 +60,9 @@
 		}
 	},
 	"config": {
+		"allow-plugins": {
+			"symfony/flex": true
+		},
 		"sort-packages": true
 	}
 }
