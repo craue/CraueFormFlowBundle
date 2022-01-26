@@ -49,7 +49,8 @@ class UserSessionStorageKeyGenerator implements StorageKeyGeneratorInterface {
 
 		$token = $this->tokenStorage->getToken();
 
-		if ($token instanceof TokenInterface && !$token instanceof AnonymousToken) {
+		// TODO remove checks for AnonymousToken as soon as Symfony >= 6.0 is required
+		if ($token instanceof TokenInterface && (!\class_exists(AnonymousToken::class) || !$token instanceof AnonymousToken)) {
 			// TODO just call `getUserIdentifier()` as soon as Symfony >= 5.3 is required
 			$userIdentifier = \method_exists($token, 'getUserIdentifier') ? $token->getUserIdentifier() : $token->getUsername();
 			if (!empty($userIdentifier)) {
