@@ -25,10 +25,6 @@ case "${DEPS:-}" in
 		fi
 esac
 
-if [ -n "${WITH_STATIC_ANALYSIS:-}" ]; then
-	composer require --no-update --dev phpstan/phpstan
-fi
-
 # TODO remove as soon as Symfony >= 5.0 is required
 if [ -n "${WITH_CONTAO_POLYFILL_SYMFONY:-}" ]; then
 	composer require --no-update --dev "contao/polyfill-symfony"
