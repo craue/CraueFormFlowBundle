@@ -43,7 +43,7 @@ class UserSessionStorageKeyGenerator implements StorageKeyGeneratorInterface {
 			throw new InvalidTypeException($key, 'string');
 		}
 
-		if (empty($key)) {
+		if ($key === '') {
 			throw new \InvalidArgumentException('Argument must not be empty.');
 		}
 
@@ -53,7 +53,7 @@ class UserSessionStorageKeyGenerator implements StorageKeyGeneratorInterface {
 		if ($token instanceof TokenInterface && (!\class_exists(AnonymousToken::class) || !$token instanceof AnonymousToken)) {
 			// TODO just call `getUserIdentifier()` as soon as Symfony >= 5.3 is required
 			$userIdentifier = \method_exists($token, 'getUserIdentifier') ? $token->getUserIdentifier() : $token->getUsername();
-			if (!empty($userIdentifier)) {
+			if (is_string($userIdentifier) && $userIdentifier !== '') {
 				return sprintf('user_%s_%s', $userIdentifier, $key);
 			}
 		}
