@@ -51,7 +51,7 @@ abstract class FormFlow implements FormFlowInterface {
 	protected $eventDispatcher = null;
 
 	/**
-	 * @var string
+	 * @var string|null
 	 */
 	protected $transition;
 
