@@ -21,12 +21,9 @@
 			<directory suffix=".php">vendor</directory>
 		</exclude>
 	</coverage>
-	<!--
 	<php>
-		<env name="CACHE_DIR" value="/path/to/your/cache/" />
-		<env name="LOG_DIR" value="/path/to/your/log/" />
+		<env name="SYMFONY_DEPRECATIONS_HELPER" value="max[direct]=0"/>
 	</php>
-	-->
 	<listeners>
 		<listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
 	</listeners>
