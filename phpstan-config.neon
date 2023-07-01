@@ -44,7 +44,7 @@ parameters:
 			path: Storage\UserSessionStorageKeyGenerator.php
 		# TODO remove as soon as Doctrine DBAL >= 3.0 is required
 		-
-			message: '#^Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Result\|int\.$#'
+			message: '#^Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Result\|int\|string\.$#'
 			path: Storage/DoctrineStorage.php
 		# TODO remove as soon as Doctrine DBAL >= 3.0 is required
 		-
