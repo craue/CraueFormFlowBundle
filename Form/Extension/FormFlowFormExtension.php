@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class FormFlowFormExtension extends AbstractTypeExtension {
 
 	/**
-	 * {@inheritDoc}
+	 * @return string
 	 */
 	public function getExtendedType() {
 		return FormType::class;
@@ -28,7 +28,7 @@ class FormFlowFormExtension extends AbstractTypeExtension {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @return void
 	 */
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefined([
@@ -40,7 +40,7 @@ class FormFlowFormExtension extends AbstractTypeExtension {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @return void
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options) {
 		if (array_key_exists('flow_instance', $options) && array_key_exists('flow_instance_key', $options)) {

@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class FormFlowHiddenFieldExtension extends AbstractTypeExtension {
 
 	/**
-	 * {@inheritDoc}
+	 * @return string
 	 */
 	public function getExtendedType() {
 		return HiddenType::class;
@@ -28,7 +28,7 @@ class FormFlowHiddenFieldExtension extends AbstractTypeExtension {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @return void
 	 */
 	public function configureOptions(OptionsResolver $resolver) {
 		$resolver->setDefined([
@@ -38,7 +38,7 @@ class FormFlowHiddenFieldExtension extends AbstractTypeExtension {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @return void
 	 */
 	public function finishView(FormView $view, FormInterface $form, array $options) {
 		if (array_key_exists('flow_instance_key', $options) && $view->vars['name'] === $options['flow_instance_key']) {

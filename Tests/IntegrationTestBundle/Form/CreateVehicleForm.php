@@ -16,7 +16,7 @@ class CreateVehicleForm extends AbstractType {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function buildForm(FormBuilderInterface $builder, array $options) {
+	public function buildForm(FormBuilderInterface $builder, array $options) : void {
 		switch ($options['flow_step']) {
 			case 1:
 				$choices = [2, 4];
