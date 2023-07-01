@@ -37,6 +37,7 @@
 	"require-dev": {
 		"craue/translations-tests": "^1.1",
 		"doctrine/annotations": "^1.6",
+		"doctrine/collections": "^1.8 || ^2.1",
 		"doctrine/common": "~2.9 || ~3.0",
 		"doctrine/doctrine-bundle": "~1.10 || ~2.0",
 		"phpstan/extension-installer": "^1.1",
