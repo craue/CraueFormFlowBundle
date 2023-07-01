@@ -1,6 +1,6 @@
 # Information
 
-[![Build Status](https://app.travis-ci.com/craue/CraueFormFlowBundle.svg?branch=master)](https://app.travis-ci.com/craue/CraueFormFlowBundle)
+![Build Status](https://github.com/craue/CraueFormFlowBundle.svg/actions/workflows/continuous-integration.yml/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/craue/CraueFormFlowBundle/badge.svg?branch=master)](https://coveralls.io/github/craue/CraueFormFlowBundle?branch=master)
 
 CraueFormFlowBundle provides a facility for building and handling multi-step forms in your Symfony project.
