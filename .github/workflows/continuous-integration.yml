@@ -1,0 +1,102 @@
+name: "Continuous Integration"
+
+on:
+  pull_request:
+    branches:
+      - "master"
+  push:
+
+env:
+  fail-fast: true
+
+jobs:
+  phpunit:
+    name: "PHPUnit"
+    runs-on: "${{ matrix.os }}"
+    env:
+      SYMFONY_REQUIRE: ${{matrix.symfony-require}}
+
+    strategy:
+      matrix:
+        os:
+          - "ubuntu-22.04"
+        php-version:
+          - "7.3"
+          - "7.4"
+          - "8.0"
+          - "8.1"
+          - "8.2"
+        symfony-version:
+          - "4.4.x"
+          - "5.4.x"
+          - "6.2.x"
+          - "6.3.x"
+        driver-version:
+          - "stable"
+        dependencies:
+          - "highest"
+        include:
+          - dependencies: "lowest"
+            os: "ubuntu-22.04"
+            php-version: "7.3"
+            symfony-version: "4.4.*"
+        exclude:
+          - php-version: "7.3"
+            symfony-version: "6.2.x"
+          - php-version: "7.3"
+            symfony-version: "6.3.x"
+          - php-version: "7.4"
+            symfony-version: "6.2.x"
+          - php-version: "7.4"
+            symfony-version: "6.3.x"
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v2"
+        with:
+          fetch-depth: 2
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php-version }}"
+          coverage: "pcov"
+
+      - name: "Globally install symfony/flex"
+        run: "composer global require --no-progress --no-scripts --no-plugins symfony/flex && composer global config --no-plugins allow-plugins.symfony/flex true"
+
+      - name: "Install dependencies with Composer"
+        uses: "ramsey/composer-install@v2"
+        with:
+          dependency-versions: "${{ matrix.dependencies }}"
+
+      - name: "Run PHPUnit"
+        run: "vendor/bin/phpunit --coverage-clover=coverage.xml"
+
+      - name: "Upload coverage file"
+        uses: "actions/upload-artifact@v2"
+        with:
+          name: "phpunit-${{ matrix.php-version }}-${{ matrix.dependencies }}.coverage"
+          path: "coverage.xml"
+
+  upload_coverage:
+    name: "Upload coverage to Codecov"
+    runs-on: "ubuntu-22.04"
+    needs:
+      - "phpunit"
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v2"
+        with:
+          fetch-depth: 2
+
+      - name: "Download coverage files"
+        uses: "actions/download-artifact@v2"
+        with:
+          path: "reports"
+
+      - name: "Upload to Codecov"
+        uses: "codecov/codecov-action@v1"
+        with:
+          directory: reports
