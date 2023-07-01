@@ -15,7 +15,7 @@ class AppKernel extends Kernel {
 
 		$fs = new Filesystem();
 		if (!$fs->isAbsolutePath($configFile)) {
-			$configFile = __DIR__ . '/config/' . $configFile;
+			$configFile = $this->getProjectDir() . '/config/' . $configFile;
 		}
 
 		if (!file_exists($configFile)) {
@@ -40,29 +40,23 @@ class AppKernel extends Kernel {
 		$loader->load($this->configFile);
 	}
 
-	public function getCacheDir() : string {
-		if (array_key_exists('CACHE_DIR', $_ENV)) {
-			return $_ENV['CACHE_DIR'] . DIRECTORY_SEPARATOR . $this->environment;
-		}
+    public function getCacheDir(): string
+    {
+        return sprintf('%scache', $this->getBaseDir());
+    }
 
-		return parent::getCacheDir();
-	}
+    public function getLogDir(): string
+    {
+        return sprintf('%slog', $this->getBaseDir());
+    }
 
-	public function getLogDir() : string {
-		if (array_key_exists('LOG_DIR', $_ENV)) {
-			return $_ENV['LOG_DIR'] . DIRECTORY_SEPARATOR . $this->environment;
-		}
+    public function getProjectDir(): string
+    {
+        return __DIR__;
+    }
 
-		return parent::getLogDir();
-	}
-
-	public function serialize() {
-		return serialize([$this->environment, $this->configFile]);
-	}
-
-	public function unserialize($data) {
-		list($environment, $configFile) = unserialize($data);
-		$this->__construct($environment, $configFile);
-	}
-
+    private function getBaseDir(): string
+    {
+        return sprintf('%s/craue-form-flow-bundle/var/', sys_get_temp_dir());
+    }
 }

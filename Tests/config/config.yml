@@ -10,7 +10,7 @@ framework:
   csrf_protection: ~
   form: ~
   router:
-    resource: '%kernel.project_dir%/Tests/config/routing.yml'
+    resource: '%kernel.project_dir%/config/routing.yml'
   secret: whatever
   test: ~
   translator:
