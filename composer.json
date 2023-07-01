@@ -35,7 +35,7 @@
 		"doctrine/common": "~2.9|~3.0",
 		"doctrine/doctrine-bundle": "~1.10|~2.0",
 		"phpstan/extension-installer": "^1.1",
-		"phpstan/phpstan": "^1.4",
+		"phpstan/phpstan": "^1.10",
 		"phpstan/phpstan-deprecation-rules": "^1.0",
 		"phpstan/phpstan-strict-rules": "^1.1",
 		"phpstan/phpstan-symfony": "^1.1",

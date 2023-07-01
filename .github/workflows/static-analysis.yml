@@ -1,0 +1,33 @@
+name: "Static Analysis"
+
+on:
+  pull_request:
+    branches:
+      - "master"
+  push:
+
+jobs:
+  static-analysis-phpstan:
+    name: "Static Analysis with PHPStan"
+    runs-on: "ubuntu-22.04"
+
+    strategy:
+      matrix:
+        php-version:
+          - "8.2"
+
+    steps:
+      - name: "Checkout code"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          coverage: "none"
+          php-version: "${{ matrix.php-version }}"
+
+      - name: "Install dependencies with Composer"
+        uses: "ramsey/composer-install@v2"
+
+      - name: "Run a static analysis with phpstan/phpstan"
+        run: "vendor/bin/phpstan analyse"
