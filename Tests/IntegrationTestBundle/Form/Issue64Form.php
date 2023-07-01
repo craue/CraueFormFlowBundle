@@ -18,7 +18,7 @@ class Issue64Form extends AbstractType {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function buildForm(FormBuilderInterface $builder, array $options) {
+	public function buildForm(FormBuilderInterface $builder, array $options) : void {
 		switch ($options['flow_step']) {
 			case 1:
 				$subForm = $builder->create('sub', FormType::class, [

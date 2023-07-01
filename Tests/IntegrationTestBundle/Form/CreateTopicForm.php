@@ -19,7 +19,7 @@ class CreateTopicForm extends AbstractType {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function buildForm(FormBuilderInterface $builder, array $options) {
+	public function buildForm(FormBuilderInterface $builder, array $options) : void {
 		$isBugReport = $options['isBugReport'];
 
 		switch ($options['flow_step']) {
@@ -50,7 +50,7 @@ class CreateTopicForm extends AbstractType {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function configureOptions(OptionsResolver $resolver) {
+	public function configureOptions(OptionsResolver $resolver) : void {
 		$resolver->setDefaults([
 			'isBugReport' => false,
 		]);

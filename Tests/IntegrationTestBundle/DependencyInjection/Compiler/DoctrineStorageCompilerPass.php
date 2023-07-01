@@ -19,10 +19,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 class DoctrineStorageCompilerPass implements CompilerPassInterface {
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function process(ContainerBuilder $container) {
+	public function process(ContainerBuilder $container) : void {
 		if ($container->getParameter('db.driver') !== null) {
 			$loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
 			$loader->load('doctrine_storage.xml');
