@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Only set parameters if they aren't already defined. This allows using environment variables (e.g. set by Travis) and fallback values.
+ * Only set parameters if they aren't already defined. This allows using environment variables (e.g. set by GA) and fallback values.
  */
 
 $defaultParameters = [
@@ -11,7 +11,7 @@ $defaultParameters = [
 	'db.host' => '127.0.0.1',
 	'db.port' => null,
 	'db.name' => 'test',
-	'db.user' => 'travis',
+	'db.user' => 'test',
 	'db.password' => null,
 	'db.path' => $container->getParameter('kernel.cache_dir') . '/sqlite.db',
 ];
