@@ -4,7 +4,9 @@ namespace Craue\FormFlowBundle\Tests\Storage;
 
 use Craue\FormFlowBundle\Storage\DoctrineStorage;
 use Craue\FormFlowBundle\Storage\StorageKeyGeneratorInterface;
+use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Schema\DefaultSchemaManagerFactory;
 
 /**
  * @group unit
@@ -19,10 +21,16 @@ class DoctrineStorageTest extends AbstractStorageTest {
 	 * {@inheritDoc}
 	 */
 	protected function getStorageImplementation() {
+		$configuration = new Configuration();
+
+		if (\method_exists($configuration, 'setSchemaManagerFactory')) {
+			$configuration->setSchemaManagerFactory(new DefaultSchemaManagerFactory());
+		}
+
 		$conn = DriverManager::getConnection([
 			'driver' => 'pdo_sqlite',
 			'memory' => true,
-		]);
+		], $configuration);
 
 		$generator = $this->createMock(StorageKeyGeneratorInterface::class);
 

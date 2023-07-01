@@ -37,27 +37,27 @@ class AppKernel extends Kernel {
 	}
 
 	public function registerContainerConfiguration(LoaderInterface $loader): void
-    {
+	{
 		$loader->load($this->configFile);
 	}
 
-    public function getCacheDir(): string
-    {
-        return sprintf('%scache', $this->getBaseDir());
-    }
+	public function getCacheDir(): string
+	{
+		return sprintf('%scache', $this->getBaseDir());
+	}
 
-    public function getLogDir(): string
-    {
-        return sprintf('%slog', $this->getBaseDir());
-    }
+	public function getLogDir(): string
+	{
+		return sprintf('%slog', $this->getBaseDir());
+	}
 
-    public function getProjectDir(): string
-    {
-        return __DIR__;
-    }
+	public function getProjectDir(): string
+	{
+		return __DIR__;
+	}
 
-    private function getBaseDir(): string
-    {
-        return sprintf('%s/craue-form-flow-bundle/var/', sys_get_temp_dir());
-    }
+	private function getBaseDir(): string
+	{
+		return sprintf('%s/craue-form-flow-bundle/var/', sys_get_temp_dir());
+	}
 }
