@@ -32,8 +32,9 @@ $container->loadFromExtension('framework', [
 	],
 ]);
 
-// TODO put back into config.yml as soon as Symfony >= 5.3 is required, see https://github.com/symfony/symfony/pull/41247
-$container->loadFromExtension('security', Kernel::VERSION_ID >= 50300 ? [
+// TODO clean up as soon as Symfony >= 5.3 is required, see https://github.com/symfony/symfony/pull/41247
+// TODO remove as soon as Symfony >= 6.2 is required, see https://github.com/symfony/symfony/pull/47890
+$container->loadFromExtension('security', Kernel::VERSION_ID >= 60200 ? [] : (Kernel::VERSION_ID >= 50300 ? [
 	'enable_authenticator_manager' => true,
 ] : [
 	'firewalls' => [
@@ -41,4 +42,28 @@ $container->loadFromExtension('security', Kernel::VERSION_ID >= 50300 ? [
 			'anonymous' => true,
 		],
 	],
-]);
+]));
+
+// TODO remove as soon as Symfony >= 7 is required, see https://github.com/symfony/symfony/blob/6.4/UPGRADE-6.4.md#frameworkbundle
+if (Kernel::VERSION_ID >= 60400 && Kernel::VERSION_ID < 70000) {
+	$container->loadFromExtension('framework', [
+		'handle_all_throwables' => true,
+		'php_errors' => [
+			'log' => true,
+		],
+		'session' => [
+			'cookie_secure' => 'auto',
+			'cookie_samesite' => 'lax',
+		],
+		'validation' => [
+			'email_validation_mode' => 'html5',
+		],
+	]);
+}
+
+// TODO remove as soon as Symfony >= 7 is required, see https://github.com/symfony/symfony/blob/6.1/UPGRADE-6.1.md#frameworkbundle
+if (Kernel::VERSION_ID < 70000) {
+	$container->loadFromExtension('framework', [
+		'http_method_override' => false,
+	]);
+}

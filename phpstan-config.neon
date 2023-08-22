@@ -78,3 +78,9 @@ parameters:
 				Use \\{@see createSchemaManager\\(\\)\\} instead\\.$#
 			"""
 			path: Storage/DoctrineStorage.php
+		-
+			message: """
+				#^Fetching deprecated class constant ARRAY of class Doctrine\\\\DBAL\\\\Types\\\\Types:
+				Use \\{@link Types::JSON} instead\\.$#
+			"""
+			path: Storage/DoctrineStorage.php

@@ -21,6 +21,7 @@ class DoctrineStorageTest extends AbstractStorageTest {
 	 * {@inheritDoc}
 	 */
 	protected function getStorageImplementation() {
+		// TODO remove $configuration variable as soon as DBAL >= 4 is required
 		$configuration = new Configuration();
 
 		if (\method_exists($configuration, 'setSchemaManagerFactory')) {

@@ -12,6 +12,8 @@ framework:
   router:
     resource: '%kernel.project_dir%/Tests/config/routing.yml'
   secret: whatever
+  session:
+    handler_id: ~
   test: ~
   translator:
     fallback: en
