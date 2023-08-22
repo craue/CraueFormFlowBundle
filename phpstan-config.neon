@@ -54,10 +54,6 @@ parameters:
 			path: Storage\UserSessionStorageKeyGenerator.php
 		# TODO remove as soon as Doctrine DBAL >= 2.13.1 is required
 		-
-			message: "#^Call to function method_exists\\(\\) with Doctrine\\\\DBAL\\\\Query\\\\QueryBuilder and 'executeQuery' will always evaluate to true\\.$#"
-			path: Storage/DoctrineStorage.php
-		# TODO remove as soon as Doctrine DBAL >= 2.13.1 is required
-		-
 			message: """
 				#^Call to deprecated method execute\\(\\) of class Doctrine\\\\DBAL\\\\Query\\\\QueryBuilder\\:
 				Use \\{@see executeQuery\\(\\)\\} or \\{@see executeStatement\\(\\)\\} instead\\.$#

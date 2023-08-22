@@ -22,36 +22,36 @@
 	"homepage": "https://github.com/craue/CraueFormFlowBundle",
 	"require": {
 		"php": "^7.3 || ^8",
-		"symfony/config": "~4.4 || ~5.3 || ^6.0",
-		"symfony/dependency-injection": "~4.4 || ~5.3 || ^6.0",
-		"symfony/event-dispatcher": "~4.4 || ~5.3 || ^6.0",
-		"symfony/form": "~4.4 || ~5.3 || ^6.0",
-		"symfony/http-foundation": "~4.4 || ~5.3 || ^6.0",
-		"symfony/http-kernel": "~4.4 || ~5.3 || ^6.0",
-		"symfony/options-resolver": "~4.4 || ~5.3 || ^6.0",
-		"symfony/security-core": "~4.4 || ~5.3 || ^6.0",
-		"symfony/translation": "~4.4 || ~5.3 || ^6.0",
-		"symfony/validator": "~4.4 || ~5.3 || ^6.0",
-		"symfony/yaml": "~4.4 || ~5.3 || ^6.0"
+		"symfony/config": "^4.4 || ^5.3 || ^6.0",
+		"symfony/dependency-injection": "^4.4 || ^5.3 || ^6.0",
+		"symfony/event-dispatcher": "^4.4 || ^5.3 || ^6.0",
+		"symfony/form": "^4.4 || ^5.3 || ^6.0",
+		"symfony/http-foundation": "^4.4 || ^5.3 || ^6.0",
+		"symfony/http-kernel": "^4.4 || ^5.3 || ^6.0",
+		"symfony/options-resolver": "^4.4 || ^5.3 || ^6.0",
+		"symfony/security-core": "^4.4 || ^5.3 || ^6.0",
+		"symfony/translation": "^4.4 || ^5.3 || ^6.0",
+		"symfony/validator": "^4.4 || ^5.3 || ^6.0",
+		"symfony/yaml": "^4.4 || ^5.3 || ^6.0"
 	},
 	"require-dev": {
 		"craue/translations-tests": "^1.1",
 		"doctrine/annotations": "^1.6",
 		"doctrine/collections": "^1.8 || ^2.1",
-		"doctrine/common": "~2.9 || ~3.0",
-		"doctrine/doctrine-bundle": "~1.10 || ~2.0",
+		"doctrine/common": "^2.9 || ^3.0",
+		"doctrine/doctrine-bundle": "^1.10 || ^2.0",
 		"phpstan/extension-installer": "^1.1",
 		"phpstan/phpstan": "^1.10",
 		"phpstan/phpstan-deprecation-rules": "^1.0",
 		"phpstan/phpstan-strict-rules": "^1.1",
 		"phpstan/phpstan-symfony": "^1.1",
 		"phpunit/phpunit": "^9.5",
-		"symfony/browser-kit": "~4.4 || ~5.3 || ^6.0",
-		"symfony/css-selector": "~4.4 || ~5.3 || ^6.0",
-		"symfony/mime": "~4.4 || ~5.3 || ^6.0",
+		"symfony/browser-kit": "^4.4 || ^5.3 || ^6.0",
+		"symfony/css-selector": "^4.4 || ^5.3 || ^6.0",
+		"symfony/mime": "^4.4 || ^5.3 || ^6.0",
 		"symfony/phpunit-bridge": "^6",
-		"symfony/security-bundle": "~4.4 || ~5.3 || ^6.0",
-		"symfony/twig-bundle": "~4.4 || ~5.3 || ^6.0"
+		"symfony/security-bundle": "^4.4 || ^5.3 || ^6.0",
+		"symfony/twig-bundle": "^4.4 || ^5.3 || ^6.0"
 	},
 	"minimum-stability": "stable",
 	"autoload": {
@@ -72,9 +72,6 @@
 	"extra": {
 		"branch-alias": {
 			"dev-master": "3.6.x-dev"
-		},
-		"symfony": {
-			"require": "~4.4|~5.3|^6.0"
 		}
 	}
 }

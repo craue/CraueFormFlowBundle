@@ -1,33 +1,31 @@
-name: "Composer Lint"
+name: Composer Lint
 
 on:
-  pull_request:
-    branches:
-      - "master"
-  push:
+  pull_request: ~
+  push: ~
 
 jobs:
   composer-lint:
-    name: "Composer Lint"
-    runs-on: "ubuntu-22.04"
+    name: Composer Lint
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        php-version:
-          - 8.2
+        php:
+          - '8.2'
 
     steps:
-      - name: "Checkout"
-        uses: "actions/checkout@v3"
+      - name: checkout
+        uses: actions/checkout@v3
 
-      - name: "Install PHP"
-        uses: "shivammathur/setup-php@v2"
+      - name: setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          coverage: "none"
-          php-version: "${{ matrix.php-version }}"
+          php-version: ${{ matrix.php }}
+          coverage: none
           tools: composer:v2, composer-normalize:2
         env:
-          COMPOSER_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Composer normalize"
-        run: "composer-normalize --dry-run"
+      - name: run composer-normalize
+        run: composer-normalize --dry-run

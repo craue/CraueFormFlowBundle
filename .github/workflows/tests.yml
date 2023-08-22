@@ -1,102 +1,106 @@
-name: "Continuous Integration"
+name: Tests
 
 on:
-  pull_request:
-    branches:
-      - "master"
-  push:
+  pull_request: ~
+  push: ~
 
-env:
-  fail-fast: true
+concurrency:
+  group: ${{ github.workflow }} @ ${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  phpunit:
-    name: "PHPUnit"
-    runs-on: "${{ matrix.os }}"
+  tests:
+    name: PHP ${{ matrix.php }} - ${{ matrix.dependencies || format('Symfony {0}', matrix.symfony) }}${{ (matrix.note && format(' ({0})', matrix.note)) || '' }}${{ (matrix.allow-failure && ' 🔕') || '' }}
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.allow-failure || false }}
     env:
-      SYMFONY_REQUIRE: ${{matrix.symfony-require}}
+      SYMFONY_REQUIRE: ${{ matrix.symfony }}
+      SYMFONY_DEPRECATIONS_HELPER: ${{ matrix.symfony-deprecations }}
+      PARAM_DB_DRIVER: ${{ matrix.db-driver }}
 
     strategy:
+      fail-fast: false
       matrix:
-        os:
-          - "ubuntu-22.04"
-        php-version:
-          - "7.3"
-          - "7.4"
-          - "8.0"
-          - "8.1"
-          - "8.2"
-        symfony-version:
-          - "4.4.x"
-          - "5.4.x"
-          - "6.2.x"
-          - "6.3.x"
-        driver-version:
-          - "stable"
-        dependencies:
-          - "highest"
         include:
-          - dependencies: "lowest"
-            os: "ubuntu-22.04"
-            php-version: "7.3"
-            symfony-version: "4.4.*"
-        exclude:
-          - php-version: "7.3"
-            symfony-version: "6.2.x"
-          - php-version: "7.3"
-            symfony-version: "6.3.x"
-          - php-version: "7.4"
-            symfony-version: "6.2.x"
-          - php-version: "7.4"
-            symfony-version: "6.3.x"
+          -
+            php: '7.3'
+            dependencies: lowest
+          -
+            php: '8.2'
+            dependencies: highest
+            symfony-deprecations: max[indirect]=5722
+          -
+            php: '7.3'
+            symfony: '4.4.*'
+          -
+            php: '7.3'
+            symfony: '4.4.*'
+            note: sqlite
+            db-driver: pdo_sqlite
+          -
+            php: '7.4'
+            symfony: '5.4.*'
+          # TODO remove as soon as Symfony >= 5.0 is required
+          -
+            php: '7.4'
+            symfony: '5.4.*'
+            note: contao-polyfill-symfony
+            contao-polyfill-symfony: true
+          -
+            php: '8.0'
+            symfony: '5.4.*'
+          -
+            php: '8.1'
+            symfony: '5.4.*'
+          -
+            php: '8.1'
+            symfony: '6.3.*'
+            symfony-deprecations: max[indirect]=5722
+          -
+            php: '8.2'
+            symfony: '6.4.*'
+            stability: dev
+            allow-failure: true
 
     steps:
-      - name: "Checkout"
-        uses: "actions/checkout@v2"
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          fetch-depth: 2
+          php-version: ${{ matrix.php }}
+          extensions: mysql, redis
+          coverage: pcov
+          ini-values: memory_limit=-1
+          tools: flex
+        env:
+          fail-fast: true # interrupt on extension setup error
 
-      - name: "Install PHP"
-        uses: "shivammathur/setup-php@v2"
+      # TODO remove as soon as Symfony >= 5.0 is required
+      - name: require contao/polyfill-symfony
+        if: matrix.contao-polyfill-symfony == true
+        run: composer require --no-update --dev contao/polyfill-symfony
+
+      - name: use dev dependencies
+        if: matrix.stability == 'dev'
+        run: composer config minimum-stability dev
+
+      - name: install dependencies with Composer
+        uses: ramsey/composer-install@v2
         with:
-          php-version: "${{ matrix.php-version }}"
-          coverage: "pcov"
+          dependency-versions: ${{ matrix.dependencies }}
+          composer-options: --prefer-dist
 
-      - name: "Globally install symfony/flex"
-        run: "composer global require --no-progress --no-scripts --no-plugins symfony/flex && composer global config --no-plugins allow-plugins.symfony/flex true"
+      - name: run PHPUnit
+        run: vendor/bin/phpunit -v --coverage-clover build/logs/clover.xml
 
-      - name: "Install dependencies with Composer"
-        uses: "ramsey/composer-install@v2"
-        with:
-          dependency-versions: "${{ matrix.dependencies }}"
-
-      - name: "Run PHPUnit"
-        run: "vendor/bin/phpunit --coverage-clover=coverage.xml"
-
-      - name: "Upload coverage file"
-        uses: "actions/upload-artifact@v2"
-        with:
-          name: "phpunit-${{ matrix.php-version }}-${{ matrix.dependencies }}.coverage"
-          path: "coverage.xml"
-
-  upload_coverage:
-    name: "Upload coverage to Codecov"
-    runs-on: "ubuntu-22.04"
-    needs:
-      - "phpunit"
-
-    steps:
-      - name: "Checkout"
-        uses: "actions/checkout@v2"
-        with:
-          fetch-depth: 2
-
-      - name: "Download coverage files"
-        uses: "actions/download-artifact@v2"
-        with:
-          path: "reports"
-
-      - name: "Upload to Codecov"
-        uses: "codecov/codecov-action@v1"
-        with:
-          directory: reports
+      - name: upload code coverage data
+        if: github.repository == 'craue/CraueFormFlowBundle'
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_FLAG_NAME: PHP ${{ matrix.php }} - ${{ matrix.dependencies || format('Symfony {0}', matrix.symfony) }}${{ (matrix.note && format(' ({0})', matrix.note)) || '' }}
+        run: |
+          unset SYMFONY_REQUIRE
+          composer global require php-coveralls/php-coveralls
+          php-coveralls --coverage_clover=build/logs/clover.xml -v
