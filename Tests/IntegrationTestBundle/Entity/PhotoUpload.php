@@ -4,6 +4,7 @@ namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
@@ -14,8 +15,6 @@ class PhotoUpload {
 
 	/**
 	 * @var UploadedFile
-	 * @Assert\NotNull(groups={"flow_photoUpload_step1"})
-	 * @Assert\Image(groups={"flow_photoUpload_step1"})
 	 */
 	public $photo;
 
@@ -30,6 +29,11 @@ class PhotoUpload {
 
 	public function getPhotoMimeType() {
 		return $this->photo->getMimeType();
+	}
+
+	public static function loadValidatorMetadata(ClassMetadata $metadata) : void {
+		$metadata->addPropertyConstraint('photo', new Assert\NotNull(['groups' => 'flow_photoUpload_step1']));
+		$metadata->addPropertyConstraint('photo', new Assert\Image(['groups' => 'flow_photoUpload_step1']));
 	}
 
 }

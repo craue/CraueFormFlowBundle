@@ -3,22 +3,18 @@ imports:
   - { resource: '@IntegrationTestBundle/Resources/config/controller.xml' }
   - { resource: parameters.php }
   - { resource: config_hacks.php }
-  # workaround for symfony/framework-bundle not loading its annotations config when doctrine/annotations is installed only as a dev dependency
-  - { resource: '@FrameworkBundle/Resources/config/annotations.*' }
 
 framework:
   csrf_protection: ~
   form: ~
   router:
-    resource: '%kernel.project_dir%/Tests/config/routing.yml'
+    resource: '%kernel.project_dir%/Tests/config/routes.php'
   secret: whatever
   session:
     handler_id: ~
   test: ~
   translator:
     fallback: en
-  validation:
-    enable_annotations: true
 
 security:
   providers:

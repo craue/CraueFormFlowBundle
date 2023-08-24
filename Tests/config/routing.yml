@@ -1,3 +1,0 @@
-FormFlow:
-  resource: '@IntegrationTestBundle/Controller/'
-  type: annotation
