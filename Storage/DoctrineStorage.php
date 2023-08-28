@@ -152,7 +152,7 @@ class DoctrineStorage implements StorageInterface {
 	private function createTable() {
 		$table = new Table(self::TABLE, [
 			new Column($this->keyColumn, Type::getType(Types::STRING), ['length' => 255]),
-			new Column($this->valueColumn, Type::getType(Types::ARRAY), ['length' => 255]),
+			new Column($this->valueColumn, Type::getType(Types::TEXT)),
 		]);
 
 		$table->setPrimaryKey([$this->keyColumn]);
