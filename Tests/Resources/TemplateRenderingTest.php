@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
  * @group integration
  *
  * @author Christian Raue <christian.raue@gmail.com>
- * @copyright 2011-2022 Christian Raue
+ * @copyright 2011-2023 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class TemplateRenderingTest extends IntegrationTestCase {

@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormError;
  * Adds a validation error to the current step's form if revalidating previous steps failed.
  *
  * @author Christian Raue <christian.raue@gmail.com>
- * @copyright 2011-2022 Christian Raue
+ * @copyright 2011-2023 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class PreviousStepInvalidEventListener {
