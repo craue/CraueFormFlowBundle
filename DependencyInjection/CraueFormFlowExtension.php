@@ -21,7 +21,7 @@ class CraueFormFlowExtension extends Extension implements CompilerPassInterface 
 	const FORM_FLOW_TAG = 'craue.form.flow';
 
 	/**
-	 * {@inheritDoc}
+	 * @return void
 	 */
 	public function load(array $config, ContainerBuilder $container) {
 		$loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
@@ -33,7 +33,7 @@ class CraueFormFlowExtension extends Extension implements CompilerPassInterface 
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @return void
 	 */
 	public function process(ContainerBuilder $container) {
 		$baseFlowDefinitionMethodCalls = $container->getDefinition('craue.form.flow')->getMethodCalls();

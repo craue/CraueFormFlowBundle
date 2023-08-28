@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 class CraueFormFlowBundle extends Bundle {
 
 	/**
-	 * {@inheritDoc}
+	 * @return void
 	 */
 	public function boot() {
 		/*

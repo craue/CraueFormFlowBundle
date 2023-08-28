@@ -51,7 +51,7 @@ abstract class FormFlow implements FormFlowInterface {
 	protected $eventDispatcher = null;
 
 	/**
-	 * @var string
+	 * @var string|null
 	 */
 	protected $transition;
 
@@ -521,7 +521,7 @@ abstract class FormFlow implements FormFlowInterface {
 	}
 
 	public function getRequestedTransition() {
-		if (empty($this->transition)) {
+		if (!is_string($this->transition) || $this->transition === '') {
 			$this->transition = strtolower($this->getRequest()->request->get($this->getFormTransitionKey(), ''));
 		}
 

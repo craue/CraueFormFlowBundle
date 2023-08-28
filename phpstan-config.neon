@@ -1,11 +1,11 @@
 parameters:
 	level: 5
+	treatPhpDocTypesAsCertain: false
 	paths:
 		- .
 	excludePaths:
 		- Tests/*
 		- vendor/*
-	treatPhpDocTypesAsCertain: false
 	ignoreErrors:
 		-
 			message: '#^Unsafe usage of new static\(\)\.$#'
@@ -36,17 +36,51 @@ parameters:
 				- EventListener/PreviousStepInvalidEventListener.php
 		# TODO remove as soon as Symfony >= 5.1 is required
 		-
-			message: '#^Parameter \#2 \$default of method Symfony\\Component\\HttpFoundation\\InputBag::get\(\) expects bool\|float\|int\|string\|null, array given\.$#'
+			message: '#^Parameter \#2 \$default of method Symfony\\Component\\HttpFoundation\\InputBag\<bool\|float\|int\|string\>::get\(\) expects bool\|float\|int\|string\|null, array given\.$#'
 			path: Form/FormFlow.php
+		# TODO remove as soon as Symfony >= 5.1 is required
+		-
+			message: "#^Call to function method_exists\\(\\) with 'Symfony\\\\\\\\Component\\\\\\\\HttpFoundation\\\\\\\\RequestStack' and 'getSession' will always evaluate to true\\.$#"
+			paths:
+				- CraueFormFlowBundle.php
+				- Storage\SessionProviderTrait.php
+		# TODO remove as soon as Symfony >= 5.3 is required
+		-
+			message: "#^Call to function method_exists\\(\\) with Symfony\\\\Component\\\\Security\\\\Core\\\\Authentication\\\\Token\\\\TokenInterface and 'getUserIdentifier' will always evaluate to true\\.$#"
+			path: Storage/UserSessionStorageKeyGenerator.php
 		# TODO remove as soon as Symfony >= 5.3 is required
 		-
 			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\Authentication\\Token\\TokenInterface::getUsername\(\)\.$#'
 			path: Storage\UserSessionStorageKeyGenerator.php
+		# TODO remove as soon as Doctrine DBAL >= 2.13.1 is required
+		-
+			message: """
+				#^Call to deprecated method execute\\(\\) of class Doctrine\\\\DBAL\\\\Query\\\\QueryBuilder\\:
+				Use \\{@see executeQuery\\(\\)\\} or \\{@see executeStatement\\(\\)\\} instead\\.$#
+			"""
+			path: Storage/DoctrineStorage.php
 		# TODO remove as soon as Doctrine DBAL >= 3.0 is required
 		-
-			message: '#^Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Result\|int\.$#'
+			message: '#^Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Result\|int\|string\.$#'
 			path: Storage/DoctrineStorage.php
 		# TODO remove as soon as Doctrine DBAL >= 3.0 is required
 		-
 			message: '#^Access to undefined constant Doctrine\\DBAL\\Types\\Type::(STRING|TARRAY)\.$#'
+			path: Storage/DoctrineStorage.php
+		# TODO remove as soon as Doctrine DBAL >= 3.1 is required
+		-
+			message: "#^Call to function method_exists\\(\\) with Doctrine\\\\DBAL\\\\Connection and 'createSchemaManager' will always evaluate to true\\.$#"
+			path: Storage/DoctrineStorage.php
+		# TODO remove as soon as Doctrine DBAL >= 3.1 is required
+		-
+			message: """
+				#^Call to deprecated method getSchemaManager\\(\\) of class Doctrine\\\\DBAL\\\\Connection\\:
+				Use \\{@see createSchemaManager\\(\\)\\} instead\\.$#
+			"""
+			path: Storage/DoctrineStorage.php
+		-
+			message: """
+				#^Fetching deprecated class constant ARRAY of class Doctrine\\\\DBAL\\\\Types\\\\Types:
+				Use \\{@link Types::JSON} instead\\.$#
+			"""
 			path: Storage/DoctrineStorage.php

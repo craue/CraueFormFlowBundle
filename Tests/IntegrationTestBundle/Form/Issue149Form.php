@@ -18,7 +18,7 @@ class Issue149Form extends AbstractType {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function buildForm(FormBuilderInterface $builder, array $options) {
+	public function buildForm(FormBuilderInterface $builder, array $options) : void {
 		switch ($options['flow_step']) {
 			case 1:
 				$subForm = $builder->create('photo', FormType::class, [

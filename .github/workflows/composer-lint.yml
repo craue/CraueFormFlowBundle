@@ -1,0 +1,31 @@
+name: Composer Lint
+
+on:
+  pull_request: ~
+  push: ~
+
+jobs:
+  composer-lint:
+    name: Composer Lint
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php:
+          - '8.2'
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: composer:v2, composer-normalize:2
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: run composer-normalize
+        run: composer-normalize --dry-run

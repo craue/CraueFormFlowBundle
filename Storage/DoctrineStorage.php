@@ -50,7 +50,8 @@ class DoctrineStorage implements StorageInterface {
 	public function __construct(Connection $conn, StorageKeyGeneratorInterface $storageKeyGenerator) {
 		$this->conn = $conn;
 		$this->storageKeyGenerator = $storageKeyGenerator;
-		$this->schemaManager = $this->conn->getSchemaManager();
+		// TODO just call `createSchemaManager()` as soon as DBAL >= 3.1 is required
+		$this->schemaManager = \method_exists($this->conn, 'createSchemaManager') ? $this->conn->createSchemaManager() : $this->conn->getSchemaManager();
 		$this->keyColumn = $this->conn->quoteIdentifier(self::KEY_COLUMN);
 		$this->valueColumn = $this->conn->quoteIdentifier(self::VALUE_COLUMN);
 	}
@@ -133,7 +134,8 @@ class DoctrineStorage implements StorageInterface {
 			->setParameter('key', $this->generateKey($key))
 		;
 
-		$result = $qb->execute();
+		// TODO just call `executeQuery()` as soon as DBAL >= 2.13.1 is required
+		$result = \method_exists($qb, 'executeQuery') ? $qb->executeQuery() : $qb->execute();
 
 		// TODO remove as soon as Doctrine DBAL >= 3.0 is required
 		if (!\method_exists($result, 'fetchOne')) {

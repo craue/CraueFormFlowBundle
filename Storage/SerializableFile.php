@@ -55,7 +55,7 @@ class SerializableFile {
 
 		// create a temporary file with its original content
 		$tempFile = tempnam($tempDir, 'craue_form_flow_serialized_file');
-		file_put_contents($tempFile, base64_decode($this->content));
+		file_put_contents($tempFile, base64_decode($this->content, true));
 
 		TempFileUtil::addTempFile($tempFile);
 

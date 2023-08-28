@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Reference;
 class LegacySessionCompilerPass implements CompilerPassInterface {
 
 	/**
-	 * {@inheritDoc}
+	 * @return void
 	 */
 	public function process(ContainerBuilder $container) : void {
 		// TODO remove as soon as Symfony >= 5.3 is required
