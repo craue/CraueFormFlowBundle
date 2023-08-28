@@ -8,6 +8,7 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\DefaultSchemaManagerFactory;
+use Doctrine\DBAL\Tools\DsnParser;
 
 /**
  * @group unit
@@ -40,9 +41,17 @@ class DoctrineStorageTest extends AbstractStorageTest {
 			$this->markTestSkipped('Environment variable DB_DSN is not set.');
 		}
 
-		$this->conn = DriverManager::getConnection([
-			'url' => $_ENV['DB_DSN'],
-		], $configuration);
+		$dsn = $_ENV['DB_DSN'];
+		// TODO use DsnParser as soon as DBAL >= 3.6 is required
+		$params = class_exists(DsnParser::class)
+			? (new DsnParser([
+				'mysql'      => 'pdo_mysql',
+				'pgsql'      => 'pdo_pgsql',
+				'sqlite'     => 'pdo_sqlite',
+				]))->parse($dsn)
+			: ['url' => $dsn];
+
+		$this->conn = DriverManager::getConnection($params, $configuration);
 
 		$generator = $this->createMock(StorageKeyGeneratorInterface::class);
 
