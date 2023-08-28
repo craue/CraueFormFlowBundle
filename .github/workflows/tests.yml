@@ -17,6 +17,9 @@ jobs:
       SYMFONY_REQUIRE: ${{ matrix.symfony }}
       SYMFONY_DEPRECATIONS_HELPER: ${{ matrix.symfony-deprecations }}
       PARAM_DB_DRIVER: ${{ matrix.db-driver }}
+      TEST_DB_FLAVOR_MYSQL_DSN: mysql://test:test@127.0.0.1/craue_form_flow_tests
+      TEST_DB_FLAVOR_POSTGRESQL_DSN: pgsql://test:test@127.0.0.1/craue_form_flow_tests
+      TEST_DB_FLAVOR_SQLITE_DSN: sqlite://memory
 
     strategy:
       fail-fast: false
@@ -60,6 +63,36 @@ jobs:
             stability: dev
             allow-failure: true
 
+    services:
+      mysql:
+        image: mysql:${{ (matrix.php == '7.3' && '5.7') || '8.0' }}
+        env:
+          MYSQL_USER: test
+          MYSQL_PASSWORD: test
+          MYSQL_DATABASE: craue_form_flow_tests
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+        options: >-
+          --health-cmd "mysqladmin ping --silent"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 3306:3306
+
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: craue_form_flow_tests
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -68,9 +101,9 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mysql, redis
+          extensions: pdo_mysql, pdo_pgsql, pdo_sqlite
           coverage: pcov
-          ini-values: memory_limit=-1
+          ini-values: memory_limit=-1, variables_order="EGPCS"
           tools: flex
         env:
           fail-fast: true # interrupt on extension setup error

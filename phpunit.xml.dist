@@ -25,6 +25,9 @@
 	<php>
 		<env name="CACHE_DIR" value="/path/to/your/cache/" />
 		<env name="LOG_DIR" value="/path/to/your/log/" />
+		<env name="TEST_DB_FLAVOR_MYSQL_DSN" value="mysql://test:test@127.0.0.1/craue_form_flow_tests" />
+		<env name="TEST_DB_FLAVOR_POSTGRESQL_DSN" value="pgsql://test:test@127.0.0.1/craue_form_flow_tests" />
+		<env name="TEST_DB_FLAVOR_SQLITE_DSN" value="sqlite://memory" />
 	</php>
 	-->
 	<listeners>
