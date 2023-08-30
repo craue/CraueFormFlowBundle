@@ -84,6 +84,17 @@ class SerializableFileTest extends TestCase {
 		new SerializableFile(new File(__FILE__));
 	}
 
+	// TODO remove for 4.0
+	public function testSerialization_unserializeLegacyRepresentation() : void {
+		$legacySerializedObject = <<<HERE
+O:45:"Craue\FormFlowBundle\Storage\SerializableFile":4:{s:10:"\x00*\x00content";s:16:"c29tZSB0ZXh0DQo=";s:7:"\x00*\x00type";s:50:"Symfony\Component\HttpFoundation\File\UploadedFile";s:21:"\x00*\x00clientOriginalName";s:6:"my.txt";s:17:"\x00*\x00clientMimeType";s:10:"text/plain";}
+HERE;
+
+		$object = new SerializableFile($this->getNewUploadedFile(__DIR__ . self::DOCUMENT, 'my.txt', 'text/plain'));
+
+		$this->assertEquals($object, unserialize($legacySerializedObject));
+	}
+
 	public function testIsSupported() {
 		$this->assertTrue(SerializableFile::isSupported($this->getNewUploadedFile(__FILE__, basename(__FILE__))));
 		$this->assertFalse(SerializableFile::isSupported(new File(__FILE__)));
