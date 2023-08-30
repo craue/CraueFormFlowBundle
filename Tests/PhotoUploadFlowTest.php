@@ -6,6 +6,7 @@ use Craue\FormFlowBundle\Util\TempFileUtil;
 
 /**
  * @group integration
+ * @group run-with-multiple-databases
  *
  * @author Christian Raue <christian.raue@gmail.com>
  * @copyright 2011-2023 Christian Raue

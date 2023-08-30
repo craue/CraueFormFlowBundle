@@ -17,14 +17,18 @@
 			<directory suffix=".php">.</directory>
 		</include>
 		<exclude>
-			<directory suffix=".php">Tests</directory>
-			<directory suffix=".php">vendor</directory>
+			<directory>Tests</directory>
+			<directory>var</directory>
+			<directory>vendor</directory>
 		</exclude>
 	</coverage>
 	<!--
 	<php>
 		<env name="CACHE_DIR" value="/path/to/your/cache/" />
 		<env name="LOG_DIR" value="/path/to/your/log/" />
+		<env name="DB_DSN_MYSQL" value="mysql://test:test@127.0.0.1/craue_form_flow_tests" />
+		<env name="DB_DSN_POSTGRESQL" value="pgsql://test:test@127.0.0.1/craue_form_flow_tests" />
+		<env name="DB_DSN_SQLITE" value="sqlite:///tmp/sqlite.db" />
 	</php>
 	-->
 	<listeners>

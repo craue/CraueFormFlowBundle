@@ -6,6 +6,7 @@ use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\Issue303Flow;
 
 /**
  * @group integration
+ * @group run-with-multiple-databases
  * @see https://github.com/craue/CraueFormFlowBundle/issues/303
  *
  * @author Christian Raue <christian.raue@gmail.com>

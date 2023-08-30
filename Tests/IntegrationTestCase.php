@@ -40,6 +40,12 @@ abstract class IntegrationTestCase extends WebTestCase {
 		$environment = $options['environment'] ?? self::ENV_FLOWS_WITH_AUTOCONFIGURATION;
 		$configFile = $options['config'] ?? sprintf('config_%s.yml', $environment);
 
+		// ensure different caches are used for each database flavor
+		if (!empty($_ENV['DB_FLAVOR'])) {
+			$environment .= '_' . $_ENV['DB_FLAVOR'];
+			$_ENV['DB_DSN'] = $_ENV['DB_DSN_' . strtoupper($_ENV['DB_FLAVOR'])];
+		}
+
 		return new AppKernel($environment, $configFile);
 	}
 
