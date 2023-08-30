@@ -26,6 +26,10 @@ class DataManagerIntegrationTest extends IntegrationTestCase {
 	 * Ensure that a file uploaded within a flow is saved and restored correctly.
 	 */
 	public function testSaveLoad_file() : void {
+		if (\version_compare(\PHP_VERSION, '7.4', '<') && ($_ENV['DB_FLAVOR'] ?? '') === 'postgresql') {
+			$this->markTestSkipped('Would fail because SerializableFile::__serialize is only supported as of PHP 7.4.');
+		}
+
 		$session = new Session(new MockArraySessionStorage());
 		$session->setId('12345');
 

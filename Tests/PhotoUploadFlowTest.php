@@ -16,6 +16,14 @@ class PhotoUploadFlowTest extends IntegrationTestCase {
 
 	const IMAGE = '/Fixtures/blue-pixel.png';
 
+	protected function setUp() : void {
+		if (\version_compare(\PHP_VERSION, '7.4', '<') && ($_ENV['DB_FLAVOR'] ?? '') === 'postgresql') {
+			$this->markTestSkipped('Would fail because SerializableFile::__serialize is only supported as of PHP 7.4.');
+		}
+
+		parent::setUp();
+	}
+
 	public function testPhotoUpload() {
 		$image = __DIR__ . self::IMAGE;
 
