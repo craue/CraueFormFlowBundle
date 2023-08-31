@@ -43,7 +43,6 @@ abstract class IntegrationTestCase extends WebTestCase {
 		// ensure different caches are used for each database flavor
 		if (!empty($_ENV['DB_FLAVOR'])) {
 			$environment .= '_' . $_ENV['DB_FLAVOR'];
-			$_ENV['DB_DSN'] = $_ENV['DB_DSN_' . strtoupper($_ENV['DB_FLAVOR'])];
 		}
 
 		return new AppKernel($environment, $configFile);
