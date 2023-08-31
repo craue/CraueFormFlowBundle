@@ -70,4 +70,30 @@ class SerializableFile {
 		return $file instanceof UploadedFile;
 	}
 
+	public function __serialize() : array {
+		return [
+			'content' => $this->content,
+			'type' => $this->type,
+			'clientOriginalName' => $this->clientOriginalName,
+			'clientMimeType' => $this->clientMimeType,
+		];
+	}
+
+	public function __unserialize(array $data) : void {
+		// TODO remove for 4.0
+		// handle representation of object which got serialized before `__serialize` method was added
+		if (count(array_diff(array_keys($data), ["\x00*\x00content", "\x00*\x00type", "\x00*\x00clientOriginalName", "\x00*\x00clientMimeType"])) === 0) {
+			$this->content = $data["\x00*\x00content"];
+			$this->type = $data["\x00*\x00type"];
+			$this->clientOriginalName = $data["\x00*\x00clientOriginalName"];
+			$this->clientMimeType = $data["\x00*\x00clientMimeType"];
+			return;
+		}
+
+		$this->content = $data['content'];
+		$this->type = $data['type'];
+		$this->clientOriginalName = $data['clientOriginalName'];
+		$this->clientMimeType = $data['clientMimeType'];
+	}
+
 }

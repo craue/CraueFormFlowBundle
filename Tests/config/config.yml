@@ -1,7 +1,6 @@
 imports:
   - { resource: '@CraueFormFlowBundle/Resources/config/form_flow.xml' }
   - { resource: '@IntegrationTestBundle/Resources/config/controller.xml' }
-  - { resource: parameters.php }
   - { resource: config_hacks.php }
 
 framework:
@@ -29,7 +28,11 @@ twig:
   strict_variables: '%kernel.debug%'
   exception_controller: ~
 
+# TODO remove test aliases as soon as Symfony >= 5.4 is required
 services:
+  craue.form.flow.data_manager.test:
+    alias: craue.form.flow.data_manager
+    public: true
   twig.test:
     alias: twig
     public: true

@@ -4,6 +4,7 @@ namespace Craue\FormFlowBundle\Tests;
 
 /**
  * @group integration
+ * @group run-with-multiple-databases
  * @see https://github.com/craue/CraueFormFlowBundle/issues/249
  *
  * @author Christian Raue <christian.raue@gmail.com>

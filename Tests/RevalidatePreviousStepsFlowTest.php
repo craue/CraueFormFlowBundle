@@ -7,6 +7,7 @@ use Craue\FormFlowBundle\Tests\IntegrationTestBundle\Form\RevalidatePreviousStep
 
 /**
  * @group integration
+ * @group run-with-multiple-databases
  *
  * @author Christian Raue <christian.raue@gmail.com>
  * @copyright 2011-2023 Christian Raue

@@ -6,6 +6,7 @@ use Craue\FormFlowBundle\Util\TempFileUtil;
 
 /**
  * @group integration
+ * @group run-with-multiple-databases
  *
  * @author Christian Raue <christian.raue@gmail.com>
  * @copyright 2011-2023 Christian Raue
@@ -14,6 +15,14 @@ use Craue\FormFlowBundle\Util\TempFileUtil;
 class PhotoUploadFlowTest extends IntegrationTestCase {
 
 	const IMAGE = '/Fixtures/blue-pixel.png';
+
+	protected function setUp() : void {
+		if (\version_compare(\PHP_VERSION, '7.4', '<') && ($_ENV['DB_FLAVOR'] ?? '') === 'postgresql') {
+			$this->markTestSkipped('Would fail because SerializableFile::__serialize is only supported as of PHP 7.4.');
+		}
+
+		parent::setUp();
+	}
 
 	public function testPhotoUpload() {
 		$image = __DIR__ . self::IMAGE;

@@ -16,7 +16,9 @@ jobs:
     env:
       SYMFONY_REQUIRE: ${{ matrix.symfony }}
       SYMFONY_DEPRECATIONS_HELPER: ${{ matrix.symfony-deprecations }}
-      PARAM_DB_DRIVER: ${{ matrix.db-driver }}
+      DB_DSN_MYSQL: mysql://test:test@127.0.0.1/craue_form_flow_tests
+      DB_DSN_POSTGRESQL: pgsql://test:test@127.0.0.1/craue_form_flow_tests
+      DB_DSN_SQLITE: sqlite:///sqlite.db
 
     strategy:
       fail-fast: false
@@ -31,11 +33,6 @@ jobs:
           -
             php: '7.3'
             symfony: '4.4.*'
-          -
-            php: '7.3'
-            symfony: '4.4.*'
-            note: sqlite
-            db-driver: pdo_sqlite
           -
             php: '7.4'
             symfony: '5.4.*'
@@ -60,6 +57,36 @@ jobs:
             stability: dev
             allow-failure: true
 
+    services:
+      mysql:
+        image: mysql:${{ (matrix.php == '7.3' && '5.7') || '8.0' }}
+        env:
+          MYSQL_USER: test
+          MYSQL_PASSWORD: test
+          MYSQL_DATABASE: craue_form_flow_tests
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+        options: >-
+          --health-cmd "mysqladmin ping --silent"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 3306:3306
+
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: craue_form_flow_tests
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -68,9 +95,9 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mysql, redis
+          extensions: pdo_mysql, pdo_pgsql, pdo_sqlite
           coverage: pcov
-          ini-values: memory_limit=-1
+          ini-values: memory_limit=-1, variables_order="EGPCS"
           tools: flex
         env:
           fail-fast: true # interrupt on extension setup error
@@ -91,7 +118,25 @@ jobs:
           composer-options: --prefer-dist
 
       - name: run PHPUnit
-        run: vendor/bin/phpunit -v --coverage-clover build/logs/clover.xml
+        run: vendor/bin/phpunit -v --coverage-clover build/logs/clover.xml --exclude-group run-with-multiple-databases-only
+
+      - name: run PHPUnit with MySQL
+        if: always()
+        run: vendor/bin/phpunit -v --coverage-clover build/logs/clover-mysql.xml --group run-with-multiple-databases,run-with-multiple-databases-only
+        env:
+          DB_FLAVOR: mysql
+
+      - name: run PHPUnit with PostgreSQL
+        if: always()
+        run: vendor/bin/phpunit -v --coverage-clover build/logs/clover-postgresql.xml --group run-with-multiple-databases,run-with-multiple-databases-only
+        env:
+          DB_FLAVOR: postgresql
+
+      - name: run PHPUnit with SQLite
+        if: always()
+        run: vendor/bin/phpunit -v --coverage-clover build/logs/clover-sqlite.xml --group run-with-multiple-databases,run-with-multiple-databases-only
+        env:
+          DB_FLAVOR: sqlite
 
       - name: upload code coverage data
         if: github.repository == 'craue/CraueFormFlowBundle'
@@ -101,4 +146,4 @@ jobs:
         run: |
           unset SYMFONY_REQUIRE
           composer global require php-coveralls/php-coveralls
-          php-coveralls --coverage_clover=build/logs/clover.xml -v
+          php-coveralls -v --coverage_clover "build/logs/clover*.xml"

@@ -14,22 +14,8 @@
 			<argument type="service" id="request_stack" />
 		</service>
 
-		<service id="integrationTestBundle.doctrineConnection" class="Doctrine\DBAL\Connection" public="false">
-			<factory class="Doctrine\DBAL\DriverManager" method="getConnection" />
-			<argument type="collection">
-				<argument key="charset">UTF8</argument>
-				<argument key="driver">%db.driver%</argument>
-				<argument key="host">%db.host%</argument>
-				<argument key="port">%db.port%</argument>
-				<argument key="dbname">%db.name%</argument>
-				<argument key="user">%db.user%</argument>
-				<argument key="password">%db.password%</argument>
-				<argument key="path">%db.path%</argument>
-			</argument>
-		</service>
-
 		<service id="craue.form.flow.storage.doctrine" class="Craue\FormFlowBundle\Storage\DoctrineStorage" public="false">
-			<argument type="service" id="integrationTestBundle.doctrineConnection" />
+			<argument type="service" id="doctrine.dbal.default_connection" />
 			<argument type="service" id="craue.form.flow.storageKeyGenerator" />
 		</service>
 
