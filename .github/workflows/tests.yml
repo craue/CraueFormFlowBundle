@@ -28,7 +28,7 @@ jobs:
             php: '7.3'
             dependencies: lowest
           -
-            php: '8.2'
+            php: '8.3'
             dependencies: highest
           -
             php: '7.3'
@@ -54,8 +54,12 @@ jobs:
           -
             php: '8.2'
             symfony: '6.4.*'
-            stability: dev
-            allow-failure: true
+          -
+            php: '8.3'
+            symfony: '6.4.*'
+          -
+            php: '8.2'
+            symfony: '7.0.*'
 
     services:
       mysql:

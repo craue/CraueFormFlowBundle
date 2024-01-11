@@ -27,20 +27,14 @@ class FormFlowHiddenFieldExtension extends AbstractTypeExtension {
 		return [HiddenType::class];
 	}
 
-	/**
-	 * @return void
-	 */
-	public function configureOptions(OptionsResolver $resolver) {
+	public function configureOptions(OptionsResolver $resolver): void {
 		$resolver->setDefined([
 			'flow_instance_key',
 			'flow_step_key',
 		]);
 	}
 
-	/**
-	 * @return void
-	 */
-	public function finishView(FormView $view, FormInterface $form, array $options) {
+	public function finishView(FormView $view, FormInterface $form, array $options): void {
 		if (array_key_exists('flow_instance_key', $options) && $view->vars['name'] === $options['flow_instance_key']) {
 			$view->vars['value'] = $options['data'];
 			$view->vars['full_name'] = $options['flow_instance_key'];
