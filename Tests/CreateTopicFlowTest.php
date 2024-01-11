@@ -9,7 +9,7 @@ use Symfony\Component\DomCrawler\Crawler;
  * @group run-with-multiple-databases
  *
  * @author Christian Raue <christian.raue@gmail.com>
- * @copyright 2011-2023 Christian Raue
+ * @copyright 2011-2024 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class CreateTopicFlowTest extends IntegrationTestCase {

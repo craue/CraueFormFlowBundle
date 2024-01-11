@@ -4,7 +4,7 @@ namespace Craue\FormFlowBundle\Form;
 
 /**
  * @author Marcus Stöhr <dafish@soundtrack-board.de>
- * @copyright 2011-2023 Christian Raue
+ * @copyright 2011-2024 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class FormFlowEvents {

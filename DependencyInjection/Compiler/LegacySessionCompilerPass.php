@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Reference;
  * See https://github.com/symfony/symfony/pull/38616
  *
  * @author Christian Raue <christian.raue@gmail.com>
- * @copyright 2011-2023 Christian Raue
+ * @copyright 2011-2024 Christian Raue
  * @license http://opensource.org/licenses/mit-license.php MIT License
  */
 class LegacySessionCompilerPass implements CompilerPassInterface {
