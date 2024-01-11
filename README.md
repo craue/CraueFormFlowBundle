@@ -304,6 +304,7 @@ php bin/console assets:install --symlink web
 
 You can customize the default button look by using these variables to add one or more CSS classes to them:
 
+- `craue_formflow_wrapper_class` will apply for the wrapper div
 - `craue_formflow_button_class_last` will apply either to the __next__ or __finish__ button
 - `craue_formflow_button_class_finish` will specifically apply to the __finish__ button
 - `craue_formflow_button_class_next` will specifically apply to the __next__ button
