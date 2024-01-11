@@ -63,10 +63,6 @@ parameters:
 		-
 			message: '#^Cannot call method fetchColumn\(\) on Doctrine\\DBAL\\Result\|int\|string\.$#'
 			path: Storage/DoctrineStorage.php
-		# TODO remove as soon as Doctrine DBAL >= 3.0 is required
-		-
-			message: '#^Access to undefined constant Doctrine\\DBAL\\Types\\Type::(STRING|TARRAY)\.$#'
-			path: Storage/DoctrineStorage.php
 		# TODO remove as soon as Doctrine DBAL >= 3.1 is required
 		-
 			message: "#^Call to function method_exists\\(\\) with Doctrine\\\\DBAL\\\\Connection and 'createSchemaManager' will always evaluate to true\\.$#"
@@ -76,11 +72,5 @@ parameters:
 			message: """
 				#^Call to deprecated method getSchemaManager\\(\\) of class Doctrine\\\\DBAL\\\\Connection\\:
 				Use \\{@see createSchemaManager\\(\\)\\} instead\\.$#
-			"""
-			path: Storage/DoctrineStorage.php
-		-
-			message: """
-				#^Fetching deprecated class constant ARRAY of class Doctrine\\\\DBAL\\\\Types\\\\Types:
-				Use \\{@link Types::JSON} instead\\.$#
 			"""
 			path: Storage/DoctrineStorage.php

@@ -150,13 +150,9 @@ class DoctrineStorage implements StorageInterface {
 	}
 
 	private function createTable() {
-		// TODO remove as soon as Doctrine DBAL >= 3.0 is required
-		$stringType = defined('Doctrine\DBAL\Types\Types::STRING') ? Types::STRING : Type::STRING;
-		$arrayType = defined('Doctrine\DBAL\Types\Types::ARRAY') ? Types::ARRAY : Type::TARRAY;
-
 		$table = new Table(self::TABLE, [
-			new Column($this->keyColumn, Type::getType($stringType)),
-			new Column($this->valueColumn, Type::getType($arrayType)),
+			new Column($this->keyColumn, Type::getType(Types::STRING), ['length' => 255]),
+			new Column($this->valueColumn, Type::getType(Types::TEXT)),
 		]);
 
 		$table->setPrimaryKey([$this->keyColumn]);
