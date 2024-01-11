@@ -27,7 +27,7 @@ class FormFlowFormExtension extends AbstractTypeExtension {
 		return [FormType::class];
 	}
 
-	public function configureOptions(OptionsResolver $resolver): void {
+	public function configureOptions(OptionsResolver $resolver) : void {
 		$resolver->setDefined([
 			'flow_instance',
 			'flow_instance_key',
@@ -36,7 +36,7 @@ class FormFlowFormExtension extends AbstractTypeExtension {
 		]);
 	}
 
-	public function buildForm(FormBuilderInterface $builder, array $options): void {
+	public function buildForm(FormBuilderInterface $builder, array $options) : void {
 		if (array_key_exists('flow_instance', $options) && array_key_exists('flow_instance_key', $options)) {
 			$builder->add($options['flow_instance_key'], HiddenType::class, [
 				'data' => $options['flow_instance'],
