@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.7.0] – 2024-01-11
+
+- [#422]: added support for Symfony 7
+- dropped support for Symfony 5.3, 6.0, 6.1, 6.2
+
+[#422]: https://github.com/craue/CraueFormFlowBundle/issues/422
+[3.7.0]: https://github.com/craue/CraueFormFlowBundle/compare/3.6.0...3.7.0
+
 ## [3.6.0] – 2022-01-24
 
 - [#393]: added support for Symfony 6
