@@ -2,7 +2,7 @@
 
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
@@ -18,7 +18,8 @@ class Issue149Data {
 	public $photo;
 
 	public static function loadValidatorMetadata(ClassMetadata $metadata) : void {
-		$metadata->addPropertyConstraint('photo', new Assert\Valid(['groups' => 'flow_issue149_step1']));
+		$options = ['groups' => ['flow_issue149_step1']];
+		$metadata->addPropertyConstraint('photo', \version_compare(\PHP_VERSION, '8.0', '<') ? new Valid($options) : new Valid(...$options));
 	}
 
 }

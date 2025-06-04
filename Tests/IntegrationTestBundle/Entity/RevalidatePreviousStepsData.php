@@ -2,7 +2,7 @@
 
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
@@ -27,7 +27,8 @@ class RevalidatePreviousStepsData {
 	}
 
 	public static function loadValidatorMetadata(ClassMetadata $metadata) : void {
-		$metadata->addConstraint(new Assert\Callback(['groups' => 'flow_revalidatePreviousSteps_step1', 'callback' => 'isDataValid']));
+		$options = ['groups' => ['flow_revalidatePreviousSteps_step1'], 'callback' => 'isDataValid'];
+		$metadata->addConstraint(\version_compare(\PHP_VERSION, '8.0', '<') ? new Callback($options) : new Callback(...$options));
 	}
 
 }

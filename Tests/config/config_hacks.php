@@ -67,3 +67,12 @@ if (Kernel::VERSION_ID < 70000) {
 		'http_method_override' => false,
 	]);
 }
+
+// TODO remove as soon as Symfony >= 7.3 is required
+if (Kernel::VERSION_ID >= 70300) {
+	$container->loadFromExtension('framework', [
+		'property_info' => [
+			'with_constructor_extractor' => true,
+		],
+	]);
+}

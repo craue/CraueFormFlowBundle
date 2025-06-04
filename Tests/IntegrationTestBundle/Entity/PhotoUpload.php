@@ -3,7 +3,8 @@
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
@@ -32,8 +33,9 @@ class PhotoUpload {
 	}
 
 	public static function loadValidatorMetadata(ClassMetadata $metadata) : void {
-		$metadata->addPropertyConstraint('photo', new Assert\NotNull(['groups' => 'flow_photoUpload_step1']));
-		$metadata->addPropertyConstraint('photo', new Assert\Image(['groups' => 'flow_photoUpload_step1']));
+		$options = ['groups' => ['flow_photoUpload_step1']];
+		$metadata->addPropertyConstraint('photo', \version_compare(\PHP_VERSION, '8.0', '<') ? new NotNull($options) : new NotNull(...$options));
+		$metadata->addPropertyConstraint('photo', \version_compare(\PHP_VERSION, '8.0', '<') ? new Image($options) : new Image(...$options));
 	}
 
 }

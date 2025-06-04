@@ -2,7 +2,8 @@
 
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Choice;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
@@ -50,10 +51,14 @@ class Topic {
 	}
 
 	public static function loadValidatorMetadata(ClassMetadata $metadata) : void {
-		$metadata->addPropertyConstraint('title', new Assert\NotBlank(['groups' => 'flow_createTopic_step1']));
-		$metadata->addPropertyConstraint('category', new Assert\Choice(['groups' => 'flow_createTopic_step1', 'callback' => 'getValidCategories', 'strict' => true]));
-		$metadata->addPropertyConstraint('category', new Assert\NotBlank(['groups' => 'flow_createTopic_step1']));
-		$metadata->addPropertyConstraint('details', new Assert\NotBlank(['groups' => 'flow_createTopic_step3']));
+		$titleNotBlankOptions = ['groups' => ['flow_createTopic_step1']];
+		$metadata->addPropertyConstraint('title', \version_compare(\PHP_VERSION, '8.0', '<') ? new NotBlank($titleNotBlankOptions) : new NotBlank(...$titleNotBlankOptions));
+		$categoryChoiceOptions = ['groups' => ['flow_createTopic_step1'], 'callback' => 'getValidCategories', 'strict' => true];
+		$metadata->addPropertyConstraint('category', \version_compare(\PHP_VERSION, '8.0', '<') ? new Choice($categoryChoiceOptions) : new Choice(...$categoryChoiceOptions));
+		$categoryNotBlankOptions = ['groups' => ['flow_createTopic_step1']];
+		$metadata->addPropertyConstraint('category', \version_compare(\PHP_VERSION, '8.0', '<') ? new NotBlank($categoryNotBlankOptions) : new NotBlank(...$categoryNotBlankOptions));
+		$detailsNotBlankOptions = ['groups' => ['flow_createTopic_step3']];
+		$metadata->addPropertyConstraint('details', \version_compare(\PHP_VERSION, '8.0', '<') ? new NotBlank($detailsNotBlankOptions) : new NotBlank(...$detailsNotBlankOptions));
 	}
 
 }

@@ -2,7 +2,7 @@
 
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
@@ -27,8 +27,10 @@ class Vehicle {
 	}
 
 	public static function loadValidatorMetadata(ClassMetadata $metadata) : void {
-		$metadata->addPropertyConstraint('numberOfWheels', new Assert\NotBlank(['groups' => 'flow_createVehicle_step1']));
-		$metadata->addPropertyConstraint('engine', new Assert\NotBlank(['groups' => 'flow_createVehicle_step2']));
+		$numberOfWheelsNotBlankOptions = ['groups' => ['flow_createVehicle_step1']];
+		$metadata->addPropertyConstraint('numberOfWheels', \version_compare(\PHP_VERSION, '8.0', '<') ? new NotBlank($numberOfWheelsNotBlankOptions) : new NotBlank(...$numberOfWheelsNotBlankOptions));
+		$engineNotBlankOptions = ['groups' => ['flow_createVehicle_step2']];
+		$metadata->addPropertyConstraint('engine', \version_compare(\PHP_VERSION, '8.0', '<') ? new NotBlank($engineNotBlankOptions) : new NotBlank(...$engineNotBlankOptions));
 	}
 
 }

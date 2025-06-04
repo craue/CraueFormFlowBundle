@@ -2,7 +2,7 @@
 
 namespace Craue\FormFlowBundle\Tests\IntegrationTestBundle\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
@@ -23,8 +23,10 @@ class Issue64SubData {
 	public $prop2;
 
 	public static function loadValidatorMetadata(ClassMetadata $metadata) : void {
-		$metadata->addPropertyConstraint('prop1', new Assert\NotBlank(['groups' => 'flow_issue64_step1']));
-		$metadata->addPropertyConstraint('prop2', new Assert\NotBlank(['groups' => 'flow_issue64_step2']));
+		$prop1NotBlankOptions = ['groups' => ['flow_issue64_step1']];
+		$prop2NotBlankOptions = ['groups' => ['flow_issue64_step2']];
+		$metadata->addPropertyConstraint('prop1', \version_compare(\PHP_VERSION, '8.0', '<') ? new NotBlank($prop1NotBlankOptions) : new NotBlank(...$prop1NotBlankOptions));
+		$metadata->addPropertyConstraint('prop2', \version_compare(\PHP_VERSION, '8.0', '<') ? new NotBlank($prop2NotBlankOptions) : new NotBlank(...$prop2NotBlankOptions));
 	}
 
 }
