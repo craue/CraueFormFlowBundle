@@ -376,6 +376,35 @@ public function createVehicleAction() {
 }
 ```
 
+## DoctrineStorage
+You can configure CraueFormFlowBundle to use the DoctrineStorage instead of the SessionStorage.
+If a user then starts to fill out the form, the data will always be saved to the database instead of the session.
+DoctrineStorage will use an extra table (`craue_form_flow_storage`) for this purpose.
+You can use this example configuration as a starting point:
+```yaml
+# config/packages/craue_form_flow.yaml
+services:
+    Craue\FormFlowBundle\Storage\UserSessionStorageKeyGenerator:
+        arguments: [ '@security.token_storage', '@request_stack' ]
+    Craue\FormFlowBundle\Storage\DoctrineStorage:
+        arguments: [ '@doctrine.dbal.default_connection', '@Craue\FormFlowBundle\Storage\UserSessionStorageKeyGenerator' ]
+    myCompany.form.flow.storage.doctrine_storage:
+        class: 'Craue\FormFlowBundle\Storage\DataManager'
+        arguments: [ '@Craue\FormFlowBundle\Storage\DoctrineStorage' ]
+```
+
+```yaml
+# config/services.yaml
+services:
+    myCompany.form.flow.createVehicle:
+        autoconfigure: false
+        calls:
+            - [ setDataManager, [ '@myCompany.form.flow.storage.doctrine_storage'] ]
+            - [ setFormFactory, [ '@form.factory' ] ]
+            - [ setRequestStack, [ '@request_stack' ] ]
+            - [ setEventDispatcher, [ '@?event_dispatcher' ] ]
+```
+
 # Explanations
 
 ## How the flow works
