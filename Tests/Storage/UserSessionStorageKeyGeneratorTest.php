@@ -123,7 +123,12 @@ class UserSessionStorageKeyGeneratorTest extends TestCase {
 			yield ['user_username_key', new PreAuthenticatedToken(new $userClass('username', 'password'), 'firewall')];
 		}
 
-		yield ['user_username_key', new RememberMeToken(new $userClass('username', 'password'), 'firewall', 'secret')];
+		if (Kernel::VERSION_ID < 70200) {
+			// TODO remove as soon as Symfony >= 7.2 is required
+			yield ['user_username_key', new RememberMeToken(new $userClass('username', 'password'), 'firewall', 'secret')];
+		} else {
+			yield ['user_username_key', new RememberMeToken(new $userClass('username', 'password'), 'firewall')];
+		}
 
 		if (Kernel::VERSION_ID < 50400) {
 			// TODO remove as soon as Symfony >= 5.4 is required
