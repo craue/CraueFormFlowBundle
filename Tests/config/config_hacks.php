@@ -23,26 +23,10 @@ if (Kernel::VERSION_ID >= 40300 && Kernel::VERSION_ID < 60000) {
 	]);
 }
 
-// TODO put back into config.yml as soon as Symfony >= 5.3 is required, see https://github.com/symfony/symfony/blob/5.x/UPGRADE-5.3.md#frameworkbundle
-$container->loadFromExtension('framework', [
-	'session' => Kernel::VERSION_ID >= 50300 ? [
-		'storage_factory_id' => 'session.storage.factory.mock_file',
-	] : [
-		'storage_id' => 'session.storage.mock_file',
-	],
-]);
-
-// TODO clean up as soon as Symfony >= 5.3 is required, see https://github.com/symfony/symfony/pull/41247
 // TODO remove as soon as Symfony >= 6.2 is required, see https://github.com/symfony/symfony/pull/47890
-$container->loadFromExtension('security', Kernel::VERSION_ID >= 60200 ? [] : (Kernel::VERSION_ID >= 50300 ? [
+$container->loadFromExtension('security', Kernel::VERSION_ID >= 60200 ? [] : [
 	'enable_authenticator_manager' => true,
-] : [
-	'firewalls' => [
-		'dummy' => [
-			'anonymous' => true,
-		],
-	],
-]));
+]);
 
 // TODO remove as soon as Symfony >= 7 is required, see https://github.com/symfony/symfony/blob/6.4/UPGRADE-6.4.md#frameworkbundle
 if (Kernel::VERSION_ID >= 60400 && Kernel::VERSION_ID < 70000) {

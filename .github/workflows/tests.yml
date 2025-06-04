@@ -27,30 +27,19 @@ jobs:
           -
             php: '7.3'
             dependencies: lowest
+            symfony-deprecations: max[indirect]=5
           -
             php: '8.4'
             dependencies: highest
           -
-            php: '7.3'
-            symfony: '4.4.*'
-          -
             php: '7.4'
             symfony: '5.4.*'
-          # TODO remove as soon as Symfony >= 5.0 is required
-          -
-            php: '7.4'
-            symfony: '5.4.*'
-            note: contao-polyfill-symfony
-            contao-polyfill-symfony: true
           -
             php: '8.0'
             symfony: '5.4.*'
           -
             php: '8.1'
             symfony: '5.4.*'
-          -
-            php: '8.1'
-            symfony: '6.3.*'
           -
             php: '8.2'
             symfony: '6.4.*'
@@ -110,11 +99,6 @@ jobs:
           tools: flex
         env:
           fail-fast: true # interrupt on extension setup error
-
-      # TODO remove as soon as Symfony >= 5.0 is required
-      - name: require contao/polyfill-symfony
-        if: matrix.contao-polyfill-symfony == true
-        run: composer require --no-update --dev contao/polyfill-symfony
 
       - name: use dev dependencies
         if: matrix.stability == 'dev'

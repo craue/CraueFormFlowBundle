@@ -38,11 +38,6 @@ trait SessionProviderTrait {
 			return;
 		}
 
-		// TODO remove as soon as Symfony >= 5.3 is required
-		if (!\method_exists(RequestStack::class, 'getSession')) {
-			throw new InvalidTypeException($requestStackOrSession, SessionInterface::class);
-		}
-
 		if ($requestStackOrSession instanceof RequestStack) {
 			$this->requestStack = $requestStackOrSession;
 

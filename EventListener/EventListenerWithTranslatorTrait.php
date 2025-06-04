@@ -2,8 +2,6 @@
 
 namespace Craue\FormFlowBundle\EventListener;
 
-use Craue\FormFlowBundle\Exception\InvalidTypeException;
-use Symfony\Component\Translation\TranslatorInterface as LegacyTranslatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -16,23 +14,15 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 trait EventListenerWithTranslatorTrait {
 
 	/**
-	 * @var TranslatorInterface|LegacyTranslatorInterface
+	 * @var TranslatorInterface
 	 */
 	protected $translator;
 
 	/**
-	 * @param TranslatorInterface|LegacyTranslatorInterface $translator
-	 * @throws InvalidTypeException
+	 * @param TranslatorInterface $translator
 	 */
-	public function setTranslator($translator) {
-		// TODO revert to type-hint with only TranslatorInterface as soon as Symfony >= 5.0 is required
-		if ($translator instanceof TranslatorInterface || $translator instanceof LegacyTranslatorInterface) {
-			$this->translator = $translator;
-
-			return;
-		}
-
-		throw new InvalidTypeException($translator, [TranslatorInterface::class, LegacyTranslatorInterface::class]);
+	public function setTranslator(TranslatorInterface $translator) {
+		$this->translator = $translator;
 	}
 
 }

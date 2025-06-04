@@ -2,10 +2,7 @@
 
 namespace Craue\FormFlowBundle;
 
-use Craue\FormFlowBundle\DependencyInjection\Compiler\LegacySessionCompilerPass;
 use Craue\FormFlowBundle\Util\TempFileUtil;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -26,17 +23,6 @@ class CraueFormFlowBundle extends Bundle {
 		register_shutdown_function(function() : void {
 			TempFileUtil::removeTempFiles();
 		});
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function build(ContainerBuilder $container) : void {
-		parent::build($container);
-
-		if (!\method_exists(RequestStack::class, 'getSession')) {
-			$container->addCompilerPass(new LegacySessionCompilerPass());
-		}
 	}
 
 }

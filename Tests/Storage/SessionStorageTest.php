@@ -22,11 +22,6 @@ class SessionStorageTest extends AbstractStorageTest {
 	protected function getStorageImplementation() {
 		$session = new Session(new MockArraySessionStorage());
 
-		// TODO remove as soon as Symfony >= 5.3 is required
-		if (!\method_exists(RequestStack::class, 'getSession')) {
-			return new SessionStorage($session);
-		}
-
 		$requestStackMock = $this->getMockBuilder(RequestStack::class)->onlyMethods(['getSession'])->getMock();
 
 		$requestStackMock

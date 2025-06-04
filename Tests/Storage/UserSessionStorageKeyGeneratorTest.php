@@ -12,14 +12,12 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
-use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
 use Symfony\Component\Security\Core\Authentication\Token\RememberMeToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\User\InMemoryUser;
-use Symfony\Component\Security\Core\User\User;
 
 /**
  * @group unit
@@ -51,11 +49,6 @@ class UserSessionStorageKeyGeneratorTest extends TestCase {
 	}
 
 	private function createGenerator(SessionInterface $session) : UserSessionStorageKeyGenerator {
-		// TODO remove as soon as Symfony >= 5.3 is required
-		if (!\method_exists(RequestStack::class, 'getSession')) {
-			return new UserSessionStorageKeyGenerator($this->tokenStorage, $session);
-		}
-
 		$requestStackMock = $this->getMockBuilder(RequestStack::class)->onlyMethods(['getSession'])->getMock();
 
 		$requestStackMock
@@ -70,14 +63,11 @@ class UserSessionStorageKeyGeneratorTest extends TestCase {
 	 * @dataProvider dataGenerate_mockedTokens
 	 */
 	public function testGenerate_mockedTokens($expectedKey, $username) {
-		// TODO just use 'getUserIdentifier' as soon as Symfony >= 5.3 is required
-		$methodName = \method_exists(AbstractToken::class, 'getUserIdentifier') ? 'getUserIdentifier' : 'getUsername';
-
-		$token = $this->getMockBuilder(AbstractToken::class)->onlyMethods([$methodName])->getMockForAbstractClass();
+		$token = $this->getMockBuilder(AbstractToken::class)->onlyMethods(['getUserIdentifier'])->getMockForAbstractClass();
 
 		$token
 			->expects($this->once())
-			->method($methodName)
+			->method('getUserIdentifier')
 			->will($this->returnValue($username))
 		;
 
@@ -86,11 +76,6 @@ class UserSessionStorageKeyGeneratorTest extends TestCase {
 	}
 
 	public function dataGenerate_mockedTokens() {
-		// TODO remove as soon as Symfony >= 5.3 is required
-		if (!\method_exists(AbstractToken::class, 'getUserIdentifier')) {
-			yield ['session_12345_key', null];
-		}
-
 		yield ['session_12345_key', ''];
 		yield ['user_username_key', 'username'];
 	}
@@ -104,40 +89,18 @@ class UserSessionStorageKeyGeneratorTest extends TestCase {
 	}
 
 	public function dataGenerate_realTokens() : iterable {
-		// TODO just use `InMemoryUser` as soon as Symfony >= 5.3 is required
-		$userClass = \class_exists(InMemoryUser::class) ? InMemoryUser::class : User::class;
-
 		yield ['session_12345_key', null];
 
-		if (Kernel::VERSION_ID < 50400) {
-			// TODO remove as soon as Symfony >= 5.4 is required
-			yield ['session_12345_key', new AnonymousToken('secret', '')];
-			yield ['session_12345_key', new AnonymousToken('secret', 'username')];
-		}
-
-		if (Kernel::VERSION_ID < 50400) {
-			// TODO remove as soon as Symfony >= 5.4 is required
-			yield ['session_12345_key', new PreAuthenticatedToken('', 'password', 'firewall')];
-			yield ['user_username_key', new PreAuthenticatedToken('username', 'password', 'firewall')];
-		} else {
-			yield ['user_username_key', new PreAuthenticatedToken(new $userClass('username', 'password'), 'firewall')];
-		}
+		yield ['user_username_key', new PreAuthenticatedToken(new InMemoryUser('username', 'password'), 'firewall')];
 
 		if (Kernel::VERSION_ID < 70200) {
 			// TODO remove as soon as Symfony >= 7.2 is required
-			yield ['user_username_key', new RememberMeToken(new $userClass('username', 'password'), 'firewall', 'secret')];
+			yield ['user_username_key', new RememberMeToken(new InMemoryUser('username', 'password'), 'firewall', 'secret')];
 		} else {
-			yield ['user_username_key', new RememberMeToken(new $userClass('username', 'password'), 'firewall')];
+			yield ['user_username_key', new RememberMeToken(new InMemoryUser('username', 'password'), 'firewall')];
 		}
 
-		if (Kernel::VERSION_ID < 50400) {
-			// TODO remove as soon as Symfony >= 5.4 is required
-			yield ['session_12345_key', new UsernamePasswordToken('', 'password', 'firewall')];
-			yield ['user_username_key', new UsernamePasswordToken('username', 'password', 'firewall')];
-			yield ['user_username_key', new UsernamePasswordToken(new $userClass('username', 'password'), 'password', 'firewall')];
-		} else {
-			yield ['user_username_key', new UsernamePasswordToken(new $userClass('username', 'password'), 'firewall')];
-		}
+		yield ['user_username_key', new UsernamePasswordToken(new InMemoryUser('username', 'password'), 'firewall')];
 	}
 
 	public function testGenerate_invalidArgument() {

@@ -705,12 +705,7 @@ abstract class FormFlow implements FormFlowInterface {
 		$request = $this->getRequest();
 		$formName = $form->getName();
 
-		if (!\class_exists('Symfony\Component\HttpFoundation\InputBag')) {
-			// TODO remove as soon as Symfony >= 5.1 is required
-			$currentStepData = $request->request->get($formName, []);
-		} else {
-			$currentStepData = $request->request->all($formName);
-		}
+		$currentStepData = $request->request->all($formName);
 
 		if ($this->handleFileUploads) {
 			$currentStepData = array_replace_recursive($currentStepData, $request->files->get($formName, []));

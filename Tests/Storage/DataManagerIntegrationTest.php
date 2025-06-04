@@ -39,7 +39,7 @@ class DataManagerIntegrationTest extends IntegrationTestCase {
 		$this->getService('request_stack')->push($request);
 
 		/** @var $dataManager DataManager */
-		$dataManager = $this->getService('craue.form.flow.data_manager.test');
+		$dataManager = $this->getService('craue.form.flow.data_manager');
 		$dataManager->dropAll();
 
 		$flow = $this->getFlow('testFlow', 'instance');
