@@ -269,7 +269,7 @@ class TemplateRenderingTest extends IntegrationTestCase {
 	 * @param array $stepsConfig steps config
 	 * @return MockObject|FormFlow
 	 */
-	protected function getFlowStub(array $stubbedMethods = [], array $stepsConfig = null) {
+	protected function getFlowStub(array $stubbedMethods = [], ?array $stepsConfig = null) {
 		/* @var $flow MockObject|FormFlow */
 		$flow = $this->getMockBuilder(FormFlow::class)->onlyMethods(array_merge(['getName', 'loadStepsConfig'], $stubbedMethods))->getMock();
 
