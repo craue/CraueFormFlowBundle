@@ -60,6 +60,11 @@ abstract class FormFlow implements FormFlowInterface {
 	 */
 	protected $revalidatePreviousSteps = true;
 
+    	/**
+     	* @var boolean If this is set to true then step data for the current step will be saved when transitioning backwards.
+     	*/
+    	protected $persistOnBackTransition = false;
+
 	/**
 	 * @var bool
 	 */
@@ -345,6 +350,17 @@ abstract class FormFlow implements FormFlowInterface {
 		return $this->revalidatePreviousSteps;
 	}
 
+	public function setPersistOnBackTransition($persistOnBackTransition) {
+		$this->persistOnBackTransition = (boolean) $persistOnBackTransition;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isPersistOnBackTransition() {
+		return $this->persistOnBackTransition;
+	}
+
 	public function setAllowDynamicStepNavigation($allowDynamicStepNavigation) {
 		$this->allowDynamicStepNavigation = (bool) $allowDynamicStepNavigation;
 	}
@@ -508,6 +524,32 @@ abstract class FormFlow implements FormFlowInterface {
 
 		return false; // should never be reached, but just in case
 	}
+	
+    	/**
+     	* {@inheritDoc}
+     	*/
+    	public function previousStep() {
+        	$currentStepNumber = $this->currentStepNumber - 1;
+
+        	foreach ($this->getSteps() as $step) {
+            		$step->evaluateSkipping($currentStepNumber, $this);
+        	}
+
+        	// There is no "before" step as the target step precedes the first step.
+        	if ($currentStepNumber < $this->getFirstStepNumber()) {
+            		return false;
+        	}
+
+        	$currentStepNumber = $this->applySkipping($currentStepNumber);
+
+        	if ($currentStepNumber <= $this->getStepCount()) {
+            		$this->currentStepNumber = $currentStepNumber;
+
+            		return true;
+        	}
+
+        	return false; // should never be reached, but just in case
+    	}	
 
 	/**
 	 * {@inheritDoc}
@@ -685,6 +727,18 @@ abstract class FormFlow implements FormFlowInterface {
 		}
 
 		$this->currentStepNumber = $requestedStepNumber;
+
+        	if ($this->persistOnBackTransition && $this->getRequestedTransition() === self::TRANSITION_BACK) {
+
+	            	/**
+	             	* If persistence on backwards transition is enabled and the current request transition is 'back' then
+	             	* persist the current step data to storage.
+	             	*/
+	            	$this->nextStep();
+	            	$form = $this->createFormForStep($this->getCurrentStepNumber());
+	            	$this->saveCurrentStepData($form);
+	            	$this->previousStep();
+        	}
 
 		if (!$this->allowDynamicStepNavigation && $this->getRequestedTransition() === self::TRANSITION_BACK) {
 			/*
